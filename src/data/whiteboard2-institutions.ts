@@ -96,10 +96,14 @@ export const SECTION_METAS_V3: SectionMeta[] = [
       '07.11 Central Banking & Market Regulators: RBI Grade B & SEBI',
       '07.12 Commercial Banking & Agriculture: SBI PO & IBPS AFO / Specialist Officers',
       '07.13 Central Ministries & Investigation: SSC CGL (ASO, CAG & ED)',
-      '07.14 Armed Forces Commissioned Officers: Combined Defence Services (CDS) & NDA',
-      '07.15 Indian Railway Management Service (IRMS & RRB NTPC)'
+      '07.14 NDA & 10+2 Cadet Entry: Army, Navy & Air Force Wings (NDA & NA Khadakwasla)',
+      '07.15 10+2 Technical Cadet Schemes: Army TES & Navy B.Tech Cadet Entry',
+      '07.16 Armed Forces Commissioned Officers: CDS, AFCAT, TGC & JAG (IMA, INA, AFA, OTA)',
+      '07.17 Armed Forces Agnipath Scheme: Agniveer (Army, Navy & Air Force Soldiers)',
+      '07.18 Police & Paramilitary Recruitment: State Police (SI/Constables) & SSC CPO / GD',
+      '07.19 Indian Railway Management Service (IRMS & RRB NTPC)'
     ],
-    expectedAuthorities: ['UPSC', 'State PSCs', 'Reserve Bank of India', 'SEBI', 'NABARD / IBPS', 'Staff Selection Commission', 'Ministry of Defence', 'Ministry of Railways']
+    expectedAuthorities: ['UPSC', 'State PSCs', 'Reserve Bank of India', 'SEBI', 'NABARD / IBPS', 'Staff Selection Commission', 'Ministry of Defence', 'State Police Recruitment Boards', 'Ministry of Railways']
   }
 ];
 
@@ -2274,29 +2278,155 @@ export const NODES_V3: EducationNode[] = [
     lastVerifiedDate: '2026-10-15'
   },
   {
+    id: 'GATE-NDA-NA',
+    type: 'institution',
+    title: 'National Defence Academy (NDA Khadakwasla) & Naval Academy (INA)',
+    abbreviation: 'NDA & NA (Tri-Services 10+2)',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'STRM-PCM',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'The premier joint-services military training academy of the Indian Armed Forces. Recruits 10+2 candidates through UPSC for 3-year tri-service training leading to a JNU B.A./B.Sc./B.Tech degree, followed by 1 year at IMA/INA/AFA for permanent commission as Lieutenants, Sub-Lieutenants, and Flying Officers.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Tri-Services Joint Military Training Academy (Ministry of Defence)',
+      admissionRoute: 'UPSC NDA & NA Written Examination (Maths 300 marks + GAT 600 marks) -> 5-Day Services Selection Board (SSB Interview) -> Special Medical Board',
+      examinationTimeline: 'Timeline: Bi-annual cycle (NDA-I in April, NDA-II in September) -> 3 Years joint training at NDA Khadakwasla (Pune) -> 1 Year service-specific academy training at IMA / INA / AFA',
+      programmesOffered: [
+        'Army Wing (Cadets of all streams: Arts, Commerce, Science PCM/PCB)',
+        'Navy Wing (Cadets with 10+2 Physics & Mathematics - PCM mandatory)',
+        'Air Force Flying / Ground Duty (Cadets with 10+2 Physics & Mathematics - PCM mandatory)',
+        'Indian Naval Academy Cadet Entry (10+2 Executive / Technical)'
+      ],
+      careerValue: 'Complete Armed Forces Permanent Commission Ladder:\n• Commissioning Ranks: Lieutenant (Army) / Sub-Lieutenant (Navy) / Flying Officer (Air Force)\n• Mid-Career: Major / Lt Colonel (Army) | Lt Commander / Commander (Navy) | Squadron Leader / Wing Commander (Air Force)\n• Senior Leadership: Colonel / Brigadier (Army) | Captain / Commodore (Navy) | Group Captain / Air Commodore (Air Force)\n• Flag & Star Ranks: Major General / Lt General (Army) | Rear Admiral / Vice Admiral (Navy) | Air Vice Marshal / Air Marshal (Air Force)\n• Apex Armed Forces Command: Chief of Army Staff (General) | Chief of Naval Staff (Admiral) | Chief of Air Staff (Air Chief Marshal) | Chief of Defence Staff (CDS - 4-Star General)'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315', 'SRC-DEFENCE-UPSC'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-16'
+  },
+  {
+    id: 'GATE-DEF-TECH-10PLUS2',
+    type: 'institution',
+    title: '10+2 Technical Entry Schemes: Indian Army TES & Indian Navy B.Tech',
+    abbreviation: '10+2 Army TES & Navy B.Tech',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'STRM-PCM',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Direct technical officer commissioning entries for 10+2 PCM students without any UPSC written test. Shortlisting is done directly on JEE (Main) CRL Rank and Class 12 PCM marks, granting entry to a 5-Day SSB interview and fully sponsored 4-year B.Tech engineering degrees in military colleges.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Direct Technical Officer Commissioning Cadre (Ministry of Defence)',
+      admissionRoute: 'JEE (Main) Common Rank List (CRL) + Class 12 PCM (min 60% for Army TES, 70% for Navy B.Tech) -> Direct 5-Day SSB Interview Call -> Medical Board',
+      examinationTimeline: 'Timeline: Bi-annual notifications (TES in June & Dec, Navy 10+2 B.Tech in June & Nov) -> Direct SSB in Bhopal/Prayagraj/Bengaluru/Kapurthala/Coimbatore -> 4 Years B.Tech training',
+      programmesOffered: [
+        'Army Technical Entry Scheme (TES): 4-Yr B.Tech at CME Pune, MCTE Mhow, or MCEME Secunderabad (JNU Degree)',
+        'Navy 10+2 (B.Tech) Cadet Entry: 4-Yr B.Tech in Applied Electronics / Mech at Indian Naval Academy (INA Ezhimala)'
+      ],
+      careerValue: 'Complete Technical Engineering Officer Ladder:\n• Commissioning Rank: Lieutenant (Corps of Engineers, EME, Signals in Army) / Sub-Lieutenant (Naval Technical/Electrical/Engineering Branch)\n• Fast-track permanent commission with all engineering degree tuition, boarding, uniform, and books 100% funded by Union Government\n• Career progression parallel to general military cadre up to Major General / Vice Admiral and Director General of EME/Engineers'
+    },
+    sourceIds: ['SRC-DEFENCE-UPSC'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-16'
+  },
+  {
     id: 'GATE-GOV-DEFENCE',
     type: 'institution',
-    title: 'Military Commissioned Officers: Combined Defence Services (CDS) & AFCAT',
-    abbreviation: 'CDS & AFCAT (Armed Forces)',
+    title: 'Tri-Services Commissioned Officers: Combined Defence Services (CDS), AFCAT, TGC & JAG',
+    abbreviation: 'CDS, AFCAT & TGC (Armed Forces)',
     sectionId: 'SEC-07',
     sectionNumber: '07',
     parentId: 'DEG-BTECH',
     level: 'union',
     category: 'higher-education',
-    summary: 'Permanent and Short Service Commissioned Officer recruitment for graduates into the Indian Army, Indian Navy, and Indian Air Force through UPSC Combined Defence Services (CDS) and Air Force Common Admission Test (AFCAT).',
+    summary: 'Permanent and Short Service Commissioned Officer recruitment for university graduates into the Indian Army, Indian Navy, and Indian Air Force through UPSC CDS, AFCAT, Technical Graduate Course (TGC), Judge Advocate General (JAG), and Army Medical Corps (AMC).',
     mandate: [],
     powers: [],
     limitations: [],
     institutionDetails: {
       institutionType: 'Armed Forces Commissioned Officer Ranks (Ministry of Defence)',
-      admissionRoute: 'UPSC CDS (Bi-annually in April & Sept) / AFCAT (Bi-annually in Feb & Aug) -> 5-Day Services Selection Board (SSB) -> Medical Board',
+      admissionRoute: 'UPSC CDS (Bi-annually in April & Sept) / AFCAT (Bi-annually in Feb & Aug) / Direct SSB (for TGC & JAG) -> 5-Day Services Selection Board (SSB) -> Special Medical Board',
       examinationTimeline: 'Timeline: Written Exam -> 5-Day SSB Psychological, Ground Task & Interview Testing -> 1 to 1.5 Years cadet academy training (IMA Dehradun, INA Ezhimala, AFA Dundigal, OTA Chennai)',
-      programmesOffered: ['Indian Military Academy (IMA)', 'Air Force Academy (AFA)', 'Indian Naval Academy (INA)', 'Officers Training Academy (OTA)'],
-      careerValue: 'Complete Armed Forces Rank Hierarchy:\n• Indian Army: Lieutenant -> Captain -> Major -> Lieutenant Colonel -> Colonel (Commanding Officer of Battalion) -> Brigadier -> Major General (Division Commander) -> Lieutenant General (Corps Commander / Army Commander) -> General (Chief of Army Staff - COAS) -> Chief of Defence Staff (CDS)\n• Indian Air Force: Flying Officer -> Flight Lieutenant -> Squadron Leader -> Wing Commander -> Group Captain (Air Base Commander) -> Air Commodore -> Air Vice Marshal -> Air Marshal (Air Officer Commanding-in-Chief) -> Air Chief Marshal (Chief of the Air Staff - CAS)\n• Indian Navy: Sub-Lieutenant -> Lieutenant -> Lieutenant Commander -> Commander -> Captain (Warship Captain) -> Commodore -> Rear Admiral (Fleet Commander) -> Vice Admiral (Flag Officer Commanding-in-Chief) -> Admiral (Chief of the Naval Staff - CNS)'
+      programmesOffered: [
+        'Indian Military Academy (IMA Dehradun - Permanent Commission for Male Graduates)',
+        'Officers Training Academy (OTA Chennai - Short Service Commission for Men & Women)',
+        'Indian Naval Academy (INA Ezhimala - Permanent Commission for Engineering / Science Graduates)',
+        'Air Force Academy (AFA Dundigal - Flying Branch & Ground Duty Technical / Non-Technical)',
+        'Technical Graduate Course (TGC - Army Engineering Officers direct via B.Tech)',
+        'Judge Advocate General (JAG - Military Legal Officers for LL.B Graduates)',
+        'Army Medical Corps (AMC - Doctors & Surgeons for MBBS Graduates)'
+      ],
+      careerValue: 'Complete Armed Forces Tri-Services Rank Hierarchy:\n• Indian Army: Lieutenant -> Captain -> Major -> Lieutenant Colonel -> Colonel (Commanding Officer of Battalion) -> Brigadier -> Major General (Division Commander) -> Lieutenant General (Corps Commander / Army Commander) -> General (Chief of Army Staff - COAS) -> Chief of Defence Staff (CDS - 4-Star General)\n• Indian Air Force: Flying Officer -> Flight Lieutenant -> Squadron Leader -> Wing Commander -> Group Captain (Air Base Commander) -> Air Commodore -> Air Vice Marshal -> Air Marshal (Air Officer Commanding-in-Chief) -> Air Chief Marshal (Chief of the Air Staff - CAS)\n• Indian Navy: Sub-Lieutenant -> Lieutenant -> Lieutenant Commander -> Commander -> Captain (Warship Captain) -> Commodore -> Rear Admiral (Fleet Commander) -> Vice Admiral (Flag Officer Commanding-in-Chief) -> Admiral (Chief of the Naval Staff - CNS)'
     },
-    sourceIds: ['SRC-UPSC-CONST-315'],
+    sourceIds: ['SRC-UPSC-CONST-315', 'SRC-DEFENCE-UPSC'],
     verificationStatus: 'verified',
-    lastVerifiedDate: '2026-10-15'
+    lastVerifiedDate: '2026-10-16'
+  },
+  {
+    id: 'GATE-AGNIVEER-TRISERVICES',
+    type: 'institution',
+    title: 'Armed Forces Agnipath Scheme: Agniveer (Army, Navy & Air Force Soldiers)',
+    abbreviation: 'Agniveer (Tri-Services)',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'SCH-10TH-MILESTONE',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Tri-services recruitment scheme for soldier, sailor, and air warrior ranks directly following Class 10 and Class 12. Enlisted personnel serve a 4-year engagement period, with 25% of each cohort retained into the regular cadre for permanent service up to 15+ years with full pension and JCO promotions.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Non-Commissioned & Enlisted Personnel Ranks (Ministry of Defence)',
+      admissionRoute: 'Combined Online Entrance Exam (CEE / STAR) -> Physical Fitness Test (1.6 km run, pull-ups, zig-zag balance, 9-ft ditch) -> Physical Measurement & Medical',
+      examinationTimeline: 'Timeline: Annual recruitment rallies and computer-based tests -> 6 Months rigorous military recruit depot training + 3.5 Years operational combat deployments',
+      programmesOffered: [
+        'Indian Army Agniveer: General Duty (10th pass), Technical (10+2 PCM), Clerk / Storekeeper (10+2 Any Stream with Math/Accounts), Tradesmen (8th/10th pass)',
+        'Indian Navy Agniveer: Senior Secondary Recruit (SSR - 10+2 with Math & Physics), Matric Recruit (MR - Chef/Steward/Hygienist 10th pass)',
+        'Indian Air Force Agniveervayu: Science Subjects (10+2 with Math, Physics, English) & Other than Science (10+2 Any Stream)'
+      ],
+      careerValue: 'Complete Enlisted Soldier & JCO Ladder:\n• Initial Rank: Agniveer (Years 1–4) with Seva Nidhi financial exit package\n• Permanent Retained Cadre (25%): Sepoy / Lance Naik / Naik / Havildar (Army) | Seaman / Leading Seaman / Petty Officer (Navy) | Aircraftman / Leading Aircraftman / Corporal / Sergeant (Air Force)\n• Junior Commissioned Officer (JCO) Ranks: Naib Subedar -> Subedar -> Subedar Major (Army) | Master Chief Petty Officer (Navy) | Master Warrant Officer (Air Force)\n• Commissioning Gateways for Serving Soldiers: ACC (Army Cadet College) & SCO entries to become Commissioned Officers'
+    },
+    sourceIds: ['SRC-AGNIPATH-2022'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-16'
+  },
+  {
+    id: 'GATE-POLICE-STATE-CAPF',
+    type: 'institution',
+    title: 'State Police & Paramilitary Recruitment: Sub-Inspector & Constabulary',
+    abbreviation: 'Police SI & Constables (State & CPO)',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BA-HUMANITIES',
+    level: 'state',
+    category: 'higher-education',
+    summary: 'The primary frontline law enforcement and paramilitary recruitment structure across all states and union territories. Covers Constables & Head Constables recruited after Class 12, Sub-Inspectors (SI) recruited from graduates via State Police Recruitment Boards and SSC CPO, commanding police stations and leading armed central reserve units.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'State Law Enforcement & Central Police Organizations (Ministry of Home Affairs & State Home Depts)',
+      admissionRoute: 'State Police Bharti Written Exam / SSC CPO (for Delhi Police & CAPF SI) -> Physical Standards & Endurance Test (PET/PST) -> Medical & Document Verification',
+      examinationTimeline: 'Timeline: Annual / Periodic notifications -> Physical screening -> Written exam -> 9 to 12 Months State Police Academy / CRPF RTC training',
+      programmesOffered: [
+        'State Police Constable & Head Constable (Class 12th pass)',
+        'State Police Sub-Inspector (SI / Station House Officer - SHO) (Graduates of any discipline)',
+        'SSC Central Police Organization (CPO) Sub-Inspector (Delhi Police, BSF, CRPF, CISF, ITBP, SSB SI)',
+        'SSC GD Constable (Central Paramilitary & Assam Rifles - Class 10th pass)',
+        'Police Cyber Cell / Technical Sub-Inspector (B.Tech / BCA / IT graduates)'
+      ],
+      careerValue: 'Complete Police Station & Subordinate Police Ladder:\n• Constabulary: Police Constable -> Head Constable -> Assistant Sub-Inspector (ASI)\n• Investigating Officers: Sub-Inspector (SI - 2 Stars, Police Station In-Charge / Station House Officer SHO) -> Police Inspector (PI - 3 Stars / Circle Inspector)\n• Gazetted Promotion Ladder: Deputy Superintendent of Police (DySP / ACP - 3 Stars) -> Additional Superintendent of Police (Addl. SP)\n• Statutory Elevation: Induction into Indian Police Service (IPS) cadre as Superintendent of Police (SP) after meritorious state service'
+    },
+    sourceIds: ['SRC-POLICE-ACT-1861', 'SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-16'
   },
   {
     id: 'GATE-RAILWAYS-IRMS',
@@ -3309,6 +3439,189 @@ export const RELATIONSHIPS_V3: RelationshipEdgeData[] = [
     type: 'FEEDS',
     label: 'Economics & Stats graduates take UPSC Indian Economic & Statistical Service',
     verificationStatus: 'verified'
+  },
+
+  // --- DEFENCE & POLICE PATHWAYS & COURSE COMBINATIONS ---
+  // Class 10th & 12th Stream connections to NDA, Technical Entries, Agniveer & Police
+  {
+    id: 'REL-V3-DEF-001',
+    sourceNodeId: 'STRM-PCM',
+    targetNodeId: 'GATE-NDA-NA',
+    type: 'FEEDS',
+    label: '12th PCM qualifies for Air Force & Navy Wings of NDA & Naval Academy via UPSC',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-002',
+    sourceNodeId: 'STRM-COMMERCE',
+    targetNodeId: 'GATE-NDA-NA',
+    type: 'FEEDS',
+    label: '12th Commerce qualifies for Army Wing of National Defence Academy via UPSC',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-003',
+    sourceNodeId: 'STRM-ARTS',
+    targetNodeId: 'GATE-NDA-NA',
+    type: 'FEEDS',
+    label: '12th Arts / Humanities qualifies for Army Wing of National Defence Academy via UPSC',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-004',
+    sourceNodeId: 'STRM-PCB',
+    targetNodeId: 'GATE-NDA-NA',
+    type: 'FEEDS',
+    label: '12th Science PCB qualifies for Army Wing of National Defence Academy via UPSC',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-005',
+    sourceNodeId: 'STRM-PCM',
+    targetNodeId: 'GATE-DEF-TECH-10PLUS2',
+    type: 'FEEDS',
+    label: '12th PCM + JEE Main qualifies for Army 10+2 TES & Navy 10+2 B.Tech Cadet Entry',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-006',
+    sourceNodeId: 'SCH-10TH-MILESTONE',
+    targetNodeId: 'GATE-AGNIVEER-TRISERVICES',
+    type: 'FEEDS',
+    label: 'Class 10 pass qualifies for Army Agniveer GD/Tradesmen & Navy Agniveer MR',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-007',
+    sourceNodeId: 'STRM-PCM',
+    targetNodeId: 'GATE-AGNIVEER-TRISERVICES',
+    type: 'FEEDS',
+    label: '12th PCM qualifies for Army Agniveer Tech, Navy SSR & IAF Agniveervayu Science',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-008',
+    sourceNodeId: 'STRM-ARTS',
+    targetNodeId: 'GATE-POLICE-STATE-CAPF',
+    type: 'FEEDS',
+    label: 'Class 12th pass qualifies for State Police Constable & Head Constable Bharti',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-009',
+    sourceNodeId: 'STRM-COMMERCE',
+    targetNodeId: 'GATE-POLICE-STATE-CAPF',
+    type: 'FEEDS',
+    label: 'Class 12th pass qualifies for State Police Constable recruitment',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-010',
+    sourceNodeId: 'GATE-NDA-NA',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'PROGRESSES_TO',
+    label: 'NDA cadets complete 3-year joint course and proceed to IMA/INA/AFA for commissioning',
+    verificationStatus: 'verified'
+  },
+
+  // Undergraduate Degrees connecting to Tri-Services Officer Cadres (CDS / AFCAT / TGC / JAG / AMC)
+  {
+    id: 'REL-V3-DEF-011',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'FEEDS',
+    label: 'Engineers enter Army TGC, Navy Tech, IAF Technical Branch & CDS (IMA/INA/AFA)',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-012',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'FEEDS',
+    label: 'Graduates enter Army IMA/OTA & Air Force AFCAT Ground Duty via CDS/AFCAT',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-013',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'FEEDS',
+    label: 'Graduates enter Army IMA/OTA & IAF AFCAT Accounts Branch via CDS/AFCAT',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-014',
+    sourceNodeId: 'DEG-BSC-PURE',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'FEEDS',
+    label: 'Science graduates enter Army IMA/OTA, Navy INA & Air Force AFA via CDS',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-015',
+    sourceNodeId: 'DEG-LAW-5YR',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'FEEDS',
+    label: 'Law graduates enter Armed Forces Judge Advocate General (JAG) legal officer branch',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-016',
+    sourceNodeId: 'DEG-MBBS',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'FEEDS',
+    label: 'MBBS doctors commissioned as Captains in Army Medical Corps (AMC / AFMS)',
+    verificationStatus: 'verified'
+  },
+
+  // Undergraduate Degrees connecting to Police & Law Enforcement (State Police SI, SSC CPO & IPS)
+  {
+    id: 'REL-V3-DEF-017',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-POLICE-STATE-CAPF',
+    type: 'FEEDS',
+    label: 'Graduates qualify for State Police Sub-Inspector (SI) & SSC CPO (Delhi Police/CAPF SI)',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-018',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'GATE-POLICE-STATE-CAPF',
+    type: 'FEEDS',
+    label: 'Graduates qualify for State Police SI & SSC CPO Central Police Sub-Inspector',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-019',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'GATE-POLICE-STATE-CAPF',
+    type: 'FEEDS',
+    label: 'Engineering graduates qualify for Police Cyber Cell Sub-Inspector & SSC CPO',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-020',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-UPSC-IPS-POLICE',
+    type: 'FEEDS',
+    label: 'Graduates take UPSC Civil Services Exam to become Indian Police Service (IPS) Officers',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-021',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'GATE-UPSC-IPS-POLICE',
+    type: 'FEEDS',
+    label: 'Engineering graduates qualify for UPSC CSE for appointment to Indian Police Service (IPS)',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-DEF-022',
+    sourceNodeId: 'GATE-POLICE-STATE-CAPF',
+    targetNodeId: 'GATE-UPSC-IPS-POLICE',
+    type: 'PROGRESSES_TO',
+    label: 'Meritorious State Police officers (DySP/ACP) promoted into IPS under statutory state quota',
+    verificationStatus: 'verified'
   }
 ];
 
@@ -3587,5 +3900,35 @@ export const SOURCES_V3: SourceRecord[] = [
     sourcePriority: 1,
     verificationStatus: 'verified',
     relatedNodeIds: ['DEG-MARITIME-DGS']
+  },
+  {
+    id: 'SRC-DEFENCE-UPSC',
+    name: 'Ministry of Defence & UPSC Commissioning Regulations',
+    officialUrl: 'https://mod.gov.in',
+    documentTitle: 'Armed Forces Officer Selection & Commissioning Regulations (NDA, CDS, AFCAT, TES, TGC, JAG)',
+    lastVerifiedDate: '2026-10-16',
+    sourcePriority: 1,
+    verificationStatus: 'verified',
+    relatedNodeIds: ['GATE-NDA-NA', 'GATE-DEF-TECH-10PLUS2', 'GATE-GOV-DEFENCE']
+  },
+  {
+    id: 'SRC-POLICE-ACT-1861',
+    name: 'Police Act, 1861 & State Police Regulations',
+    officialUrl: 'https://bprd.nic.in',
+    documentTitle: 'The Police Act, 1861 & Bureau of Police Research and Development (BPR&D) Model Guidelines',
+    lastVerifiedDate: '2026-10-16',
+    sourcePriority: 1,
+    verificationStatus: 'verified',
+    relatedNodeIds: ['GATE-POLICE-STATE-CAPF', 'GATE-UPSC-IPS-POLICE']
+  },
+  {
+    id: 'SRC-AGNIPATH-2022',
+    name: 'Ministry of Defence Agnipath Scheme Directives',
+    officialUrl: 'https://joinindianarmy.nic.in',
+    documentTitle: 'Government of India Gazette Notification for Agnipath Scheme (Army, Navy, Air Force Enlistment)',
+    lastVerifiedDate: '2026-10-16',
+    sourcePriority: 1,
+    verificationStatus: 'verified',
+    relatedNodeIds: ['GATE-AGNIVEER-TRISERVICES']
   }
 ];

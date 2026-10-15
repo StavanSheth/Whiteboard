@@ -42,6 +42,31 @@ class EducationGovernanceDatabase {
           try {
             const parsed = JSON.parse(stored) as ProjectRecord;
             if (parsed && parsed.id && Array.isArray(parsed.nodes)) {
+              // Intelligently merge any newly introduced nodes, relationships, and sources from code
+              const seeded = this.projects.get(parsed.id);
+              if (seeded) {
+                const existingNodeIds = new Set(parsed.nodes.map((n) => n.id));
+                const missingNodes = seeded.nodes.filter((n) => !existingNodeIds.has(n.id));
+                if (missingNodes.length > 0) {
+                  parsed.nodes = [...parsed.nodes, ...missingNodes];
+                  parsed.nodeCount = parsed.nodes.length;
+                }
+                const existingRelIds = new Set((parsed.relationships || []).map((r) => r.id));
+                const missingRels = seeded.relationships.filter((r) => !existingRelIds.has(r.id));
+                if (missingRels.length > 0) {
+                  parsed.relationships = [...(parsed.relationships || []), ...missingRels];
+                  parsed.relationshipCount = parsed.relationships.length;
+                }
+                if (seeded.sections && seeded.sections.length > 0) {
+                  parsed.sections = seeded.sections;
+                }
+                const existingSourceIds = new Set((parsed.sources || []).map((s) => s.id));
+                const missingSources = (seeded.sources || []).filter((s) => !existingSourceIds.has(s.id));
+                if (missingSources.length > 0) {
+                  parsed.sources = [...(parsed.sources || []), ...missingSources];
+                  parsed.sourceCount = parsed.sources.length;
+                }
+              }
               this.projects.set(parsed.id, parsed);
             }
           } catch (e) {
