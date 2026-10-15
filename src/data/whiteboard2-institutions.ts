@@ -65,18 +65,22 @@ export const SECTION_METAS_V3: SectionMeta[] = [
     id: 'SEC-07',
     number: '07',
     title: 'National Competitive Gateways: UPSC, Civil Services, Banking & Government',
-    subtitle: 'UPSC CSE, State PSCs, RBI Grade B, IBPS/SBI PO, SSC CGL & Defence Officers (CDS/AFCAT)',
-    summary: 'Premier national competitive recruitment pathways available to graduates of any stream across civil administration (IAS/IPS/IFS), provincial state services (Deputy Collector/DySP), central banking & securities regulation (RBI/SEBI), commercial banking (SBI/IBPS PO), central ministries (SSC CGL), and armed forces commissioned officer ranks.',
+    subtitle: 'IAS, IPS Police, IFS Diplomacy, Tax (IRS/GST), State PSCs, RBI/SEBI, Bank PO, SSC CGL, Defence & Railways',
+    summary: 'Premier national competitive recruitment pathways accessible to graduates of any stream with comprehensive appointment hierarchies: IAS (SDM to Cabinet Secretary), IPS/CAPF (ASP to DGP/IB), IFS (Third Sec to Ambassador), Tax (Inspector to CBDT/CBIC Chairman), State PSCs, RBI/SEBI, Commercial Banking, SSC CGL, Military Commissioned Officers, and Indian Railways.',
     iconName: 'Landmark',
     expectedSubsections: [
-      '07.1 UPSC Civil Services (IAS, IPS, IFS, IRS)',
-      '07.2 State Public Service Commissions (MPSC, UPPSC, BPSC)',
-      '07.3 Apex Financial Regulators (RBI Grade B & SEBI Grade A)',
-      '07.4 Public Sector Commercial Banking (SBI PO & IBPS PO)',
-      '07.5 Staff Selection Commission (SSC CGL)',
-      '07.6 Armed Forces Commissioned Officers (UPSC CDS & AFCAT)'
+      '07.1 Civil Administration: IAS (SDM to Cabinet Secretary)',
+      '07.2 Police & Internal Security: IPS, CAPF & CBI (ASP to DGP)',
+      '07.3 Diplomatic Service: IFS (Third Sec to Ambassador)',
+      '07.4 Revenue & Taxation: IRS, Income Tax & GST Inspectors',
+      '07.5 State Civil Services: State PSCs (Deputy Collector & DySP)',
+      '07.6 Central Banking & Market Regulators: RBI Grade B & SEBI',
+      '07.7 Commercial Banking: SBI PO & IBPS PO / Specialist Officers',
+      '07.8 Central Ministries & Investigation: SSC CGL (ASO, CAG & ED)',
+      '07.9 Armed Forces Commissioned Officers: Army, Navy, Air Force',
+      '07.10 Indian Railway Management Service (IRMS & RRB NTPC)'
     ],
-    expectedAuthorities: ['UPSC', 'State PSCs', 'Reserve Bank of India', 'SEBI', 'IBPS / SBI', 'Staff Selection Commission', 'Ministry of Defence']
+    expectedAuthorities: ['UPSC', 'State PSCs', 'Reserve Bank of India', 'SEBI', 'IBPS / SBI', 'Staff Selection Commission', 'Ministry of Defence', 'Ministry of Railways']
   }
 ];
 
@@ -1822,30 +1826,102 @@ export const NODES_V3: EducationNode[] = [
   // SECTION 07: NATIONAL COMPETITIVE GATEWAYS: UPSC, CIVIL SERVICES, BANKING & GOVERNMENT
   // ==========================================
   {
-    id: 'GATE-UPSC-CSE',
+    id: 'GATE-UPSC-IAS',
     type: 'institution',
-    title: 'UPSC Civil Services Examination (IAS / IPS / IFS / IRS)',
-    abbreviation: 'UPSC CSE (IAS/IPS)',
+    title: 'All India Services: Indian Administrative Service (IAS)',
+    abbreviation: 'IAS (Civil Administration)',
     sectionId: 'SEC-07',
     sectionNumber: '07',
     parentId: 'DEG-BA-HUMANITIES',
     level: 'union',
     category: 'higher-education',
-    summary: 'Apex constitutional competitive examination conducted by Union Public Service Commission under Article 320 for Group A All India and Central Civil Services. Accessible to graduates of any discipline (B.A., B.Com, B.Tech, MBBS).',
+    summary: 'The premier constitutional civil administrative cadre of the Republic of India, recruited under Article 320 by UPSC. Direct authority over district revenue, law & order, public policy formulation, and union ministries.',
     mandate: [],
     powers: [],
     limitations: [],
     institutionDetails: {
-      institutionType: 'Apex Constitutional Civil Service Examination (UPSC)',
-      admissionRoute: 'UPSC CSE Notification in February -> Prelims in May/June -> Mains in September -> Personality Test in Jan–March',
-      examinationTimeline: 'Timeline: 1 Year 3-Stage cycle. Prelims (GS Paper I + CSAT Paper II qualifying) -> Mains (9 Descriptive Papers, 1750 marks) -> Interview (275 marks)',
-      programmesOffered: [
-        'All India Services: Indian Administrative Service (IAS), Indian Police Service (IPS)',
-        'Central Group A Services: Indian Foreign Service (IFS), Indian Revenue Service (IRS IT & Customs), Indian Audit & Accounts Service (IA&AS)'
-      ],
-      careerValue: 'District Magistrate / Collector, Superintendent of Police, Ambassador / High Commissioner, Commissioner of Income Tax, Cabinet Secretary of India'
+      institutionType: 'Apex Constitutional Civil Service (All India Service)',
+      admissionRoute: 'UPSC Civil Services Examination (Prelims in May -> Mains 9 Papers in Sept -> Personality Test in Jan–March)',
+      examinationTimeline: 'Timeline: 1 Year 3-Stage cycle -> 2 Years Foundation & Institutional Training at Lal Bahadur Shastri National Academy of Administration (LBSNAA Mussoorie)',
+      programmesOffered: ['Indian Administrative Service (IAS Cadre)'],
+      careerValue: 'Complete Hierarchical Appointment Ladder:\n• Entry/Field Level: Sub-Divisional Magistrate (SDM) / Assistant Collector\n• District Leadership: District Magistrate (DM) / District Collector / Deputy Commissioner\n• Divisional Level: Divisional Commissioner\n• State Secretariat: Joint Secretary -> Special Secretary -> Secretary to State Govt -> Principal Secretary -> Additional Chief Secretary -> Chief Secretary of the State (Apex Administrative Head of State)\n• Union Government (Central Deputation): Under Secretary -> Deputy Secretary -> Director -> Joint Secretary to GoI -> Additional Secretary -> Secretary to Government of India (Ministry Head)\n• Apex Constitutional Post: Cabinet Secretary of India (Senior-most Civil Servant and Head of the Civil Services Board)'
     },
     sourceIds: ['SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-UPSC-IPS-POLICE',
+    type: 'institution',
+    title: 'Police & Internal Security: Indian Police Service (IPS) & CAPF',
+    abbreviation: 'IPS & Police Leadership',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BA-HUMANITIES',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Apex constitutional police and law enforcement service commanding state police forces, central intelligence (IB, R&AW), central investigation (CBI, NIA), and armed paramilitary forces (CRPF, BSF, CISF).',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Apex Constitutional Police Cadre (All India Service)',
+      admissionRoute: 'UPSC CSE (for IPS) / UPSC Central Armed Police Forces (CAPF-AC) Exam',
+      examinationTimeline: 'Timeline: 1 Year selection cycle -> 2-Year training at Sardar Vallabhbhai Patel National Police Academy (SVPNPA Hyderabad)',
+      programmesOffered: ['Indian Police Service (IPS)', 'Central Armed Police Forces (CRPF, BSF, CISF, ITBP, SSB)', 'Central Bureau of Investigation (CBI)', 'Intelligence Bureau (IB)'],
+      careerValue: 'Complete Police Hierarchy & Appointments:\n• Field Entry: Assistant Superintendent of Police (ASP) / Assistant Commissioner of Police (ACP)\n• District Police Leadership: Superintendent of Police (SP) / Senior SP (SSP) / Deputy Commissioner of Police (DCP)\n• Range Command: Deputy Inspector General of Police (DIG) / Additional Commissioner\n• Zonal Command: Inspector General of Police (IGP) / Joint Commissioner\n• State Police HQ: Additional Director General of Police (ADGP) -> Special Director General\n• State Apex Command: Director General of Police (DGP) of the State\n• Apex Central Security Posts: Director Intelligence Bureau (DIB), Director CBI, Director General National Investigation Agency (NIA), Director General CRPF, DG BSF, DG National Security Guard (NSG)'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-UPSC-IFS',
+    type: 'institution',
+    title: 'Diplomatic Service: Indian Foreign Service (IFS)',
+    abbreviation: 'IFS (Diplomacy & Envoys)',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BA-HUMANITIES',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'The diplomatic civil service of the Government of India under Ministry of External Affairs (MEA), managing foreign relations, international bilateral treaties, United Nations representations, and global consulates.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Central Group A Premier Diplomatic Cadre',
+      admissionRoute: 'UPSC Civil Services Examination (Top ranks alongside IAS)',
+      examinationTimeline: 'Timeline: 1 Year selection -> Training at Sushma Swaraj Institute of Foreign Service (SSIFS New Delhi) + Compulsory Foreign Language (CFL) mastery',
+      programmesOffered: ['Indian Foreign Service (IFS)'],
+      careerValue: 'Complete Diplomatic Ladder & Foreign Postings:\n• Embassy Probation: Third Secretary (Probationer in foreign embassy)\n• Embassy Operations: Second Secretary (Consular / Commercial) -> First Secretary (Political / Trade)\n• Mission Leadership: Counsellor -> Minister-Counsellor / Deputy Chief of Mission (DCM)\n• Bilateral Head: Ambassador of India (in foreign embassies) / High Commissioner (in Commonwealth nations) / Permanent Representative of India to United Nations (UN New York/Geneva)\n• Ministry of External Affairs (Headquarters): Joint Secretary -> Additional Secretary -> Secretary (West/East) -> Foreign Secretary of India (Administrative Head of MEA)'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-TAX-IRS-INCOME-GST',
+    type: 'institution',
+    title: 'Revenue & Taxation: IRS (Direct Taxes / Customs & GST) & Tax Inspectors',
+    abbreviation: 'IRS & Tax Departments',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BCOM-BBA',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'The taxation and revenue collection machinery of the Union of India, operating under the Department of Revenue (Ministry of Finance) through CBDT (Income Tax) and CBIC (Indirect Taxes, Customs & GST).',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Central Revenue & Tax Administration Authority',
+      admissionRoute: 'UPSC CSE (for Group A IRS) / Staff Selection Commission SSC CGL (for Group B Tax Inspectors)',
+      examinationTimeline: 'Timeline: Annual competitive cycle -> Professional training at National Academy of Direct Taxes (NADT Nagpur) & NACIN (Faridabad)',
+      programmesOffered: ['IRS (Income Tax)', 'IRS (Customs & Indirect Taxes/GST)', 'Inspector of Income Tax', 'Inspector of Central Excise / GST', 'Customs Appraiser & Preventive Officer'],
+      careerValue: 'Complete Direct & Indirect Tax Hierarchy:\n• Group B Entry (via SSC CGL): Inspector of Income Tax / GST Inspector -> Income Tax Officer (ITO) / Superintendent of GST -> Promoted to Assistant Commissioner (IRS cadre)\n• Group A Entry (via UPSC CSE): Assistant Commissioner of Income Tax (ACIT) / Assistant Commissioner of GST\n• Field Leadership: Deputy Commissioner -> Joint Commissioner -> Additional Commissioner of Income Tax / GST\n• Zonal Commissioners: Commissioner of Income Tax (CIT) / Commissioner of Customs -> Principal Commissioner of Income Tax (PCIT)\n• Apex Directorate: Chief Commissioner of Income Tax (CCIT) -> Principal Chief Commissioner of Income Tax (PCCIT)\n• Apex Statutory Bodies: Member of CBDT / CBIC -> Chairman of Central Board of Direct Taxes (CBDT) & Chairman of CBIC'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315', 'SRC-COMPANIES-ACT-2013'],
     verificationStatus: 'verified',
     lastVerifiedDate: '2026-10-15'
   },
@@ -1853,76 +1929,83 @@ export const NODES_V3: EducationNode[] = [
     id: 'GATE-STATE-PSC',
     type: 'institution',
     title: 'State Public Service Commissions (MPSC / UPPSC / BPSC / KPSC)',
-    abbreviation: 'State PSCs (PCS Officers)',
+    abbreviation: 'State PSCs (Provincial Officers)',
     sectionId: 'SEC-07',
     sectionNumber: '07',
     parentId: 'DEG-BA-HUMANITIES',
     level: 'state',
     category: 'higher-education',
-    summary: 'State-level civil service examinations conducted by State PSCs for apex provincial administrative and law enforcement cadres, with lateral promotion into the IAS/IPS cadres.',
+    summary: 'State-level civil service examinations conducted by State PSCs for apex provincial administrative, police, and revenue cadres, with statutory promotion into IAS and IPS after 10–14 years.',
     mandate: [],
     powers: [],
     limitations: [],
     institutionDetails: {
       institutionType: 'State Constitutional Civil Service Commission',
-      admissionRoute: 'State PSC Annual Notification -> State Prelims -> State Mains Written -> Viva Voce Interview',
-      examinationTimeline: 'Timeline: 1-Year examination cycle conducted in English and respective state regional language',
+      admissionRoute: 'State PSC Annual Notification -> State Prelims -> State Mains Written in English/State Language -> Interview',
+      examinationTimeline: 'Timeline: 1-Year examination cycle followed by state administrative academy training (e.g., YASHADA Pune, ATI Mysore)',
       programmesOffered: [
-        'State Administrative Service (Deputy Collector / Sub-Divisional Magistrate)',
-        'State Police Service (Deputy Superintendent of Police - DySP)',
-        'Tehsildar, Block Development Officer (BDO), Assistant Commissioner of State Tax'
+        'State Administrative Service (Deputy Collector / SDM)',
+        'State Police Service (Deputy Superintendent of Police - DySP / ACP)',
+        'Tehsildar / Executive Magistrate, Block Development Officer (BDO)',
+        'Assistant Commissioner of State Tax (State GST / Commercial Tax Officer - CTO)',
+        'Chief Officer (Municipal Councils)'
       ],
-      careerValue: 'Deputy Collector, DySP, Tehsildar, with promotional induction into IAS/IPS after 10–14 years of state gazetted service'
+      careerValue: 'Complete State Administrative Hierarchy:\n• Provincial Entry: Deputy Collector / SDM -> Additional District Magistrate (ADM)\n• Provincial Police: Deputy Superintendent of Police (DySP) -> Additional SP\n• Sub-District Administration: Tehsildar -> Sub-Divisional Officer (SDO)\n• Statutory Elevation: Induction into IAS (as District Collector) and IPS (as District SP) after 10–14 years of meritorious state gazetted service'
     },
     sourceIds: ['SRC-UPSC-CONST-315'],
     verificationStatus: 'verified',
     lastVerifiedDate: '2026-10-15'
   },
   {
-    id: 'GATE-BANK-RBI-SEBI',
+    id: 'GATE-BANK-REGULATORS',
     type: 'institution',
-    title: 'Apex Financial Regulators: RBI Grade B & SEBI Grade A',
+    title: 'Central Bank & Market Regulators: RBI Grade B & SEBI Grade A',
     abbreviation: 'RBI Grade B & SEBI Officer',
     sectionId: 'SEC-07',
     sectionNumber: '07',
     parentId: 'DEG-BCOM-BBA',
     level: 'union',
     category: 'higher-education',
-    summary: 'Direct officer entry into India’s central bank (Reserve Bank of India) and securities market regulator (SEBI). High-prestige technocratic careers in monetary policy and capital markets.',
+    summary: 'Direct officer entry into India’s central monetary authority (Reserve Bank of India) and capital market regulator (Securities and Exchange Board of India). High-prestige technocratic careers in monetary policy and financial governance.',
     mandate: [],
     powers: [],
     limitations: [],
     institutionDetails: {
       institutionType: 'Apex Central Bank & Regulatory Authority Recruitment',
-      admissionRoute: 'RBI Grade B Direct Recruitment / SEBI Grade A (Assistant Manager) Exam',
-      examinationTimeline: 'Timeline: Annual cycle. Phase 1 (Objective Aptitude) -> Phase 2 (Descriptive Economics, Social Issues, Finance & Management) -> Interview',
-      programmesOffered: ['RBI Grade B (General / DEPR / DSIM)', 'SEBI Grade A (General / Legal / IT / Research)'],
-      careerValue: 'Manager (Grade B) -> Chief General Manager -> Executive Director -> Deputy Governor of RBI; Central bank monetary policy framing, forex oversight'
+      admissionRoute: 'RBI Grade B Direct Recruitment Examination / SEBI Grade A (Assistant Manager) Examination',
+      examinationTimeline: 'Timeline: Annual cycle. Phase 1 (Objective Aptitude) -> Phase 2 (Descriptive Economics, Social Issues, Finance & Management) -> Interview at RBI/SEBI HQ',
+      programmesOffered: ['RBI Grade B (General / DEPR / DSIM)', 'SEBI Grade A (General / Legal / IT / Research / Commodities)', 'NABARD Grade A (Rural Development Banking)'],
+      careerValue: 'Complete Central Bank & Regulatory Hierarchy:\n• Entry Post: Manager (Grade B at RBI) / Assistant Manager (Grade A at SEBI)\n• Middle Management: Assistant General Manager (AGM - Grade C) -> Deputy General Manager (DGM - Grade D)\n• Senior Management: General Manager (GM - Grade E) -> Chief General Manager (CGM - Grade F)\n• Top Executive Management: Executive Director (ED) of RBI / SEBI\n• Apex Regulatory Leadership: Deputy Governor of Reserve Bank of India (Monetary Policy Committee member) / Whole-Time Member (WTM) & Chairman of SEBI'
     },
     sourceIds: ['SRC-RBI-ACT-1934'],
     verificationStatus: 'verified',
     lastVerifiedDate: '2026-10-15'
   },
   {
-    id: 'GATE-BANK-PO-SBI',
+    id: 'GATE-BANK-COMMERCIAL',
     type: 'institution',
-    title: 'Public Sector Commercial Banking: SBI PO & IBPS PO',
-    abbreviation: 'SBI & IBPS Bank PO',
+    title: 'Public Sector Commercial Banking: SBI PO & IBPS PO / SO',
+    abbreviation: 'SBI & IBPS Bank PO / SO',
     sectionId: 'SEC-07',
     sectionNumber: '07',
     parentId: 'DEG-BCOM-BBA',
     level: 'union',
     category: 'higher-education',
-    summary: 'Probationary Officer (Scale-I Assistant Manager) recruitment across State Bank of India (SBI) and 11 nationalized public sector commercial banks (PNB, Bank of Baroda, Canara Bank, Union Bank).',
+    summary: 'Probationary Officer (Scale-I Assistant Manager) and Specialist Officer recruitment across State Bank of India (SBI) and 11 nationalized public sector commercial banks (PNB, Bank of Baroda, Canara Bank, Union Bank).',
     mandate: [],
     powers: [],
     limitations: [],
     institutionDetails: {
-      institutionType: 'Public Sector Commercial Banking Recruitment',
-      admissionRoute: 'SBI PO Exam & IBPS PO Common Recruitment Process (CRP)',
-      examinationTimeline: 'Timeline: 6–8 Months cycle. Prelims (Oct) -> Mains with Descriptive English (Nov) -> Psychometric Test & Group Interview (Jan) -> Final Posting (April)',
-      programmesOffered: ['Probationary Officer / Scale-I Management Trainee', 'Specialist Officer (IT, Agricultural, Law Officer)'],
-      careerValue: 'Probationary Officer -> Branch Manager -> Regional Head -> Chief General Manager -> Managing Director (MD & CEO) of Nationalized Banks'
+      institutionType: 'Nationalized Commercial Banking Management Cadre',
+      admissionRoute: 'SBI PO Examination & IBPS PO / Specialist Officer Common Recruitment Process (CRP)',
+      examinationTimeline: 'Timeline: 6–8 Months cycle. Prelims (Oct) -> Mains with Descriptive English (Nov) -> Psychometric Test & Group Interview (Jan) -> Final Allotment (April 1st)',
+      programmesOffered: [
+        'Probationary Officer (PO / Scale-I Management Trainee)',
+        'IT Specialist Officer (Scale-I/II Core Banking & Cybersecurity)',
+        'Law Specialist Officer (Scale-I/II Loan Recovery & Insolvency)',
+        'Agricultural Field Officer (Scale-I Rural Credit Appraisal)'
+      ],
+      careerValue: 'Complete Commercial Banking Management Hierarchy:\n• Entry Post: Probationary Officer / Assistant Manager (Scale-I)\n• Branch Operations: Branch Manager (Scale-II) -> Senior Branch Manager (Scale-III)\n• Regional Operations: Chief Manager (Scale-IV) -> Assistant General Manager (AGM - Scale-V)\n• Zonal & Circle Leadership: Deputy General Manager (DGM - Scale-VI) -> General Manager (GM - Scale-VII)\n• Apex Corporate Leadership: Chief General Manager (CGM) -> Executive Director (ED) -> Managing Director & CEO (MD & CEO) of Nationalized Banks / Chairman of State Bank of India'
     },
     sourceIds: ['SRC-RBI-ACT-1934'],
     verificationStatus: 'verified',
@@ -1931,27 +2014,29 @@ export const NODES_V3: EducationNode[] = [
   {
     id: 'GATE-GOV-SSC-CGL',
     type: 'institution',
-    title: 'Staff Selection Commission: Combined Graduate Level (SSC CGL)',
-    abbreviation: 'SSC CGL (Central Ministries)',
+    title: 'Central Ministries, Enforcement & Audit: Staff Selection Commission (SSC CGL)',
+    abbreviation: 'SSC CGL (Central Ministries & CBI)',
     sectionId: 'SEC-07',
     sectionNumber: '07',
     parentId: 'DEG-BA-HUMANITIES',
     level: 'union',
     category: 'higher-education',
-    summary: 'Premier central government recruitment for Group B and Group C gazetted and non-gazetted officers across Central Ministries, Department of Revenue, Intelligence Bureau, and CBI.',
+    summary: 'Premier central government recruitment for Group B and Group C gazetted and non-gazetted officers across Central Ministries, Department of Revenue, Intelligence Bureau, Central Bureau of Investigation (CBI), and CAG.',
     mandate: [],
     powers: [],
     limitations: [],
     institutionDetails: {
       institutionType: 'Central Ministries Recruitment Commission',
-      admissionRoute: 'SSC CGL National Examination',
+      admissionRoute: 'Staff Selection Commission Combined Graduate Level (SSC CGL) Examination',
       examinationTimeline: 'Timeline: Tier 1 Computer-Based Test (July/Aug) -> Tier 2 Comprehensive Advanced Written Exam (Dec/Jan) -> Merit Allotment',
       programmesOffered: [
-        'Assistant Section Officer (Central Secretariat Service - CSS, MEA, Intelligence Bureau)',
-        'Inspector of Income Tax (CBDT) & Inspector of Central Excise / GST (CBIC)',
-        'Sub-Inspector in Central Bureau of Investigation (CBI), Assistant Audit Officer (CAG)'
+        'Assistant Section Officer (Central Secretariat Service - CSS, MEA, Intelligence Bureau, Railway Board)',
+        'Sub-Inspector in Central Bureau of Investigation (CBI)',
+        'Assistant Enforcement Officer in Enforcement Directorate (ED)',
+        'Assistant Audit Officer (AAO) in Comptroller and Auditor General (CAG)',
+        'Divisional Accountant in State Accountant General (AG) Offices'
       ],
-      careerValue: 'Assistant Section Officer (CSS/MEA), Income Tax Inspector, GST Superintendent, CBI Sub-Inspector, Divisional Accountant'
+      careerValue: 'Complete Central Executive Hierarchy:\n• Central Secretariat: Assistant Section Officer (ASO in CSS/MEA) -> Section Officer (Gazetted) -> Under Secretary -> Deputy Secretary -> Director in Central Ministries\n• CBI Investigation: Sub-Inspector in CBI -> Inspector -> Deputy Superintendent of Police (DySP) -> Additional SP -> Superintendent of Police (SP in CBI)\n• Financial Audit: Assistant Audit Officer (AAO) -> Audit Officer (AO) -> Senior Audit Officer (Sr. AO in CAG Office)\n• Financial Intelligence: Assistant Enforcement Officer (AEO in ED) -> Enforcement Officer -> Assistant Director -> Deputy Director (ED)'
     },
     sourceIds: ['SRC-UPSC-CONST-315'],
     verificationStatus: 'verified',
@@ -1960,23 +2045,52 @@ export const NODES_V3: EducationNode[] = [
   {
     id: 'GATE-GOV-DEFENCE',
     type: 'institution',
-    title: 'Combined Defence Services (CDS) & AFCAT — Military Officers',
+    title: 'Military Commissioned Officers: Combined Defence Services (CDS) & AFCAT',
     abbreviation: 'CDS & AFCAT (Armed Forces)',
     sectionId: 'SEC-07',
     sectionNumber: '07',
     parentId: 'DEG-BTECH',
     level: 'union',
     category: 'higher-education',
-    summary: 'Commissioned officer recruitment for graduates into the Indian Army, Indian Navy, and Indian Air Force through UPSC CDS and Air Force AFCAT.',
+    summary: 'Permanent and Short Service Commissioned Officer recruitment for graduates into the Indian Army, Indian Navy, and Indian Air Force through UPSC Combined Defence Services (CDS) and Air Force Common Admission Test (AFCAT).',
     mandate: [],
     powers: [],
     limitations: [],
     institutionDetails: {
-      institutionType: 'Armed Forces Officer Selection (Ministry of Defence)',
+      institutionType: 'Armed Forces Commissioned Officer Ranks (Ministry of Defence)',
       admissionRoute: 'UPSC CDS (Bi-annually in April & Sept) / AFCAT (Bi-annually in Feb & Aug) -> 5-Day Services Selection Board (SSB) -> Medical Board',
-      examinationTimeline: 'Timeline: Written Exam -> 5-Day SSB Psychological & Obstacle Testing -> 1-1.5 Years cadet academy training (IMA Dehradun, INA Ezhimala, AFA Dundigal, OTA Chennai)',
+      examinationTimeline: 'Timeline: Written Exam -> 5-Day SSB Psychological, Ground Task & Interview Testing -> 1 to 1.5 Years cadet academy training (IMA Dehradun, INA Ezhimala, AFA Dundigal, OTA Chennai)',
       programmesOffered: ['Indian Military Academy (IMA)', 'Air Force Academy (AFA)', 'Indian Naval Academy (INA)', 'Officers Training Academy (OTA)'],
-      careerValue: 'Commissioned Officer: Lieutenant (Army), Flying Officer (Air Force), Sub-Lieutenant (Navy) -> Major General / Air Vice Marshal / Rear Admiral'
+      careerValue: 'Complete Armed Forces Rank Hierarchy:\n• Indian Army: Lieutenant -> Captain -> Major -> Lieutenant Colonel -> Colonel (Commanding Officer of Battalion) -> Brigadier -> Major General (Division Commander) -> Lieutenant General (Corps Commander / Army Commander) -> General (Chief of Army Staff - COAS) -> Chief of Defence Staff (CDS)\n• Indian Air Force: Flying Officer -> Flight Lieutenant -> Squadron Leader -> Wing Commander -> Group Captain (Air Base Commander) -> Air Commodore -> Air Vice Marshal -> Air Marshal (Air Officer Commanding-in-Chief) -> Air Chief Marshal (Chief of the Air Staff - CAS)\n• Indian Navy: Sub-Lieutenant -> Lieutenant -> Lieutenant Commander -> Commander -> Captain (Warship Captain) -> Commodore -> Rear Admiral (Fleet Commander) -> Vice Admiral (Flag Officer Commanding-in-Chief) -> Admiral (Chief of the Naval Staff - CNS)'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-RAILWAYS-IRMS',
+    type: 'institution',
+    title: 'Indian Railways: Management Service (IRMS) & Operations / Technical',
+    abbreviation: 'Indian Railways (IRMS & RRB)',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BTECH',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Management, operations, engineering, and administrative cadres of the Indian Railways under Ministry of Railways. Recruits apex management via UPSC and technical/commercial supervisors via Railway Recruitment Boards (RRB).',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'National Railways Management & Operations Cadre',
+      admissionRoute: 'UPSC Civil Services / IRMS Examination (for Group A) & RRB NTPC / JE Examination (for Operations & Engineering)',
+      examinationTimeline: 'Timeline: Annual UPSC selection cycle -> Training at National Academy of Indian Railways (NAIR Vadodara) & IRIEEN/IRICEN',
+      programmesOffered: [
+        'Indian Railway Management Service (IRMS - Group A Apex Officers)',
+        'Station Master & Traffic Controller (RRB NTPC)',
+        'Junior Engineer & Section Engineer (RRB JE Technical Cadre)'
+      ],
+      careerValue: 'Complete Railway Leadership Ladder:\n• Group A Officer Entry: Assistant Divisional Railway Manager (ADRM) -> Senior Divisional Operations / Commercial Manager\n• Divisional Command: Divisional Railway Manager (DRM - Head of Railway Division)\n• Zonal Command: General Manager of Zonal Railway (GM - Central, Western, Northern, etc.)\n• Apex Board Leadership: Member of Railway Board -> Chairman & CEO of the Railway Board (Apex Executive of Indian Railways)\n• Operational Posts: Station Master -> Station Director -> Chief Controller / Traffic Inspector'
     },
     sourceIds: ['SRC-UPSC-CONST-315'],
     verificationStatus: 'verified',
@@ -2619,17 +2733,17 @@ export const RELATIONSHIPS_V3: RelationshipEdgeData[] = [
   {
     id: 'REL-V3-076',
     sourceNodeId: 'DEG-BA-HUMANITIES',
-    targetNodeId: 'GATE-UPSC-CSE',
+    targetNodeId: 'GATE-UPSC-IAS',
     type: 'FEEDS',
-    label: 'Humanities graduates take UPSC Civil Services for IAS, IPS, IFS, IRS',
+    label: 'Humanities graduates take UPSC Civil Services for IAS civil administration',
     verificationStatus: 'verified'
   },
   {
     id: 'REL-V3-077',
     sourceNodeId: 'DEG-BTECH',
-    targetNodeId: 'GATE-UPSC-CSE',
+    targetNodeId: 'GATE-UPSC-IAS',
     type: 'FEEDS',
-    label: 'Engineers take UPSC Civil Services for IAS, IPS, IRS, and ESE',
+    label: 'Engineers take UPSC Civil Services for IAS, IPS, IRS & policy leadership',
     verificationStatus: 'verified'
   },
   {
@@ -2643,7 +2757,7 @@ export const RELATIONSHIPS_V3: RelationshipEdgeData[] = [
   {
     id: 'REL-V3-079',
     sourceNodeId: 'DEG-BCOM-BBA',
-    targetNodeId: 'GATE-BANK-RBI-SEBI',
+    targetNodeId: 'GATE-BANK-REGULATORS',
     type: 'PROGRESSES_TO',
     label: 'Commerce & finance graduates sit for RBI Grade B & SEBI Grade A Officer exams',
     verificationStatus: 'verified'
@@ -2651,7 +2765,7 @@ export const RELATIONSHIPS_V3: RelationshipEdgeData[] = [
   {
     id: 'REL-V3-080',
     sourceNodeId: 'DEG-BCOM-BBA',
-    targetNodeId: 'GATE-BANK-PO-SBI',
+    targetNodeId: 'GATE-BANK-COMMERCIAL',
     type: 'PROGRESSES_TO',
     label: 'Graduates enter Public Sector Commercial Banking via SBI PO & IBPS PO',
     verificationStatus: 'verified'
@@ -2661,7 +2775,7 @@ export const RELATIONSHIPS_V3: RelationshipEdgeData[] = [
     sourceNodeId: 'DEG-BA-HUMANITIES',
     targetNodeId: 'GATE-GOV-SSC-CGL',
     type: 'FEEDS',
-    label: 'Graduates take SSC CGL for Income Tax Inspector, Central Secretariat ASO & CBI SI',
+    label: 'Graduates take SSC CGL for Central Secretariat ASO, CBI SI & Enforcement Officers',
     verificationStatus: 'verified'
   },
   {
@@ -2670,6 +2784,419 @@ export const RELATIONSHIPS_V3: RelationshipEdgeData[] = [
     targetNodeId: 'GATE-GOV-DEFENCE',
     type: 'PROGRESSES_TO',
     label: 'Graduates take UPSC CDS & AFCAT for Army, Navy & Air Force Commissioned Officers',
+    verificationStatus: 'verified'
+  },
+
+  // ==========================================
+  // PERMUTATION & COMBINATION ARROWS ACROSS COURSES & GATEWAYS
+  // ==========================================
+  // --- B.Tech Permutations & Cross-Discipline Combos ---
+  {
+    id: 'REL-V3-083',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'PG-MBA',
+    type: 'PROGRESSES_TO',
+    label: 'Engineers take CAT/GMAT for IIM MBA & Tech Product Leadership',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-084',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'DEG-LAW-3YR',
+    type: 'PROGRESSES_TO',
+    label: 'Engineers enter 3-Year LL.B. for Technology Patent, IP & Cyber Law',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-085',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'GATE-BANK-REGULATORS',
+    type: 'FEEDS',
+    label: 'Engineers recruited for RBI Grade B & SEBI Information Technology stream',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-086',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'GATE-BANK-COMMERCIAL',
+    type: 'FEEDS',
+    label: 'Engineers enter SBI/IBPS PO & Specialist IT Officers in Nationalized Banks',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-087',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'GATE-UPSC-IPS-POLICE',
+    type: 'FEEDS',
+    label: 'Engineers enter IPS for Cybercrime, Technical Forensics & Paramilitary Command',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-088',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'GATE-TAX-IRS-INCOME-GST',
+    type: 'FEEDS',
+    label: 'Engineers join IRS for Big Data Analytics, Digital Tax Fraud & Customs Intelligence',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-089',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'GATE-RAILWAYS-IRMS',
+    type: 'FEEDS',
+    label: 'Engineers enter Indian Railway Management Service (IRMS) & Technical Direction',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-090',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'GATE-STATE-PSC',
+    type: 'FEEDS',
+    label: 'Engineers qualify for State Civil Services (Deputy Collector / DySP) & State PWD/Irrigation',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-091',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'GATE-GOV-SSC-CGL',
+    type: 'FEEDS',
+    label: 'Engineers enter Central Ministries as ASO, CBI Sub-Inspectors & Enforcement Officers',
+    verificationStatus: 'verified'
+  },
+
+  // --- MBBS Permutations & Non-Clinical Alternate Gateways ---
+  {
+    id: 'REL-V3-092',
+    sourceNodeId: 'DEG-MBBS',
+    targetNodeId: 'PG-MBA',
+    type: 'PROGRESSES_TO',
+    label: 'Doctors pursue CAT/GMAT for IIM MBA in Healthcare & Hospital Administration',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-093',
+    sourceNodeId: 'DEG-MBBS',
+    targetNodeId: 'GATE-UPSC-IAS',
+    type: 'FEEDS',
+    label: 'Doctors clear UPSC Civil Services for IAS & Ministry of Health policy direction',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-094',
+    sourceNodeId: 'DEG-MBBS',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'FEEDS',
+    label: 'Doctors commissioned into Armed Forces Medical Services (AFMS) as Captain/Major',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-095',
+    sourceNodeId: 'DEG-MBBS',
+    targetNodeId: 'GATE-UPSC-IPS-POLICE',
+    type: 'FEEDS',
+    label: 'Doctors enter IPS specializing in Forensic Medicine, Medico-Legal Cases & Police Hospitals',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-096',
+    sourceNodeId: 'DEG-MBBS',
+    targetNodeId: 'GATE-STATE-PSC',
+    type: 'FEEDS',
+    label: 'Doctors qualify for State Civil Services & Chief Medical Officer (CMO) cadres',
+    verificationStatus: 'verified'
+  },
+
+  // --- B.Com / BBA Permutations & Financial / Legal Combinations ---
+  {
+    id: 'REL-V3-097',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'DEG-LAW-3YR',
+    type: 'PROGRESSES_TO',
+    label: 'Commerce graduates enter 3-Year LL.B. for Corporate, Insolvency & Taxation Law',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-098',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'GATE-UPSC-IAS',
+    type: 'FEEDS',
+    label: 'Commerce graduates clear UPSC for IAS district administration & Ministry of Finance',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-099',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'GATE-TAX-IRS-INCOME-GST',
+    type: 'FEEDS',
+    label: 'Commerce & finance background feeds directly into IRS Direct Taxes & GST Audit',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-100',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'GATE-GOV-SSC-CGL',
+    type: 'FEEDS',
+    label: 'Commerce graduates recruit as Assistant Audit Officers (AAO in CAG) & Tax Inspectors',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-101',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'GATE-STATE-PSC',
+    type: 'FEEDS',
+    label: 'Commerce graduates enter State Finance Service, Commercial Tax Officer & Treasury',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-102',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'PROF-ACTUARIAL',
+    type: 'PROGRESSES_TO',
+    label: 'Commerce & math students pursue Actuarial Science (IAI/IFoA) for Insurance Risk Modeling',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-103',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'FEEDS',
+    label: 'Commerce graduates enter Armed Forces via CDS for Logistics & Accounts Cadres',
+    verificationStatus: 'verified'
+  },
+
+  // --- B.A. Humanities Permutations & Cross-Discipline Combos ---
+  {
+    id: 'REL-V3-104',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'PG-MBA',
+    type: 'PROGRESSES_TO',
+    label: 'Humanities graduates take CAT for IIM MBA (high academic diversity preference)',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-105',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-UPSC-IFS',
+    type: 'FEEDS',
+    label: 'Humanities & IR graduates excel in UPSC for Indian Foreign Service (IFS Envoys)',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-106',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-UPSC-IPS-POLICE',
+    type: 'FEEDS',
+    label: 'Humanities graduates enter Indian Police Service (IPS) for District Police & Intelligence',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-107',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-TAX-IRS-INCOME-GST',
+    type: 'FEEDS',
+    label: 'Humanities graduates enter IRS through UPSC Civil Services Examination',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-108',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-BANK-REGULATORS',
+    type: 'FEEDS',
+    label: 'Economics & Humanities graduates enter RBI Grade B General & Policy Cadres',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-109',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-BANK-COMMERCIAL',
+    type: 'FEEDS',
+    label: 'Humanities graduates qualify for SBI & IBPS Probationary Officer examinations',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-110',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'FEEDS',
+    label: 'Humanities graduates clear UPSC CDS & AFCAT for Army, Navy & Air Force Officers',
+    verificationStatus: 'verified'
+  },
+
+  // --- B.Sc Pure Sciences Permutations & Cross-Discipline Combos ---
+  {
+    id: 'REL-V3-111',
+    sourceNodeId: 'DEG-BSC-PURE',
+    targetNodeId: 'PG-MCA',
+    type: 'PROGRESSES_TO',
+    label: 'B.Sc Mathematics/Statistics graduates enter 2-Year MCA via NIMCET into NITs',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-112',
+    sourceNodeId: 'DEG-BSC-PURE',
+    targetNodeId: 'PG-MBA',
+    type: 'PROGRESSES_TO',
+    label: 'B.Sc graduates take CAT for MBA in Analytics, Pharma Marketing & General Management',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-113',
+    sourceNodeId: 'DEG-BSC-PURE',
+    targetNodeId: 'GATE-UPSC-IAS',
+    type: 'FEEDS',
+    label: 'B.Sc graduates take UPSC Civil Services with Science Optionals for IAS/IPS',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-114',
+    sourceNodeId: 'DEG-BSC-PURE',
+    targetNodeId: 'GATE-BANK-COMMERCIAL',
+    type: 'FEEDS',
+    label: 'Science graduates qualify for SBI PO & IBPS Bank Probationary Officer roles',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-115',
+    sourceNodeId: 'DEG-BSC-PURE',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'FEEDS',
+    label: 'B.Sc Physics/Maths graduates enter Indian Air Force & Navy via CDS/AFCAT Technical & Flying',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-116',
+    sourceNodeId: 'DEG-BSC-PURE',
+    targetNodeId: 'GATE-GOV-SSC-CGL',
+    type: 'FEEDS',
+    label: 'Statistics/Maths graduates qualify for Junior Statistical Officer (JSO) & Central Ministries',
+    verificationStatus: 'verified'
+  },
+
+  // --- Law Graduates (5-Year & 3-Year) Permutations & Public Gateways ---
+  {
+    id: 'REL-V3-117',
+    sourceNodeId: 'DEG-LAW-5YR',
+    targetNodeId: 'GATE-BANK-REGULATORS',
+    type: 'FEEDS',
+    label: 'Law graduates enter SEBI Grade A (Legal Stream) & RBI Legal Officers',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-118',
+    sourceNodeId: 'DEG-LAW-5YR',
+    targetNodeId: 'GATE-BANK-COMMERCIAL',
+    type: 'FEEDS',
+    label: 'Law graduates recruited as Law Specialist Officers (Scale-I/II) in Public Sector Banks',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-119',
+    sourceNodeId: 'DEG-LAW-5YR',
+    targetNodeId: 'GATE-UPSC-IAS',
+    type: 'FEEDS',
+    label: 'Law graduates take UPSC CSE with Law Optional for IAS and Central Ministries',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-120',
+    sourceNodeId: 'DEG-LAW-5YR',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'FEEDS',
+    label: 'Law graduates enter Army Judge Advocate General (JAG) Branch as Commissioned Officers',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-121',
+    sourceNodeId: 'DEG-LAW-3YR',
+    targetNodeId: 'GATE-BANK-REGULATORS',
+    type: 'FEEDS',
+    label: '3-Year Law graduates qualify for SEBI Legal & Central Financial Authorities',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-122',
+    sourceNodeId: 'DEG-LAW-3YR',
+    targetNodeId: 'GATE-STATE-PSC',
+    type: 'FEEDS',
+    label: 'Law graduates enter Assistant Prosecution Officer (APO) & State Public Prosecutor cadres',
+    verificationStatus: 'verified'
+  },
+
+  // --- BCA Permutations & IT Gateways ---
+  {
+    id: 'REL-V3-123',
+    sourceNodeId: 'DEG-BCA',
+    targetNodeId: 'PG-MCA',
+    type: 'PROGRESSES_TO',
+    label: 'BCA graduates take NIMCET/MAH-MCA-CET for 2-Year Master of Computer Applications (MCA)',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-124',
+    sourceNodeId: 'DEG-BCA',
+    targetNodeId: 'GATE-BANK-COMMERCIAL',
+    type: 'FEEDS',
+    label: 'BCA graduates enter IBPS SO as IT Specialist Officers & General Banking PO',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-125',
+    sourceNodeId: 'DEG-BCA',
+    targetNodeId: 'GATE-GOV-SSC-CGL',
+    type: 'FEEDS',
+    label: 'BCA graduates enter Central Ministries, Cyber Forensics & Intelligence Cadres',
+    verificationStatus: 'verified'
+  },
+
+  // --- Polytechnic Diploma Technical Permutations ---
+  {
+    id: 'REL-V3-126',
+    sourceNodeId: 'STRM-POLYTECHNIC',
+    targetNodeId: 'GATE-GOV-SSC-CGL',
+    type: 'FEEDS',
+    label: 'Diploma engineers take SSC Junior Engineer (SSC JE) for CPWD, MES & Border Roads',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-127',
+    sourceNodeId: 'STRM-POLYTECHNIC',
+    targetNodeId: 'GATE-RAILWAYS-IRMS',
+    type: 'FEEDS',
+    label: 'Diploma engineers take RRB Junior Engineer (RRB JE) for Loco, Signals & Track Engineering',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-128',
+    sourceNodeId: 'STRM-POLYTECHNIC',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'FEEDS',
+    label: 'Diploma holders join Indian Air Force (Airmen Technical) & Indian Navy (Artificer Apprentice)',
+    verificationStatus: 'verified'
+  },
+
+  // --- AYUSH & Dental Permutations ---
+  {
+    id: 'REL-V3-129',
+    sourceNodeId: 'DEG-AYUSH-DENTAL',
+    targetNodeId: 'PG-MBA',
+    type: 'PROGRESSES_TO',
+    label: 'BDS & AYUSH doctors pursue MBA for Hospital Administration, Healthtech & Pharma Management',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-130',
+    sourceNodeId: 'DEG-AYUSH-DENTAL',
+    targetNodeId: 'GATE-UPSC-IAS',
+    type: 'FEEDS',
+    label: 'Doctors clear UPSC Civil Services for IAS & Ministry of AYUSH/Health policy planning',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-131',
+    sourceNodeId: 'DEG-AYUSH-DENTAL',
+    targetNodeId: 'GATE-STATE-PSC',
+    type: 'FEEDS',
+    label: 'Dental & AYUSH doctors qualify for State Civil Services & District Health Officer posts',
     verificationStatus: 'verified'
   }
 ];
@@ -2684,7 +3211,7 @@ export const SOURCES_V3: SourceRecord[] = [
     lastVerifiedDate: '2026-10-15',
     sourcePriority: 1,
     verificationStatus: 'verified',
-    relatedNodeIds: ['GATE-UPSC-CSE', 'GATE-STATE-PSC', 'GATE-GOV-SSC-CGL', 'GATE-GOV-DEFENCE']
+    relatedNodeIds: ['GATE-UPSC-IAS', 'GATE-UPSC-IPS-POLICE', 'GATE-UPSC-IFS', 'GATE-TAX-IRS-INCOME-GST', 'GATE-STATE-PSC', 'GATE-GOV-SSC-CGL', 'GATE-GOV-DEFENCE', 'GATE-RAILWAYS-IRMS']
   },
   {
     id: 'SRC-RBI-ACT-1934',
@@ -2695,7 +3222,7 @@ export const SOURCES_V3: SourceRecord[] = [
     lastVerifiedDate: '2026-10-15',
     sourcePriority: 1,
     verificationStatus: 'verified',
-    relatedNodeIds: ['BCOM-BANKING-INSURANCE', 'GATE-BANK-RBI-SEBI', 'GATE-BANK-PO-SBI']
+    relatedNodeIds: ['BCOM-BANKING-INSURANCE', 'GATE-BANK-REGULATORS', 'GATE-BANK-COMMERCIAL']
   },
   {
     id: 'SRC-NEP-2020',
