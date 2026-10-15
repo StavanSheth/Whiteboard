@@ -19,7 +19,7 @@ import { calculateElkLayout } from '../../services/layoutService';
 import { CustomSectionNode } from './CustomSectionNode';
 import { CustomAuthorityNode } from './CustomAuthorityNode';
 import { RelationshipEdge } from './RelationshipEdge';
-import { Loader2, Layers, AlignHorizontalJustifyCenter, AlignVerticalJustifyCenter, X } from 'lucide-react';
+import { Loader2, Layers, AlignHorizontalJustifyCenter, AlignVerticalJustifyCenter, X, Link as LinkIcon, ZoomIn } from 'lucide-react';
 
 const nodeTypes = {
   sectionNode: CustomSectionNode,
@@ -39,6 +39,8 @@ function CanvasInner() {
     setSelectedNodeIds,
     canvasInteractionMode,
     setCanvasInteractionMode,
+    connectSourceNodeId,
+    setConnectSourceNodeId,
     setRelationshipDraft,
     openModal,
     focusSectionId,
@@ -63,7 +65,7 @@ function CanvasInner() {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [isLoadingLayout, setIsLoadingLayout] = useState(true);
   const isPositionUpdateOnlyRef = useRef(false);
-  const { fitView } = useReactFlow();
+  const { fitView, zoomIn, zoomOut } = useReactFlow();
 
   // Re-layout when raw nodes, relationships, or any layout/sizing options change
   useEffect(() => {
@@ -138,12 +140,34 @@ function CanvasInner() {
 
   const onNodeClick: NodeMouseHandler = useCallback(
     (event, node) => {
+      if (canvasInteractionMode === 'zoom') {
+        if (event.altKey || event.shiftKey) {
+          zoomOut({ duration: 300 });
+        } else {
+          zoomIn({ duration: 300 });
+        }
+        return;
+      }
+
+      if (canvasInteractionMode === 'connect') {
+        if (!connectSourceNodeId) {
+          setConnectSourceNodeId(node.id);
+        } else if (connectSourceNodeId !== node.id) {
+          setRelationshipDraft({ sourceNodeId: connectSourceNodeId, targetNodeId: node.id });
+          openModal('add-relationship');
+          setConnectSourceNodeId(null);
+        } else {
+          setConnectSourceNodeId(null);
+        }
+        return;
+      }
+
       if (event.shiftKey || event.ctrlKey || event.metaKey) {
         return;
       }
       selectNode(node.id);
     },
-    [selectNode]
+    [canvasInteractionMode, connectSourceNodeId, setConnectSourceNodeId, setRelationshipDraft, openModal, selectNode, zoomIn, zoomOut]
   );
 
   const onEdgeClick: EdgeMouseHandler = useCallback(
@@ -157,9 +181,20 @@ function CanvasInner() {
     [rawRelationships, setRelationshipDraft, openModal]
   );
 
-  const onPaneClick = useCallback(() => {
-    // Canvas empty space click
-  }, []);
+  const onPaneClick = useCallback(
+    (event: React.MouseEvent) => {
+      if (canvasInteractionMode === 'zoom') {
+        if (event.altKey || event.shiftKey) {
+          zoomOut({ duration: 300 });
+        } else {
+          zoomIn({ duration: 300 });
+        }
+      } else if (canvasInteractionMode === 'connect') {
+        setConnectSourceNodeId(null);
+      }
+    },
+    [canvasInteractionMode, zoomIn, zoomOut, setConnectSourceNodeId]
+  );
 
   const onNodeDragStop = useCallback(
     (_event: any, node: Node, draggedNodes?: Node[]) => {
@@ -235,21 +270,29 @@ function CanvasInner() {
     setSelectedNodeIds([]);
   }, [setNodes, setSelectedNodeIds]);
 
-  // Keyboard shortcuts: 'v' for select, 'h' for pan, 'Escape' to deselect
+  // Keyboard shortcuts: 'h' for pan, 'v' for select, 'm' for move, 'c' for connect, 'z' for zoom, 'Escape' to deselect/reset
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) return;
-      if (e.key === 'v' || e.key === 'V') {
-        setCanvasInteractionMode('select');
-      } else if (e.key === 'h' || e.key === 'H') {
+      if (e.key === 'h' || e.key === 'H') {
         setCanvasInteractionMode('pan');
+      } else if (e.key === 'v' || e.key === 'V') {
+        setCanvasInteractionMode('select');
+      } else if (e.key === 'm' || e.key === 'M') {
+        setCanvasInteractionMode('move');
+      } else if (e.key === 'c' || e.key === 'C') {
+        setCanvasInteractionMode('connect');
+      } else if (e.key === 'z' || e.key === 'Z') {
+        setCanvasInteractionMode('zoom');
       } else if (e.key === 'Escape') {
         handleDeselectAll();
+        setConnectSourceNodeId(null);
+        setCanvasInteractionMode('pan');
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [setCanvasInteractionMode, handleDeselectAll]);
+  }, [setCanvasInteractionMode, handleDeselectAll, setConnectSourceNodeId]);
 
   const nodeColor = useMemo(() => {
     return (node: Node) => {
@@ -283,7 +326,13 @@ function CanvasInner() {
         onSelectionDragStop={onSelectionDragStop}
         onSelectionChange={onSelectionChange}
         selectionMode={SelectionMode.Partial}
-        panOnDrag={canvasInteractionMode === 'pan' ? true : [1, 2]}
+        panOnDrag={
+          canvasInteractionMode === 'pan'
+            ? true
+            : canvasInteractionMode === 'move'
+            ? false
+            : [1, 2]
+        }
         selectionOnDrag={canvasInteractionMode === 'select'}
         selectionKeyCode={['Shift']}
         multiSelectionKeyCode={['Shift', 'Meta', 'Control']}
@@ -293,9 +342,9 @@ function CanvasInner() {
         minZoom={0.08}
         maxZoom={1.8}
         onlyRenderVisibleElements={true}
-        nodesDraggable={true}
+        nodesDraggable={canvasInteractionMode !== 'zoom'}
         proOptions={{ hideAttribution: true }}
-        className={canvasInteractionMode === 'select' ? 'mode-select' : 'mode-pan'}
+        className={`mode-${canvasInteractionMode}`}
       >
         <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="#cbd5e1" />
         <Controls className="!bg-white !border-slate-200 !shadow-sm !rounded-lg overflow-hidden" />
@@ -343,6 +392,46 @@ function CanvasInner() {
               <X className="w-4 h-4" />
             </button>
           </div>
+        </div>
+      )}
+      {/* Floating Prompt for Connect Tool */}
+      {canvasInteractionMode === 'connect' && (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-4 py-2 bg-slate-900/95 text-white rounded-xl shadow-xl backdrop-blur-md border border-purple-500/70 animate-in fade-in slide-in-from-top-2 duration-200 text-xs">
+          <LinkIcon className="w-4 h-4 text-purple-400 animate-pulse" />
+          {connectSourceNodeId ? (
+            <span>
+              Source selected: <strong className="font-mono text-amber-300">{connectSourceNodeId}</strong>. Now click the <strong>target card</strong> to create relationship.
+            </span>
+          ) : (
+            <span>
+              <strong>Connect Tool Active:</strong> Click the first card (source) to begin an arrow link.
+            </span>
+          )}
+          <button
+            onClick={() => {
+              setConnectSourceNodeId(null);
+              setCanvasInteractionMode('pan');
+            }}
+            className="ml-2 px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-[11px] font-bold cursor-pointer border border-slate-700"
+          >
+            Done (Esc)
+          </button>
+        </div>
+      )}
+
+      {/* Floating Prompt for Zoom Tool */}
+      {canvasInteractionMode === 'zoom' && (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-4 py-2 bg-slate-900/95 text-white rounded-xl shadow-xl backdrop-blur-md border border-amber-500/70 animate-in fade-in slide-in-from-top-2 duration-200 text-xs">
+          <ZoomIn className="w-4 h-4 text-amber-400" />
+          <span>
+            <strong>Zoom Tool Active:</strong> Click anywhere to zoom in (+25%), or hold <strong>Alt/Shift</strong> and click to zoom out.
+          </span>
+          <button
+            onClick={() => setCanvasInteractionMode('pan')}
+            className="ml-2 px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-[11px] font-bold cursor-pointer border border-slate-700"
+          >
+            Done (Esc)
+          </button>
         </div>
       )}
     </div>

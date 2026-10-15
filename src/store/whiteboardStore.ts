@@ -26,6 +26,8 @@ import {
 } from '../services/apiClient';
 import { db } from '../../database/db';
 
+export type CanvasInteractionMode = 'pan' | 'select' | 'move' | 'connect' | 'zoom';
+
 export interface WhiteboardState {
   // Multi-Project / Diagram Management State
   projects: (ProjectSummary & { isActive: boolean })[];
@@ -44,7 +46,8 @@ export interface WhiteboardState {
   
   selectedNodeId: string | null;
   selectedNodeIds: string[];
-  canvasInteractionMode: 'pan' | 'select';
+  canvasInteractionMode: CanvasInteractionMode;
+  connectSourceNodeId: string | null;
   searchQuery: string;
   filters: SearchFilters;
   
@@ -113,7 +116,8 @@ export interface WhiteboardState {
 
   selectNode: (nodeId: string | null) => void;
   setSelectedNodeIds: (ids: string[]) => void;
-  setCanvasInteractionMode: (mode: 'pan' | 'select') => void;
+  setCanvasInteractionMode: (mode: CanvasInteractionMode) => void;
+  setConnectSourceNodeId: (id: string | null) => void;
   setSearchQuery: (query: string) => void;
   setFilters: (filters: Partial<SearchFilters>) => void;
   resetFilters: () => void;
@@ -187,6 +191,7 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
   selectedNodeId: null,
   selectedNodeIds: [],
   canvasInteractionMode: 'pan',
+  connectSourceNodeId: null,
   searchQuery: '',
   filters: initialFilters,
 
@@ -600,7 +605,13 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
       isDetailPanelOpen: ids.length > 0 ? state.isDetailPanelOpen : false
     })),
 
-  setCanvasInteractionMode: (mode) => set({ canvasInteractionMode: mode }),
+  setCanvasInteractionMode: (mode) =>
+    set({
+      canvasInteractionMode: mode,
+      connectSourceNodeId: mode === 'connect' ? null : null
+    }),
+
+  setConnectSourceNodeId: (id) => set({ connectSourceNodeId: id }),
 
   setSearchQuery: (query) => set({ searchQuery: query }),
 

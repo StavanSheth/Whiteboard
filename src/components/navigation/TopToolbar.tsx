@@ -27,7 +27,10 @@ import {
   GitBranch,
   Menu,
   Hand,
-  BoxSelect
+  BoxSelect,
+  Move,
+  Link,
+  ZoomIn
 } from 'lucide-react';
 
 export function TopToolbar() {
@@ -165,7 +168,7 @@ export function TopToolbar() {
 
         {/* Right: Key Action Buttons */}
         <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto max-w-full pb-0.5 sm:pb-0 scrollbar-none order-2 sm:order-3">
-          {/* Interaction Mode Toggle: Pan vs Multi-Select Box */}
+          {/* 5-Tool Cursor Task Mode Selector */}
           <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100/90 p-0.5 shadow-2xs">
             <button
               onClick={() => setCanvasInteractionMode('pan')}
@@ -174,10 +177,10 @@ export function TopToolbar() {
                   ? 'bg-white text-emerald-950 shadow-xs border border-slate-200/90 font-bold'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
-              title="Pan Tool (H) - Drag canvas to move, hold Shift to box-select"
+              title="Pan Canvas (H) - Drag canvas background to glide smoothly"
             >
               <Hand className="w-3.5 h-3.5 text-emerald-700" />
-              <span className="hidden lg:inline">Pan</span>
+              <span className="hidden xl:inline">Pan</span>
             </button>
             <button
               onClick={() => setCanvasInteractionMode('select')}
@@ -186,10 +189,46 @@ export function TopToolbar() {
                   ? 'bg-emerald-900 text-amber-300 shadow-xs border border-emerald-950 font-bold'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
-              title="Multi-Select Box Tool (V) - Click and drag anywhere to box-select multiple cards"
+              title="Box Select (V) - Click and drag anywhere to marquee-select multiple cards"
             >
               <BoxSelect className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden lg:inline">Select</span>
+              <span className="hidden xl:inline">Select</span>
+            </button>
+            <button
+              onClick={() => setCanvasInteractionMode('move')}
+              className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                canvasInteractionMode === 'move'
+                  ? 'bg-emerald-900 text-amber-300 shadow-xs border border-emerald-950 font-bold'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+              title="Move / Drag Cards (M) - Reposition individual cards or selected clusters"
+            >
+              <Move className="w-3.5 h-3.5 text-sky-400" />
+              <span className="hidden xl:inline">Move</span>
+            </button>
+            <button
+              onClick={() => setCanvasInteractionMode('connect')}
+              className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                canvasInteractionMode === 'connect'
+                  ? 'bg-emerald-900 text-amber-300 shadow-xs border border-emerald-950 font-bold'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+              title="Connect Link (C) - Click source card then target card to create relationship"
+            >
+              <Link className="w-3.5 h-3.5 text-purple-400" />
+              <span className="hidden xl:inline">Connect</span>
+            </button>
+            <button
+              onClick={() => setCanvasInteractionMode('zoom')}
+              className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+                canvasInteractionMode === 'zoom'
+                  ? 'bg-emerald-900 text-amber-300 shadow-xs border border-emerald-950 font-bold'
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+              title="Zoom Region (Z) - Click to zoom in (+25%), Shift+Click to zoom out"
+            >
+              <ZoomIn className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden xl:inline">Zoom</span>
             </button>
           </div>
 
