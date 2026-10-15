@@ -278,7 +278,7 @@ export function DetailPanel() {
         <div className="bg-emerald-50/60 border border-emerald-200/80 rounded-xl p-3.5">
           <h3 className="text-[11px] font-bold uppercase tracking-wider text-emerald-900 mb-1.5 flex items-center gap-1.5">
             <BookOpen className="w-3.5 h-3.5 text-emerald-800" />
-            Mandate &amp; Summary
+            Overview &amp; Summary
           </h3>
           {isEditing ? (
             <div className="space-y-2 mt-2">
@@ -706,122 +706,120 @@ export function DetailPanel() {
         )}
 
         {/* Powers (What this authority CAN do) */}
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-emerald-700" />
-              What this authority CAN do (Powers)
-            </h3>
-            {isEditing && (
-              <button
-                type="button"
-                onClick={() => addArrayItem('powers', 'New statutory power')}
-                className="flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-bold text-[10px] transition-colors cursor-pointer"
-              >
-                <Plus className="w-3 h-3" />
-                Add Power
-              </button>
-            )}
-          </div>
-
-          {isEditing ? (
-            <div className="space-y-2">
-              {(draft.powers || []).map((p, idx) => (
-                <div key={idx} className="flex items-start gap-1.5 bg-slate-50 border border-slate-200 rounded-lg p-1.5">
-                  <span className="text-emerald-700 font-bold mt-1 text-xs">•</span>
-                  <textarea
-                    value={p}
-                    onChange={(e) => updateArrayItem('powers', idx, e.target.value)}
-                    rows={2}
-                    className="flex-1 text-xs bg-white border border-slate-300 rounded p-1.5 text-slate-800 focus:outline-hidden"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeArrayItem('powers', idx)}
-                    className="p-1 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded cursor-pointer"
-                    title="Delete power"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              ))}
-              {(draft.powers || []).length === 0 && (
-                <p className="text-[11px] text-slate-400 italic">No powers listed. Click "+ Add Power" to add one.</p>
+        {((node.powers && node.powers.length > 0) || isEditing) && (
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-emerald-700" />
+                What this authority CAN do (Powers)
+              </h3>
+              {isEditing && (
+                <button
+                  type="button"
+                  onClick={() => addArrayItem('powers', 'New statutory power')}
+                  className="flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-bold text-[10px] transition-colors cursor-pointer"
+                >
+                  <Plus className="w-3 h-3" />
+                  Add Power
+                </button>
               )}
             </div>
-          ) : (
-            <ul className="space-y-1.5">
-              {(node.powers || []).map((p, idx) => (
-                <li key={idx} className="flex items-start gap-2 bg-slate-50 border border-slate-100 rounded-lg p-2.5 text-slate-700 leading-relaxed">
-                  <span className="text-emerald-700 font-bold mt-0.5">•</span>
-                  <span>{p}</span>
-                </li>
-              ))}
-              {(!node.powers || node.powers.length === 0) && (
-                <li className="text-[11px] text-slate-400 italic p-2">No powers explicitly configured.</li>
-              )}
-            </ul>
-          )}
-        </div>
+
+            {isEditing ? (
+              <div className="space-y-2">
+                {(draft.powers || []).map((p, idx) => (
+                  <div key={idx} className="flex items-start gap-1.5 bg-slate-50 border border-slate-200 rounded-lg p-1.5">
+                    <span className="text-emerald-700 font-bold mt-1 text-xs">•</span>
+                    <textarea
+                      value={p}
+                      onChange={(e) => updateArrayItem('powers', idx, e.target.value)}
+                      rows={2}
+                      className="flex-1 text-xs bg-white border border-slate-300 rounded p-1.5 text-slate-800 focus:outline-hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeArrayItem('powers', idx)}
+                      className="p-1 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded cursor-pointer"
+                      title="Delete power"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ))}
+                {(draft.powers || []).length === 0 && (
+                  <p className="text-[11px] text-slate-400 italic">No powers listed. Click "+ Add Power" to add one.</p>
+                )}
+              </div>
+            ) : (
+              <ul className="space-y-1.5">
+                {(node.powers || []).map((p, idx) => (
+                  <li key={idx} className="flex items-start gap-2 bg-slate-50 border border-slate-100 rounded-lg p-2.5 text-slate-700 leading-relaxed">
+                    <span className="text-emerald-700 font-bold mt-0.5">•</span>
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
 
         {/* Legal Limitations (What this authority CANNOT do) */}
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-              <ShieldAlert className="w-4 h-4 text-rose-600" />
-              What this authority CANNOT do (Legal Limitations)
-            </h3>
-            {isEditing && (
-              <button
-                type="button"
-                onClick={() => addArrayItem('limitations', 'New statutory limitation')}
-                className="flex items-center gap-1 px-2 py-0.5 rounded bg-rose-100 hover:bg-rose-200 text-rose-900 font-bold text-[10px] transition-colors cursor-pointer"
-              >
-                <Plus className="w-3 h-3" />
-                Add Limitation
-              </button>
-            )}
-          </div>
-
-          {isEditing ? (
-            <div className="space-y-2">
-              {(draft.limitations || []).map((lim, idx) => (
-                <div key={idx} className="flex items-start gap-1.5 bg-rose-50/40 border border-rose-200 rounded-lg p-1.5">
-                  <span className="text-rose-600 font-bold mt-1 text-xs">✕</span>
-                  <textarea
-                    value={lim}
-                    onChange={(e) => updateArrayItem('limitations', idx, e.target.value)}
-                    rows={2}
-                    className="flex-1 text-xs bg-white border border-rose-300 rounded p-1.5 text-rose-950 focus:outline-hidden"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeArrayItem('limitations', idx)}
-                    className="p-1 text-rose-500 hover:text-rose-700 hover:bg-rose-100 rounded cursor-pointer"
-                    title="Delete limitation"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              ))}
-              {(draft.limitations || []).length === 0 && (
-                <p className="text-[11px] text-slate-400 italic">No legal limitations listed. Click "+ Add Limitation" to add one.</p>
+        {((node.limitations && node.limitations.length > 0) || isEditing) && (
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                <ShieldAlert className="w-4 h-4 text-rose-600" />
+                What this authority CANNOT do (Legal Limitations)
+              </h3>
+              {isEditing && (
+                <button
+                  type="button"
+                  onClick={() => addArrayItem('limitations', 'New statutory limitation')}
+                  className="flex items-center gap-1 px-2 py-0.5 rounded bg-rose-100 hover:bg-rose-200 text-rose-900 font-bold text-[10px] transition-colors cursor-pointer"
+                >
+                  <Plus className="w-3 h-3" />
+                  Add Limitation
+                </button>
               )}
             </div>
-          ) : (
-            <ul className="space-y-1.5">
-              {(node.limitations || []).map((lim, idx) => (
-                <li key={idx} className="flex items-start gap-2 bg-rose-50/50 border border-rose-200/60 rounded-lg p-2.5 text-rose-950 leading-relaxed">
-                  <span className="text-rose-600 font-bold mt-0.5">✕</span>
-                  <span>{lim}</span>
-                </li>
-              ))}
-              {(!node.limitations || node.limitations.length === 0) && (
-                <li className="text-[11px] text-slate-400 italic p-2">No limitations explicitly configured.</li>
-              )}
-            </ul>
-          )}
-        </div>
+
+            {isEditing ? (
+              <div className="space-y-2">
+                {(draft.limitations || []).map((lim, idx) => (
+                  <div key={idx} className="flex items-start gap-1.5 bg-rose-50/40 border border-rose-200 rounded-lg p-1.5">
+                    <span className="text-rose-600 font-bold mt-1 text-xs">✕</span>
+                    <textarea
+                      value={lim}
+                      onChange={(e) => updateArrayItem('limitations', idx, e.target.value)}
+                      rows={2}
+                      className="flex-1 text-xs bg-white border border-rose-300 rounded p-1.5 text-rose-950 focus:outline-hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeArrayItem('limitations', idx)}
+                      className="p-1 text-rose-500 hover:text-rose-700 hover:bg-rose-100 rounded cursor-pointer"
+                      title="Delete limitation"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ))}
+                {(draft.limitations || []).length === 0 && (
+                  <p className="text-[11px] text-slate-400 italic">No legal limitations listed. Click "+ Add Limitation" to add one.</p>
+                )}
+              </div>
+            ) : (
+              <ul className="space-y-1.5">
+                {(node.limitations || []).map((lim, idx) => (
+                  <li key={idx} className="flex items-start gap-2 bg-rose-50/50 border border-rose-200/60 rounded-lg p-2.5 text-rose-950 leading-relaxed">
+                    <span className="text-rose-600 font-bold mt-0.5">✕</span>
+                    <span>{lim}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
 
         {/* Statutory Enactments / Legal Basis */}
         <div>
