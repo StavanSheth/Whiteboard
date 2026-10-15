@@ -150,34 +150,34 @@ const initialFilters: SearchFilters = {
   sectionId: 'all'
 };
 
-const DEFAULT_PROJECT_ID = 'proj-default';
-const DEFAULT_PROJECT_NAME = 'Indian Education Governance (Whiteboard 1 of 3)';
-const DEFAULT_PROJECT_DESC = 'Authorities, Legal Powers, Standards, Examinations & Oversight across 16 statutory sections';
+const DEFAULT_PROJECT_ID = 'proj-whiteboard-2';
+const DEFAULT_PROJECT_NAME = 'Indian Educational Institutions & Course Pathways (Whiteboard 2 of 5)';
+const DEFAULT_PROJECT_DESC = 'Comprehensive lifecycle: Pre-Primary to 10th Boards (CBSE, ICSE, SSC, NCERT, NIOS) -> 11th/12th Streams (PCM, PCB, Commerce, Arts) -> Course Pathways (B.Tech, MBBS, Law, Commerce, Arts) -> National Competitive Gateways (UPSC, Banking, Government)';
 
 export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
   // Projects State
   projects: [
     {
-      id: DEFAULT_PROJECT_ID,
-      name: DEFAULT_PROJECT_NAME,
-      description: DEFAULT_PROJECT_DESC,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      nodeCount: ALL_NODES.length,
-      relationshipCount: ALL_RELATIONSHIPS.length,
-      sourceCount: ALL_SOURCES.length,
-      isDefault: true,
-      isActive: true
-    },
-    {
       id: 'proj-whiteboard-2',
       name: 'Indian Educational Institutions & Course Pathways (Whiteboard 2 of 5)',
-      description: 'Comprehensive lifecycle: Pre-Primary to 10th Boards (CBSE, ICSE, SSC, NCERT, NIOS) -> 11th/12th Streams (PCM, PCB, Commerce, Arts) -> Testing Bodies & Exam Timelines (NTA, IIT JAB, JoSAA, MCC, CLAT) -> Course Pathways (IIT B.Tech, AIIMS MBBS, NLU Law, ICAI CA, IIM MBA)',
+      description: 'Comprehensive lifecycle: Pre-Primary to 10th Boards (CBSE, ICSE, SSC, NCERT, NIOS) -> 11th/12th Streams (PCM, PCB, Commerce, Arts) -> Course Pathways (B.Tech, MBBS, Law, Commerce, Arts) -> National Competitive Gateways (UPSC, Banking, Government)',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       nodeCount: NODES_V3.length,
       relationshipCount: RELATIONSHIPS_V3.length,
       sourceCount: SOURCES_V3.length,
+      isDefault: true,
+      isActive: true
+    },
+    {
+      id: 'proj-default',
+      name: 'Indian Education Governance (Whiteboard 1 of 3)',
+      description: 'Authorities, Legal Powers, Standards, Examinations & Oversight across 16 statutory sections',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      nodeCount: ALL_NODES.length,
+      relationshipCount: ALL_RELATIONSHIPS.length,
+      sourceCount: ALL_SOURCES.length,
       isDefault: false,
       isActive: false
     },
@@ -223,10 +223,10 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
   currentProjectDescription: DEFAULT_PROJECT_DESC,
   isProjectsLoading: false,
 
-  nodes: ALL_NODES,
-  relationships: ALL_RELATIONSHIPS,
-  sources: ALL_SOURCES,
-  sections: ALL_SECTION_METAS,
+  nodes: NODES_V3,
+  relationships: RELATIONSHIPS_V3,
+  sources: SOURCES_V3,
+  sections: SECTION_METAS_V3,
 
   selectedNodeId: null,
   searchQuery: '',

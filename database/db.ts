@@ -19,31 +19,14 @@ class EducationGovernanceDatabase {
     this.projects.clear();
     const now = new Date().toISOString();
     
-    // Default Canonical Project: Indian Education Governance (Whiteboard 1)
-    const defaultProject: ProjectRecord = {
-      id: 'proj-default',
-      name: 'Indian Education Governance (Whiteboard 1 of 3)',
-      description: 'Authorities, Legal Powers, Standards, Examinations & Oversight across 16 statutory sections',
-      createdAt: now,
-      updatedAt: now,
-      isDefault: true,
-      nodeCount: ALL_NODES.length,
-      relationshipCount: ALL_RELATIONSHIPS.length,
-      sourceCount: ALL_SOURCES.length,
-      nodes: ALL_NODES.map((n) => ({ ...n })),
-      relationships: ALL_RELATIONSHIPS.map((r) => ({ ...r })),
-      sources: ALL_SOURCES.map((s) => ({ ...s })),
-      sections: SECTION_METAS.map((s) => ({ ...s }))
-    };
-
-    // Whiteboard 2 (v3 document): Indian Educational Institutions & Qualifications
+    // Default Project: Indian Educational Institutions & Course Pathways (Whiteboard 2)
     const whiteboard2Project: ProjectRecord = {
       id: 'proj-whiteboard-2',
       name: 'Indian Educational Institutions & Course Pathways (Whiteboard 2 of 5)',
-      description: 'Comprehensive lifecycle: Pre-Primary to 10th Boards (CBSE, ICSE, SSC, NCERT, NIOS) -> 11th/12th Streams (PCM, PCB, Commerce, Arts) -> Testing Bodies & Exam Timelines (NTA, IIT JAB, JoSAA, MCC, CLAT) -> Course Pathways (IIT B.Tech, AIIMS MBBS, NLU Law, ICAI CA, IIM MBA)',
+      description: 'Comprehensive lifecycle: Pre-Primary to 10th Boards (CBSE, ICSE, SSC, NCERT, NIOS) -> 11th/12th Streams (PCM, PCB, Commerce, Arts) -> Course Pathways (B.Tech, MBBS, Law, Commerce, Arts) -> National Competitive Gateways (UPSC, Banking, Government)',
       createdAt: now,
       updatedAt: now,
-      isDefault: false,
+      isDefault: true,
       nodeCount: NODES_V3.length,
       relationshipCount: RELATIONSHIPS_V3.length,
       sourceCount: SOURCES_V3.length,
@@ -51,6 +34,23 @@ class EducationGovernanceDatabase {
       relationships: RELATIONSHIPS_V3.map((r) => ({ ...r })),
       sources: SOURCES_V3.map((s) => ({ ...s })),
       sections: SECTION_METAS_V3.map((s) => ({ ...s }))
+    };
+
+    // Canonical Project: Indian Education Governance (Whiteboard 1)
+    const defaultProject: ProjectRecord = {
+      id: 'proj-default',
+      name: 'Indian Education Governance (Whiteboard 1 of 3)',
+      description: 'Authorities, Legal Powers, Standards, Examinations & Oversight across 16 statutory sections',
+      createdAt: now,
+      updatedAt: now,
+      isDefault: false,
+      nodeCount: ALL_NODES.length,
+      relationshipCount: ALL_RELATIONSHIPS.length,
+      sourceCount: ALL_SOURCES.length,
+      nodes: ALL_NODES.map((n) => ({ ...n })),
+      relationships: ALL_RELATIONSHIPS.map((r) => ({ ...r })),
+      sources: ALL_SOURCES.map((s) => ({ ...s })),
+      sections: SECTION_METAS.map((s) => ({ ...s }))
     };
 
     // Whiteboard 3 (v2 document): Indian Examinations, Timelines & Pathways
@@ -104,12 +104,12 @@ class EducationGovernanceDatabase {
       sections: SECTION_METAS_V5.map((s) => ({ ...s }))
     };
 
-    this.projects.set(defaultProject.id, defaultProject);
     this.projects.set(whiteboard2Project.id, whiteboard2Project);
+    this.projects.set(defaultProject.id, defaultProject);
     this.projects.set(whiteboard3Project.id, whiteboard3Project);
     this.projects.set(whiteboard4Project.id, whiteboard4Project);
     this.projects.set(whiteboard5Project.id, whiteboard5Project);
-    this.activeProjectId = defaultProject.id;
+    this.activeProjectId = whiteboard2Project.id;
   }
 
   // --- Multi-Project Management ---
