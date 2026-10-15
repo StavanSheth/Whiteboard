@@ -3,7 +3,6 @@ import { TopToolbar } from './components/navigation/TopToolbar';
 import { SectionSidebar } from './components/navigation/SectionSidebar';
 import { WhiteboardCanvas } from './components/canvas/WhiteboardCanvas';
 import { DetailPanel } from './components/details/DetailPanel';
-import { CanvasLegend } from './components/canvas/CanvasLegend';
 import { SearchResults } from './components/navigation/SearchResults';
 import { AuthorityMatrixModal } from './components/modals/AuthorityMatrixModal';
 import { CoverageAuditModal } from './components/modals/CoverageAuditModal';
@@ -31,7 +30,6 @@ export default function App() {
           {/* Central Interactive Zoomable Knowledge Map */}
           <main className="flex-1 relative h-full w-full overflow-hidden">
             <WhiteboardCanvas />
-            <CanvasLegend />
           </main>
 
           {/* Right Slide-out Detail Reading Panel */}
