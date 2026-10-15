@@ -95,9 +95,39 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
     labelY = ly;
   }
 
-  // Deterministic stagger offset to prevent parallel edge labels from colliding horizontally
-  const offsetIndex = (parseInt(id.replace(/\D/g, ''), 10) || 0) % 3;
-  const staggeredYOffset = (offsetIndex - 1) * 16; // -16px, 0px, +16px
+  // Generate a deterministic integer hash from edge ID to stagger labels along both t and lateral axes
+  let edgeHash = 0;
+  for (let i = 0; i < id.length; i++) {
+    edgeHash = (edgeHash * 31 + id.charCodeAt(i)) & 0xffffffff;
+  }
+  const posSlot = Math.abs(edgeHash) % 5; // 0, 1, 2, 3, 4
+  const t = 0.35 + posSlot * 0.075; // 0.35, 0.425, 0.50, 0.575, 0.65
+
+  let finalLabelX = labelX;
+  let finalLabelY = labelY;
+
+  if (arrowStyle === 'straight') {
+    finalLabelX = sourceX + (targetX - sourceX) * t;
+    finalLabelY = sourceY + (targetY - sourceY) * t;
+  } else if (arrowStyle === 'orthogonal' || arrowStyle === 'rounded-orthogonal') {
+    finalLabelX = labelX + ((posSlot % 3) - 1) * 28;
+    finalLabelY = labelY + ((posSlot % 3) - 1) * 16;
+  } else {
+    // Curved Bezier cubic interpolation along curve
+    const u = 1 - t;
+    const isHorizontal = Math.abs(targetX - sourceX) > Math.abs(targetY - sourceY) * 1.5;
+    if (isHorizontal) {
+      const cx = (sourceX + targetX) / 2;
+      finalLabelX = u * u * u * sourceX + 3 * u * u * t * cx + 3 * u * t * t * cx + t * t * t * targetX;
+      finalLabelY = u * u * u * sourceY + 3 * u * u * t * sourceY + 3 * u * t * t * targetY + t * t * t * targetY;
+    } else {
+      const cy = (sourceY + targetY) / 2;
+      finalLabelX = u * u * u * sourceX + 3 * u * u * t * sourceX + 3 * u * t * t * targetX + t * t * t * targetX;
+      finalLabelY = u * u * u * sourceY + 3 * u * u * t * cy + 3 * u * t * t * cy + t * t * t * targetY;
+    }
+  }
+
+  const lateralStagger = ((posSlot % 3) - 1) * 10;
 
   const edgeColor = edgeColorByType[edgeData?.type || ''] || edgeColorByType.default;
   const isCrossBoard =
@@ -119,7 +149,7 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
           <div
             style={{
               position: 'absolute',
-              transform: `translate(-50%, -50%) translate(${labelX}px,${labelY + staggeredYOffset}px)`,
+              transform: `translate(-50%, -50%) translate(${Math.round(finalLabelX + lateralStagger)}px,${Math.round(finalLabelY)}px)`,
               pointerEvents: 'all'
             }}
             className="nodrag nopan transition-transform duration-150 z-10 hover:z-50"

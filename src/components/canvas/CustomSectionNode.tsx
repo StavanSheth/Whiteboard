@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { EducationNode } from '../../types';
 import { Landmark, Scale, BookOpen, GraduationCap, Award, FileCheck, ShieldCheck, Coins, AlertCircle, Workflow, Table, Database } from 'lucide-react';
+import { useWhiteboardStore } from '../../store/whiteboardStore';
 
 const iconMap: Record<string, React.ReactNode> = {
   '00': <BookOpen className="w-5 h-5 text-amber-600" />,
@@ -27,6 +28,11 @@ export const CustomSectionNode = memo(({ data, selected }: { data: EducationNode
   const isRoot = data.id === 'ROOT-IND-EDU-GOV';
   const icon = iconMap[data.sectionNumber] || <Landmark className="w-5 h-5 text-emerald-800" />;
 
+  const layoutDirection = useWhiteboardStore((s: any) => s.layoutDirection);
+  const isHorizontal = layoutDirection === 'RIGHT';
+  const targetPos = isHorizontal ? Position.Left : Position.Top;
+  const sourcePos = isHorizontal ? Position.Right : Position.Bottom;
+
   return (
     <div
       className={`relative rounded-xl border transition-all duration-200 cursor-pointer shadow-sm ${
@@ -37,7 +43,7 @@ export const CustomSectionNode = memo(({ data, selected }: { data: EducationNode
           : 'bg-emerald-900 text-white border-emerald-800/80 hover:border-emerald-500 p-4 w-[min(330px,88vw)]'
       }`}
     >
-      <Handle type="target" position={Position.Top} className="!bg-amber-400 !border-white !w-3 !h-3" />
+      <Handle type="target" position={targetPos} className="!bg-amber-400 !border-white !w-3 !h-3" />
 
       <div className="flex items-start gap-3">
         <div className={`p-2 rounded-lg flex-shrink-0 ${isRoot ? 'bg-amber-500/20 text-amber-400' : 'bg-white/10 text-emerald-200'}`}>
@@ -70,7 +76,7 @@ export const CustomSectionNode = memo(({ data, selected }: { data: EducationNode
         </span>
       </div>
 
-      <Handle type="source" position={Position.Bottom} className="!bg-emerald-400 !border-white !w-3 !h-3" />
+      <Handle type="source" position={sourcePos} className="!bg-emerald-400 !border-white !w-3 !h-3" />
     </div>
   );
 });

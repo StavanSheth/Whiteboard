@@ -192,6 +192,11 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
     });
   };
 
+  const layoutDirection = useWhiteboardStore((s) => s.layoutDirection);
+  const isHorizontal = layoutDirection === 'RIGHT';
+  const targetPos = isHorizontal ? Position.Left : Position.Top;
+  const sourcePos = isHorizontal ? Position.Right : Position.Bottom;
+
   return (
     <div
       onClick={() => {
@@ -219,7 +224,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
         lineHeight: lineHeightMult
       }}
     >
-      <Handle type="target" position={Position.Top} className="!bg-slate-400 !border-white !w-2.5 !h-2.5" />
+      <Handle type="target" position={targetPos} className="!bg-slate-400 !border-white !w-2.5 !h-2.5" />
 
       {isEditing ? (
         /* Inline In-Place Node Card Editor */
@@ -933,7 +938,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
         </>
       )}
 
-      <Handle type="source" position={Position.Bottom} className="!bg-emerald-600 !border-white !w-2.5 !h-2.5" />
+      <Handle type="source" position={sourcePos} className="!bg-emerald-600 !border-white !w-2.5 !h-2.5" />
     </div>
   );
 });

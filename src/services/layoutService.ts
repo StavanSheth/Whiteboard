@@ -1,5 +1,5 @@
 import ELK, { ElkNode } from 'elkjs/lib/elk.bundled.js';
-import { Node, Edge } from '@xyflow/react';
+import { Node, Edge, MarkerType } from '@xyflow/react';
 import { EducationNode, RelationshipEdgeData } from '../types';
 
 const elk = new ELK();
@@ -113,6 +113,17 @@ export function estimateNodeHeight(
       instH += (24 + Math.ceil(node.institutionDetails.programmesOffered.length / 2) * 20) * typoFactor;
     }
     if (node.institutionDetails.admissionRoute) instH += 24 * typoFactor;
+    if (node.institutionDetails.awardingBody) instH += 22 * typoFactor;
+    if (node.institutionDetails.accreditation) instH += 22 * typoFactor;
+    if (node.institutionDetails.nheqfLevel) instH += 22 * typoFactor;
+    if (node.institutionDetails.careerValue) {
+      const cvLines = node.institutionDetails.careerValue.split('\n');
+      let totalCvLines = 0;
+      for (const line of cvLines) {
+        totalCvLines += Math.max(1, Math.ceil(line.length / charsPerLine));
+      }
+      instH += (36 + totalCvLines * 16) * typoFactor;
+    }
     h += instH + paraSpacing;
   }
 
@@ -134,6 +145,7 @@ export function estimateNodeHeight(
     if (node.bankingJudicialDetails.regulatoryBodyOrApex) bankH += 26 * typoFactor;
     if (node.bankingJudicialDetails.tier) bankH += 24 * typoFactor;
     if (node.bankingJudicialDetails.jurisdictionOrScope) bankH += 30 * typoFactor;
+    if (node.bankingJudicialDetails.appointmentProcess) bankH += 26 * typoFactor;
     if (node.bankingJudicialDetails.grievanceOrAppellateRoute) bankH += 30 * typoFactor;
     h += bankH + paraSpacing;
   }
@@ -311,6 +323,7 @@ export async function calculateElkLayout(
   try {
     const layouted = await elk.layout(elkGraph);
     const positionMap = new Map<string, { x: number; y: number }>();
+    const isRight = direction === 'RIGHT';
 
     if (layouted.children) {
       for (const child of layouted.children) {
@@ -320,7 +333,6 @@ export async function calculateElkLayout(
       // TRUE BOUNDING-BOX COLLISION RESOLUTION PASS
       // Guarantees zero overlapping between cards in both horizontal and vertical directions
       const childList = layouted.children;
-      const isRight = direction === 'RIGHT';
 
       if (isRight) {
         // Group by X coordinates (horizontal columns)
@@ -460,8 +472,11 @@ export async function calculateElkLayout(
 
           let maxBottom = 0;
           for (const n of currentLayer) {
+            const rawNode = filteredNodes.find((fn) => fn.id === n.id);
             const py = positionMap.get(n.id)?.y ?? n.y ?? 0;
-            const ph = n.height || 120;
+            const ph = rawNode
+              ? estimateNodeHeight(rawNode, isFull, fontScale, lineScale, paraSpacing, n.width || customBoxWidth || 340, 0, cardHeightScale)
+              : n.height || 160;
             if (py + ph > maxBottom) maxBottom = py + ph;
           }
 
@@ -483,9 +498,83 @@ export async function calculateElkLayout(
           }
         }
       }
+
+      // Pass 4: Global Pairwise Collision Sweep (Iterative Separation)
+      // Ensures that regardless of layer assignment or manual positions, NO TWO CARDS EVER OVERLAP
+      const nodeItems = childList.map((n: ElkNode) => {
+        const rawNode = filteredNodes.find((fn) => fn.id === n.id);
+        const w = n.width || customBoxWidth || (isFull ? 360 : 280);
+        const h = rawNode
+          ? estimateNodeHeight(rawNode, isFull, fontScale, lineScale, paraSpacing, w, 0, cardHeightScale)
+          : n.height || 200;
+        return { id: n.id, width: w, height: h };
+      });
+
+      for (let iter = 0; iter < 12; iter++) {
+        let hadCollision = false;
+        nodeItems.sort((a: any, b: any) => {
+          const posA = positionMap.get(a.id) || { x: 0, y: 0 };
+          const posB = positionMap.get(b.id) || { x: 0, y: 0 };
+          return isRight ? posA.x - posB.x : posA.y - posB.y;
+        });
+
+        for (let i = 0; i < nodeItems.length; i++) {
+          const a = nodeItems[i];
+          const posA = positionMap.get(a.id);
+          if (!posA) continue;
+
+          for (let j = i + 1; j < nodeItems.length; j++) {
+            const b = nodeItems[j];
+            const posB = positionMap.get(b.id);
+            if (!posB) continue;
+
+            const marginX = Math.max(30, nodeSpacing * 0.8);
+            const marginY = Math.max(40, (isRight ? nodeSpacing : layerSpacing) * 0.7);
+
+            const aLeft = posA.x;
+            const aRight = posA.x + a.width;
+            const aTop = posA.y;
+            const aBottom = posA.y + a.height;
+
+            const bLeft = posB.x;
+            const bRight = posB.x + b.width;
+            const bTop = posB.y;
+            const bBottom = posB.y + b.height;
+
+            const xOverlap = aLeft < bRight + marginX && aRight + marginX > bLeft;
+            const yOverlap = aTop < bBottom + marginY && aBottom + marginY > bTop;
+
+            if (xOverlap && yOverlap) {
+              hadCollision = true;
+              if (isRight) {
+                if (bLeft >= aLeft) {
+                  positionMap.set(b.id, { x: aRight + marginX, y: posB.y });
+                } else {
+                  positionMap.set(a.id, { x: bRight + marginX, y: posA.y });
+                }
+              } else {
+                if (Math.abs(aTop - bTop) < 60) {
+                  if (bLeft >= aLeft) {
+                    positionMap.set(b.id, { x: aRight + marginX, y: posB.y });
+                  } else {
+                    positionMap.set(a.id, { x: bRight + marginX, y: posA.y });
+                  }
+                } else {
+                  if (bTop >= aTop) {
+                    positionMap.set(b.id, { x: posB.x, y: aBottom + marginY });
+                  } else {
+                    positionMap.set(a.id, { x: posA.x, y: bBottom + marginY });
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (!hadCollision) break;
+      }
     }
 
-    // Convert back to React Flow nodes
+    // Convert back to React Flow nodes with final position safety check
     const rfNodes: Node[] = filteredNodes.map((n) => {
       const pos =
         n.position && typeof n.position.x === 'number' && typeof n.position.y === 'number'
@@ -496,16 +585,81 @@ export async function calculateElkLayout(
       return {
         id: n.id,
         type: isHub ? 'sectionNode' : 'authorityNode',
-        position: pos,
+        position: { ...pos },
         data: { ...n }
       };
     });
 
-    // Convert back to React Flow edges
+    // Final safety pass on rfNodes to guarantee zero 2D overlaps
+    for (let iter = 0; iter < 8; iter++) {
+      let resolved = true;
+      for (let i = 0; i < rfNodes.length; i++) {
+        const a = rfNodes[i];
+        const rawA = filteredNodes.find((fn) => fn.id === a.id);
+        const wA = customBoxWidth || (isFull ? 360 : 280);
+        const hA = rawA
+          ? estimateNodeHeight(rawA, isFull, fontScale, lineScale, paraSpacing, wA, 0, cardHeightScale)
+          : 200;
+
+        for (let j = i + 1; j < rfNodes.length; j++) {
+          const b = rfNodes[j];
+          const rawB = filteredNodes.find((fn) => fn.id === b.id);
+          const wB = customBoxWidth || (isFull ? 360 : 280);
+          const hB = rawB
+            ? estimateNodeHeight(rawB, isFull, fontScale, lineScale, paraSpacing, wB, 0, cardHeightScale)
+            : 200;
+
+          const marginX = Math.max(30, nodeSpacing * 0.7);
+          const marginY = Math.max(40, (isRight ? nodeSpacing : layerSpacing) * 0.6);
+
+          const aLeft = a.position.x;
+          const aRight = a.position.x + wA;
+          const aTop = a.position.y;
+          const aBottom = a.position.y + hA;
+
+          const bLeft = b.position.x;
+          const bRight = b.position.x + wB;
+          const bTop = b.position.y;
+          const bBottom = b.position.y + hB;
+
+          const xOverlap = aLeft < bRight + marginX && aRight + marginX > bLeft;
+          const yOverlap = aTop < bBottom + marginY && aBottom + marginY > bTop;
+
+          if (xOverlap && yOverlap) {
+            resolved = false;
+            if (isRight) {
+              if (bLeft >= aLeft) {
+                b.position.x = aRight + marginX;
+              } else {
+                a.position.x = bRight + marginX;
+              }
+            } else {
+              if (Math.abs(aTop - bTop) < 60) {
+                if (bLeft >= aLeft) {
+                  b.position.x = aRight + marginX;
+                } else {
+                  a.position.x = bRight + marginX;
+                }
+              } else {
+                if (bTop >= aTop) {
+                  b.position.y = aBottom + marginY;
+                } else {
+                  a.position.y = bBottom + marginY;
+                }
+              }
+            }
+          }
+        }
+      }
+      if (resolved) break;
+    }
+
+    // Convert back to React Flow edges with arrow pointers and rich styles
     const rfEdges: Edge[] = filteredEdges.map((e) => {
       const isCrossBoard =
         e.type === 'CONNECTS_TO_BOARD_2' || e.type === 'CONNECTS_TO_BOARD_3';
       const isAdvisory = e.isAdvisory || e.type === 'ADVISES';
+      const strokeColor = isCrossBoard ? '#d97706' : isAdvisory ? '#64748b' : '#0d9488';
 
       return {
         id: e.id,
@@ -514,8 +668,14 @@ export async function calculateElkLayout(
         type: 'relationshipEdge',
         data: { ...e },
         animated: isCrossBoard,
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          width: 14,
+          height: 14,
+          color: strokeColor
+        },
         style: {
-          stroke: isCrossBoard ? '#d97706' : isAdvisory ? '#64748b' : '#166534',
+          stroke: strokeColor,
           strokeWidth: isCrossBoard ? 2.5 : 1.8,
           strokeDasharray: isAdvisory ? '5,5' : undefined
         }
