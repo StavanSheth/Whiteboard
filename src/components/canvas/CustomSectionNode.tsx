@@ -31,10 +31,10 @@ export const CustomSectionNode = memo(({ data, selected }: { data: EducationNode
     <div
       className={`relative rounded-xl border transition-all duration-200 cursor-pointer shadow-sm ${
         isRoot
-          ? 'bg-slate-900 text-white border-amber-500/80 p-5 w-[420px] ring-2 ring-amber-500/30'
+          ? 'bg-slate-900 text-white border-amber-500/80 p-5 w-[min(420px,94vw)] ring-2 ring-amber-500/30'
           : selected
-          ? 'bg-emerald-950 text-white border-emerald-500 p-4 w-[330px] ring-2 ring-emerald-500'
-          : 'bg-emerald-900 text-white border-emerald-800/80 hover:border-emerald-500 p-4 w-[330px]'
+          ? 'bg-emerald-950 text-white border-emerald-500 p-4 w-[min(330px,88vw)] ring-2 ring-emerald-500'
+          : 'bg-emerald-900 text-white border-emerald-800/80 hover:border-emerald-500 p-4 w-[min(330px,88vw)]'
       }`}
     >
       <Handle type="target" position={Position.Top} className="!bg-amber-400 !border-white !w-3 !h-3" />

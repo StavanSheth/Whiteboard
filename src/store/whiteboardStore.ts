@@ -69,6 +69,8 @@ export interface WhiteboardState {
   
   isDetailPanelOpen: boolean;
   isDetailPanelExpanded: boolean;
+  isSidebarOpen: boolean;
+  toggleSidebar: (open?: boolean) => void;
   
   activeModal: 'matrix' | 'audit' | 'sources' | 'export' | 'pdf-print' | 'projects' | 'add-node' | 'add-relationship' | 'add-section' | null;
   relationshipDraft: { sourceNodeId?: string; targetNodeId?: string };
@@ -257,6 +259,7 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
 
   isDetailPanelOpen: false,
   isDetailPanelExpanded: false,
+  isSidebarOpen: false,
 
   activeModal: null,
   relationshipDraft: {},
@@ -765,6 +768,11 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
   toggleDetailPanelExpanded: () =>
     set((state) => ({
       isDetailPanelExpanded: !state.isDetailPanelExpanded
+    })),
+
+  toggleSidebar: (open) =>
+    set((state) => ({
+      isSidebarOpen: open !== undefined ? open : !state.isSidebarOpen
     })),
 
   updateNode: (nodeId: string, partial: Partial<EducationNode>) => {

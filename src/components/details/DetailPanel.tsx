@@ -124,7 +124,7 @@ export function DetailPanel() {
 
   return (
     <aside
-      className={`fixed top-14 right-0 bottom-0 bg-white border-l border-slate-200 shadow-xl z-30 flex flex-col transition-all duration-300 ${
+      className={`fixed top-0 sm:top-14 right-0 bottom-0 bg-white border-l border-slate-200 shadow-2xl z-50 sm:z-30 flex flex-col transition-all duration-300 ${
         isDetailPanelExpanded ? 'w-full md:w-[760px]' : 'w-full md:w-[480px]'
       }`}
     >

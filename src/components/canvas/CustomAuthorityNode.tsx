@@ -95,6 +95,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
       }`}
       style={{
         width: `${width}px`,
+        maxWidth: '92vw',
         fontSize: `${fontSizePx}px`,
         lineHeight: lineHeightMult
       }}

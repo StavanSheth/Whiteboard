@@ -25,7 +25,7 @@ export function SearchResults() {
   if (!searchQuery.trim() || results.length === 0) return null;
 
   return (
-    <div className="absolute top-14 left-1/2 -translate-x-1/2 w-full max-w-lg bg-white rounded-xl shadow-xl border border-slate-200 z-40 overflow-hidden mt-1 animate-in fade-in duration-150">
+    <div className="absolute top-14 left-1/2 -translate-x-1/2 w-[94vw] max-w-lg bg-white rounded-xl shadow-xl border border-slate-200 z-40 overflow-hidden mt-1 animate-in fade-in duration-150">
       <div className="p-2.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-[11px] text-slate-500 font-semibold uppercase tracking-wider">
         <span>Matching Authorities & Legal Provisions</span>
         <span>{results.length} results</span>

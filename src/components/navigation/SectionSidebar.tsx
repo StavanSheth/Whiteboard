@@ -15,6 +15,8 @@ export function SectionSidebar() {
   const [activeTab, setActiveTab] = useState<'sections' | 'filters'>('sections');
 
   const {
+    isSidebarOpen,
+    toggleSidebar,
     sections,
     focusSectionId,
     setFocusSection,
@@ -50,47 +52,69 @@ export function SectionSidebar() {
   ];
 
   return (
-    <aside
-      className={`h-full bg-white border-r border-slate-200 flex flex-col z-10 transition-all duration-200 ${
-        isCollapsed ? 'w-12' : 'w-72'
-      }`}
-    >
-      {/* Top Header of Sidebar */}
-      <div className="p-3 border-b border-slate-200 flex items-center justify-between">
-        {!isCollapsed && (
-          <div className="flex items-center gap-2">
+    <>
+      {/* Mobile Backdrop Overlay */}
+      {isSidebarOpen && (
+        <div
+          onClick={() => toggleSidebar(false)}
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-30 md:hidden"
+        />
+      )}
+
+      <aside
+        className={`fixed md:relative inset-y-0 left-0 z-40 md:z-10 h-full bg-white border-r border-slate-200 flex flex-col transition-all duration-200 shadow-xl md:shadow-none ${
+          isSidebarOpen
+            ? 'w-[85vw] max-w-xs translate-x-0'
+            : '-translate-x-full md:translate-x-0'
+        } ${isCollapsed ? 'md:w-12' : 'md:w-72'}`}
+      >
+        {/* Top Header of Sidebar */}
+        <div className="p-3 border-b border-slate-200 flex items-center justify-between">
+          {(!isCollapsed || isSidebarOpen) && (
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <button
+                onClick={() => setActiveTab('sections')}
+                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
+                  activeTab === 'sections'
+                    ? 'bg-emerald-900 text-white'
+                    : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5" />
+                <span>{sections.length} Secs</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('filters')}
+                className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
+                  activeTab === 'filters'
+                    ? 'bg-emerald-900 text-white'
+                    : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                <Filter className="w-3.5 h-3.5" />
+                <span>Filters</span>
+              </button>
+            </div>
+          )}
+          <div className="flex items-center gap-1 ml-auto">
+            {/* Mobile close button */}
             <button
-              onClick={() => setActiveTab('sections')}
-              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
-                activeTab === 'sections'
-                  ? 'bg-emerald-900 text-white'
-                  : 'text-slate-600 hover:bg-slate-100'
-              }`}
+              onClick={() => toggleSidebar(false)}
+              className="p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-slate-100 md:hidden"
+              title="Close sidebar"
             >
-              <Layers className="w-3.5 h-3.5" />
-              {sections.length} Sections
+              <ChevronLeft className="w-5 h-5" />
             </button>
+            {/* Desktop collapse toggle */}
             <button
-              onClick={() => setActiveTab('filters')}
-              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md transition-colors ${
-                activeTab === 'filters'
-                  ? 'bg-emerald-900 text-white'
-                  : 'text-slate-600 hover:bg-slate-100'
-              }`}
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="hidden md:block p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
-              <Filter className="w-3.5 h-3.5" />
-              Filters
+              {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
             </button>
           </div>
-        )}
-        <button
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors ml-auto"
-          title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        >
-          {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-        </button>
-      </div>
+        </div>
 
       {/* Action Buttons: Add Node & Manage Sections */}
       {!isCollapsed && activeTab === 'sections' && (
@@ -273,5 +297,6 @@ export function SectionSidebar() {
         )}
       </div>
     </aside>
+    </>
   );
 }
