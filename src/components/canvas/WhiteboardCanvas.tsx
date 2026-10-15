@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import {
   ReactFlow,
   Controls,
@@ -49,16 +49,23 @@ function CanvasInner() {
     arrowStyle,
     fontSizePx,
     lineHeightMult,
-    paraSpacingPx
+    paraSpacingPx,
+    updateNodePosition
   } = useWhiteboardStore();
 
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [isLoadingLayout, setIsLoadingLayout] = useState(true);
+  const isPositionUpdateOnlyRef = useRef(false);
   const { fitView } = useReactFlow();
 
   // Re-layout when raw nodes, relationships, or any layout/sizing options change
   useEffect(() => {
+    if (isPositionUpdateOnlyRef.current) {
+      isPositionUpdateOnlyRef.current = false;
+      return;
+    }
+
     let isCancelled = false;
     setIsLoadingLayout(true);
 
@@ -137,6 +144,19 @@ function CanvasInner() {
     // Optionally deselect on canvas empty space click
   }, []);
 
+  const onNodeDragStop = useCallback(
+    (_event: any, node: Node) => {
+      if (node && node.id && node.position) {
+        isPositionUpdateOnlyRef.current = true;
+        updateNodePosition(node.id, {
+          x: Math.round(node.position.x),
+          y: Math.round(node.position.y)
+        });
+      }
+    },
+    [updateNodePosition]
+  );
+
   const nodeColor = useMemo(() => {
     return (node: Node) => {
       if (node.type === 'sectionNode') return '#0f3d24';
@@ -165,6 +185,7 @@ function CanvasInner() {
         onNodeClick={onNodeClick}
         onEdgeClick={onEdgeClick}
         onPaneClick={onPaneClick}
+        onNodeDragStop={onNodeDragStop}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView

@@ -95,6 +95,7 @@ export interface WhiteboardState {
   // Node CRUD
   addNode: (node: EducationNode) => Promise<void>;
   deleteNode: (id: string) => Promise<void>;
+  updateNodePosition: (id: string, position: { x: number; y: number }) => void;
 
   // Relationship CRUD
   addRelationship: (rel: RelationshipEdgeData) => Promise<void>;
@@ -494,6 +495,16 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
     }));
   },
 
+  updateNodePosition: (id, position) => {
+    const curProjId = get().currentProjectId;
+    updateNodeApi(id, { position }, curProjId).catch(() => {});
+    set((state) => ({
+      nodes: state.nodes.map((n) => (n.id === id ? { ...n, position } : n)),
+      lastSavedTime: new Date().toLocaleTimeString(),
+      dbSynced: true
+    }));
+  },
+
   // --- Relationship Actions ---
   addRelationship: async (rel) => {
     const curProjId = get().currentProjectId;
@@ -777,7 +788,13 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
                 : node.institutionDetails,
               examDetails: partial.examDetails
                 ? { ...(node.examDetails || {}), ...partial.examDetails }
-                : node.examDetails
+                : node.examDetails,
+              governanceDetails: partial.governanceDetails
+                ? { ...(node.governanceDetails || {}), ...partial.governanceDetails }
+                : node.governanceDetails,
+              bankingJudicialDetails: partial.bankingJudicialDetails
+                ? { ...(node.bankingJudicialDetails || {}), ...partial.bankingJudicialDetails }
+                : node.bankingJudicialDetails
             }
           : node
       ),

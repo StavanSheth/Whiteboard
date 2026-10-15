@@ -487,7 +487,10 @@ export async function calculateElkLayout(
 
     // Convert back to React Flow nodes
     const rfNodes: Node[] = filteredNodes.map((n) => {
-      const pos = positionMap.get(n.id) || { x: 0, y: 0 };
+      const pos =
+        n.position && typeof n.position.x === 'number' && typeof n.position.y === 'number'
+          ? n.position
+          : positionMap.get(n.id) || { x: 0, y: 0 };
       const isHub = n.type === 'sectionHub';
 
       return {

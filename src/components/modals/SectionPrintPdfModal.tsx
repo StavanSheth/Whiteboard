@@ -28,7 +28,10 @@ import {
   Edit3,
   Check,
   Save,
-  Route
+  Route,
+  Landmark,
+  Clock,
+  GraduationCap
 } from 'lucide-react';
 
 interface NumberStepperInputProps {
@@ -304,10 +307,16 @@ export function SectionPrintPdfModal() {
     closeModal,
     nodes,
     relationships,
+    sections,
+    currentProjectName,
     updateNode,
     selectNode,
     toggleDetailPanel
   } = useWhiteboardStore();
+
+  const activeSections = useMemo(() => {
+    return sections && sections.length > 0 ? sections : SECTION_METAS;
+  }, [sections]);
 
   const [selectedSectionId, setSelectedSectionId] = useState<string>('all');
   const [printDossierMode, setPrintDossierMode] = useState<boolean>(false);
@@ -366,12 +375,19 @@ export function SectionPrintPdfModal() {
     };
   }, [isOpen, printOrientation]);
 
+  // Reset selectedSectionId if not found in active project sections
+  useEffect(() => {
+    if (selectedSectionId !== 'all' && !activeSections.some((s) => s.id === selectedSectionId)) {
+      setSelectedSectionId('all');
+    }
+  }, [activeSections, selectedSectionId]);
+
   // Determine which sections to render
   const sectionsToRender = useMemo(() => {
     return selectedSectionId === 'all'
-      ? SECTION_METAS.filter((s) => s.id !== 'SEC-00')
-      : SECTION_METAS.filter((s) => s.id === selectedSectionId);
-  }, [selectedSectionId]);
+      ? activeSections.filter((s) => s.id !== 'SEC-00')
+      : activeSections.filter((s) => s.id === selectedSectionId);
+  }, [selectedSectionId, activeSections]);
 
   // Adjust default spacing & width when dossier mode changes
   useEffect(() => {
@@ -621,8 +637,10 @@ export function SectionPrintPdfModal() {
                 }}
                 className="text-xs font-medium rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-slate-800 shadow-2xs focus:ring-2 focus:ring-emerald-700/30 focus:outline-hidden"
               >
-                <option value="all">All 16 Sections (Multi-Page Tree Diagram Booklet)</option>
-                {SECTION_METAS.filter((s) => s.id !== 'SEC-00').map((sec) => (
+                <option value="all">
+                  All {activeSections.filter((s) => s.id !== 'SEC-00').length} Sections (Multi-Page Tree Diagram Booklet)
+                </option>
+                {activeSections.filter((s) => s.id !== 'SEC-00').map((sec) => (
                   <option key={sec.id} value={sec.id}>
                     Sec {sec.number}: {sec.title}
                   </option>
@@ -1209,11 +1227,11 @@ export function SectionPrintPdfModal() {
                         <div className="border-b-2 border-emerald-900/20 pb-3 mb-5 flex items-start justify-between gap-4">
                           <div>
                             <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-emerald-800 uppercase tracking-widest">
-                              <span>SECTION {sec.number} OF 16</span>
+                              <span>SECTION {sec.number} OF {activeSections.filter((s) => s.id !== 'SEC-00').length}</span>
                               <span>•</span>
                               <span>ID: {sec.id}</span>
                               <span>•</span>
-                              <span>GOVERNANCE TREE DIAGRAM</span>
+                              <span>ECOSYSTEM TREE DIAGRAM</span>
                             </div>
                             <h2 className="text-xl font-bold text-slate-900 tracking-tight mt-0.5 flex items-center gap-2">
                               <span>{sec.title}</span>
@@ -1552,6 +1570,60 @@ export function SectionPrintPdfModal() {
                                           className="text-[10px] px-1.5 py-0.5 rounded border border-slate-300 bg-white text-slate-800 resize-none flex-1 focus:outline-hidden"
                                         />
 
+                                        {/* Institutional fields if available */}
+                                        {editDraft.institutionDetails && (
+                                          <div className="flex flex-col gap-1 border-t border-emerald-200 pt-1">
+                                            <input
+                                              type="text"
+                                              value={editDraft.institutionDetails.institutionType || ''}
+                                              onChange={(e) => {
+                                                setEditDraft((d) => ({
+                                                  ...d,
+                                                  institutionDetails: {
+                                                    ...(d.institutionDetails || {}),
+                                                    institutionType: e.target.value
+                                                  }
+                                                }));
+                                                setIsDirty(true);
+                                              }}
+                                              placeholder="Institution Type / Level"
+                                              className="text-[10px] px-1.5 py-0.5 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden"
+                                            />
+                                            <input
+                                              type="text"
+                                              value={editDraft.institutionDetails.examinationTimeline || ''}
+                                              onChange={(e) => {
+                                                setEditDraft((d) => ({
+                                                  ...d,
+                                                  institutionDetails: {
+                                                    ...(d.institutionDetails || {}),
+                                                    examinationTimeline: e.target.value
+                                                  }
+                                                }));
+                                                setIsDirty(true);
+                                              }}
+                                              placeholder="Timeline / Duration"
+                                              className="text-[10px] px-1.5 py-0.5 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden"
+                                            />
+                                            <input
+                                              type="text"
+                                              value={editDraft.institutionDetails.admissionRoute || ''}
+                                              onChange={(e) => {
+                                                setEditDraft((d) => ({
+                                                  ...d,
+                                                  institutionDetails: {
+                                                    ...(d.institutionDetails || {}),
+                                                    admissionRoute: e.target.value
+                                                  }
+                                                }));
+                                                setIsDirty(true);
+                                              }}
+                                              placeholder="Admission Route"
+                                              className="text-[10px] px-1.5 py-0.5 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden"
+                                            />
+                                          </div>
+                                        )}
+
                                         <div className="pt-1 flex items-center justify-between border-t border-slate-100 text-[9px]">
                                           <button
                                             onClick={() => handleOpenInDrawer(node.id)}
@@ -1607,17 +1679,58 @@ export function SectionPrintPdfModal() {
                                             {data.title}
                                           </h4>
 
-                                          {/* Legal Status */}
-                                          {data.legalStatus && (
-                                            <div style={{ marginBottom: typo.spacingHalf }}>
+                                          {/* Badges Container */}
+                                          <div className="flex flex-wrap items-center gap-1" style={{ marginBottom: typo.spacingHalf }}>
+                                            {data.legalStatus && (
                                               <span
                                                 className="font-medium px-1.5 py-0.2 rounded bg-slate-100 text-slate-700 border border-slate-200 inline-block"
                                                 style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
                                               >
                                                 {data.legalStatus}
                                               </span>
-                                            </div>
-                                          )}
+                                            )}
+                                            {data.institutionDetails?.institutionType && (
+                                              <span
+                                                className="font-semibold px-1.5 py-0.2 rounded bg-purple-50 text-purple-900 border border-purple-200 inline-block"
+                                                style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                              >
+                                                {data.institutionDetails.institutionType}
+                                              </span>
+                                            )}
+                                            {!printDossierMode && data.institutionDetails?.examinationTimeline && (
+                                              <span
+                                                className="font-medium px-1.5 py-0.2 rounded bg-sky-50 text-sky-800 border border-sky-200 inline-flex items-center gap-1"
+                                                style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                              >
+                                                <Clock className="w-2.5 h-2.5 text-sky-600" />
+                                                {data.institutionDetails.examinationTimeline.replace(/^Timeline:\s*/i, '')}
+                                              </span>
+                                            )}
+                                            {data.examDetails?.examAgency && (
+                                              <span
+                                                className="font-semibold px-1.5 py-0.2 rounded bg-blue-50 text-blue-900 border border-blue-200 inline-block"
+                                                style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                              >
+                                                {data.examDetails.examAgency}
+                                              </span>
+                                            )}
+                                            {data.governanceDetails?.constitutionalArticle && (
+                                              <span
+                                                className="font-semibold px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 inline-block"
+                                                style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                              >
+                                                {data.governanceDetails.constitutionalArticle}
+                                              </span>
+                                            )}
+                                            {data.bankingJudicialDetails?.regulatoryBodyOrApex && (
+                                              <span
+                                                className="font-semibold px-1.5 py-0.2 rounded bg-amber-50 text-amber-900 border border-amber-200 inline-block"
+                                                style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                              >
+                                                {data.bankingJudicialDetails.regulatoryBodyOrApex}
+                                              </span>
+                                            )}
+                                          </div>
 
                                           {/* Summary Synopsis */}
                                           <p
@@ -1640,6 +1753,214 @@ export function SectionPrintPdfModal() {
                                                 marginTop: typo.spacingHalf
                                               }}
                                             >
+                                              {/* Whiteboard 2: Institutional Framework & Degrees Box */}
+                                              {data.institutionDetails && (
+                                                <div
+                                                  className="p-2 rounded-lg bg-indigo-50/70 border border-indigo-200 flex flex-col"
+                                                  style={{ gap: typo.spacingQuarter }}
+                                                >
+                                                  <div className="flex items-center gap-1 font-bold text-indigo-950 uppercase tracking-wide" style={{ fontSize: typo.badge }}>
+                                                    <Landmark className="w-3 h-3 text-indigo-700" />
+                                                    <span>Institutional Framework &amp; Degrees</span>
+                                                  </div>
+
+                                                  {data.institutionDetails.institutionType && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-indigo-900">Type: </span>
+                                                      {data.institutionDetails.institutionType}
+                                                    </div>
+                                                  )}
+
+                                                  {data.institutionDetails.examinationTimeline && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800 flex items-start gap-1">
+                                                      <Clock className="w-2.5 h-2.5 text-indigo-700 flex-shrink-0 mt-0.5" />
+                                                      <div>
+                                                        <span className="font-semibold text-indigo-900">Timeline: </span>
+                                                        <span>{data.institutionDetails.examinationTimeline.replace(/^Timeline:\s*/i, '')}</span>
+                                                      </div>
+                                                    </div>
+                                                  )}
+
+                                                  {data.institutionDetails.programmesOffered && data.institutionDetails.programmesOffered.length > 0 && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-indigo-900">Programmes / Courses: </span>
+                                                      <span>{data.institutionDetails.programmesOffered.join(', ')}</span>
+                                                    </div>
+                                                  )}
+
+                                                  {data.institutionDetails.admissionRoute && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-indigo-900">Admission Route: </span>
+                                                      {data.institutionDetails.admissionRoute}
+                                                    </div>
+                                                  )}
+
+                                                  {data.institutionDetails.prerequisiteStream && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-indigo-900">Prerequisite Stream: </span>
+                                                      <span className="font-medium text-emerald-800">{data.institutionDetails.prerequisiteStream}</span>
+                                                    </div>
+                                                  )}
+
+                                                  {data.institutionDetails.awardingBody && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-indigo-900">Awarding Body: </span>
+                                                      {data.institutionDetails.awardingBody}
+                                                    </div>
+                                                  )}
+
+                                                  {data.institutionDetails.controlledBy && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-indigo-900">Controlled by: </span>
+                                                      {data.institutionDetails.controlledBy}
+                                                    </div>
+                                                  )}
+
+                                                  {data.institutionDetails.curriculumBody && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-indigo-900">Curriculum Body: </span>
+                                                      {data.institutionDetails.curriculumBody}
+                                                    </div>
+                                                  )}
+
+                                                  {data.institutionDetails.careerValue && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-indigo-900">Career Value: </span>
+                                                      {data.institutionDetails.careerValue}
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              )}
+
+                                              {/* Whiteboard 3: Examination Lifecycle Details */}
+                                              {data.examDetails && (
+                                                <div
+                                                  className="p-2 rounded-lg bg-blue-50/70 border border-blue-200 flex flex-col"
+                                                  style={{ gap: typo.spacingQuarter }}
+                                                >
+                                                  <div className="flex items-center gap-1 font-bold text-blue-950 uppercase tracking-wide" style={{ fontSize: typo.badge }}>
+                                                    <GraduationCap className="w-3 h-3 text-blue-700" />
+                                                    <span>Examination Lifecycle Details</span>
+                                                  </div>
+                                                  {data.examDetails.examAgency && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-blue-900">Agency: </span>
+                                                      {data.examDetails.examAgency}
+                                                    </div>
+                                                  )}
+                                                  {data.examDetails.eligibilityCriteria && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-blue-900">Eligibility: </span>
+                                                      {data.examDetails.eligibilityCriteria}
+                                                    </div>
+                                                  )}
+                                                  {data.examDetails.applicationWindow && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-blue-900">Window: </span>
+                                                      {data.examDetails.applicationWindow}
+                                                    </div>
+                                                  )}
+                                                  {data.examDetails.examStages && data.examDetails.examStages.length > 0 && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-blue-900">Stages: </span>
+                                                      {data.examDetails.examStages.join(' ➔ ')}
+                                                    </div>
+                                                  )}
+                                                  {data.examDetails.counsellingBody && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-blue-900">Counselling: </span>
+                                                      {data.examDetails.counsellingBody}
+                                                    </div>
+                                                  )}
+                                                  {data.examDetails.outcome && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-blue-900">Outcome: </span>
+                                                      {data.examDetails.outcome}
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              )}
+
+                                              {/* Whiteboard 4: Democratic Governance Details */}
+                                              {data.governanceDetails && (
+                                                <div
+                                                  className="p-2 rounded-lg bg-emerald-50/70 border border-emerald-200 flex flex-col"
+                                                  style={{ gap: typo.spacingQuarter }}
+                                                >
+                                                  <div className="flex items-center gap-1 font-bold text-emerald-950 uppercase tracking-wide" style={{ fontSize: typo.badge }}>
+                                                    <Landmark className="w-3 h-3 text-emerald-700" />
+                                                    <span>Democratic Governance Hierarchy</span>
+                                                  </div>
+                                                  {data.governanceDetails.positionName && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-emerald-900">Position: </span>
+                                                      {data.governanceDetails.positionName}
+                                                    </div>
+                                                  )}
+                                                  {data.governanceDetails.constitutionalArticle && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-emerald-900">Article: </span>
+                                                      {data.governanceDetails.constitutionalArticle}
+                                                    </div>
+                                                  )}
+                                                  {data.governanceDetails.electoralOrSelectionMethod && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-emerald-900">Selection: </span>
+                                                      {data.governanceDetails.electoralOrSelectionMethod}
+                                                    </div>
+                                                  )}
+                                                  {data.governanceDetails.tenure && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-emerald-900">Tenure: </span>
+                                                      {data.governanceDetails.tenure}
+                                                    </div>
+                                                  )}
+                                                  {data.governanceDetails.geographicalJurisdiction && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-emerald-900">Jurisdiction: </span>
+                                                      {data.governanceDetails.geographicalJurisdiction}
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              )}
+
+                                              {/* Whiteboard 5: Banking & Judicial Details */}
+                                              {data.bankingJudicialDetails && (
+                                                <div
+                                                  className="p-2 rounded-lg bg-amber-50/70 border border-amber-200 flex flex-col"
+                                                  style={{ gap: typo.spacingQuarter }}
+                                                >
+                                                  <div className="flex items-center gap-1 font-bold text-amber-950 uppercase tracking-wide" style={{ fontSize: typo.badge }}>
+                                                    <Landmark className="w-3 h-3 text-amber-700" />
+                                                    <span>Banking &amp; Judicial Apex Architecture</span>
+                                                  </div>
+                                                  {data.bankingJudicialDetails.regulatoryBodyOrApex && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-amber-900">Apex / Regulator: </span>
+                                                      {data.bankingJudicialDetails.regulatoryBodyOrApex}
+                                                    </div>
+                                                  )}
+                                                  {data.bankingJudicialDetails.tier && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-amber-900">Tier: </span>
+                                                      {data.bankingJudicialDetails.tier}
+                                                    </div>
+                                                  )}
+                                                  {data.bankingJudicialDetails.jurisdictionOrScope && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-amber-900">Jurisdiction / Scope: </span>
+                                                      {data.bankingJudicialDetails.jurisdictionOrScope}
+                                                    </div>
+                                                  )}
+                                                  {data.bankingJudicialDetails.grievanceOrAppellateRoute && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-amber-900">Appellate Route: </span>
+                                                      {data.bankingJudicialDetails.grievanceOrAppellateRoute}
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              )}
+
                                               {/* Legal Basis */}
                                               {data.establishingLaw && data.establishingLaw.length > 0 && (
                                                 <div
@@ -1885,7 +2206,7 @@ export function SectionPrintPdfModal() {
 
                         {/* Section Page Footer */}
                         <div className="mt-4 pt-2 border-t border-slate-200 flex items-center justify-between text-[9px] text-slate-400 font-mono">
-                          <span>Indian Education Governance Whiteboard 1 • Section {sec.number} Tree Diagram</span>
+                          <span>{currentProjectName || 'Educational Ecosystem Whiteboard'} • Section {sec.number} Tree Diagram</span>
                           <span>
                             {slice.partTotal > 1 ? `${slice.partLabel} • ` : ''}Document Page {slice.partIndex} of {slice.partTotal}
                           </span>

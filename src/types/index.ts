@@ -138,6 +138,7 @@ export interface EducationNode {
   lastVerifiedDate?: string;       // ISO date format (YYYY-MM-DD)
   notes?: string;                  // Clarifications, pending queries, transition caveats
   children?: string[];             // Child node IDs
+  position?: { x: number; y: number }; // Explicit saved canvas position (drag-and-drop persistence)
 }
 
 export type RelationshipType =

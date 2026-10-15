@@ -130,7 +130,8 @@ export const EducationNodeSchema = z.object({
   verificationStatus: VerificationStatusSchema,
   lastVerifiedDate: z.string().optional(),
   notes: z.string().optional(),
-  children: z.array(z.string()).optional()
+  children: z.array(z.string()).optional(),
+  position: z.object({ x: z.number(), y: z.number() }).optional()
 });
 
 export const RelationshipTypeSchema = z.enum([
