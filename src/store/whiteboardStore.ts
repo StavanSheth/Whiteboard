@@ -154,7 +154,7 @@ const initialFilters: SearchFilters = {
 
 const DEFAULT_PROJECT_ID = 'proj-whiteboard-2';
 const DEFAULT_PROJECT_NAME = 'Indian Educational Institutions & Course Pathways (Whiteboard 2 of 5)';
-const DEFAULT_PROJECT_DESC = 'Comprehensive lifecycle: Pre-Primary to 10th Boards (CBSE, ICSE, SSC, NCERT, NIOS) -> 11th/12th Streams (PCM, PCB, Commerce, Arts) -> Course Pathways (B.Tech, MBBS, Law, Commerce, Arts) -> National Competitive Gateways (UPSC, Banking, Government)';
+const DEFAULT_PROJECT_DESC = 'Comprehensive lifecycle: Pre-Primary to 10th Boards (CBSE, ICSE, SSC, NCERT, NIOS) -> 11th/12th Streams (PCM, PCB, Commerce, Arts) -> Course Pathways (Engineering, Medicine, Agriculture, Veterinary, Law, Commerce, Arts) -> National Competitive Gateways (UPSC CSE, ESE, IFoS, CMS, CAPF, Banking, Government)';
 
 export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
   // Projects State
@@ -162,7 +162,7 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
     {
       id: 'proj-whiteboard-2',
       name: 'Indian Educational Institutions & Course Pathways (Whiteboard 2 of 5)',
-      description: 'Comprehensive lifecycle: Pre-Primary to 10th Boards (CBSE, ICSE, SSC, NCERT, NIOS) -> 11th/12th Streams (PCM, PCB, Commerce, Arts) -> Course Pathways (B.Tech, MBBS, Law, Commerce, Arts) -> National Competitive Gateways (UPSC, Banking, Government)',
+      description: 'Comprehensive lifecycle: Pre-Primary to 10th Boards (CBSE, ICSE, SSC, NCERT, NIOS) -> 11th/12th Streams (PCM, PCB, Commerce, Arts) -> Course Pathways (Engineering, Medicine, Agriculture, Veterinary, Law, Commerce, Arts) -> National Competitive Gateways (UPSC CSE, ESE, IFoS, CMS, CAPF, Banking, Government)',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       nodeCount: NODES_V3.length,

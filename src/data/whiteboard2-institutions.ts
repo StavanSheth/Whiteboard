@@ -35,11 +35,25 @@ export const SECTION_METAS_V3: SectionMeta[] = [
     id: 'SEC-04',
     number: '04',
     title: 'Undergraduate (UG) Degree Groups & Specializations',
-    subtitle: 'B.Tech, B.Sc, BCA, MBBS, Ayush/Dental, B.Pharm, B.Com/BBA, IPM, Law (5-Yr & 3-Yr), B.Arch, Design, Hospitality & B.A.',
-    summary: 'Parent degree groups branching into their respective branch specializations: Engineering (CS, ECE, Mech, Civil, EE), Pure Sciences (Physics, Chem, Math), Medicine & Allied, Commerce (Finance, Marketing, FinTech, BFSI), Law (5-Yr Integrated & 3-Yr LL.B. with Judiciary), Design, Hospitality, and Humanities (Pol Sci, Econ, Psych, Media).',
+    subtitle: 'B.Tech, B.Sc, BCA, MBBS, Veterinary, Ayush, B.Pharm, Nursing, Agriculture, Teacher Ed, Aviation, Maritime, B.Com/BBA, Law & B.A.',
+    summary: 'Comprehensive undergraduate academic & professional degree pathways: Engineering (CS, ECE, Mech, Civil, EE), Pure Sciences, Computing (BCA), Medicine (MBBS), Veterinary Science (BVSc & AH), Ayush/Dental, Pharmacy, Nursing (B.Sc Nursing), Agriculture & Allied Sciences (ICAR B.Sc Agri, Horticulture, Food Tech), Teacher Education (D.El.Ed, B.Ed, ITEP), Aviation (CPL Pilot), Maritime (Merchant Navy), Commerce, Law (5-Yr & 3-Yr), Design, Hospitality, and Humanities.',
     iconName: 'BookOpen',
-    expectedSubsections: ['04.1 Engineering (B.Tech Branches)', '04.2 Pure Sciences (B.Sc Branches)', '04.3 Computing (BCA)', '04.4 Medicine & Healthcare (MBBS & Ayush)', '04.5 Pharmacy', '04.6 Commerce & Management (B.Com, BBA, BFSI, IPM)', '04.7 Legal Degrees & Judicial Services (5-Yr & 3-Yr LL.B, PCS-J)', '04.8 Architecture & Design (B.Arch & B.Des NID/NIFT)', '04.9 Hospitality Management (IHM / NCHMCT)', '04.10 Humanities & Social Sciences (Pol Sci, Econ, Psych, Media)'],
-    expectedAuthorities: ['IITs / NITs', 'AIIMS', 'IIMs', 'NLUs / BCI', 'IISc / IISERs', 'PCI', 'COA', 'NID / NIFT', 'NCHMCT']
+    expectedSubsections: [
+      '04.1 Engineering (B.Tech Branches)',
+      '04.2 Pure Sciences (B.Sc Branches)',
+      '04.3 Computing (BCA)',
+      '04.4 Medicine, Veterinary & Ayush (MBBS, BVSc, BDS, BAMS)',
+      '04.5 Pharmacy & Nursing (B.Pharm, Pharm.D, B.Sc Nursing)',
+      '04.6 Agriculture & Allied Sciences (ICAR B.Sc Agri, Horticulture, Food Tech)',
+      '04.7 Aviation & Maritime (CPL Commercial Pilot, DG Shipping Marine Engg)',
+      '04.8 Teacher Education (D.El.Ed, B.Ed, 4-Yr Integrated ITEP)',
+      '04.9 Commerce & Management (B.Com, BBA, BFSI, IPM)',
+      '04.10 Legal Degrees & Judiciary (5-Yr & 3-Yr LL.B, PCS-J)',
+      '04.11 Architecture & Design (B.Arch, B.Des NID/NIFT)',
+      '04.12 Hospitality Management (IHM / NCHMCT)',
+      '04.13 Humanities & Social Sciences (Pol Sci, Econ, Psych, Media)'
+    ],
+    expectedAuthorities: ['IITs / NITs', 'AIIMS / NMC', 'ICAR', 'VCI', 'INC', 'NCTE', 'DGCA', 'DGS', 'IIMs', 'NLUs / BCI', 'IISc / IISERs', 'PCI', 'COA', 'NID / NIFT', 'NCHMCT']
   },
   {
     id: 'SEC-05',
@@ -65,22 +79,27 @@ export const SECTION_METAS_V3: SectionMeta[] = [
     id: 'SEC-07',
     number: '07',
     title: 'National Competitive Gateways: UPSC, Civil Services, Banking & Government',
-    subtitle: 'IAS, IPS Police, IFS Diplomacy, Tax (IRS/GST), State PSCs, RBI/SEBI, Bank PO, SSC CGL, Defence & Railways',
-    summary: 'Premier national competitive recruitment pathways accessible to graduates of any stream with comprehensive appointment hierarchies: IAS (SDM to Cabinet Secretary), IPS/CAPF (ASP to DGP/IB), IFS (Third Sec to Ambassador), Tax (Inspector to CBDT/CBIC Chairman), State PSCs, RBI/SEBI, Commercial Banking, SSC CGL, Military Commissioned Officers, and Indian Railways.',
+    subtitle: 'UPSC CSE (IAS/IPS/IFS), UPSC ESE, UPSC IFoS, UPSC CMS, UPSC CAPF, Tax (IRS/GST), State PSCs, Banking & Defence',
+    summary: 'Premier national competitive recruitment pathways accessible to graduates of every stream with comprehensive appointment hierarchies: UPSC Civil Services (IAS, IPS, IFS), UPSC Engineering Services (ESE), UPSC Indian Forest Service (IFoS), UPSC Combined Medical Services (CMS), UPSC Central Armed Police Forces (CAPF), Revenue & Tax (IRS/GST), State PSCs, Central Banking (RBI/SEBI), Commercial Banking & Agriculture (SBI/IBPS/AFO), SSC CGL, Commissioned Military Officers (CDS/NDA), and Indian Railways.',
     iconName: 'Landmark',
     expectedSubsections: [
-      '07.1 Civil Administration: IAS (SDM to Cabinet Secretary)',
-      '07.2 Police & Internal Security: IPS, CAPF & CBI (ASP to DGP)',
-      '07.3 Diplomatic Service: IFS (Third Sec to Ambassador)',
-      '07.4 Revenue & Taxation: IRS, Income Tax & GST Inspectors',
-      '07.5 State Civil Services: State PSCs (Deputy Collector & DySP)',
-      '07.6 Central Banking & Market Regulators: RBI Grade B & SEBI',
-      '07.7 Commercial Banking: SBI PO & IBPS PO / Specialist Officers',
-      '07.8 Central Ministries & Investigation: SSC CGL (ASO, CAG & ED)',
-      '07.9 Armed Forces Commissioned Officers: Army, Navy, Air Force',
-      '07.10 Indian Railway Management Service (IRMS & RRB NTPC)'
+      '07.1 UPSC Civil Services: IAS (SDM to Cabinet Secretary)',
+      '07.2 UPSC Civil Services: IPS & Internal Security (ASP to DGP)',
+      '07.3 UPSC Civil Services: IFS & Diplomacy (Third Sec to Ambassador)',
+      '07.4 UPSC Engineering Services (ESE / IES - Central Engineering)',
+      '07.5 UPSC Indian Forest Service (IFoS - All India Forest Cadre)',
+      '07.6 UPSC Combined Medical Services (CMS - Central Health Service)',
+      '07.7 UPSC Central Armed Police Forces (CAPF-AC Assistant Commandants)',
+      '07.8 UPSC Indian Economic & Statistical Service (IES / ISS)',
+      '07.9 Revenue & Taxation: IRS, Income Tax & GST Inspectors',
+      '07.10 State Civil Services: State PSCs (Deputy Collector & DySP)',
+      '07.11 Central Banking & Market Regulators: RBI Grade B & SEBI',
+      '07.12 Commercial Banking & Agriculture: SBI PO & IBPS AFO / Specialist Officers',
+      '07.13 Central Ministries & Investigation: SSC CGL (ASO, CAG & ED)',
+      '07.14 Armed Forces Commissioned Officers: Combined Defence Services (CDS) & NDA',
+      '07.15 Indian Railway Management Service (IRMS & RRB NTPC)'
     ],
-    expectedAuthorities: ['UPSC', 'State PSCs', 'Reserve Bank of India', 'SEBI', 'IBPS / SBI', 'Staff Selection Commission', 'Ministry of Defence', 'Ministry of Railways']
+    expectedAuthorities: ['UPSC', 'State PSCs', 'Reserve Bank of India', 'SEBI', 'NABARD / IBPS', 'Staff Selection Commission', 'Ministry of Defence', 'Ministry of Railways']
   }
 ];
 
@@ -1393,6 +1412,218 @@ export const NODES_V3: EducationNode[] = [
     lastVerifiedDate: '2026-10-15'
   },
 
+  // --- 4.11 Agriculture & Allied Sciences (ICAR) ---
+  {
+    id: 'DEG-BSC-AGRI',
+    type: 'institution',
+    title: 'B.Sc (Hons) Agriculture & Allied Sciences (ICAR)',
+    abbreviation: 'B.Sc Agriculture (4 Yrs)',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'STRM-PCB',
+    level: 'union',
+    category: 'higher-education',
+    summary: '4-Year professional agricultural degree regulated by Indian Council of Agricultural Research (ICAR). Covers agronomy, genetics, soil chemistry, plant pathology, agricultural economics, and mandatory 1-semester Rural Agricultural Work Experience (RAWE).',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Professional Agricultural Degree (ICAR Accredited)',
+      admissionRoute: 'CUET-ICAR / ICAR AIEEA-UG / State Agricultural CETs (e.g. MHT-CET, KCET, EAMCET)',
+      examinationTimeline: 'Timeline: 4 Years (8 Semesters: 6 semesters coursework + 1 semester RAWE village attachment + 1 semester Agro-Industrial Attachment)',
+      programmesOffered: ['B.Sc (Hons) Agriculture', 'B.Sc (Hons) Natural Resource Management'],
+      careerValue: 'Agricultural Field Officer (AFO Scale-I in Nationalized Banks), ICAR ARS Scientist, NABARD Assistant Manager, State Agriculture Officer (Class-I), Seed & Agri-Biotech Executive'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'AGRI-HORTICULTURE-FORESTRY',
+    type: 'institution',
+    title: 'B.Sc (Hons) Horticulture, Forestry & Fisheries (BFSc)',
+    abbreviation: 'Horticulture & Forestry',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'DEG-BSC-AGRI',
+    level: 'institutional',
+    category: 'higher-education',
+    summary: 'Specialized allied branches in pomology, floriculture, silviculture, forest ecology, aquaculture, and marine fisheries resource management under State Agricultural Universities (SAUs).',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Allied Agricultural Specialization Branch',
+      admissionRoute: 'ICAR AIEEA / State Agriculture CETs',
+      examinationTimeline: 'Timeline: 4 Years (Field nursery management, forest reserve attachment, and commercial fish hatchery training)',
+      programmesOffered: ['B.Sc (Hons) Horticulture', 'B.Sc (Hons) Forestry', 'Bachelor of Fisheries Science (B.F.Sc)'],
+      careerValue: 'State Horticulture Officer, Forest Range Officer (FRO via State PSC), Fisheries Development Officer, direct feeder to UPSC Indian Forest Service (IFoS)'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'AGRI-ENGG-FOODTECH',
+    type: 'institution',
+    title: 'B.Tech Agricultural Engineering & Food Technology',
+    abbreviation: 'B.Tech Agri & Food Tech',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'DEG-BSC-AGRI',
+    level: 'institutional',
+    category: 'higher-education',
+    summary: 'Engineering specialization combining farm machinery design, precision drip irrigation, drone agriculture, post-harvest processing, cold-chain logistics, and food packaging technology.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Agricultural Technology & Food Engineering Branch',
+      admissionRoute: 'JEE Main / State Engineering CETs / ICAR AIEEA Engineering',
+      examinationTimeline: 'Timeline: 4 Years (8 Semesters: agricultural equipment workshop, tractor testing, and food processing plant internship)',
+      programmesOffered: ['B.Tech Agricultural Engineering', 'B.Tech Food Technology / Dairy Engineering'],
+      careerValue: 'Farm Machinery Design Engineer (Mahindra, John Deere), Irrigation Project Lead (Jain Irrigation), Food Quality Assurance Manager (Nestle, Amul, FSSAI Auditor)'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+
+  // --- 4.12 Veterinary & Animal Husbandry (VCI) ---
+  {
+    id: 'DEG-BVSC-AH',
+    type: 'institution',
+    title: 'Bachelor of Veterinary Science & Animal Husbandry (B.V.Sc & A.H.)',
+    abbreviation: 'B.V.Sc & A.H. (5.5 Yrs)',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'STRM-PCB',
+    level: 'union',
+    category: 'higher-education',
+    summary: '5.5-Year clinical veterinary medical qualification regulated by Veterinary Council of India (VCI). 4.5 years veterinary medicine, surgery, pharmacology, animal genetics + 1 year compulsory clinical rotatory internship.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Apex Clinical Veterinary Medical Degree (VCI Statutory)',
+      admissionRoute: 'NEET-UG (15% All India Quota through VCI Counselling + 85% State Veterinary Quota)',
+      examinationTimeline: 'Timeline: 5.5 Years (Annual MSVE board exams: 1st, 2nd, 3rd, 4th Professional years + 1-Year Paid Veterinary Hospital Internship)',
+      programmesOffered: ['B.V.Sc & A.H. (Veterinary Medicine, Surgery & Animal Husbandry)'],
+      careerValue: 'Registered Veterinary Practitioner (State Veterinary Council), State Veterinary Officer (Class-I Gazetted), Veterinary Surgeon in Pet Healthcare & Livestock, Remount Veterinary Corps (RVC Captain in Indian Army), Zoo / Wildlife Veterinarian'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+
+  // --- 4.13 Nursing & Clinical Healthcare (INC) ---
+  {
+    id: 'DEG-BSC-NURSING',
+    type: 'institution',
+    title: 'B.Sc Nursing & Clinical Healthcare Delivery',
+    abbreviation: 'B.Sc Nursing (4 Yrs)',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'STRM-PCB',
+    level: 'union',
+    category: 'higher-education',
+    summary: '4-Year professional nursing and clinical care qualification regulated by Indian Nursing Council (INC) under Ministry of Health & Family Welfare. Rigorous hospital rotation in ICU, trauma, OT, oncology, and community healthcare.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Professional Healthcare & Nursing Degree (INC Statutory)',
+      admissionRoute: 'NEET-UG / AIIMS Nursing Entrance Exam / State Nursing CETs',
+      examinationTimeline: 'Timeline: 4 Years (Annual theory + practical hospital OSCE clinical exams + 6 months integrated clinical internship)',
+      programmesOffered: ['B.Sc (Hons) Nursing', 'Post-Basic B.Sc Nursing (for GNM holders)'],
+      careerValue: 'Nursing Officer in AIIMS / Central Govt Hospitals (via NORCET, Level-7 Gazetted pay scale), Military Nursing Service (MNS Commissioned Lieutenant), Global Licensure (NCLEX-RN for US, NMC UK, OET Australia)'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+
+  // --- 4.14 Teacher Education & School Pedagogy (NCTE) ---
+  {
+    id: 'DEG-TEACHER-BED',
+    type: 'institution',
+    title: 'Teacher Education Pathways: D.El.Ed, B.Ed & 4-Yr Integrated ITEP',
+    abbreviation: 'B.Ed & Teacher Ed',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'STRM-ARTS',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Statutory teacher education qualifications governed by National Council for Teacher Education (NCTE). Prepares licensed educators across foundational, preparatory, middle, and secondary school levels aligned with NEP 2020.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Professional Teacher Education Qualification (NCTE Statutory)',
+      admissionRoute: 'State B.Ed CETs / National Common Entrance Test (NCET for 4-Yr Integrated Teacher Education Programme - ITEP)',
+      examinationTimeline: 'Timeline: 2 Years for B.Ed (after Graduation) or 4 Years for Integrated BA-B.Ed / BSc-B.Ed (after 12th) + 16-week school classroom internship',
+      programmesOffered: ['Diploma in Elementary Education (D.El.Ed - 2 Yrs)', 'Bachelor of Education (B.Ed - 2 Yrs)', 'Integrated ITEP (4 Yrs)'],
+      careerValue: 'Qualifies for Central Teacher Eligibility Test (CTET Paper 1 & 2) -> Recruitment as PRT (Primary), TGT (Trained Graduate Teacher), and PGT (Postgraduate Teacher) in Kendriya Vidyalayas (KVS), Navodaya Vidyalayas (NVS), DSSSB, and State Education Departments'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+
+  // --- 4.15 Civil Aviation & Pilot Flight Operations (DGCA) ---
+  {
+    id: 'DEG-AVIATION-PILOT',
+    type: 'institution',
+    title: 'Civil Aviation: Commercial Pilot License (CPL) & Flight Training',
+    abbreviation: 'CPL Airline Pilot',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'STRM-PCM',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Professional pilot training regulated by Directorate General of Civil Aviation (DGCA) under Ministry of Civil Aviation. Requires 10+2 PCM with minimum 50%, Class 1 Medical Fitness, 200 hours flight training, and DGCA ground theory exams.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Aviation Flight Licensing & Operations (DGCA Statutory)',
+      admissionRoute: 'Flying Training Organisation (FTO) Entrance / IGRUA Entrance Exam / Airline Cadet Pilot Programs (IndiGo, Air India)',
+      examinationTimeline: 'Timeline: 18–24 Months. DGCA Theory Papers (Air Regulations, Aviation Meteorology, Air Navigation, Technical General, RTR Aero) + 200 Flying Hours on Single & Multi-Engine Aircraft + Instrument Rating (IR)',
+      programmesOffered: ['Private Pilot License (PPL)', 'Commercial Pilot License (CPL with Multi-Engine & Instrument Rating)', 'Aircraft Maintenance Engineering (AME)'],
+      careerValue: 'First Officer (Co-Pilot) in Commercial Airlines (IndiGo, Air India, Akasa Air) -> Senior First Officer -> Airline Captain / Commander (ATPL at 1,500 hours) -> Type Rating Instructor (TRI) / Examiner (TRE)'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+
+  // --- 4.16 Maritime Studies & Merchant Navy (DG Shipping) ---
+  {
+    id: 'DEG-MARITIME-DGS',
+    type: 'institution',
+    title: 'Maritime Education: B.Sc Nautical Science & Marine Engineering',
+    abbreviation: 'Merchant Navy / Marine',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'STRM-PCM',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Commercial maritime qualifications regulated by Directorate General of Shipping (DGS) under Merchant Shipping Act. Conducted at Indian Maritime University (IMU) and DGS-approved maritime academies for global merchant shipping.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Maritime Shipping & Navigation Degree (DG Shipping Statutory)',
+      admissionRoute: 'Indian Maritime University Common Entrance Test (IMU-CET) + DG Shipping Approved Medical Fitness with 6/6 Vision',
+      examinationTimeline: 'Timeline: 3 Years for B.Sc Nautical Science (Deck side) or 4 Years for B.Tech Marine Engineering (Engine side) + Mandatory STCW Safety Courses',
+      programmesOffered: ['B.Sc Nautical Science (Deck Officer pathway)', 'B.Tech Marine Engineering (Engine Officer pathway)', 'Diploma in Nautical Science (DNS - 1 Year)'],
+      careerValue: 'Deck Pathway: Deck Cadet -> 3rd Officer -> 2nd Officer -> Chief Officer -> Master Mariner / Captain of Merchant Vessel (Cargo, Tanker, Container Ships);\nEngine Pathway: Junior Engineer -> 4th Engineer -> 3rd Engineer -> 2nd Engineer -> Chief Engineer Officer'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+
   // ==========================================
   // SECTION 05: POSTGRADUATE (PG) DEGREES & SPECIALIZATIONS
   // ==========================================
@@ -1828,8 +2059,8 @@ export const NODES_V3: EducationNode[] = [
   {
     id: 'GATE-UPSC-IAS',
     type: 'institution',
-    title: 'All India Services: Indian Administrative Service (IAS)',
-    abbreviation: 'IAS (Civil Administration)',
+    title: 'UPSC Civil Services Examination: Indian Administrative Service (IAS)',
+    abbreviation: 'UPSC CSE (IAS)',
     sectionId: 'SEC-07',
     sectionNumber: '07',
     parentId: 'DEG-BA-HUMANITIES',
@@ -1853,8 +2084,8 @@ export const NODES_V3: EducationNode[] = [
   {
     id: 'GATE-UPSC-IPS-POLICE',
     type: 'institution',
-    title: 'Police & Internal Security: Indian Police Service (IPS) & CAPF',
-    abbreviation: 'IPS & Police Leadership',
+    title: 'UPSC Civil Services & Paramilitary: Indian Police Service (IPS) & CAPF',
+    abbreviation: 'UPSC CSE (IPS)',
     sectionId: 'SEC-07',
     sectionNumber: '07',
     parentId: 'DEG-BA-HUMANITIES',
@@ -1878,8 +2109,8 @@ export const NODES_V3: EducationNode[] = [
   {
     id: 'GATE-UPSC-IFS',
     type: 'institution',
-    title: 'Diplomatic Service: Indian Foreign Service (IFS)',
-    abbreviation: 'IFS (Diplomacy & Envoys)',
+    title: 'UPSC Civil Services Examination: Indian Foreign Service (IFS)',
+    abbreviation: 'UPSC CSE (IFS)',
     sectionId: 'SEC-07',
     sectionNumber: '07',
     parentId: 'DEG-BA-HUMANITIES',
@@ -1903,8 +2134,8 @@ export const NODES_V3: EducationNode[] = [
   {
     id: 'GATE-TAX-IRS-INCOME-GST',
     type: 'institution',
-    title: 'Revenue & Taxation: IRS (Direct Taxes / Customs & GST) & Tax Inspectors',
-    abbreviation: 'IRS & Tax Departments',
+    title: 'UPSC & SSC Revenue Machinery: IRS & Central Tax Inspectors',
+    abbreviation: 'UPSC IRS & SSC Tax',
     sectionId: 'SEC-07',
     sectionNumber: '07',
     parentId: 'DEG-BCOM-BBA',
@@ -2091,6 +2322,161 @@ export const NODES_V3: EducationNode[] = [
         'Junior Engineer & Section Engineer (RRB JE Technical Cadre)'
       ],
       careerValue: 'Complete Railway Leadership Ladder:\n• Group A Officer Entry: Assistant Divisional Railway Manager (ADRM) -> Senior Divisional Operations / Commercial Manager\n• Divisional Command: Divisional Railway Manager (DRM - Head of Railway Division)\n• Zonal Command: General Manager of Zonal Railway (GM - Central, Western, Northern, etc.)\n• Apex Board Leadership: Member of Railway Board -> Chairman & CEO of the Railway Board (Apex Executive of Indian Railways)\n• Operational Posts: Station Master -> Station Director -> Chief Controller / Traffic Inspector'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-UPSC-ESE',
+    type: 'institution',
+    title: 'UPSC Engineering Services Examination (ESE / IES)',
+    abbreviation: 'UPSC ESE / IES',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BTECH',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Premier national competitive examination conducted by UPSC for technical engineering graduates to recruit Group A & B Executive Engineers into central government departments (CPWD, MES, Railway Engg, Indian Telecom Service, Central Water Commission).',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Central Engineering Services (Group A Gazetted)',
+      admissionRoute: 'UPSC Engineering Services Examination (Prelims Objective in Feb -> Mains Conventional in June -> Personality Test in Oct/Nov)',
+      examinationTimeline: 'Timeline: 1 Year 3-Stage cycle -> Central Engineering Academy training (CPWD Regional Training Institutes, Military Engineer training)',
+      programmesOffered: ['Civil Engineering Cadre', 'Mechanical Engineering Cadre', 'Electrical Engineering Cadre', 'Electronics & Telecommunication Cadre'],
+      careerValue: 'Complete Central Engineering Leadership Ladder:\n• Entry Post: Assistant Executive Engineer (AEE - Class-I Gazetted)\n• Divisional Leadership: Executive Engineer (EE)\n• Circle Command: Superintending Engineer (SE)\n• Zonal Command: Chief Engineer (CE)\n• Apex Directorate: Engineer-in-Chief / Director General of CPWD / Member Telecom Commission'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-UPSC-IFOS',
+    type: 'institution',
+    title: 'UPSC Indian Forest Service Examination (IFoS)',
+    abbreviation: 'UPSC IFoS (All India)',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BSC-AGRI',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'One of the three constitutional All India Services (alongside IAS and IPS) recruited by UPSC for environmental conservation, wildlife protection, national forest resources, and climate governance.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Apex Constitutional All India Service (Environment & Forests)',
+      admissionRoute: 'UPSC Civil Services Preliminary Exam (common qualifying screening) -> Separate IFoS Mains Exam (English, GK + 2 Optional Subjects) -> Personality Test',
+      examinationTimeline: 'Timeline: 1 Year selection cycle -> 2-Year professional forestry training at Indira Gandhi National Forest Academy (IGNFA Dehradun)',
+      programmesOffered: ['Indian Forest Service (IFoS All India Cadre)'],
+      careerValue: 'Complete Forestry & Conservation Hierarchy:\n• Field Entry: Assistant Conservator of Forests (ACF)\n• District Forest Leadership: Divisional Forest Officer (DFO / Deputy Conservator)\n• Circle Command: Conservator of Forests (CF)\n• Zonal Leadership: Chief Conservator of Forests (CCF)\n• State Headquarters: Additional Principal CCF\n• State Apex Command: Principal Chief Conservator of Forests (PCCF - Head of Forest Force - HoFF)\n• Union Ministry Apex: Director General of Forests & Special Secretary to Government of India (MoEFCC)'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-UPSC-CMS',
+    type: 'institution',
+    title: 'UPSC Combined Medical Services Examination (CMS)',
+    abbreviation: 'UPSC CMS (Medical)',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-MBBS',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'National recruitment examination conducted by UPSC for MBBS medical graduates for appointment as Medical Officers in Central Health Service (CHS), Indian Railway Health Service (IRHS), and CGHS wellness centers.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Central Government Medical Officers Cadre (Group A)',
+      admissionRoute: 'UPSC CMS Computer-Based Examination (Paper 1: Gen Medicine & Pediatrics; Paper 2: Surgery, Gynae/Obs, PSM) -> Personality Test (100 Marks)',
+      examinationTimeline: 'Timeline: Written Exam in July -> Results in Aug -> Personality Test in Oct/Nov -> Allotment to CHS / Railways / Municipal Hospitals',
+      programmesOffered: ['General Duty Medical Officer (GDMO in CHS)', 'Assistant Divisional Medical Officer (ADMO in Indian Railways)', 'Medical Officer in NDMC'],
+      careerValue: 'Complete Central Healthcare Hierarchy:\n• Entry: Assistant Divisional Medical Officer (ADMO in Railways) / Medical Officer (CHS)\n• Senior Medical Cadre: Senior Medical Officer -> Chief Medical Officer (CMO) -> CMO Non-Functional Selection Grade\n• Hospital Administration: Chief Medical Superintendent (CMS - Divisional Railway Hospital Head)\n• Apex Directorate: Principal Executive Director (Health) in Railway Board / Director General of Health Services (DGHS - Ministry of Health)'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-UPSC-CAPF',
+    type: 'institution',
+    title: 'UPSC Central Armed Police Forces Examination (CAPF-AC)',
+    abbreviation: 'UPSC CAPF-AC',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BA-HUMANITIES',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Gazetted commissioned officer recruitment conducted by UPSC for Assistant Commandants (AC) across the 5 central paramilitary forces: BSF (border defence), CRPF (internal security/counter-insurgency), CISF (critical infrastructure), ITBP (Tibetan border), and SSB.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Central Armed Police Forces Commissioned Officers (Ministry of Home Affairs)',
+      admissionRoute: 'UPSC CAPF Written Exam (Paper 1: Gen Ability; Paper 2: Essay/English) -> Physical Standards/Efficiency Test (PST/PET) -> Interview / Personality Test',
+      examinationTimeline: 'Timeline: Written in August -> Physical test in Nov -> Interview in Jan/Feb -> 1-Year Commando & Officer Academy Training',
+      programmesOffered: ['Border Security Force (BSF)', 'Central Reserve Police Force (CRPF)', 'Central Industrial Security Force (CISF)', 'Indo-Tibetan Border Police (ITBP)', 'Sashastra Seema Bal (SSB)'],
+      careerValue: 'Complete Paramilitary Officer Hierarchy:\n• Entry Rank: Assistant Commandant (AC - Company Commander - 3 Stars)\n• Field Command: Deputy Commandant (DC)\n• Senior Field Command: Second-in-Command (2IC)\n• Battalion Command: Commandant (Commanding Officer of Battalion - 1,000 personnel)\n• Range Command: Deputy Inspector General (DIG)\n• Sector / Zonal Command: Inspector General (IG)\n• Apex Force Headquarters: Additional Director General (ADG) -> Special Director General'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-UPSC-IES-ISS',
+    type: 'institution',
+    title: 'UPSC Indian Economic & Statistical Service (IES / ISS)',
+    abbreviation: 'UPSC IES / ISS',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BA-HUMANITIES',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Specialized Group A central civil service examination conducted by UPSC for Postgraduates in Economics, Applied Economics, Econometrics, and Statistics to direct national economic planning, fiscal policy, macroeconomic modeling, and national surveys.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Central Specialized Economic & Statistical Cadre (Group A)',
+      admissionRoute: 'UPSC IES/ISS Written Examination (General English, General Studies + 4 Advanced Economics/Statistics papers) -> Viva-Voce / Interview',
+      examinationTimeline: 'Timeline: Written exam in June -> Interview in Oct/Nov -> Foundation Training at National Institute of Financial Management (NIFM) / RBI / Indian Statistical Institute',
+      programmesOffered: ['Indian Economic Service (IES)', 'Indian Statistical Service (ISS)'],
+      careerValue: 'Complete Economic Advisory Hierarchy:\n• Entry Post: Assistant Director (Ministry of Finance / NITI Aayog / MoSPI)\n• Senior Policy Posts: Deputy Director -> Joint Director -> Director\n• Economic Advisory: Adviser -> Senior Economic Adviser in Union Ministries\n• Apex Constitutional Post: Chief Economic Adviser to the Government of India (CEA)'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-AGRI-AFO-NABARD',
+    type: 'institution',
+    title: 'Agricultural Gateways: IBPS AFO, NABARD Grade A & ICAR ARS',
+    abbreviation: 'Agri Gateways (AFO & NABARD)',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BSC-AGRI',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Apex competitive recruitment pathways for Agriculture and Allied Sciences graduates: IBPS Agricultural Field Officer (Scale-I), NABARD Grade A Assistant Manager (Rural Development), and ICAR Agricultural Research Service (ARS) Scientist.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Agricultural Banking, Rural Finance & Scientific Cadre',
+      admissionRoute: 'IBPS SO (AFO) Examination / NABARD Grade A Exam / ICAR Agricultural Scientists Recruitment Board (ASRB) Exam',
+      examinationTimeline: 'Timeline: Prelims Aptitude -> Mains Professional Agricultural Knowledge -> Personal Interview -> Allotment to Commercial Banks or NABARD',
+      programmesOffered: [
+        'Agricultural Field Officer (AFO Scale-I Specialist Officer in Public Sector Banks)',
+        'NABARD Assistant Manager (Grade A - Rural Infrastructure & Development)',
+        'ICAR ARS Scientist (Agricultural Research Service)',
+        'State Agriculture Officer (Class-I / Class-II via State PSCs)'
+      ],
+      careerValue: 'Complete Agricultural Banking & Leadership Hierarchy:\n• Commercial Banking: Agricultural Field Officer (Scale-I) -> Branch Manager (Scale-II) -> Chief Manager (Scale-IV) -> General Manager of Rural & Priority Sector Lending (Scale-VII)\n• NABARD Leadership: Assistant Manager (Grade A) -> Manager (Grade B) -> AGM (Grade C) -> Chief General Manager (CGM) -> Executive Director -> Chairman of NABARD\n• Scientific Hierarchy: ARS Scientist -> Senior Scientist -> Principal Scientist -> Director of ICAR Institutes (IARI, NDRI, IVRI)'
     },
     sourceIds: ['SRC-UPSC-CONST-315'],
     verificationStatus: 'verified',
@@ -2785,6 +3171,144 @@ export const RELATIONSHIPS_V3: RelationshipEdgeData[] = [
     type: 'PROGRESSES_TO',
     label: 'Graduates take UPSC CDS & AFCAT for Army, Navy & Air Force Commissioned Officers',
     verificationStatus: 'verified'
+  },
+
+  // Agriculture & Allied Sciences Pathway
+  {
+    id: 'REL-V3-083',
+    sourceNodeId: 'STRM-PCB',
+    targetNodeId: 'DEG-BSC-AGRI',
+    type: 'FEEDS',
+    label: 'PCB qualifies for 4-Yr B.Sc Agriculture via CUET-ICAR & State Agri CETs',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-084',
+    sourceNodeId: 'STRM-PCM',
+    targetNodeId: 'DEG-BSC-AGRI',
+    type: 'FEEDS',
+    label: 'PCM qualifies for B.Sc Agriculture & B.Tech Agricultural Engineering',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-085',
+    sourceNodeId: 'DEG-BSC-AGRI',
+    targetNodeId: 'AGRI-HORTICULTURE-FORESTRY',
+    type: 'COORDINATES',
+    label: 'Specializes in Horticulture, Forestry Reserves & Fisheries (BFSc)',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-086',
+    sourceNodeId: 'DEG-BSC-AGRI',
+    targetNodeId: 'AGRI-ENGG-FOODTECH',
+    type: 'COORDINATES',
+    label: 'Specializes in Farm Machinery, Smart Irrigation & Food Processing Tech',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-087',
+    sourceNodeId: 'DEG-BSC-AGRI',
+    targetNodeId: 'GATE-AGRI-AFO-NABARD',
+    type: 'PROGRESSES_TO',
+    label: 'Agriculture graduates qualify for IBPS AFO Scale-I Officer & NABARD Grade A',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-088',
+    sourceNodeId: 'DEG-BSC-AGRI',
+    targetNodeId: 'GATE-UPSC-IFOS',
+    type: 'PROGRESSES_TO',
+    label: 'Agriculture & Science graduates take UPSC Indian Forest Service (IFoS)',
+    verificationStatus: 'verified'
+  },
+
+  // Veterinary & Nursing Healthcare
+  {
+    id: 'REL-V3-089',
+    sourceNodeId: 'STRM-PCB',
+    targetNodeId: 'DEG-BVSC-AH',
+    type: 'FEEDS',
+    label: 'PCB qualifies for 5.5-Yr B.V.Sc & Animal Husbandry via NEET-UG (VCI)',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-090',
+    sourceNodeId: 'STRM-PCB',
+    targetNodeId: 'DEG-BSC-NURSING',
+    type: 'FEEDS',
+    label: 'PCB qualifies for 4-Yr B.Sc Nursing via NEET-UG & State Nursing CETs (INC)',
+    verificationStatus: 'verified'
+  },
+
+  // Teacher Education
+  {
+    id: 'REL-V3-091',
+    sourceNodeId: 'STRM-ARTS',
+    targetNodeId: 'DEG-TEACHER-BED',
+    type: 'FEEDS',
+    label: 'Arts students enter 4-Yr Integrated ITEP or D.El.Ed via NCET (NCTE)',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-092',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'DEG-TEACHER-BED',
+    type: 'PROGRESSES_TO',
+    label: 'Graduates pursue 2-Yr B.Ed for CTET certification and School Teaching',
+    verificationStatus: 'verified'
+  },
+
+  // Civil Aviation & Maritime Merchant Navy
+  {
+    id: 'REL-V3-093',
+    sourceNodeId: 'STRM-PCM',
+    targetNodeId: 'DEG-AVIATION-PILOT',
+    type: 'FEEDS',
+    label: 'PCM enters Commercial Pilot License (CPL) flight training under DGCA',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-094',
+    sourceNodeId: 'STRM-PCM',
+    targetNodeId: 'DEG-MARITIME-DGS',
+    type: 'FEEDS',
+    label: 'PCM enters Merchant Navy via IMU-CET for B.Sc Nautical Science / Marine Engg',
+    verificationStatus: 'verified'
+  },
+
+  // UPSC Competitive Gateways
+  {
+    id: 'REL-V3-095',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'GATE-UPSC-ESE',
+    type: 'FEEDS',
+    label: 'Engineers take UPSC Engineering Services Exam for CPWD & Central Engineering',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-096',
+    sourceNodeId: 'DEG-MBBS',
+    targetNodeId: 'GATE-UPSC-CMS',
+    type: 'FEEDS',
+    label: 'MBBS doctors take UPSC Combined Medical Services for Central Health Service',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-097',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-UPSC-CAPF',
+    type: 'FEEDS',
+    label: 'Graduates take UPSC CAPF for Assistant Commandant in BSF, CRPF, CISF, ITBP',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-098',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-UPSC-IES-ISS',
+    type: 'FEEDS',
+    label: 'Economics & Stats graduates take UPSC Indian Economic & Statistical Service',
+    verificationStatus: 'verified'
   }
 ];
 
@@ -3003,5 +3527,65 @@ export const SOURCES_V3: SourceRecord[] = [
     sourcePriority: 1,
     verificationStatus: 'verified',
     relatedNodeIds: ['DEG-IPM', 'PG-MBA', 'COMBO-MBBS-MBA']
+  },
+  {
+    id: 'SRC-ICAR-DARE',
+    name: 'Indian Council of Agricultural Research (ICAR) Guidelines',
+    officialUrl: 'https://icar.org.in',
+    documentTitle: 'ICAR Model Academic Regulations for Agricultural & Allied Higher Education',
+    lastVerifiedDate: '2026-10-15',
+    sourcePriority: 1,
+    verificationStatus: 'verified',
+    relatedNodeIds: ['DEG-BSC-AGRI', 'AGRI-HORTICULTURE-FORESTRY', 'AGRI-ENGG-FOODTECH', 'GATE-AGRI-AFO-NABARD', 'GATE-UPSC-IFOS']
+  },
+  {
+    id: 'SRC-VCI-ACT-1984',
+    name: 'Indian Veterinary Council Act, 1984',
+    officialUrl: 'https://vci.dadf.gov.in',
+    documentTitle: 'The Indian Veterinary Council Act, 1984 (Act No. 52 of 1984) & MSVE Regulations',
+    lastVerifiedDate: '2026-10-15',
+    sourcePriority: 1,
+    verificationStatus: 'verified',
+    relatedNodeIds: ['DEG-BVSC-AH']
+  },
+  {
+    id: 'SRC-INC-ACT-1947',
+    name: 'Indian Nursing Council Act, 1947',
+    officialUrl: 'https://indiannursingcouncil.org',
+    documentTitle: 'Indian Nursing Council Act, 1947 & B.Sc Nursing Syllabus Regulations',
+    lastVerifiedDate: '2026-10-15',
+    sourcePriority: 1,
+    verificationStatus: 'verified',
+    relatedNodeIds: ['DEG-BSC-NURSING']
+  },
+  {
+    id: 'SRC-NCTE-ACT-1993',
+    name: 'National Council for Teacher Education Act, 1993',
+    officialUrl: 'https://ncte.gov.in',
+    documentTitle: 'NCTE Act, 1993 (Act No. 73 of 1993) & National Curriculum Framework for Teacher Education',
+    lastVerifiedDate: '2026-10-15',
+    sourcePriority: 1,
+    verificationStatus: 'verified',
+    relatedNodeIds: ['DEG-TEACHER-BED']
+  },
+  {
+    id: 'SRC-DGCA-CAR',
+    name: 'DGCA Civil Aviation Requirements (CAR)',
+    officialUrl: 'https://dgca.gov.in',
+    documentTitle: 'Aircraft Rules 1937 & Civil Aviation Requirements Section 7: Flight Crew Licensing',
+    lastVerifiedDate: '2026-10-15',
+    sourcePriority: 1,
+    verificationStatus: 'verified',
+    relatedNodeIds: ['DEG-AVIATION-PILOT']
+  },
+  {
+    id: 'SRC-DGS-MS-ACT',
+    name: 'Merchant Shipping Act, 1958 & DG Shipping Training Regulations',
+    officialUrl: 'https://dgshipping.gov.in',
+    documentTitle: 'Merchant Shipping Act, 1958 & Directorate General of Shipping STCW Training Directives',
+    lastVerifiedDate: '2026-10-15',
+    sourcePriority: 1,
+    verificationStatus: 'verified',
+    relatedNodeIds: ['DEG-MARITIME-DGS']
   }
 ];

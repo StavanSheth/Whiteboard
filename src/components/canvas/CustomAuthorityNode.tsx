@@ -37,7 +37,17 @@ function getNodeTheme(data: EducationNode) {
       glowRing: 'ring-amber-500/30 border-amber-600'
     };
   }
-  if (id.startsWith('STRM-PCM') || id.startsWith('DEG-BTECH') || id.startsWith('BTECH-') || id === 'PG-MTECH' || id === 'STRM-POLYTECHNIC') {
+  // Agriculture, Horticulture, Forestry & Allied Sciences
+  if (id.startsWith('DEG-BSC-AGRI') || id.startsWith('AGRI-') || id.startsWith('GATE-AGRI')) {
+    return {
+      borderTop: 'border-t-4 border-t-lime-600',
+      headerBg: 'bg-gradient-to-r from-lime-50 via-emerald-50/40 to-white',
+      badgeBg: 'bg-lime-100 text-lime-900 border-lime-200',
+      iconBox: 'bg-lime-100 text-lime-800 border-lime-200',
+      glowRing: 'ring-lime-500/30 border-lime-600'
+    };
+  }
+  if (id.startsWith('STRM-PCM') || id.startsWith('DEG-BTECH') || id.startsWith('BTECH-') || id === 'PG-MTECH' || id === 'STRM-POLYTECHNIC' || id.startsWith('DEG-AVIATION') || id.startsWith('DEG-MARITIME')) {
     return {
       borderTop: 'border-t-4 border-t-indigo-600',
       headerBg: 'bg-gradient-to-r from-indigo-50 via-blue-50/40 to-white',
@@ -46,7 +56,7 @@ function getNodeTheme(data: EducationNode) {
       glowRing: 'ring-indigo-500/30 border-indigo-600'
     };
   }
-  if (id.startsWith('STRM-PCB') || id.startsWith('DEG-MBBS') || id.startsWith('PG-MD') || id.startsWith('PG-MS') || id.startsWith('CLINIC-') || id.startsWith('DEG-AYUSH') || id.startsWith('DEG-BPHARM') || id.startsWith('PHARM-')) {
+  if (id.startsWith('STRM-PCB') || id.startsWith('DEG-MBBS') || id.startsWith('PG-MD') || id.startsWith('PG-MS') || id.startsWith('CLINIC-') || id.startsWith('DEG-AYUSH') || id.startsWith('DEG-BPHARM') || id.startsWith('PHARM-') || id.startsWith('DEG-BVSC') || id.startsWith('DEG-BSC-NURSING')) {
     return {
       borderTop: 'border-t-4 border-t-emerald-600',
       headerBg: 'bg-gradient-to-r from-emerald-50 via-teal-50/40 to-white',
@@ -64,7 +74,7 @@ function getNodeTheme(data: EducationNode) {
       glowRing: 'ring-sky-500/30 border-sky-600'
     };
   }
-  if (id.startsWith('STRM-ARTS') || id.startsWith('DEG-BA') || id.startsWith('BA-') || id.startsWith('DEG-LAW') || id.startsWith('LAW-') || id.startsWith('PG-LLM')) {
+  if (id.startsWith('STRM-ARTS') || id.startsWith('DEG-BA') || id.startsWith('BA-') || id.startsWith('DEG-LAW') || id.startsWith('LAW-') || id.startsWith('PG-LLM') || id.startsWith('DEG-TEACHER')) {
     return {
       borderTop: 'border-t-4 border-t-purple-600',
       headerBg: 'bg-gradient-to-r from-purple-50 via-fuchsia-50/40 to-white',
