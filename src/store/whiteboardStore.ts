@@ -237,12 +237,12 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
   alternateSpacing: 50,
   expandedNodeIds: {},
 
-  // Normal Canvas Sizing, Spacing & Arrow Styling Defaults
-  nodeBoxWidth: 320,
+  // Normal Canvas Sizing, Spacing & Arrow Styling Defaults (Generous, non-overlapping spacing)
+  nodeBoxWidth: 340,
   cardHeightPercent: 100,
-  customNodeSpacing: 65,
-  customVSpacing: 65,
-  customArrowHeight: 140,
+  customNodeSpacing: 90,
+  customVSpacing: 90,
+  customArrowHeight: 180,
   arrowStyle: 'curved',
   fontSizePx: 11,
   lineHeightMult: 1.35,
@@ -649,11 +649,11 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
 
   resetSpacingAndSizing: () =>
     set((state) => ({
-      nodeBoxWidth: state.nodeViewMode === 'full' ? 320 : 260,
+      nodeBoxWidth: state.nodeViewMode === 'full' ? 340 : 280,
       cardHeightPercent: 100,
-      customNodeSpacing: state.nodeViewMode === 'full' ? 65 : 50,
-      customVSpacing: state.nodeViewMode === 'full' ? 65 : 50,
-      customArrowHeight: state.nodeViewMode === 'full' ? 140 : 85,
+      customNodeSpacing: state.nodeViewMode === 'full' ? 90 : 65,
+      customVSpacing: state.nodeViewMode === 'full' ? 90 : 65,
+      customArrowHeight: state.nodeViewMode === 'full' ? 180 : 120,
       arrowStyle: 'curved',
       fontSizePx: 11,
       lineHeightMult: 1.35,

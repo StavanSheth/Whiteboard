@@ -72,9 +72,70 @@ export function estimateNodeHeight(
 
   if (node.legalStatus) h += 24 * typoFactor;
 
+  // Domain badges in header (e.g. examAgency, institutionType, constitutionalArticle, regulatoryBodyOrApex)
+  if (
+    node.examDetails?.examAgency ||
+    node.institutionDetails?.institutionType ||
+    node.governanceDetails?.constitutionalArticle ||
+    node.bankingJudicialDetails?.regulatoryBodyOrApex
+  ) {
+    h += 24 * typoFactor;
+  }
+
   if (node.summary) {
     const summaryLines = Math.ceil(node.summary.length / charsPerLine);
     h += summaryLines * 15 * typoFactor + paraSpacing;
+  }
+
+  // Whiteboard 3: Examination Lifecycle Details
+  if (node.examDetails) {
+    let examH = 45 * typoFactor;
+    if (node.examDetails.eligibilityCriteria) examH += 26 * typoFactor;
+    if (node.examDetails.applicationWindow) examH += 24 * typoFactor;
+    if (node.examDetails.examStages && node.examDetails.examStages.length > 0) {
+      examH += (24 + Math.ceil(node.examDetails.examStages.length / 3) * 22) * typoFactor;
+    }
+    if (node.examDetails.outcome) examH += 26 * typoFactor;
+    if (node.examDetails.counsellingBody) examH += 26 * typoFactor;
+    if (node.examDetails.nextCareerStage) examH += 26 * typoFactor;
+    h += examH + paraSpacing;
+  }
+
+  // Whiteboard 2: Institutional & Degree Details
+  if (node.institutionDetails) {
+    let instH = 45 * typoFactor;
+    if (node.institutionDetails.institutionType) instH += 24 * typoFactor;
+    if (node.institutionDetails.controlledBy) instH += 24 * typoFactor;
+    if (node.institutionDetails.curriculumBody) instH += 24 * typoFactor;
+    if (node.institutionDetails.prerequisiteStream) instH += 24 * typoFactor;
+    if (node.institutionDetails.examinationTimeline) instH += 28 * typoFactor;
+    if (node.institutionDetails.programmesOffered && node.institutionDetails.programmesOffered.length > 0) {
+      instH += (24 + Math.ceil(node.institutionDetails.programmesOffered.length / 2) * 20) * typoFactor;
+    }
+    if (node.institutionDetails.admissionRoute) instH += 24 * typoFactor;
+    h += instH + paraSpacing;
+  }
+
+  // Whiteboard 4: Democratic Governance Hierarchy Details
+  if (node.governanceDetails) {
+    let govH = 45 * typoFactor;
+    if (node.governanceDetails.constitutionalArticle) govH += 24 * typoFactor;
+    if (node.governanceDetails.positionName) govH += 24 * typoFactor;
+    if (node.governanceDetails.electoralOrSelectionMethod) govH += 26 * typoFactor;
+    if (node.governanceDetails.geographicalJurisdiction) govH += 28 * typoFactor;
+    if (node.governanceDetails.tenure) govH += 26 * typoFactor;
+    if (node.governanceDetails.reportingTo) govH += 24 * typoFactor;
+    h += govH + paraSpacing;
+  }
+
+  // Whiteboard 5: Banking & Judicial Hierarchy Details
+  if (node.bankingJudicialDetails) {
+    let bankH = 45 * typoFactor;
+    if (node.bankingJudicialDetails.regulatoryBodyOrApex) bankH += 26 * typoFactor;
+    if (node.bankingJudicialDetails.tier) bankH += 24 * typoFactor;
+    if (node.bankingJudicialDetails.jurisdictionOrScope) bankH += 30 * typoFactor;
+    if (node.bankingJudicialDetails.grievanceOrAppellateRoute) bankH += 30 * typoFactor;
+    h += bankH + paraSpacing;
   }
 
   if (node.establishingLaw && node.establishingLaw.length > 0) {
@@ -122,8 +183,8 @@ export function estimateNodeHeight(
     h += dockedFkCount * Math.round(24 * fontScale) + 8;
   }
 
-  // Tighter bottom margin (+8px instead of +24px) to eliminate excessive empty white space
-  return Math.max(70, Math.round((h + 8) * cardHeightScale));
+  // Generous padding (+24px) to ensure no border clipping or overlap
+  return Math.max(70, Math.round((h + 24) * cardHeightScale));
 }
 
 export type LayoutDirection = 'DOWN' | 'RIGHT';
@@ -235,6 +296,9 @@ export async function calculateElkLayout(
       'elk.spacing.nodeNode': String(nodeSpacing),
       'elk.layered.spacing.nodeNodeBetweenLayers': String(layerSpacing),
       'elk.layered.cycleBreaking.strategy': 'DEPTH_FIRST',
+      'elk.layered.nodePlacement.strategy': 'BRANDES_KOEPF',
+      'elk.layered.nodePlacement.favorStraightEdges': 'true',
+      'elk.spacing.componentComponent': '120',
       'elk.edgeRouting':
         options.arrowStyle === 'orthogonal' || options.arrowStyle === 'rounded-orthogonal'
           ? 'ORTHOGONAL'
@@ -253,101 +317,167 @@ export async function calculateElkLayout(
         positionMap.set(child.id, { x: child.x || 0, y: child.y || 0 });
       }
 
-      // Apply Alternate Depth Staggering with Cascading Layer Propagation
-      if (options.alternateDepth) {
-        const isRight = direction === 'RIGHT';
-        const childList = layouted.children;
-        if (isRight) {
-          // Group by X coordinates (horizontal layers)
-          const colBuckets: ElkNode[][] = [];
-          const sorted = [...childList].sort((a, b) => (a.x || 0) - (b.x || 0));
-          sorted.forEach((node) => {
-            const nx = node.x || 0;
-            const bucket = colBuckets.find((b) => Math.abs((b[0].x || 0) - nx) < 80);
-            if (bucket) {
-              bucket.push(node);
-            } else {
-              colBuckets.push([node]);
-            }
-          });
-          colBuckets.sort((a, b) => (a[0].x || 0) - (b[0].x || 0));
+      // TRUE BOUNDING-BOX COLLISION RESOLUTION PASS
+      // Guarantees zero overlapping between cards in both horizontal and vertical directions
+      const childList = layouted.children;
+      const isRight = direction === 'RIGHT';
 
-          for (let colIdx = 0; colIdx < colBuckets.length; colIdx++) {
-            const col = colBuckets[colIdx];
+      if (isRight) {
+        // Group by X coordinates (horizontal columns)
+        const colBuckets: ElkNode[][] = [];
+        const sorted = [...childList].sort((a, b) => (a.x || 0) - (b.x || 0));
+        sorted.forEach((node) => {
+          const nx = node.x || 0;
+          const bucket = colBuckets.find((b) => Math.abs((b[0].x || 0) - nx) < 80);
+          if (bucket) {
+            bucket.push(node);
+          } else {
+            colBuckets.push([node]);
+          }
+        });
+        colBuckets.sort((a, b) => (a[0].x || 0) - (b[0].x || 0));
+
+        // Pass 1: Prevent vertical overlap within each column
+        for (const col of colBuckets) {
+          col.sort((a, b) => (positionMap.get(a.id)?.y ?? a.y ?? 0) - (positionMap.get(b.id)?.y ?? b.y ?? 0));
+          for (let i = 1; i < col.length; i++) {
+            const prev = col[i - 1];
+            const curr = col[i];
+            const prevY = positionMap.get(prev.id)?.y ?? prev.y ?? 0;
+            const prevH = prev.height || 120;
+            const currY = positionMap.get(curr.id)?.y ?? curr.y ?? 0;
+            const minRequiredY = prevY + prevH + nodeSpacing;
+            if (currY < minRequiredY) {
+              const shiftY = minRequiredY - currY;
+              for (let j = i; j < col.length; j++) {
+                const nodeToShift = col[j];
+                const p = positionMap.get(nodeToShift.id);
+                if (p) positionMap.set(nodeToShift.id, { x: p.x, y: p.y + shiftY });
+              }
+            }
+          }
+        }
+
+        // Pass 2: Alternate Depth Staggering (if enabled)
+        if (options.alternateDepth) {
+          for (const col of colBuckets) {
             if (col.length > 1) {
-              col.sort((a, b) => (a.y || 0) - (b.y || 0));
               col.forEach((node, idx) => {
                 if (idx % 2 === 1) {
                   const staggerX = options.alternateSpacing ?? 60;
                   const current = positionMap.get(node.id);
-                  if (current) {
-                    positionMap.set(node.id, { x: current.x + staggerX, y: current.y });
-                  }
+                  if (current) positionMap.set(node.id, { x: current.x + staggerX, y: current.y });
                 }
               });
             }
+          }
+        }
 
-            const maxRight = Math.max(
-              ...col.map((n) => (positionMap.get(n.id)?.x || n.x || 0) + (n.width || 280))
-            );
-            const requiredNextX = maxRight + layerSpacing;
+        // Pass 3: Prevent horizontal overlap across successive columns
+        for (let colIdx = 0; colIdx < colBuckets.length - 1; colIdx++) {
+          const currentCol = colBuckets[colIdx];
+          const nextCol = colBuckets[colIdx + 1];
 
+          let maxRight = 0;
+          for (const n of currentCol) {
+            const px = positionMap.get(n.id)?.x ?? n.x ?? 0;
+            const pw = n.width || 340;
+            if (px + pw > maxRight) maxRight = px + pw;
+          }
+
+          const requiredNextX = maxRight + layerSpacing;
+          let minNextX = Infinity;
+          for (const n of nextCol) {
+            const px = positionMap.get(n.id)?.x ?? n.x ?? 0;
+            if (px < minNextX) minNextX = px;
+          }
+
+          if (minNextX < requiredNextX) {
+            const shiftX = requiredNextX - minNextX;
             for (let nextIdx = colIdx + 1; nextIdx < colBuckets.length; nextIdx++) {
-              const nextCol = colBuckets[nextIdx];
-              const minNextX = Math.min(...nextCol.map((n) => positionMap.get(n.id)?.x || n.x || 0));
-              if (minNextX < requiredNextX) {
-                const shiftX = requiredNextX - minNextX;
-                nextCol.forEach((n) => {
-                  const curr = positionMap.get(n.id);
-                  if (curr) positionMap.set(n.id, { x: curr.x + shiftX, y: curr.y });
-                });
+              for (const n of colBuckets[nextIdx]) {
+                const curr = positionMap.get(n.id);
+                if (curr) positionMap.set(n.id, { x: curr.x + shiftX, y: curr.y });
               }
             }
           }
-        } else {
-          // Group by Y coordinates (vertical layers)
-          const layerBuckets: ElkNode[][] = [];
-          const sorted = [...childList].sort((a, b) => (a.y || 0) - (b.y || 0));
-          sorted.forEach((node) => {
-            const ny = node.y || 0;
-            const bucket = layerBuckets.find((b) => Math.abs((b[0].y || 0) - ny) < 80);
-            if (bucket) {
-              bucket.push(node);
-            } else {
-              layerBuckets.push([node]);
-            }
-          });
-          layerBuckets.sort((a, b) => (a[0].y || 0) - (b[0].y || 0));
+        }
+      } else {
+        // Group by Y coordinates (vertical ranks/layers)
+        const layerBuckets: ElkNode[][] = [];
+        const sorted = [...childList].sort((a, b) => (a.y || 0) - (b.y || 0));
+        sorted.forEach((node) => {
+          const ny = node.y || 0;
+          const bucket = layerBuckets.find((b) => Math.abs((b[0].y || 0) - ny) < 80);
+          if (bucket) {
+            bucket.push(node);
+          } else {
+            layerBuckets.push([node]);
+          }
+        });
+        layerBuckets.sort((a, b) => (a[0].y || 0) - (b[0].y || 0));
 
-          for (let layerIdx = 0; layerIdx < layerBuckets.length; layerIdx++) {
-            const layer = layerBuckets[layerIdx];
+        // Pass 1: Prevent horizontal overlap within each layer
+        for (const layer of layerBuckets) {
+          layer.sort((a, b) => (positionMap.get(a.id)?.x ?? a.x ?? 0) - (positionMap.get(b.id)?.x ?? b.x ?? 0));
+          for (let i = 1; i < layer.length; i++) {
+            const prev = layer[i - 1];
+            const curr = layer[i];
+            const prevX = positionMap.get(prev.id)?.x ?? prev.x ?? 0;
+            const prevW = prev.width || 340;
+            const currX = positionMap.get(curr.id)?.x ?? curr.x ?? 0;
+            const minRequiredX = prevX + prevW + nodeSpacing;
+            if (currX < minRequiredX) {
+              const shiftX = minRequiredX - currX;
+              for (let j = i; j < layer.length; j++) {
+                const nodeToShift = layer[j];
+                const p = positionMap.get(nodeToShift.id);
+                if (p) positionMap.set(nodeToShift.id, { x: p.x + shiftX, y: p.y });
+              }
+            }
+          }
+        }
+
+        // Pass 2: Alternate Depth Staggering (if enabled)
+        if (options.alternateDepth) {
+          for (const layer of layerBuckets) {
             if (layer.length > 1) {
-              layer.sort((a, b) => (a.x || 0) - (b.x || 0));
               layer.forEach((node, idx) => {
                 if (idx % 2 === 1) {
                   const staggerY = options.alternateSpacing ?? 60;
                   const current = positionMap.get(node.id);
-                  if (current) {
-                    positionMap.set(node.id, { x: current.x, y: current.y + staggerY });
-                  }
+                  if (current) positionMap.set(node.id, { x: current.x, y: current.y + staggerY });
                 }
               });
             }
+          }
+        }
 
-            const maxBottom = Math.max(
-              ...layer.map((n) => (positionMap.get(n.id)?.y || n.y || 0) + (n.height || 120))
-            );
-            const requiredNextY = maxBottom + layerSpacing;
+        // Pass 3: Prevent vertical overlap across successive layers
+        for (let layerIdx = 0; layerIdx < layerBuckets.length - 1; layerIdx++) {
+          const currentLayer = layerBuckets[layerIdx];
+          const nextLayer = layerBuckets[layerIdx + 1];
 
+          let maxBottom = 0;
+          for (const n of currentLayer) {
+            const py = positionMap.get(n.id)?.y ?? n.y ?? 0;
+            const ph = n.height || 120;
+            if (py + ph > maxBottom) maxBottom = py + ph;
+          }
+
+          const requiredNextY = maxBottom + layerSpacing;
+          let minNextY = Infinity;
+          for (const n of nextLayer) {
+            const py = positionMap.get(n.id)?.y ?? n.y ?? 0;
+            if (py < minNextY) minNextY = py;
+          }
+
+          if (minNextY < requiredNextY) {
+            const shiftY = requiredNextY - minNextY;
             for (let nextIdx = layerIdx + 1; nextIdx < layerBuckets.length; nextIdx++) {
-              const nextLayer = layerBuckets[nextIdx];
-              const minNextY = Math.min(...nextLayer.map((n) => positionMap.get(n.id)?.y || n.y || 0));
-              if (minNextY < requiredNextY) {
-                const shiftY = requiredNextY - minNextY;
-                nextLayer.forEach((n) => {
-                  const curr = positionMap.get(n.id);
-                  if (curr) positionMap.set(n.id, { x: curr.x, y: curr.y + shiftY });
-                });
+              for (const n of layerBuckets[nextIdx]) {
+                const curr = positionMap.get(n.id);
+                if (curr) positionMap.set(n.id, { x: curr.x, y: curr.y + shiftY });
               }
             }
           }
