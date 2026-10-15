@@ -35,11 +35,11 @@ export const SECTION_METAS_V3: SectionMeta[] = [
     id: 'SEC-04',
     number: '04',
     title: 'Undergraduate (UG) Degree Groups & Specializations',
-    subtitle: 'B.Tech, B.Sc, BCA, MBBS, Ayush/Dental, B.Pharm, B.Com/BBA, IPM, Law, B.Arch & B.A.',
-    summary: 'Parent degree groups branching into their respective branch specializations (e.g., B.Tech into CS, ECE, Mech, Civil, EE; B.Sc into Physics, Chem, Math; MBBS into Clinical Residencies; B.Com into Finance/Analytics).',
+    subtitle: 'B.Tech, B.Sc, BCA, MBBS, Ayush/Dental, B.Pharm, B.Com/BBA, IPM, Law (5-Yr & 3-Yr), B.Arch, Design, Hospitality & B.A.',
+    summary: 'Parent degree groups branching into their respective branch specializations: Engineering (CS, ECE, Mech, Civil, EE), Pure Sciences (Physics, Chem, Math), Medicine & Allied, Commerce (Finance, Marketing, FinTech, BFSI), Law (5-Yr Integrated & 3-Yr LL.B. with Judiciary), Design, Hospitality, and Humanities (Pol Sci, Econ, Psych, Media).',
     iconName: 'BookOpen',
-    expectedSubsections: ['04.1 Engineering (B.Tech Branches)', '04.2 Pure Sciences (B.Sc Branches)', '04.3 Computing (BCA)', '04.4 Medicine & Healthcare (MBBS & Ayush)', '04.5 Pharmacy', '04.6 Commerce & Management (B.Com, BBA, IPM)', '04.7 5-Yr Law Specializations', '04.8 Architecture & Design', '04.9 Humanities (B.A. Specializations)'],
-    expectedAuthorities: ['IITs / NITs', 'AIIMS', 'IIMs', 'NLUs', 'IISc / IISERs', 'PCI', 'COA']
+    expectedSubsections: ['04.1 Engineering (B.Tech Branches)', '04.2 Pure Sciences (B.Sc Branches)', '04.3 Computing (BCA)', '04.4 Medicine & Healthcare (MBBS & Ayush)', '04.5 Pharmacy', '04.6 Commerce & Management (B.Com, BBA, BFSI, IPM)', '04.7 Legal Degrees & Judicial Services (5-Yr & 3-Yr LL.B, PCS-J)', '04.8 Architecture & Design (B.Arch & B.Des NID/NIFT)', '04.9 Hospitality Management (IHM / NCHMCT)', '04.10 Humanities & Social Sciences (Pol Sci, Econ, Psych, Media)'],
+    expectedAuthorities: ['IITs / NITs', 'AIIMS', 'IIMs', 'NLUs / BCI', 'IISc / IISERs', 'PCI', 'COA', 'NID / NIFT', 'NCHMCT']
   },
   {
     id: 'SEC-05',
@@ -48,18 +48,35 @@ export const SECTION_METAS_V3: SectionMeta[] = [
     subtitle: 'M.Tech, MCA, MD & MS Specialist Medicine, IIM MBA, LL.M, M.Sc & Ph.D.',
     summary: 'Master-level advanced specializations, clinical hospital residencies, doctoral research fellowships, and elite management degrees with timelines and entrance gates.',
     iconName: 'Award',
-    expectedSubsections: ['05.1 M.Tech (GATE)', '05.2 MCA (NIMCET)', '05.3 MD & MS Specialists', '05.4 MBA / PGDM (CAT)', '05.5 LL.M. & AIBE Practice', '05.6 M.Sc & Ph.D. Research'],
+    expectedSubsections: ['05.1 M.Tech (GATE)', '05.2 MCA (NIMCET)', '05.3 MD & MS Specialists', '05.4 MBA / PGDM (CAT)', '05.5 LL.M. & Judicial Clerkships', '05.6 M.Sc & Ph.D. Research'],
     expectedAuthorities: ['IITs / GATE', 'NIMCET', 'NMC / INI-CET', 'IIMs', 'BCI', 'CSIR-UGC']
   },
   {
     id: 'SEC-06',
     number: '06',
     title: 'Professional Charters & High-Value Combinations',
-    subtitle: 'CA, CFA, CS/CMA & Cross-Discipline Tracks (B.Tech+CFA, B.Com+CA, MBBS+MBA)',
-    summary: 'Statutory corporate finance and audit charters alongside strategic dual-discipline tracks combining engineering, medicine, and commerce with management and finance.',
+    subtitle: 'CA, CFA, CS, CMA, Actuarial Science & Cross-Discipline Tracks (B.Tech+CFA, B.Com+CA, MBBS+MBA)',
+    summary: 'Statutory corporate finance, governance, and audit charters (CA, CFA, CS, CMA, Actuaries) alongside strategic dual-discipline tracks combining engineering, medicine, and arts with law and finance.',
     iconName: 'GitFork',
-    expectedSubsections: ['06.1 Chartered Accountancy (CA)', '06.2 CFA Charter (USA)', '06.3 CS & CMA Governance', '06.4 B.Tech + CFA', '06.5 B.Com + CA', '06.6 MBBS + MBA', '06.7 B.Tech + Law'],
-    expectedAuthorities: ['ICAI', 'CFA Institute', 'ICSI', 'IIMs / AIIMS']
+    expectedSubsections: ['06.1 Chartered Accountancy (CA)', '06.2 CFA Charter (USA)', '06.3 Company Secretary (CS - ICSI)', '06.4 Cost & Management Accountant (CMA - ICMAI)', '06.5 Actuarial Science (IAI / IFoA)', '06.6 B.Tech + CFA', '06.7 B.Com + CA', '06.8 MBBS + MBA', '06.9 B.Tech + Law (Patent)', '06.10 B.A. + LL.B. (Policy & Advocacy)'],
+    expectedAuthorities: ['ICAI', 'CFA Institute', 'ICSI', 'ICMAI', 'IAI', 'IIMs / AIIMS']
+  },
+  {
+    id: 'SEC-07',
+    number: '07',
+    title: 'National Competitive Gateways: UPSC, Civil Services, Banking & Government',
+    subtitle: 'UPSC CSE, State PSCs, RBI Grade B, IBPS/SBI PO, SSC CGL & Defence Officers (CDS/AFCAT)',
+    summary: 'Premier national competitive recruitment pathways available to graduates of any stream across civil administration (IAS/IPS/IFS), provincial state services (Deputy Collector/DySP), central banking & securities regulation (RBI/SEBI), commercial banking (SBI/IBPS PO), central ministries (SSC CGL), and armed forces commissioned officer ranks.',
+    iconName: 'Landmark',
+    expectedSubsections: [
+      '07.1 UPSC Civil Services (IAS, IPS, IFS, IRS)',
+      '07.2 State Public Service Commissions (MPSC, UPPSC, BPSC)',
+      '07.3 Apex Financial Regulators (RBI Grade B & SEBI Grade A)',
+      '07.4 Public Sector Commercial Banking (SBI PO & IBPS PO)',
+      '07.5 Staff Selection Commission (SSC CGL)',
+      '07.6 Armed Forces Commissioned Officers (UPSC CDS & AFCAT)'
+    ],
+    expectedAuthorities: ['UPSC', 'State PSCs', 'Reserve Bank of India', 'SEBI', 'IBPS / SBI', 'Staff Selection Commission', 'Ministry of Defence']
   }
 ];
 
@@ -948,6 +965,31 @@ export const NODES_V3: EducationNode[] = [
     lastVerifiedDate: '2026-10-15'
   },
   {
+    id: 'BCOM-BANKING-INSURANCE',
+    type: 'institution',
+    title: 'B.Com: Banking, Insurance & Financial Markets (BFSI)',
+    abbreviation: 'B.Com Banking & Insurance',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'DEG-BCOM-BBA',
+    level: 'institutional',
+    category: 'higher-education',
+    summary: 'Specialized 3-Year commerce degree focused on retail and commercial banking operations, credit appraisal, treasury, life/general reinsurance, and capital markets.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Commerce Specialization Branch',
+      admissionRoute: 'CUET-UG / University Merit',
+      examinationTimeline: 'Timeline: 3 Years (6 Semesters) + NISM Series & IRDAI Insurance Agent/Broker certifications',
+      programmesOffered: ['B.Com (Banking & Insurance - BBI)', 'B.Com (Financial Markets - BFM)'],
+      careerValue: 'Branch Credit Manager, Treasury Dealer, Insurance Underwriter, Wealth Relationship Manager'
+    },
+    sourceIds: ['SRC-NEP-2020', 'SRC-RBI-ACT-1934'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
     id: 'DEG-IPM',
     type: 'institution',
     title: '5-Year Integrated Management: IPM at IIMs',
@@ -996,6 +1038,31 @@ export const NODES_V3: EducationNode[] = [
       careerValue: 'Corporate Law Associate (Big 6 Law Firms), Litigating Advocate, Judicial Magistrate, In-House Counsel'
     },
     sourceIds: ['SRC-NLSIU-ACT-1986', 'SRC-BCI-ADVOCATES-ACT'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'DEG-LAW-3YR',
+    type: 'institution',
+    title: '3-Year LL.B. (Graduate Law Degree)',
+    abbreviation: '3-Year LL.B. (3 Years)',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'STRM-ARTS',
+    level: 'state',
+    category: 'higher-education',
+    summary: 'Professional 3-Year Bachelor of Laws pursued after graduation in any stream (B.A., B.Com, B.Sc, B.Tech). Offered by Delhi University (CLC), GLC Mumbai, ILS Pune, and NLSIU (NLSAT 3-Yr).',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Post-Graduate Professional Law Degree (BCI)',
+      admissionRoute: 'CUET-PG (Delhi University / BHU), MH-CET Law 3-Year, NLSAT (NLSIU Bengaluru)',
+      examinationTimeline: 'Timeline: 3 Years (6 Semesters). Core procedural codes (CPC, CrPC, IPC/BNS, Evidence/BSA) + court chamber internships',
+      programmesOffered: ['LL.B. (3 Years General / Professional)'],
+      careerValue: 'Advocate in High Courts & District Courts, Corporate In-House Counsel, Judicial Services aspirant'
+    },
+    sourceIds: ['SRC-BCI-ADVOCATES-ACT'],
     verificationStatus: 'verified',
     lastVerifiedDate: '2026-10-15'
   },
@@ -1071,6 +1138,56 @@ export const NODES_V3: EducationNode[] = [
     verificationStatus: 'verified',
     lastVerifiedDate: '2026-10-15'
   },
+  {
+    id: 'LAW-JUDICIARY',
+    type: 'institution',
+    title: 'Judicial Services Examination: Civil Judge / PCS-J',
+    abbreviation: 'Judicial Services (Civil Judge)',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'DEG-LAW-5YR',
+    level: 'state',
+    category: 'higher-education',
+    summary: 'State Judicial Services Competitive Examination conducted by High Courts & State PSCs for appointment as Civil Judge (Junior Division) / Judicial Magistrate First Class (JMFC).',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Subordinate Judicial Appointment Pathway',
+      admissionRoute: 'State Judicial Services (PCS-J) Notification -> Preliminary Exam -> Mains Written -> Viva Voce',
+      examinationTimeline: 'Timeline: 1–2 Years preparation post-LL.B. Prelims (Objective Law + GK) -> Mains (Civil Law 1 & 2, Criminal Law, Language) -> Interview',
+      programmesOffered: ['Civil Judge (Junior Division)', 'Judicial Magistrate First Class (JMFC)', 'Assistant Public Prosecutor (APP)'],
+      careerValue: 'Judicial Magistrate -> Chief Judicial Magistrate (CJM) -> District & Sessions Judge -> Elevation to High Court Judge'
+    },
+    sourceIds: ['SRC-BCI-ADVOCATES-ACT'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'LAW-AIBE',
+    type: 'institution',
+    title: 'Bar Council of India: All India Bar Examination (AIBE)',
+    abbreviation: 'AIBE & Court Practice',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'DEG-LAW-3YR',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Mandatory statutory qualification exam conducted by the Bar Council of India (BCI) under Advocates Act, 1961 to grant the Certificate of Practice (COP) for court litigation across India.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Statutory Advocate Practice Certification (BCI)',
+      admissionRoute: 'Provisional State Bar Council Enrollment -> AIBE Exam (conducted 1–2 times per year)',
+      examinationTimeline: 'Timeline: Conducted within 2 years of law graduation. 100 Objective Questions on core substantive and procedural statutes',
+      programmesOffered: ['Certificate of Practice (COP)', 'Permanent Enrollment on Advocates Roll'],
+      careerValue: 'Licensed Independent Legal Counsel with right of audience in all Trial Courts, High Courts, and Supreme Court'
+    },
+    sourceIds: ['SRC-BCI-ADVOCATES-ACT'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
 
   // --- 4.8 Architecture & Design Parent & Branches ---
   {
@@ -1098,6 +1215,56 @@ export const NODES_V3: EducationNode[] = [
     verificationStatus: 'verified',
     lastVerifiedDate: '2026-10-15'
   },
+  {
+    id: 'DEG-DESIGN-NID',
+    type: 'institution',
+    title: 'Design & Fashion: B.Des at NID & NIFT',
+    abbreviation: 'B.Des (NID & NIFT) (4 Yrs)',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'STRM-ARTS',
+    level: 'union',
+    category: 'higher-education',
+    summary: '4-Year professional design degrees across Industrial Product Design, UI/UX Interaction, Communication, Fashion Design, and Textile Technology at National Institute of Design (NID) and NIFT.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Apex National Design Institutes (Institutes of National Importance)',
+      admissionRoute: 'NID DAT (Prelims in Jan -> Mains/Studio Test in April) / NIFT Entrance Exam / UCEED',
+      examinationTimeline: 'Timeline: 4 Years (8 Semesters: 1st Year Foundation -> 3 Years Studio Specialization + Industry Degree Project)',
+      programmesOffered: ['B.Des in Product Design', 'B.Des in UI/UX Interaction', 'B.Des in Fashion Design', 'B.Des in Graphic Communication'],
+      careerValue: 'Principal UI/UX Product Designer, Automotive & Consumer Hardware Designer, Creative Director, Global Fashion Stylist'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'DEG-HOTEL-MGMT',
+    type: 'institution',
+    title: 'Hospitality & Hotel Administration: B.Sc at IHM',
+    abbreviation: 'B.Sc Hospitality (NCHMCT) (3 Yrs)',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'STRM-ARTS',
+    level: 'union',
+    category: 'higher-education',
+    summary: '3-Year specialized hospitality degree under National Council for Hotel Management and Catering Technology (NCHMCT) across top IHMs (Pusa Delhi, Mumbai, Bangalore, Goa).',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'National Hospitality Management Institutes (NCHMCT)',
+      admissionRoute: 'NCHMCT JEE conducted by NTA in May',
+      examinationTimeline: 'Timeline: 3 Years (6 Semesters including 20 weeks mandatory industrial hotel internship)',
+      programmesOffered: ['B.Sc in Hospitality and Hotel Administration'],
+      careerValue: 'General Manager (Luxury Hotel Chains: Taj, Oberoi, Marriott), Food & Beverage Director, Luxury Cruise Operations'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
 
   // --- 4.9 Arts & Humanities Parent & Branches ---
   {
@@ -1110,7 +1277,7 @@ export const NODES_V3: EducationNode[] = [
     parentId: 'STRM-ARTS',
     level: 'state',
     category: 'higher-education',
-    summary: '3 to 4-Year undergraduate liberal arts degrees in political science, economics, psychology, and history. Premier feeder for civil services and international policy.',
+    summary: '3 to 4-Year undergraduate liberal arts degrees in political science, economics, psychology, and journalism. Premier feeder for civil services, diplomacy, corporate HR, and media.',
     mandate: [],
     powers: [],
     limitations: [],
@@ -1118,8 +1285,104 @@ export const NODES_V3: EducationNode[] = [
       institutionType: 'Liberal Arts & Social Sciences Degree',
       admissionRoute: 'CUET-UG (Central Universities like DU, JNU, BHU) / University Merit',
       examinationTimeline: 'Timeline: 3 Years (6 Semesters) or 4 Years NEP Honours with Research dissertation',
-      programmesOffered: ['B.A. Political Science', 'B.A. Economics', 'B.A. Psychology', 'B.A. History'],
+      programmesOffered: ['B.A. Political Science', 'B.A. Economics', 'B.A. Psychology', 'B.A. Journalism & Mass Comm'],
       careerValue: 'UPSC Civil Services Examination (IAS/IPS/IFS), Policy Think Tanks, Economic Advisory, International Relations'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'BA-POL-POLICY',
+    type: 'institution',
+    title: 'B.A. Political Science, International Relations & Public Policy',
+    abbreviation: 'B.A. Pol Sci & Policy',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'DEG-BA-HUMANITIES',
+    level: 'institutional',
+    category: 'higher-education',
+    summary: 'Foundational study of constitutional governance, comparative politics, geopolitics, and public policy frameworks. Top feeder for UPSC Civil Services, think tanks (ORF, CPR), and diplomacy.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Social Science Specialization Branch',
+      examinationTimeline: 'Timeline: 3 to 4 Years (Academic seminars, policy briefs, and parliamentary internship cycles)',
+      programmesOffered: ['B.A. Political Science (Hons)', 'B.A. Public Policy & Governance'],
+      careerValue: 'Feeder to UPSC Civil Services (IAS/IFS), Legislative Assistant to MP (LAMP Fellow), Policy Think Tank Analyst'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'BA-ECONOMICS',
+    type: 'institution',
+    title: 'B.A. (Hons) Economics & Econometrics',
+    abbreviation: 'B.A. Economics (Hons)',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'DEG-BA-HUMANITIES',
+    level: 'institutional',
+    category: 'higher-education',
+    summary: 'Rigorous quantitative and macroeconomic analysis, game theory, econometrics, and monetary policy. Premier feeder for Indian Economic Service (IES), RBI, World Bank, and investment banking.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Quantitative Social Science Specialization',
+      examinationTimeline: 'Timeline: 3 to 4 Years (Advanced mathematical economics, statistical computing with R/Stata)',
+      programmesOffered: ['B.A. (Hons) Economics', 'B.Sc Economics & Mathematical Finance'],
+      careerValue: 'Indian Economic Service (IES), Reserve Bank of India, Economic Think Tanks, Investment Bank Research Analyst'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'BA-PSYCHOLOGY',
+    type: 'institution',
+    title: 'B.A. / B.Sc Psychology: Clinical & Organizational',
+    abbreviation: 'B.A. Psychology',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'DEG-BA-HUMANITIES',
+    level: 'institutional',
+    category: 'higher-education',
+    summary: 'Scientific study of human cognition, psychopathology, psychometric evaluation, and organizational behavior. Prepares for clinical licensing and corporate human resources.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Behavioral Science Specialization Branch',
+      examinationTimeline: 'Timeline: 3–4 Years UG -> 2-Year M.A./M.Sc -> RCI Clinical Licensing / Psy.D',
+      programmesOffered: ['B.A. Applied Psychology', 'B.Sc Cognitive Psychology'],
+      careerValue: 'Licensed Clinical Psychologist (RCI), Organizational Behavior Specialist, Corporate Talent Acquisition Lead'
+    },
+    sourceIds: ['SRC-NEP-2020'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'BA-JOURNALISM',
+    type: 'institution',
+    title: 'B.A. Journalism, Mass Communication & Digital Media (BJMC)',
+    abbreviation: 'BJMC Media & Journalism',
+    sectionId: 'SEC-04',
+    sectionNumber: '04',
+    parentId: 'DEG-BA-HUMANITIES',
+    level: 'institutional',
+    category: 'higher-education',
+    summary: 'Professional training in investigative journalism, television news broadcasting, podcast production, digital publishing, advertising, and corporate PR at top media institutes (IIMC, Xavier’s).',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Media & Communication Specialization Branch',
+      examinationTimeline: 'Timeline: 3 Years (6 Semesters: print reporting, broadcast studio production, digital media internship)',
+      programmesOffered: ['Bachelor of Journalism & Mass Communication (BJMC)', 'B.A. Multimedia & Digital Production'],
+      careerValue: 'Senior Investigative Reporter, News Anchor, Corporate Communications Director, Digital Media Producer'
     },
     sourceIds: ['SRC-NEP-2020'],
     verificationStatus: 'verified',
@@ -1359,27 +1622,77 @@ export const NODES_V3: EducationNode[] = [
     lastVerifiedDate: '2026-10-15'
   },
   {
-    id: 'PROF-CS-CMA',
+    id: 'PROF-CS',
     type: 'institution',
-    title: 'Company Secretary (CS) & Cost Accountant (CMA)',
-    abbreviation: 'CS (ICSI) & CMA (ICMAI)',
+    title: 'Company Secretary (CS) — ICSI Corporate Governance',
+    abbreviation: 'Company Secretary (ICSI)',
     sectionId: 'SEC-06',
     sectionNumber: '06',
     parentId: 'STRM-COMMERCE',
     level: 'union',
     category: 'higher-education',
-    summary: 'Statutory corporate professions: Company Secretary (governed by ICSI for corporate governance & board compliance) and Cost Accountant (ICMAI for cost audit & pricing).',
+    summary: 'Statutory corporate secretarial profession governed by the Institute of Company Secretaries of India (ICSI). Apex authority for Companies Act compliance, SEBI LODR, and Board secretarial audits.',
     mandate: [],
     powers: [],
     limitations: [],
     institutionDetails: {
-      institutionType: 'Statutory Governance & Cost Management Charters',
-      admissionRoute: 'Direct registration after 12th or Graduation via entrance test',
-      examinationTimeline: 'Timeline: 3 to 4 Years (Foundation/CSEET -> Intermediate/Executive -> Practical Training -> Final/Professional)',
-      programmesOffered: ['Company Secretary (ACS/FCS)', 'Cost & Management Accountant (ACMA/FCMA)'],
-      careerValue: 'Chief Governance Officer, Board Secretary, Corporate Compliance Head, Statutory Cost Auditor'
+      institutionType: 'Statutory Corporate Governance Charter (ICSI)',
+      admissionRoute: 'CSEET (Company Secretary Executive Entrance Test 4x/yr) or Direct Entry after Graduation',
+      examinationTimeline: 'Timeline: 3 Years (CSEET -> Executive 2 Groups -> 21 Months Practical Training -> Professional 2 Groups)',
+      programmesOffered: ['Executive Programme', 'Professional Programme', 'Associate Company Secretary (ACS)'],
+      careerValue: 'Key Managerial Personnel (KMP under Companies Act 2013), Board Secretary, Chief Compliance Officer, Corporate Restructuring Advisor'
     },
     sourceIds: ['SRC-COMPANIES-ACT-2013'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'PROF-CMA',
+    type: 'institution',
+    title: 'Cost & Management Accountant (CMA) — ICMAI',
+    abbreviation: 'Cost Accountant (ICMAI)',
+    sectionId: 'SEC-06',
+    sectionNumber: '06',
+    parentId: 'STRM-COMMERCE',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Statutory cost audit and management accounting profession governed by the Institute of Cost Accountants of India (ICMAI). Mandated for industrial cost auditing, pricing decisions, and supply-chain variance control.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Statutory Cost Management Charter (ICMAI)',
+      admissionRoute: 'Direct registration after 12th (CMA Foundation) or after Graduation (Direct Entry into Intermediate)',
+      examinationTimeline: 'Timeline: 3 to 4 Years (Foundation -> Intermediate 2 Groups -> 15-month Industrial Training -> Final 2 Groups)',
+      programmesOffered: ['CMA Foundation', 'CMA Intermediate', '15-Month Practical Training', 'CMA Final'],
+      careerValue: 'Statutory Cost Auditor, Plant Financial Controller, Pricing & Supply Chain Strategist, Chief Financial Officer'
+    },
+    sourceIds: ['SRC-COMPANIES-ACT-2013'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'PROF-ACTUARIAL',
+    type: 'institution',
+    title: 'Actuarial Science: IAI & IFoA (Quantitative Risk)',
+    abbreviation: 'Actuarial Science (IAI)',
+    sectionId: 'SEC-06',
+    sectionNumber: '06',
+    parentId: 'STRM-COMMERCE',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'The premier quantitative risk charter governed by the Institute of Actuaries of India (IAI) and Institute & Faculty of Actuaries (IFoA, UK). Applies advanced stochastic mathematics to calculate insurance premiums, catastrophe probabilities, and pension reserves.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Global Quantitative Risk & Actuarial Charter',
+      admissionRoute: 'ACET (Actuarial Common Entrance Test) / Direct entry with 85%+ in 10+2 Mathematics',
+      examinationTimeline: 'Timeline: 4 to 6 Years. 13 Core Mathematical & Specialized Exam Papers (CM, CS, CB, CP, SP, SA) alongside corporate actuarial employment',
+      programmesOffered: ['Core Principles (CM/CS/CB)', 'Core Practices (CP1-3)', 'Specialist Principles & Advanced (SP/SA)'],
+      careerValue: 'Appointed Actuary (Mandatory for Insurance Companies), Chief Risk Officer (CRO), Reinsurance Underwriter, Quantitative Catastrophe Modeler (₹35–80+ LPA)'
+    },
+    sourceIds: ['SRC-NEP-2020'],
     verificationStatus: 'verified',
     lastVerifiedDate: '2026-10-15'
   },
@@ -1477,6 +1790,195 @@ export const NODES_V3: EducationNode[] = [
       careerValue: 'Technology Patent Attorney, AI Regulatory Counsel, Cyber Law Specialist, Big Tech In-house Counsel'
     },
     sourceIds: ['SRC-IIT-ACT-1961', 'SRC-BCI-ADVOCATES-ACT'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'COMBO-BA-LLB',
+    type: 'institution',
+    title: 'Combo: B.A. Humanities + 3-Yr LL.B. (Constitutional & Public Policy)',
+    abbreviation: 'B.A. + LL.B. (Policy & Court)',
+    sectionId: 'SEC-06',
+    sectionNumber: '06',
+    parentId: 'DEG-BA-HUMANITIES',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Policy and constitutional litigation powerhouse: 3-Year B.A. (Pol Sci / Economics) followed by a 3-Year LL.B. Premier feeder for Supreme Court appellate advocacy, public interest litigation (PIL), and parliamentary policy advisory.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Constitutional Law & Public Policy Combo',
+      examinationTimeline: 'Timeline: 3-Year B.A. -> CUET-PG LL.B. (3 Years) -> AIBE Licensure',
+      programmesOffered: ['B.A. Political Science + LL.B. (Constitutional & Administrative Law)'],
+      careerValue: 'Supreme Court Advocate on Record (AoR), Public Interest Litigator, Constitutional Policy Advisor'
+    },
+    sourceIds: ['SRC-BCI-ADVOCATES-ACT'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+
+  // ==========================================
+  // SECTION 07: NATIONAL COMPETITIVE GATEWAYS: UPSC, CIVIL SERVICES, BANKING & GOVERNMENT
+  // ==========================================
+  {
+    id: 'GATE-UPSC-CSE',
+    type: 'institution',
+    title: 'UPSC Civil Services Examination (IAS / IPS / IFS / IRS)',
+    abbreviation: 'UPSC CSE (IAS/IPS)',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BA-HUMANITIES',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Apex constitutional competitive examination conducted by Union Public Service Commission under Article 320 for Group A All India and Central Civil Services. Accessible to graduates of any discipline (B.A., B.Com, B.Tech, MBBS).',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Apex Constitutional Civil Service Examination (UPSC)',
+      admissionRoute: 'UPSC CSE Notification in February -> Prelims in May/June -> Mains in September -> Personality Test in Jan–March',
+      examinationTimeline: 'Timeline: 1 Year 3-Stage cycle. Prelims (GS Paper I + CSAT Paper II qualifying) -> Mains (9 Descriptive Papers, 1750 marks) -> Interview (275 marks)',
+      programmesOffered: [
+        'All India Services: Indian Administrative Service (IAS), Indian Police Service (IPS)',
+        'Central Group A Services: Indian Foreign Service (IFS), Indian Revenue Service (IRS IT & Customs), Indian Audit & Accounts Service (IA&AS)'
+      ],
+      careerValue: 'District Magistrate / Collector, Superintendent of Police, Ambassador / High Commissioner, Commissioner of Income Tax, Cabinet Secretary of India'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-STATE-PSC',
+    type: 'institution',
+    title: 'State Public Service Commissions (MPSC / UPPSC / BPSC / KPSC)',
+    abbreviation: 'State PSCs (PCS Officers)',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BA-HUMANITIES',
+    level: 'state',
+    category: 'higher-education',
+    summary: 'State-level civil service examinations conducted by State PSCs for apex provincial administrative and law enforcement cadres, with lateral promotion into the IAS/IPS cadres.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'State Constitutional Civil Service Commission',
+      admissionRoute: 'State PSC Annual Notification -> State Prelims -> State Mains Written -> Viva Voce Interview',
+      examinationTimeline: 'Timeline: 1-Year examination cycle conducted in English and respective state regional language',
+      programmesOffered: [
+        'State Administrative Service (Deputy Collector / Sub-Divisional Magistrate)',
+        'State Police Service (Deputy Superintendent of Police - DySP)',
+        'Tehsildar, Block Development Officer (BDO), Assistant Commissioner of State Tax'
+      ],
+      careerValue: 'Deputy Collector, DySP, Tehsildar, with promotional induction into IAS/IPS after 10–14 years of state gazetted service'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-BANK-RBI-SEBI',
+    type: 'institution',
+    title: 'Apex Financial Regulators: RBI Grade B & SEBI Grade A',
+    abbreviation: 'RBI Grade B & SEBI Officer',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BCOM-BBA',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Direct officer entry into India’s central bank (Reserve Bank of India) and securities market regulator (SEBI). High-prestige technocratic careers in monetary policy and capital markets.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Apex Central Bank & Regulatory Authority Recruitment',
+      admissionRoute: 'RBI Grade B Direct Recruitment / SEBI Grade A (Assistant Manager) Exam',
+      examinationTimeline: 'Timeline: Annual cycle. Phase 1 (Objective Aptitude) -> Phase 2 (Descriptive Economics, Social Issues, Finance & Management) -> Interview',
+      programmesOffered: ['RBI Grade B (General / DEPR / DSIM)', 'SEBI Grade A (General / Legal / IT / Research)'],
+      careerValue: 'Manager (Grade B) -> Chief General Manager -> Executive Director -> Deputy Governor of RBI; Central bank monetary policy framing, forex oversight'
+    },
+    sourceIds: ['SRC-RBI-ACT-1934'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-BANK-PO-SBI',
+    type: 'institution',
+    title: 'Public Sector Commercial Banking: SBI PO & IBPS PO',
+    abbreviation: 'SBI & IBPS Bank PO',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BCOM-BBA',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Probationary Officer (Scale-I Assistant Manager) recruitment across State Bank of India (SBI) and 11 nationalized public sector commercial banks (PNB, Bank of Baroda, Canara Bank, Union Bank).',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Public Sector Commercial Banking Recruitment',
+      admissionRoute: 'SBI PO Exam & IBPS PO Common Recruitment Process (CRP)',
+      examinationTimeline: 'Timeline: 6–8 Months cycle. Prelims (Oct) -> Mains with Descriptive English (Nov) -> Psychometric Test & Group Interview (Jan) -> Final Posting (April)',
+      programmesOffered: ['Probationary Officer / Scale-I Management Trainee', 'Specialist Officer (IT, Agricultural, Law Officer)'],
+      careerValue: 'Probationary Officer -> Branch Manager -> Regional Head -> Chief General Manager -> Managing Director (MD & CEO) of Nationalized Banks'
+    },
+    sourceIds: ['SRC-RBI-ACT-1934'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-GOV-SSC-CGL',
+    type: 'institution',
+    title: 'Staff Selection Commission: Combined Graduate Level (SSC CGL)',
+    abbreviation: 'SSC CGL (Central Ministries)',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BA-HUMANITIES',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Premier central government recruitment for Group B and Group C gazetted and non-gazetted officers across Central Ministries, Department of Revenue, Intelligence Bureau, and CBI.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Central Ministries Recruitment Commission',
+      admissionRoute: 'SSC CGL National Examination',
+      examinationTimeline: 'Timeline: Tier 1 Computer-Based Test (July/Aug) -> Tier 2 Comprehensive Advanced Written Exam (Dec/Jan) -> Merit Allotment',
+      programmesOffered: [
+        'Assistant Section Officer (Central Secretariat Service - CSS, MEA, Intelligence Bureau)',
+        'Inspector of Income Tax (CBDT) & Inspector of Central Excise / GST (CBIC)',
+        'Sub-Inspector in Central Bureau of Investigation (CBI), Assistant Audit Officer (CAG)'
+      ],
+      careerValue: 'Assistant Section Officer (CSS/MEA), Income Tax Inspector, GST Superintendent, CBI Sub-Inspector, Divisional Accountant'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315'],
+    verificationStatus: 'verified',
+    lastVerifiedDate: '2026-10-15'
+  },
+  {
+    id: 'GATE-GOV-DEFENCE',
+    type: 'institution',
+    title: 'Combined Defence Services (CDS) & AFCAT — Military Officers',
+    abbreviation: 'CDS & AFCAT (Armed Forces)',
+    sectionId: 'SEC-07',
+    sectionNumber: '07',
+    parentId: 'DEG-BTECH',
+    level: 'union',
+    category: 'higher-education',
+    summary: 'Commissioned officer recruitment for graduates into the Indian Army, Indian Navy, and Indian Air Force through UPSC CDS and Air Force AFCAT.',
+    mandate: [],
+    powers: [],
+    limitations: [],
+    institutionDetails: {
+      institutionType: 'Armed Forces Officer Selection (Ministry of Defence)',
+      admissionRoute: 'UPSC CDS (Bi-annually in April & Sept) / AFCAT (Bi-annually in Feb & Aug) -> 5-Day Services Selection Board (SSB) -> Medical Board',
+      examinationTimeline: 'Timeline: Written Exam -> 5-Day SSB Psychological & Obstacle Testing -> 1-1.5 Years cadet academy training (IMA Dehradun, INA Ezhimala, AFA Dundigal, OTA Chennai)',
+      programmesOffered: ['Indian Military Academy (IMA)', 'Air Force Academy (AFA)', 'Indian Naval Academy (INA)', 'Officers Training Academy (OTA)'],
+      careerValue: 'Commissioned Officer: Lieutenant (Army), Flying Officer (Air Force), Sub-Lieutenant (Navy) -> Major General / Air Vice Marshal / Rear Admiral'
+    },
+    sourceIds: ['SRC-UPSC-CONST-315'],
     verificationStatus: 'verified',
     lastVerifiedDate: '2026-10-15'
   }
@@ -1993,10 +2495,208 @@ export const RELATIONSHIPS_V3: RelationshipEdgeData[] = [
     type: 'PROGRESSES_TO',
     label: 'Graduates pursue CFA Global Charter for Investment Management',
     verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-061',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'BCOM-BANKING-INSURANCE',
+    type: 'COORDINATES',
+    label: 'Specializes in Banking Operations, Treasury, Credit Appraisal & BFSI',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-062',
+    sourceNodeId: 'STRM-ARTS',
+    targetNodeId: 'DEG-LAW-3YR',
+    type: 'FEEDS',
+    label: 'Graduates enter 3-Year LL.B. via DU/CUET-PG & NLSAT',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-063',
+    sourceNodeId: 'DEG-LAW-5YR',
+    targetNodeId: 'LAW-JUDICIARY',
+    type: 'PROGRESSES_TO',
+    label: 'Law graduates sit for State Judicial Services (PCS-J) for Civil Judge / Magistrate',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-064',
+    sourceNodeId: 'DEG-LAW-3YR',
+    targetNodeId: 'LAW-JUDICIARY',
+    type: 'PROGRESSES_TO',
+    label: '3-Year Law graduates sit for State Judicial Services (PCS-J) for Civil Judge',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-065',
+    sourceNodeId: 'DEG-LAW-3YR',
+    targetNodeId: 'LAW-AIBE',
+    type: 'PROGRESSES_TO',
+    label: 'Qualifies for AIBE Certificate of Practice to practice in courts nationwide',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-066',
+    sourceNodeId: 'STRM-ARTS',
+    targetNodeId: 'DEG-DESIGN-NID',
+    type: 'FEEDS',
+    label: 'Arts & creative students enter 4-Yr B.Des at NID & NIFT via DAT',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-067',
+    sourceNodeId: 'STRM-ARTS',
+    targetNodeId: 'DEG-HOTEL-MGMT',
+    type: 'FEEDS',
+    label: 'Students enter 3-Yr B.Sc Hospitality at IHM via NCHMCT JEE',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-068',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'BA-POL-POLICY',
+    type: 'COORDINATES',
+    label: 'Specializes in Political Science, International Relations & Public Policy',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-069',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'BA-ECONOMICS',
+    type: 'COORDINATES',
+    label: 'Specializes in Quantitative Economics & Econometrics',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-070',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'BA-PSYCHOLOGY',
+    type: 'COORDINATES',
+    label: 'Specializes in Clinical Assessment & Organizational Psychology',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-071',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'BA-JOURNALISM',
+    type: 'COORDINATES',
+    label: 'Specializes in Investigative Journalism, Broadcasting & Mass Comm',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-072',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'PROF-CS',
+    type: 'PROGRESSES_TO',
+    label: 'Students pursue Company Secretary (ICSI) for Board Compliance & Corporate Law',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-073',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'PROF-CMA',
+    type: 'PROGRESSES_TO',
+    label: 'Students pursue Cost & Management Accountant (ICMAI) for Cost Audit & Pricing',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-074',
+    sourceNodeId: 'STRM-COMMERCE',
+    targetNodeId: 'PROF-ACTUARIAL',
+    type: 'PROGRESSES_TO',
+    label: 'Pursues Actuarial Science (IAI/IFoA) for Quantitative Risk & Pension Modeling',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-075',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'COMBO-BA-LLB',
+    type: 'PROGRESSES_TO',
+    label: 'Combines B.A. + LL.B. for Constitutional Advocacy, PILs & Public Policy',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-076',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-UPSC-CSE',
+    type: 'FEEDS',
+    label: 'Humanities graduates take UPSC Civil Services for IAS, IPS, IFS, IRS',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-077',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'GATE-UPSC-CSE',
+    type: 'FEEDS',
+    label: 'Engineers take UPSC Civil Services for IAS, IPS, IRS, and ESE',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-078',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-STATE-PSC',
+    type: 'FEEDS',
+    label: 'Graduates enter State Civil Services (MPSC/UPPSC) for Deputy Collector & DySP',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-079',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'GATE-BANK-RBI-SEBI',
+    type: 'PROGRESSES_TO',
+    label: 'Commerce & finance graduates sit for RBI Grade B & SEBI Grade A Officer exams',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-080',
+    sourceNodeId: 'DEG-BCOM-BBA',
+    targetNodeId: 'GATE-BANK-PO-SBI',
+    type: 'PROGRESSES_TO',
+    label: 'Graduates enter Public Sector Commercial Banking via SBI PO & IBPS PO',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-081',
+    sourceNodeId: 'DEG-BA-HUMANITIES',
+    targetNodeId: 'GATE-GOV-SSC-CGL',
+    type: 'FEEDS',
+    label: 'Graduates take SSC CGL for Income Tax Inspector, Central Secretariat ASO & CBI SI',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V3-082',
+    sourceNodeId: 'DEG-BTECH',
+    targetNodeId: 'GATE-GOV-DEFENCE',
+    type: 'PROGRESSES_TO',
+    label: 'Graduates take UPSC CDS & AFCAT for Army, Navy & Air Force Commissioned Officers',
+    verificationStatus: 'verified'
   }
 ];
 
 export const SOURCES_V3: SourceRecord[] = [
+  {
+    id: 'SRC-UPSC-CONST-315',
+    name: 'Constitution of India (Articles 315-323: Public Service Commissions)',
+    officialUrl: 'https://upsc.gov.in',
+    documentTitle: 'Constitution of India Part XIV: Public Service Commissions & UPSC Examination Regulations',
+    publicationDate: '1950-01-26',
+    lastVerifiedDate: '2026-10-15',
+    sourcePriority: 1,
+    verificationStatus: 'verified',
+    relatedNodeIds: ['GATE-UPSC-CSE', 'GATE-STATE-PSC', 'GATE-GOV-SSC-CGL', 'GATE-GOV-DEFENCE']
+  },
+  {
+    id: 'SRC-RBI-ACT-1934',
+    name: 'Reserve Bank of India Act, 1934 & Banking Regulations',
+    officialUrl: 'https://rbi.org.in',
+    documentTitle: 'Reserve Bank of India Act, 1934 & RBI Services Board Regulations',
+    publicationDate: '1934-03-06',
+    lastVerifiedDate: '2026-10-15',
+    sourcePriority: 1,
+    verificationStatus: 'verified',
+    relatedNodeIds: ['BCOM-BANKING-INSURANCE', 'GATE-BANK-RBI-SEBI', 'GATE-BANK-PO-SBI']
+  },
   {
     id: 'SRC-NEP-2020',
     name: 'National Education Policy 2020',
