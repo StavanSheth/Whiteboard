@@ -56,6 +56,8 @@ export function TopToolbar() {
     setCustomArrowHeight,
     arrowStyle,
     setArrowStyle,
+    edgeLabelMode,
+    setEdgeLabelMode,
     fontSizePx,
     setFontSizePx,
     lineHeightMult,
@@ -390,6 +392,50 @@ export function TopToolbar() {
               }`}
             >
               Rounded
+            </button>
+          </div>
+
+          {/* Edge Label Density Switcher */}
+          <div className="flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-slate-200 shadow-2xs" title="Arrow Text Label Density Mode">
+            <span className="text-[10px] font-semibold text-slate-500 pl-1 pr-0.5 flex items-center gap-1">
+              <Type className="w-3 h-3 text-slate-600" />
+              Labels:
+            </span>
+            <button
+              onClick={() => setEdgeLabelMode('wrapped')}
+              className={`px-2 py-0.5 text-[10.5px] font-semibold rounded transition-all cursor-pointer ${
+                edgeLabelMode === 'wrapped' ? 'bg-indigo-900 text-amber-300 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              }`}
+              title="Full wrapped text with collision prevention"
+            >
+              Wrapped
+            </button>
+            <button
+              onClick={() => setEdgeLabelMode('badge')}
+              className={`px-2 py-0.5 text-[10.5px] font-semibold rounded transition-all cursor-pointer ${
+                edgeLabelMode === 'badge' ? 'bg-indigo-900 text-amber-300 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              }`}
+              title="Compact pill badges"
+            >
+              Compact
+            </button>
+            <button
+              onClick={() => setEdgeLabelMode('hover')}
+              className={`px-2 py-0.5 text-[10.5px] font-semibold rounded transition-all cursor-pointer ${
+                edgeLabelMode === 'hover' ? 'bg-indigo-900 text-amber-300 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              }`}
+              title="Hover-only dot indicators (cleanest canvas view)"
+            >
+              On Hover
+            </button>
+            <button
+              onClick={() => setEdgeLabelMode('off')}
+              className={`px-2 py-0.5 text-[10.5px] font-semibold rounded transition-all cursor-pointer ${
+                edgeLabelMode === 'off' ? 'bg-indigo-900 text-amber-300 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              }`}
+              title="Hide all arrow labels"
+            >
+              Off
             </button>
           </div>
 

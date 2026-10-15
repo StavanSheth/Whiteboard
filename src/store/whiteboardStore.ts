@@ -59,6 +59,7 @@ export interface WhiteboardState {
   fontSizePx: number;
   lineHeightMult: number;
   paraSpacingPx: number;
+  edgeLabelMode: 'wrapped' | 'badge' | 'hover' | 'off';
 
   // Inline Editing State on Canvas
   editingNodeId: string | null;
@@ -122,6 +123,7 @@ export interface WhiteboardState {
   setFontSizePx: (val: number) => void;
   setLineHeightMult: (val: number) => void;
   setParaSpacingPx: (val: number) => void;
+  setEdgeLabelMode: (mode: 'wrapped' | 'badge' | 'hover' | 'off') => void;
   resetSpacingAndSizing: () => void;
 
   startEditingNode: (node: EducationNode) => void;
@@ -249,6 +251,7 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
   fontSizePx: 11,
   lineHeightMult: 1.35,
   paraSpacingPx: 6,
+  edgeLabelMode: 'wrapped',
 
   // Inline Editing
   editingNodeId: null,
@@ -664,6 +667,8 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
       alternateDepth: false,
       alternateSpacing: 50
     })),
+
+  setEdgeLabelMode: (mode) => set({ edgeLabelMode: mode }),
 
   startEditingNode: (node) =>
     set((state) => {

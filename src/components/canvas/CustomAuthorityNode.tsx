@@ -21,8 +21,84 @@ import {
   GraduationCap,
   Layers,
   Users,
-  Clock
+  Clock,
+  Briefcase,
+  Sparkles
 } from 'lucide-react';
+
+function getNodeTheme(data: EducationNode) {
+  const id = data.id || '';
+  if (id.startsWith('PRE-') || id.startsWith('BOARD-') || id === 'SCH-10TH-MILESTONE') {
+    return {
+      borderTop: 'border-t-4 border-t-amber-500',
+      headerBg: 'bg-gradient-to-r from-amber-50 via-orange-50/40 to-white',
+      badgeBg: 'bg-amber-100 text-amber-900 border-amber-200',
+      iconBox: 'bg-amber-100 text-amber-800 border-amber-200',
+      glowRing: 'ring-amber-500/30 border-amber-600'
+    };
+  }
+  if (id.startsWith('STRM-PCM') || id.startsWith('DEG-BTECH') || id.startsWith('BTECH-') || id === 'PG-MTECH' || id === 'STRM-POLYTECHNIC') {
+    return {
+      borderTop: 'border-t-4 border-t-indigo-600',
+      headerBg: 'bg-gradient-to-r from-indigo-50 via-blue-50/40 to-white',
+      badgeBg: 'bg-indigo-100 text-indigo-900 border-indigo-200',
+      iconBox: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+      glowRing: 'ring-indigo-500/30 border-indigo-600'
+    };
+  }
+  if (id.startsWith('STRM-PCB') || id.startsWith('DEG-MBBS') || id.startsWith('PG-MD') || id.startsWith('PG-MS') || id.startsWith('CLINIC-') || id.startsWith('DEG-AYUSH') || id.startsWith('DEG-BPHARM') || id.startsWith('PHARM-')) {
+    return {
+      borderTop: 'border-t-4 border-t-emerald-600',
+      headerBg: 'bg-gradient-to-r from-emerald-50 via-teal-50/40 to-white',
+      badgeBg: 'bg-emerald-100 text-emerald-900 border-emerald-200',
+      iconBox: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+      glowRing: 'ring-emerald-500/30 border-emerald-600'
+    };
+  }
+  if (id.startsWith('STRM-COMMERCE') || id.startsWith('DEG-BCOM') || id.startsWith('BCOM-') || id.startsWith('BBA-') || id.startsWith('PROF-C') || id.startsWith('PROF-ACTUARIAL')) {
+    return {
+      borderTop: 'border-t-4 border-t-sky-600',
+      headerBg: 'bg-gradient-to-r from-sky-50 via-cyan-50/40 to-white',
+      badgeBg: 'bg-sky-100 text-sky-900 border-sky-200',
+      iconBox: 'bg-sky-100 text-sky-800 border-sky-200',
+      glowRing: 'ring-sky-500/30 border-sky-600'
+    };
+  }
+  if (id.startsWith('STRM-ARTS') || id.startsWith('DEG-BA') || id.startsWith('BA-') || id.startsWith('DEG-LAW') || id.startsWith('LAW-') || id.startsWith('PG-LLM')) {
+    return {
+      borderTop: 'border-t-4 border-t-purple-600',
+      headerBg: 'bg-gradient-to-r from-purple-50 via-fuchsia-50/40 to-white',
+      badgeBg: 'bg-purple-100 text-purple-900 border-purple-200',
+      iconBox: 'bg-purple-100 text-purple-800 border-purple-200',
+      glowRing: 'ring-purple-500/30 border-purple-600'
+    };
+  }
+  if (id.startsWith('GATE-')) {
+    return {
+      borderTop: 'border-t-4 border-t-rose-600',
+      headerBg: 'bg-gradient-to-r from-rose-50 via-amber-50/40 to-white',
+      badgeBg: 'bg-rose-100 text-rose-900 border-rose-200',
+      iconBox: 'bg-rose-100 text-rose-800 border-rose-200',
+      glowRing: 'ring-rose-500/30 border-rose-600'
+    };
+  }
+  if (id.startsWith('PG-MBA') || id.startsWith('DEG-IPM')) {
+    return {
+      borderTop: 'border-t-4 border-t-amber-600',
+      headerBg: 'bg-gradient-to-r from-amber-50 via-yellow-50/40 to-white',
+      badgeBg: 'bg-amber-100 text-amber-900 border-amber-200',
+      iconBox: 'bg-amber-100 text-amber-800 border-amber-200',
+      glowRing: 'ring-amber-500/30 border-amber-600'
+    };
+  }
+  return {
+    borderTop: 'border-t-4 border-t-emerald-700',
+    headerBg: 'bg-gradient-to-r from-slate-50 to-white',
+    badgeBg: 'bg-slate-100 text-slate-800 border-slate-200',
+    iconBox: 'bg-slate-100 text-slate-700 border-slate-200',
+    glowRing: 'ring-emerald-500/30 border-emerald-600'
+  };
+}
 
 const typeIcons: Record<string, typeof Scale> = {
   constitutional: Scale,
@@ -76,6 +152,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
 
   const IconComponent = typeIcons[data.type] || Landmark;
   const verif = verificationColors[data.verificationStatus] || verificationColors.verified;
+  const theme = getNodeTheme(data);
 
   const width = isExpanded ? Math.max(340, nodeBoxWidth) : Math.max(260, nodeBoxWidth);
 
@@ -86,12 +163,12 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
           selectNode(data.id);
         }
       }}
-      className={`relative bg-white rounded-xl border transition-all duration-150 shadow-xs group ${
+      className={`relative bg-white rounded-xl border ${theme.borderTop} transition-all duration-200 shadow-xs group ${
         isEditing
           ? 'border-emerald-500 ring-2 ring-emerald-500/50 shadow-lg z-30'
           : selected
-          ? 'border-emerald-600 ring-2 ring-emerald-600/30 shadow-md'
-          : 'border-slate-200 hover:border-emerald-500 hover:shadow-sm'
+          ? `${theme.glowRing} ring-2 shadow-md scale-[1.01]`
+          : 'border-slate-200/90 hover:border-slate-400 hover:shadow-md'
       }`}
       style={{
         width: `${width}px`,
@@ -252,10 +329,10 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
         /* Standard Visual Node on Canvas */
         <>
           {/* Node Header */}
-          <div className="p-3 bg-slate-50/70 rounded-t-xl border-b border-slate-100">
+          <div className={`p-3 ${theme.headerBg} rounded-t-xl border-b border-slate-100`}>
             <div className="flex items-center justify-between gap-1.5 mb-1.5">
               <div className="flex items-center gap-1.5 min-w-0">
-                <div className="p-1 rounded-md bg-white border border-slate-200 text-emerald-800 shadow-2xs flex-shrink-0">
+                <div className={`p-1 rounded-md border shadow-2xs flex-shrink-0 ${theme.iconBox}`}>
                   <IconComponent className="w-3.5 h-3.5" />
                 </div>
                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">
@@ -265,7 +342,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
 
               <div className="flex items-center gap-1">
                 {data.abbreviation && (
-                  <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-200 flex-shrink-0">
+                  <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border flex-shrink-0 ${theme.badgeBg}`}>
                     {data.abbreviation}
                   </span>
                 )}
@@ -307,6 +384,18 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
 
             {/* Legal Status badge & Domain Badges if present */}
             <div className="mt-1.5 flex flex-wrap gap-1">
+              {data.institutionDetails?.examinationTimeline && (
+                <span className="inline-flex items-center gap-1 text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-slate-100/90 text-slate-700 border border-slate-200" title="Duration / Timeline">
+                  <Clock className="w-2.5 h-2.5 text-slate-500" />
+                  {data.institutionDetails.examinationTimeline}
+                </span>
+              )}
+              {data.institutionDetails?.admissionRoute && (
+                <span className="inline-flex items-center gap-1 text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200" title="Entrance / Testing Agency">
+                  <Sparkles className="w-2.5 h-2.5 text-blue-600" />
+                  {data.institutionDetails.admissionRoute}
+                </span>
+              )}
               {data.legalStatus && (
                 <span className="inline-block text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
                   {data.legalStatus}
@@ -479,6 +568,17 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                       <div className="text-[10px] text-slate-700">
                         <span className="font-semibold text-indigo-900">Qualification Level: </span>
                         <span className="font-mono text-purple-900 font-medium">{data.institutionDetails.nheqfLevel}</span>
+                      </div>
+                    )}
+                    {data.institutionDetails.careerValue && (
+                      <div className="text-[10px] text-slate-800 bg-white/90 p-2 rounded-md border border-indigo-200/90 shadow-2xs mt-1.5">
+                        <div className="font-semibold text-indigo-950 flex items-center gap-1 mb-1">
+                          <Briefcase className="w-3.5 h-3.5 text-indigo-600 flex-shrink-0" />
+                          <span>Career Hierarchy & Opportunities:</span>
+                        </div>
+                        <div className="text-slate-700 font-medium leading-relaxed">
+                          {data.institutionDetails.careerValue}
+                        </div>
                       </div>
                     )}
                   </div>
