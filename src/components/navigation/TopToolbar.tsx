@@ -169,66 +169,66 @@ export function TopToolbar() {
         {/* Right: Key Action Buttons */}
         <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto max-w-full pb-0.5 sm:pb-0 scrollbar-none order-2 sm:order-3">
           {/* 5-Tool Cursor Task Mode Selector */}
-          <div className="flex items-center rounded-lg border border-slate-200 bg-slate-100/90 p-0.5 shadow-2xs">
+          <div className="flex items-center rounded-lg border border-slate-300 bg-slate-100 p-0.5 shadow-xs">
             <button
               onClick={() => setCanvasInteractionMode('pan')}
-              className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                 canvasInteractionMode === 'pan'
-                  ? 'bg-white text-emerald-950 shadow-xs border border-slate-200/90 font-bold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-emerald-800 text-white shadow-xs font-bold ring-1 ring-emerald-600'
+                  : 'text-slate-700 hover:text-slate-900 hover:bg-slate-200/70'
               }`}
               title="Pan Canvas (H) - Drag canvas background to glide smoothly"
             >
-              <Hand className="w-3.5 h-3.5 text-emerald-700" />
-              <span className="hidden xl:inline">Pan</span>
+              <Hand className="w-3.5 h-3.5 text-emerald-300" />
+              <span className="hidden sm:inline">Pan</span>
             </button>
             <button
               onClick={() => setCanvasInteractionMode('select')}
-              className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                 canvasInteractionMode === 'select'
-                  ? 'bg-emerald-900 text-amber-300 shadow-xs border border-emerald-950 font-bold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-emerald-800 text-amber-300 shadow-xs font-bold ring-1 ring-emerald-600'
+                  : 'text-slate-700 hover:text-slate-900 hover:bg-slate-200/70'
               }`}
               title="Box Select (V) - Click and drag anywhere to marquee-select multiple cards"
             >
-              <BoxSelect className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden xl:inline">Select</span>
+              <BoxSelect className="w-3.5 h-3.5 text-amber-300" />
+              <span className="hidden sm:inline">Select</span>
             </button>
             <button
               onClick={() => setCanvasInteractionMode('move')}
-              className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                 canvasInteractionMode === 'move'
-                  ? 'bg-emerald-900 text-amber-300 shadow-xs border border-emerald-950 font-bold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-emerald-800 text-sky-300 shadow-xs font-bold ring-1 ring-emerald-600'
+                  : 'text-slate-700 hover:text-slate-900 hover:bg-slate-200/70'
               }`}
               title="Move / Drag Cards (M) - Reposition individual cards or selected clusters"
             >
-              <Move className="w-3.5 h-3.5 text-sky-400" />
-              <span className="hidden xl:inline">Move</span>
+              <Move className="w-3.5 h-3.5 text-sky-300" />
+              <span className="hidden sm:inline">Move</span>
             </button>
             <button
               onClick={() => setCanvasInteractionMode('connect')}
-              className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                 canvasInteractionMode === 'connect'
-                  ? 'bg-emerald-900 text-amber-300 shadow-xs border border-emerald-950 font-bold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-emerald-800 text-purple-300 shadow-xs font-bold ring-1 ring-emerald-600'
+                  : 'text-slate-700 hover:text-slate-900 hover:bg-slate-200/70'
               }`}
               title="Connect Link (C) - Click source card then target card to create relationship"
             >
-              <Link className="w-3.5 h-3.5 text-purple-400" />
-              <span className="hidden xl:inline">Connect</span>
+              <Link className="w-3.5 h-3.5 text-purple-300" />
+              <span className="hidden sm:inline">Connect</span>
             </button>
             <button
               onClick={() => setCanvasInteractionMode('zoom')}
-              className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold transition-all cursor-pointer ${
                 canvasInteractionMode === 'zoom'
-                  ? 'bg-emerald-900 text-amber-300 shadow-xs border border-emerald-950 font-bold'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-emerald-800 text-amber-300 shadow-xs font-bold ring-1 ring-emerald-600'
+                  : 'text-slate-700 hover:text-slate-900 hover:bg-slate-200/70'
               }`}
               title="Zoom Region (Z) - Click to zoom in (+25%), Shift+Click to zoom out"
             >
-              <ZoomIn className="w-3.5 h-3.5 text-amber-400" />
-              <span className="hidden xl:inline">Zoom</span>
+              <ZoomIn className="w-3.5 h-3.5 text-amber-300" />
+              <span className="hidden sm:inline">Zoom</span>
             </button>
           </div>
 

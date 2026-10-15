@@ -19,7 +19,22 @@ import { calculateElkLayout } from '../../services/layoutService';
 import { CustomSectionNode } from './CustomSectionNode';
 import { CustomAuthorityNode } from './CustomAuthorityNode';
 import { RelationshipEdge } from './RelationshipEdge';
-import { Loader2, Layers, AlignHorizontalJustifyCenter, AlignVerticalJustifyCenter, X, Link as LinkIcon, ZoomIn } from 'lucide-react';
+import {
+  Loader2,
+  Layers,
+  AlignHorizontalJustifyCenter,
+  AlignVerticalJustifyCenter,
+  X,
+  Link as LinkIcon,
+  ZoomIn,
+  Hand,
+  BoxSelect,
+  Move,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  ArrowDown
+} from 'lucide-react';
 
 const nodeTypes = {
   sectionNode: CustomSectionNode,
@@ -270,6 +285,33 @@ function CanvasInner() {
     setSelectedNodeIds([]);
   }, [setNodes, setSelectedNodeIds]);
 
+  const nudgeSelectedNodes = useCallback(
+    (dx: number, dy: number) => {
+      if (selectedNodeIds.length === 0) return;
+      isPositionUpdateOnlyRef.current = true;
+      const updates: Array<{ id: string; position: { x: number; y: number } }> = [];
+
+      setNodes((prev) =>
+        prev.map((node) => {
+          if (selectedNodeIds.includes(node.id)) {
+            const newPos = {
+              x: Math.round(node.position.x + dx),
+              y: Math.round(node.position.y + dy)
+            };
+            updates.push({ id: node.id, position: newPos });
+            return { ...node, position: newPos };
+          }
+          return node;
+        })
+      );
+
+      if (updates.length > 0) {
+        updateMultipleNodePositions(updates);
+      }
+    },
+    [selectedNodeIds, setNodes, updateMultipleNodePositions]
+  );
+
   // Keyboard shortcuts: 'h' for pan, 'v' for select, 'm' for move, 'c' for connect, 'z' for zoom, 'Escape' to deselect/reset
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -357,15 +399,15 @@ function CanvasInner() {
         />
       </ReactFlow>
 
-      {/* Floating Multi-Selection Action Bar */}
+      {/* Floating Multi-Selection Alignment Bar (Stacked gracefully above tool dock) */}
       {selectedNodeIds.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2.5 px-4 py-2 bg-slate-900/95 text-white rounded-xl shadow-2xl backdrop-blur-md border border-emerald-500/50 animate-in fade-in slide-in-from-bottom-3 duration-200">
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2.5 px-4 py-2 bg-slate-900/95 text-white rounded-xl shadow-2xl backdrop-blur-md border border-emerald-500/50 animate-in fade-in slide-in-from-bottom-2 duration-200">
           <div className="flex items-center gap-1.5 font-bold text-xs text-amber-300 pr-2.5 border-r border-slate-700">
             <Layers className="w-4 h-4 text-emerald-400" />
-            <span>{selectedNodeIds.length} Cards Selected</span>
+            <span>{selectedNodeIds.length} Selected</span>
           </div>
           <span className="text-[11px] text-slate-300 hidden md:inline">
-            Drag any card to move cluster
+            Drag cards or align below:
           </span>
           <div className="flex items-center gap-1.5">
             <button
@@ -394,6 +436,124 @@ function CanvasInner() {
           </div>
         </div>
       )}
+
+      {/* Dedicated Floating Canvas Tool Dock - Clickable Buttons on Frontend */}
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 p-1.5 bg-slate-900/95 backdrop-blur-md text-white rounded-2xl shadow-2xl border border-slate-700/90 ring-1 ring-white/10 select-none">
+        {/* Mode Selector Buttons */}
+        <button
+          onClick={() => setCanvasInteractionMode('pan')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+            canvasInteractionMode === 'pan'
+              ? 'bg-emerald-600 text-white shadow-md ring-2 ring-emerald-400 font-bold'
+              : 'text-slate-300 hover:text-white hover:bg-slate-800'
+          }`}
+          title="Pan Canvas (H) - Click to drag canvas background smoothly"
+        >
+          <Hand className="w-4 h-4 text-emerald-300" />
+          <span>Pan</span>
+          <span className="text-[10px] opacity-60 font-mono hidden sm:inline">H</span>
+        </button>
+
+        <button
+          onClick={() => setCanvasInteractionMode('select')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+            canvasInteractionMode === 'select'
+              ? 'bg-emerald-600 text-white shadow-md ring-2 ring-emerald-400 font-bold'
+              : 'text-slate-300 hover:text-white hover:bg-slate-800'
+          }`}
+          title="Box Select (V) - Click and drag to marquee-select multiple cards"
+        >
+          <BoxSelect className="w-4 h-4 text-amber-300" />
+          <span>Select</span>
+          <span className="text-[10px] opacity-60 font-mono hidden sm:inline">V</span>
+        </button>
+
+        <button
+          onClick={() => setCanvasInteractionMode('move')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+            canvasInteractionMode === 'move'
+              ? 'bg-emerald-600 text-white shadow-md ring-2 ring-emerald-400 font-bold'
+              : 'text-slate-300 hover:text-white hover:bg-slate-800'
+          }`}
+          title="Move / Drag Cards (M) - Click and reposition cards or clusters"
+        >
+          <Move className="w-4 h-4 text-sky-300" />
+          <span>Move</span>
+          <span className="text-[10px] opacity-60 font-mono hidden sm:inline">M</span>
+        </button>
+
+        <button
+          onClick={() => setCanvasInteractionMode('connect')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+            canvasInteractionMode === 'connect'
+              ? 'bg-emerald-600 text-white shadow-md ring-2 ring-emerald-400 font-bold'
+              : 'text-slate-300 hover:text-white hover:bg-slate-800'
+          }`}
+          title="Connect Link (C) - Click source card then target card to create relationship"
+        >
+          <LinkIcon className="w-4 h-4 text-purple-300" />
+          <span>Connect</span>
+          <span className="text-[10px] opacity-60 font-mono hidden sm:inline">C</span>
+        </button>
+
+        <button
+          onClick={() => setCanvasInteractionMode('zoom')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+            canvasInteractionMode === 'zoom'
+              ? 'bg-emerald-600 text-white shadow-md ring-2 ring-emerald-400 font-bold'
+              : 'text-slate-300 hover:text-white hover:bg-slate-800'
+          }`}
+          title="Zoom Canvas (Z) - Click to zoom in (+25%), Alt/Shift+Click to zoom out"
+        >
+          <ZoomIn className="w-4 h-4 text-amber-300" />
+          <span>Zoom</span>
+          <span className="text-[10px] opacity-60 font-mono hidden sm:inline">Z</span>
+        </button>
+
+        {/* Reposition / Nudge Buttons by Clicking on Frontend */}
+        {selectedNodeIds.length > 0 && (
+          <div className="flex items-center gap-1 pl-2 border-l border-slate-700">
+            <span className="text-[10px] font-semibold text-amber-300 hidden md:inline">
+              Nudge:
+            </span>
+            <button
+              onClick={() => nudgeSelectedNodes(-40, 0)}
+              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition-colors cursor-pointer border border-slate-700 hover:border-emerald-500"
+              title="Nudge Selected Cards Left (-40px)"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 text-sky-300" />
+            </button>
+            <button
+              onClick={() => nudgeSelectedNodes(40, 0)}
+              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition-colors cursor-pointer border border-slate-700 hover:border-emerald-500"
+              title="Nudge Selected Cards Right (+40px)"
+            >
+              <ArrowRight className="w-3.5 h-3.5 text-sky-300" />
+            </button>
+            <button
+              onClick={() => nudgeSelectedNodes(0, -40)}
+              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition-colors cursor-pointer border border-slate-700 hover:border-emerald-500"
+              title="Nudge Selected Cards Up (-40px)"
+            >
+              <ArrowUp className="w-3.5 h-3.5 text-sky-300" />
+            </button>
+            <button
+              onClick={() => nudgeSelectedNodes(0, 40)}
+              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition-colors cursor-pointer border border-slate-700 hover:border-emerald-500"
+              title="Nudge Selected Cards Down (+40px)"
+            >
+              <ArrowDown className="w-3.5 h-3.5 text-sky-300" />
+            </button>
+            <button
+              onClick={handleDeselectAll}
+              className="p-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/70 text-slate-400 hover:text-white transition-colors ml-0.5 cursor-pointer border border-slate-700"
+              title="Clear Selection (Esc)"
+            >
+              <X className="w-3.5 h-3.5 text-rose-300" />
+            </button>
+          </div>
+        )}
+      </div>
       {/* Floating Prompt for Connect Tool */}
       {canvasInteractionMode === 'connect' && (
         <div className="absolute top-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-4 py-2 bg-slate-900/95 text-white rounded-xl shadow-xl backdrop-blur-md border border-purple-500/70 animate-in fade-in slide-in-from-top-2 duration-200 text-xs">
