@@ -5,14 +5,172 @@ import { SECTION_METAS_V4, NODES_V4, RELATIONSHIPS_V4, SOURCES_V4 } from '../src
 import { SECTION_METAS_V5, NODES_V5, RELATIONSHIPS_V5, SOURCES_V5 } from '../src/data/whiteboard5-banking-judiciary';
 import { EducationNode, RelationshipEdgeData, SourceRecord, DatasetSchema, ProjectRecord, ProjectSummary, SectionMeta } from './schema';
 
+const STORAGE_PREFIX = 'wb_db_v1_';
+const STORAGE_ACTIVE_KEY = 'wb_db_v1_active_project_id';
+const STORAGE_PROJECTS_KEY = 'wb_db_v1_all_project_ids';
+
 class EducationGovernanceDatabase {
   private projects: Map<string, ProjectRecord>;
   private activeProjectId: string;
 
   constructor() {
     this.projects = new Map();
-    this.activeProjectId = 'proj-default';
+    this.activeProjectId = 'proj-whiteboard-2';
     this.seed();
+    this.loadFromStorage();
+  }
+
+  private loadFromStorage(): void {
+    if (typeof window === 'undefined' || !window.localStorage) return;
+    try {
+      const activeId = window.localStorage.getItem(STORAGE_ACTIVE_KEY);
+      const allIdsRaw = window.localStorage.getItem(STORAGE_PROJECTS_KEY);
+
+      const projectIdsToLoad = new Set<string>(Array.from(this.projects.keys()));
+      if (allIdsRaw) {
+        try {
+          const parsedIds = JSON.parse(allIdsRaw);
+          if (Array.isArray(parsedIds)) {
+            parsedIds.forEach((id) => projectIdsToLoad.add(id));
+          }
+        } catch {}
+      }
+
+      for (const pid of projectIdsToLoad) {
+        const stored = window.localStorage.getItem(`${STORAGE_PREFIX}project_${pid}`);
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored) as ProjectRecord;
+            if (parsed && parsed.id && Array.isArray(parsed.nodes)) {
+              this.projects.set(parsed.id, parsed);
+            }
+          } catch (e) {
+            console.warn(`[DB] Failed to parse stored project ${pid}:`, e);
+          }
+        }
+      }
+
+      if (activeId && this.projects.has(activeId)) {
+        this.activeProjectId = activeId;
+      }
+    } catch (e) {
+      console.warn('[DB] Storage hydration warning:', e);
+    }
+  }
+
+  public persistProject(projectId?: string): void {
+    if (typeof window === 'undefined' || !window.localStorage) return;
+    try {
+      const pid = projectId || this.activeProjectId;
+      const proj = this.projects.get(pid);
+      if (proj) {
+        window.localStorage.setItem(`${STORAGE_PREFIX}project_${pid}`, JSON.stringify(proj));
+      }
+      window.localStorage.setItem(
+        STORAGE_PROJECTS_KEY,
+        JSON.stringify(Array.from(this.projects.keys()))
+      );
+      window.localStorage.setItem(STORAGE_ACTIVE_KEY, this.activeProjectId);
+    } catch (e) {
+      console.warn('[DB] Storage persist warning:', e);
+    }
+  }
+
+  public resetProjectToDefault(projectId: string): ProjectRecord {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.removeItem(`${STORAGE_PREFIX}project_${projectId}`);
+    }
+    const now = new Date().toISOString();
+    let reseeded: ProjectRecord | null = null;
+    if (projectId === 'proj-whiteboard-2') {
+      reseeded = {
+        id: 'proj-whiteboard-2',
+        name: 'Indian Educational Institutions & Course Pathways (Whiteboard 2 of 5)',
+        description: 'Comprehensive lifecycle: Pre-Primary to 10th Boards (CBSE, ICSE, SSC, NCERT, NIOS) -> 11th/12th Streams (PCM, PCB, Commerce, Arts) -> Course Pathways (B.Tech, MBBS, Law, Commerce, Arts) -> National Competitive Gateways (UPSC, Banking, Government)',
+        createdAt: now,
+        updatedAt: now,
+        isDefault: true,
+        nodeCount: NODES_V3.length,
+        relationshipCount: RELATIONSHIPS_V3.length,
+        sourceCount: SOURCES_V3.length,
+        nodes: NODES_V3.map((n) => ({ ...n })),
+        relationships: RELATIONSHIPS_V3.map((r) => ({ ...r })),
+        sources: SOURCES_V3.map((s) => ({ ...s })),
+        sections: SECTION_METAS_V3.map((s) => ({ ...s }))
+      };
+    } else if (projectId === 'proj-default') {
+      reseeded = {
+        id: 'proj-default',
+        name: 'Indian Education Governance (Whiteboard 1 of 3)',
+        description: 'Authorities, Legal Powers, Standards, Examinations & Oversight across 16 statutory sections',
+        createdAt: now,
+        updatedAt: now,
+        isDefault: false,
+        nodeCount: ALL_NODES.length,
+        relationshipCount: ALL_RELATIONSHIPS.length,
+        sourceCount: ALL_SOURCES.length,
+        nodes: ALL_NODES.map((n) => ({ ...n })),
+        relationships: ALL_RELATIONSHIPS.map((r) => ({ ...r })),
+        sources: ALL_SOURCES.map((s) => ({ ...s })),
+        sections: SECTION_METAS.map((s) => ({ ...s }))
+      };
+    } else if (projectId === 'proj-whiteboard-3') {
+      reseeded = {
+        id: 'proj-whiteboard-3',
+        name: 'Indian Examinations, Timelines & Career Pathways (Whiteboard 3 of 3)',
+        description: '22 major sections: school boards, engineering, medicine, civil services, defence, management, law, and career pathways from eligibility to appointment',
+        createdAt: now,
+        updatedAt: now,
+        isDefault: false,
+        nodeCount: NODES_V2.length,
+        relationshipCount: RELATIONSHIPS_V2.length,
+        sourceCount: SOURCES_V2.length,
+        nodes: NODES_V2.map((n) => ({ ...n })),
+        relationships: RELATIONSHIPS_V2.map((r) => ({ ...r })),
+        sources: SOURCES_V2.map((s) => ({ ...s })),
+        sections: SECTION_METAS_V2.map((s) => ({ ...s }))
+      };
+    } else if (projectId === 'proj-whiteboard-4') {
+      reseeded = {
+        id: 'proj-whiteboard-4',
+        name: 'Indian Democracy and Government Hierarchy (v4)',
+        description: 'Complete constitutional, union, state, district, rural Panchayati Raj and urban municipal hierarchy from President to citizen',
+        createdAt: now,
+        updatedAt: now,
+        isDefault: false,
+        nodeCount: NODES_V4.length,
+        relationshipCount: RELATIONSHIPS_V4.length,
+        sourceCount: SOURCES_V4.length,
+        nodes: NODES_V4.map((n) => ({ ...n })),
+        relationships: RELATIONSHIPS_V4.map((r) => ({ ...r })),
+        sources: SOURCES_V4.map((s) => ({ ...s })),
+        sections: SECTION_METAS_V4.map((s) => ({ ...s }))
+      };
+    } else if (projectId === 'proj-whiteboard-5') {
+      reseeded = {
+        id: 'proj-whiteboard-5',
+        name: 'Indian Banking and Judicial Systems Hierarchy (v5)',
+        description: 'Complete institutional hierarchy of the Indian Banking System (RBI, PSBs, NBFCs) and Judicial System (Supreme Court, High Courts, District Courts, Tribunals)',
+        createdAt: now,
+        updatedAt: now,
+        isDefault: false,
+        nodeCount: NODES_V5.length,
+        relationshipCount: RELATIONSHIPS_V5.length,
+        sourceCount: SOURCES_V5.length,
+        nodes: NODES_V5.map((n) => ({ ...n })),
+        relationships: RELATIONSHIPS_V5.map((r) => ({ ...r })),
+        sources: SOURCES_V5.map((s) => ({ ...s })),
+        sections: SECTION_METAS_V5.map((s) => ({ ...s }))
+      };
+    }
+    if (reseeded) {
+      this.projects.set(projectId, reseeded);
+      this.persistProject(projectId);
+      return reseeded;
+    }
+    const current = this.projects.get(projectId);
+    if (!current) throw new Error(`Project ${projectId} not found.`);
+    return current;
   }
 
   public seed(): void {
@@ -142,6 +300,7 @@ class EducationGovernanceDatabase {
       throw new Error(`Project with ID '${id}' not found.`);
     }
     this.activeProjectId = id;
+    this.persistProject(id);
     return proj;
   }
 
@@ -221,6 +380,7 @@ class EducationGovernanceDatabase {
 
     this.projects.set(id, newProject);
     this.activeProjectId = id;
+    this.persistProject(id);
     return newProject;
   }
 
@@ -232,6 +392,7 @@ class EducationGovernanceDatabase {
     if (partial.name !== undefined) proj.name = partial.name.trim();
     if (partial.description !== undefined) proj.description = partial.description.trim();
     proj.updatedAt = new Date().toISOString();
+    this.persistProject(proj.id);
     return {
       id: proj.id,
       name: proj.name,
@@ -253,15 +414,19 @@ class EducationGovernanceDatabase {
     if (!existed) {
       throw new Error(`Project with ID '${id}' not found.`);
     }
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.removeItem(`${STORAGE_PREFIX}project_${id}`);
+    }
     if (this.activeProjectId === id) {
       // Switch to first remaining project
       const nextProj = Array.from(this.projects.values())[0];
       this.activeProjectId = nextProj.id;
     }
+    this.persistProject(this.activeProjectId);
     return { success: true, activeProjectId: this.activeProjectId };
   }
 
-  private getTargetProject(projectId?: string): ProjectRecord {
+  public getTargetProject(projectId?: string): ProjectRecord {
     const pid = projectId || this.activeProjectId;
     let proj = this.projects.get(pid);
     if (!proj) {
@@ -303,13 +468,21 @@ class EducationGovernanceDatabase {
     if (index === -1) {
       throw new Error(`Node with ID ${id} not found in project ${proj.name}.`);
     }
+    const existing = proj.nodes[index];
     const updated: EducationNode = {
-      ...proj.nodes[index],
+      ...existing,
       ...partial,
+      institutionDetails: partial.institutionDetails
+        ? { ...(existing.institutionDetails || {}), ...partial.institutionDetails }
+        : existing.institutionDetails,
+      examDetails: partial.examDetails
+        ? { ...(existing.examDetails || {}), ...partial.examDetails }
+        : existing.examDetails,
       id // preserve immutable ID
     };
     proj.nodes[index] = updated;
     proj.updatedAt = new Date().toISOString();
+    this.persistProject(proj.id);
     return updated;
   }
 
@@ -321,6 +494,7 @@ class EducationGovernanceDatabase {
     proj.nodes.push({ ...node });
     proj.nodeCount = proj.nodes.length;
     proj.updatedAt = new Date().toISOString();
+    this.persistProject(proj.id);
     return node;
   }
 
@@ -335,6 +509,7 @@ class EducationGovernanceDatabase {
       proj.nodeCount = proj.nodes.length;
       proj.relationshipCount = proj.relationships.length;
       proj.updatedAt = new Date().toISOString();
+      this.persistProject(proj.id);
       return true;
     }
     return false;
@@ -365,6 +540,7 @@ class EducationGovernanceDatabase {
     proj.relationships.push({ ...rel });
     proj.relationshipCount = proj.relationships.length;
     proj.updatedAt = new Date().toISOString();
+    this.persistProject(proj.id);
     return rel;
   }
 
@@ -377,6 +553,7 @@ class EducationGovernanceDatabase {
     const updated = { ...proj.relationships[index], ...partial, id };
     proj.relationships[index] = updated;
     proj.updatedAt = new Date().toISOString();
+    this.persistProject(proj.id);
     return updated;
   }
 
@@ -387,6 +564,7 @@ class EducationGovernanceDatabase {
     if (proj.relationships.length < initial) {
       proj.relationshipCount = proj.relationships.length;
       proj.updatedAt = new Date().toISOString();
+      this.persistProject(proj.id);
       return true;
     }
     return false;
@@ -418,6 +596,7 @@ class EducationGovernanceDatabase {
     }
     proj.sections.push({ ...sec });
     proj.updatedAt = new Date().toISOString();
+    this.persistProject(proj.id);
     return sec;
   }
 
@@ -433,6 +612,7 @@ class EducationGovernanceDatabase {
     const updated = { ...proj.sections[index], ...partial, id };
     proj.sections[index] = updated;
     proj.updatedAt = new Date().toISOString();
+    this.persistProject(proj.id);
     return updated;
   }
 
@@ -445,6 +625,7 @@ class EducationGovernanceDatabase {
     proj.sections = proj.sections.filter((s: any) => s.id !== id);
     if (proj.sections.length < initial) {
       proj.updatedAt = new Date().toISOString();
+      this.persistProject(proj.id);
       return true;
     }
     return false;
@@ -514,6 +695,7 @@ class EducationGovernanceDatabase {
     proj.relationshipCount = proj.relationships.length;
     proj.sourceCount = proj.sources.length;
     proj.updatedAt = new Date().toISOString();
+    this.persistProject(proj.id);
 
     return {
       success: true,

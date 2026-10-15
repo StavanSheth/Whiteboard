@@ -24,6 +24,7 @@ import {
   updateProjectApi,
   deleteProjectApi
 } from '../services/apiClient';
+import { db } from '../../database/db';
 
 export interface WhiteboardState {
   // Multi-Project / Diagram Management State
@@ -37,6 +38,9 @@ export interface WhiteboardState {
   relationships: RelationshipEdgeData[];
   sources: SourceRecord[];
   sections: SectionMeta[];
+  
+  lastSavedTime: string | null;
+  dbSynced: boolean;
   
   selectedNodeId: string | null;
   searchQuery: string;
@@ -156,79 +160,23 @@ const DEFAULT_PROJECT_ID = 'proj-whiteboard-2';
 const DEFAULT_PROJECT_NAME = 'Indian Educational Institutions & Course Pathways (Whiteboard 2 of 5)';
 const DEFAULT_PROJECT_DESC = 'Comprehensive lifecycle: Pre-Primary to 10th Boards (CBSE, ICSE, SSC, NCERT, NIOS) -> 11th/12th Streams (PCM, PCB, Commerce, Arts) -> Course Pathways (Engineering, Medicine, Agriculture, Veterinary, Law, Commerce, Arts) -> National Competitive Gateways (UPSC CSE, ESE, IFoS, CMS, CAPF, Banking, Government)';
 
+const initialProject = db.getTargetProject();
+
 export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
-  // Projects State
-  projects: [
-    {
-      id: 'proj-whiteboard-2',
-      name: 'Indian Educational Institutions & Course Pathways (Whiteboard 2 of 5)',
-      description: 'Comprehensive lifecycle: Pre-Primary to 10th Boards (CBSE, ICSE, SSC, NCERT, NIOS) -> 11th/12th Streams (PCM, PCB, Commerce, Arts) -> Course Pathways (Engineering, Medicine, Agriculture, Veterinary, Law, Commerce, Arts) -> National Competitive Gateways (UPSC CSE, ESE, IFoS, CMS, CAPF, Banking, Government)',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      nodeCount: NODES_V3.length,
-      relationshipCount: RELATIONSHIPS_V3.length,
-      sourceCount: SOURCES_V3.length,
-      isDefault: true,
-      isActive: true
-    },
-    {
-      id: 'proj-default',
-      name: 'Indian Education Governance (Whiteboard 1 of 3)',
-      description: 'Authorities, Legal Powers, Standards, Examinations & Oversight across 16 statutory sections',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      nodeCount: ALL_NODES.length,
-      relationshipCount: ALL_RELATIONSHIPS.length,
-      sourceCount: ALL_SOURCES.length,
-      isDefault: false,
-      isActive: false
-    },
-    {
-      id: 'proj-whiteboard-3',
-      name: 'Indian Examinations, Timelines & Career Pathways (Whiteboard 3 of 3)',
-      description: '22 major sections: school boards, engineering, medicine, civil services, defence, management, law, and career pathways from eligibility to appointment',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      nodeCount: NODES_V2.length,
-      relationshipCount: RELATIONSHIPS_V2.length,
-      sourceCount: SOURCES_V2.length,
-      isDefault: false,
-      isActive: false
-    },
-    {
-      id: 'proj-whiteboard-4',
-      name: 'Democratic Offices & Administrative Hierarchy (Whiteboard 4 of 5)',
-      description: '9 key sections: Union Executive, Cabinet Secretariat, Parliament, State Executive, State Secretariat, District Administration, Local Governance, and Election Commission of India',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      nodeCount: NODES_V4.length,
-      relationshipCount: RELATIONSHIPS_V4.length,
-      sourceCount: SOURCES_V4.length,
-      isDefault: false,
-      isActive: false
-    },
-    {
-      id: 'proj-whiteboard-5',
-      name: 'Indian Banking Structure & Appellate Judiciary (Whiteboard 5 of 5)',
-      description: '11 sections across two boards: Board 1 Banking System (RBI, DFS, Scheduled Commercial Banks, NABARD, Integrated Ombudsman) & Board 2 Judicial System (Supreme Court, High Courts, District Judiciary, NCLT, NALSA)',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      nodeCount: NODES_V5.length,
-      relationshipCount: RELATIONSHIPS_V5.length,
-      sourceCount: SOURCES_V5.length,
-      isDefault: false,
-      isActive: false
-    }
-  ],
-  currentProjectId: DEFAULT_PROJECT_ID,
-  currentProjectName: DEFAULT_PROJECT_NAME,
-  currentProjectDescription: DEFAULT_PROJECT_DESC,
+  // Multi-Project / Diagram Management State
+  projects: db.getAllProjects(),
+  currentProjectId: initialProject.id,
+  currentProjectName: initialProject.name,
+  currentProjectDescription: initialProject.description || '',
   isProjectsLoading: false,
 
-  nodes: NODES_V3,
-  relationships: RELATIONSHIPS_V3,
-  sources: SOURCES_V3,
-  sections: SECTION_METAS_V3,
+  nodes: initialProject.nodes,
+  relationships: initialProject.relationships,
+  sources: initialProject.sources,
+  sections: initialProject.sections && initialProject.sections.length > 0 ? initialProject.sections : SECTION_METAS_V3,
+
+  lastSavedTime: null,
+  dbSynced: true,
 
   selectedNodeId: null,
   searchQuery: '',
@@ -709,14 +657,27 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
       if (!state.editingNodeId) return state;
       updateNodeApi(state.editingNodeId, state.editDraft, state.currentProjectId).catch(() => {});
       const updatedNodes = state.nodes.map((n) =>
-        n.id === state.editingNodeId ? { ...n, ...state.editDraft } : n
+        n.id === state.editingNodeId
+          ? {
+              ...n,
+              ...state.editDraft,
+              institutionDetails: state.editDraft.institutionDetails
+                ? { ...(n.institutionDetails || {}), ...state.editDraft.institutionDetails }
+                : n.institutionDetails,
+              examDetails: state.editDraft.examDetails
+                ? { ...(n.examDetails || {}), ...state.editDraft.examDetails }
+                : n.examDetails
+            }
+          : n
       );
       return {
         nodes: updatedNodes,
         editingNodeId: null,
         editDraft: {},
         isDirty: false,
-        showConfirmModal: false
+        showConfirmModal: false,
+        lastSavedTime: new Date().toLocaleTimeString(),
+        dbSynced: true
       };
     }),
 
@@ -734,7 +695,18 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
       if (state.editingNodeId) {
         updateNodeApi(state.editingNodeId, state.editDraft, state.currentProjectId).catch(() => {});
         updatedNodes = state.nodes.map((n) =>
-          n.id === state.editingNodeId ? { ...n, ...state.editDraft } : n
+          n.id === state.editingNodeId
+            ? {
+                ...n,
+                ...state.editDraft,
+                institutionDetails: state.editDraft.institutionDetails
+                  ? { ...(n.institutionDetails || {}), ...state.editDraft.institutionDetails }
+                  : n.institutionDetails,
+                examDetails: state.editDraft.examDetails
+                  ? { ...(n.examDetails || {}), ...state.editDraft.examDetails }
+                  : n.examDetails
+              }
+            : n
         );
       }
       const nextAction = state.pendingAction;
@@ -747,7 +719,9 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
         editDraft: {},
         isDirty: false,
         showConfirmModal: false,
-        pendingAction: null
+        pendingAction: null,
+        lastSavedTime: new Date().toLocaleTimeString(),
+        dbSynced: true
       };
     }),
 
@@ -793,7 +767,22 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
     const curProjId = get().currentProjectId;
     updateNodeApi(nodeId, partial, curProjId).catch(() => {});
     set((state) => ({
-      nodes: state.nodes.map((node) => (node.id === nodeId ? { ...node, ...partial } : node))
+      nodes: state.nodes.map((node) =>
+        node.id === nodeId
+          ? {
+              ...node,
+              ...partial,
+              institutionDetails: partial.institutionDetails
+                ? { ...(node.institutionDetails || {}), ...partial.institutionDetails }
+                : node.institutionDetails,
+              examDetails: partial.examDetails
+                ? { ...(node.examDetails || {}), ...partial.examDetails }
+                : node.examDetails
+            }
+          : node
+      ),
+      lastSavedTime: new Date().toLocaleTimeString(),
+      dbSynced: true
     }));
   },
 

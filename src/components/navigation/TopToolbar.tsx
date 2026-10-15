@@ -78,7 +78,8 @@ export function TopToolbar() {
     toggleDetailPanel,
     toggleSidebar,
     openModal,
-    resetAll
+    resetAll,
+    lastSavedTime
   } = useWhiteboardStore();
 
   const { fitView } = useReactFlow();
@@ -337,6 +338,20 @@ export function TopToolbar() {
           >
             <RotateCcw className="w-3.5 h-3.5 text-slate-600" />
           </button>
+
+          {/* DB Synced & Saved Live Status Badge */}
+          <div
+            className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-emerald-50 border border-emerald-300 text-emerald-900 text-[11px] font-bold shadow-2xs"
+            title={lastSavedTime ? `Database Synced: Last edit persisted at ${lastSavedTime}` : 'Database Synced: All changes auto-saved to local persistent storage'}
+          >
+            <Database className="w-3.5 h-3.5 text-emerald-700 animate-pulse" />
+            <span className="hidden md:inline font-mono">DB: Synced</span>
+            {lastSavedTime && (
+              <span className="text-[10px] text-emerald-800 font-mono font-medium hidden lg:inline">
+                ({lastSavedTime})
+              </span>
+            )}
+          </div>
 
           {/* Badge with Node Counts */}
           <div className="hidden xl:flex items-center gap-1 text-[11px] font-mono font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded-md border border-slate-200 ml-1">

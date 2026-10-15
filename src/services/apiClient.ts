@@ -125,6 +125,7 @@ export async function updateNodeApi(
   partial: Partial<EducationNode>,
   projectId?: string
 ): Promise<EducationNode> {
+  const local = db.updateNode(id, partial, projectId);
   try {
     const params = new URLSearchParams();
     if (projectId) params.set('projectId', projectId);
@@ -134,13 +135,12 @@ export async function updateNodeApi(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(partial)
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    db.updateNode(id, partial, projectId);
-    return json.data;
-  } catch {
-    return db.updateNode(id, partial, projectId);
-  }
+    if (res.ok) {
+      const json = await res.json();
+      return json.data || local;
+    }
+  } catch {}
+  return local;
 }
 
 export async function fetchRelationships(projectId?: string): Promise<RelationshipEdgeData[]> {
@@ -173,6 +173,7 @@ export async function fetchSources(projectId?: string): Promise<SourceRecord[]> 
 
 // --- NODE CREATION & DELETION API ---
 export async function createNodeApi(node: EducationNode, projectId?: string): Promise<EducationNode> {
+  const local = db.createNode(node, projectId);
   try {
     const params = new URLSearchParams();
     if (projectId) params.set('projectId', projectId);
@@ -182,27 +183,24 @@ export async function createNodeApi(node: EducationNode, projectId?: string): Pr
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(node)
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    db.createNode(node, projectId);
-    return json.data;
-  } catch {
-    return db.createNode(node, projectId);
-  }
+    if (res.ok) {
+      const json = await res.json();
+      return json.data || local;
+    }
+  } catch {}
+  return local;
 }
 
 export async function deleteNodeApi(id: string, projectId?: string): Promise<boolean> {
+  const local = db.deleteNode(id, projectId);
   try {
     const params = new URLSearchParams();
     if (projectId) params.set('projectId', projectId);
     const url = `${API_BASE}/nodes/${encodeURIComponent(id)}${params.toString() ? `?${params.toString()}` : ''}`;
     const res = await fetch(url, { method: 'DELETE' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    db.deleteNode(id, projectId);
-    return true;
-  } catch {
-    return db.deleteNode(id, projectId);
-  }
+    if (res.ok) return true;
+  } catch {}
+  return local;
 }
 
 // --- RELATIONSHIP / ARROW CRUD API ---
@@ -210,6 +208,7 @@ export async function createRelationshipApi(
   rel: RelationshipEdgeData,
   projectId?: string
 ): Promise<RelationshipEdgeData> {
+  const local = db.createRelationship(rel, projectId);
   try {
     const params = new URLSearchParams();
     if (projectId) params.set('projectId', projectId);
@@ -219,13 +218,12 @@ export async function createRelationshipApi(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(rel)
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    db.createRelationship(rel, projectId);
-    return json.data;
-  } catch {
-    return db.createRelationship(rel, projectId);
-  }
+    if (res.ok) {
+      const json = await res.json();
+      return json.data || local;
+    }
+  } catch {}
+  return local;
 }
 
 export async function updateRelationshipApi(
@@ -233,6 +231,7 @@ export async function updateRelationshipApi(
   partial: Partial<RelationshipEdgeData>,
   projectId?: string
 ): Promise<RelationshipEdgeData> {
+  const local = db.updateRelationship(id, partial, projectId);
   try {
     const params = new URLSearchParams();
     if (projectId) params.set('projectId', projectId);
@@ -242,27 +241,24 @@ export async function updateRelationshipApi(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(partial)
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    db.updateRelationship(id, partial, projectId);
-    return json.data;
-  } catch {
-    return db.updateRelationship(id, partial, projectId);
-  }
+    if (res.ok) {
+      const json = await res.json();
+      return json.data || local;
+    }
+  } catch {}
+  return local;
 }
 
 export async function deleteRelationshipApi(id: string, projectId?: string): Promise<boolean> {
+  const local = db.deleteRelationship(id, projectId);
   try {
     const params = new URLSearchParams();
     if (projectId) params.set('projectId', projectId);
     const url = `${API_BASE}/relationships/${encodeURIComponent(id)}${params.toString() ? `?${params.toString()}` : ''}`;
     const res = await fetch(url, { method: 'DELETE' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    db.deleteRelationship(id, projectId);
-    return true;
-  } catch {
-    return db.deleteRelationship(id, projectId);
-  }
+    if (res.ok) return true;
+  } catch {}
+  return local;
 }
 
 // --- SECTION CRUD API ---
@@ -281,6 +277,7 @@ export async function fetchSections(projectId?: string): Promise<SectionMeta[]> 
 }
 
 export async function createSectionApi(sec: SectionMeta, projectId?: string): Promise<SectionMeta> {
+  const local = db.createSection(sec, projectId);
   try {
     const params = new URLSearchParams();
     if (projectId) params.set('projectId', projectId);
@@ -290,13 +287,12 @@ export async function createSectionApi(sec: SectionMeta, projectId?: string): Pr
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(sec)
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    db.createSection(sec, projectId);
-    return json.data;
-  } catch {
-    return db.createSection(sec, projectId);
-  }
+    if (res.ok) {
+      const json = await res.json();
+      return json.data || local;
+    }
+  } catch {}
+  return local;
 }
 
 export async function updateSectionApi(
@@ -304,6 +300,7 @@ export async function updateSectionApi(
   partial: Partial<SectionMeta>,
   projectId?: string
 ): Promise<SectionMeta> {
+  const local = db.updateSection(id, partial, projectId);
   try {
     const params = new URLSearchParams();
     if (projectId) params.set('projectId', projectId);
@@ -313,25 +310,22 @@ export async function updateSectionApi(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(partial)
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    db.updateSection(id, partial, projectId);
-    return json.data;
-  } catch {
-    return db.updateSection(id, partial, projectId);
-  }
+    if (res.ok) {
+      const json = await res.json();
+      return json.data || local;
+    }
+  } catch {}
+  return local;
 }
 
 export async function deleteSectionApi(id: string, projectId?: string): Promise<boolean> {
+  const local = db.deleteSection(id, projectId);
   try {
     const params = new URLSearchParams();
     if (projectId) params.set('projectId', projectId);
     const url = `${API_BASE}/sections/${encodeURIComponent(id)}${params.toString() ? `?${params.toString()}` : ''}`;
     const res = await fetch(url, { method: 'DELETE' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    db.deleteSection(id, projectId);
-    return true;
-  } catch {
-    return db.deleteSection(id, projectId);
-  }
+    if (res.ok) return true;
+  } catch {}
+  return local;
 }
