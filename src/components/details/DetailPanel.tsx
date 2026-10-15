@@ -23,8 +23,12 @@ import {
   Workflow,
   AlertTriangle,
   Edit2,
-  GraduationCap
+  GraduationCap,
+  Compass,
+  Briefcase,
+  ArrowUpRight
 } from 'lucide-react';
+import { COURSE_PATHWAYS_MAP, CoursePathwayItem } from '../../data/pathwayMatrix';
 
 export function DetailPanel() {
   const {
@@ -624,6 +628,68 @@ export function DetailPanel() {
                 )}
               </div>
             )}
+          </div>
+        )}
+
+        {/* Career Value & Complete Appointment Hierarchy Ladder */}
+        {node.institutionDetails?.careerValue && (
+          <div className="bg-gradient-to-br from-amber-50 to-orange-50/70 border border-amber-200/90 rounded-xl p-3.5 space-y-2">
+            <h3 className="text-[11px] font-bold uppercase tracking-wider text-amber-950 flex items-center gap-1.5">
+              <Briefcase className="w-4 h-4 text-amber-700" />
+              Hierarchical Career Ladder &amp; Appointment Outcomes
+            </h3>
+            <div className="bg-white/90 border border-amber-200/60 rounded-lg p-3 text-xs text-slate-800 leading-relaxed font-sans space-y-1.5 whitespace-pre-line shadow-2xs">
+              {node.institutionDetails.careerValue}
+            </div>
+          </div>
+        )}
+
+        {/* Course Permutations, Cross-Discipline Combos & Gateway Matrix */}
+        {COURSE_PATHWAYS_MAP[node.id] && COURSE_PATHWAYS_MAP[node.id].length > 0 && (
+          <div className="bg-gradient-to-br from-slate-50 to-indigo-50/40 border border-indigo-200/80 rounded-xl p-3.5 space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-[11px] font-bold uppercase tracking-wider text-indigo-950 flex items-center gap-1.5">
+                <Compass className="w-4 h-4 text-indigo-700" />
+                Permutations, Dual Combos &amp; Career Pathways ({COURSE_PATHWAYS_MAP[node.id].length})
+              </h3>
+              <span className="text-[10px] font-semibold text-indigo-700 bg-indigo-100/70 px-2 py-0.5 rounded-full border border-indigo-200">
+                Interactive Matrix
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-600 leading-snug">
+              Every viable academic progression, cross-discipline combo, and competitive government gateway accessible after this qualification:
+            </p>
+
+            <div className="grid grid-cols-1 gap-2 pt-1">
+              {COURSE_PATHWAYS_MAP[node.id].map((pathway: CoursePathwayItem, idx: number) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-lg p-2.5 border border-slate-200/80 hover:border-indigo-300 transition-all shadow-2xs hover:shadow-xs space-y-1.5"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="font-bold text-slate-900 text-xs">{pathway.targetTitle}</span>
+                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-sm border shrink-0 ${pathway.badgeColor}`}>
+                      {pathway.category}
+                    </span>
+                  </div>
+
+                  <p className="text-[11px] text-slate-600 leading-relaxed">{pathway.rationale}</p>
+
+                  <div className="flex items-center justify-between pt-1 border-t border-slate-100 text-[10px]">
+                    <span className="text-slate-500 font-medium">Timeline: <strong className="text-slate-700">{pathway.timeline}</strong></span>
+                    <button
+                      type="button"
+                      onClick={() => selectNode(pathway.targetId)}
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-900 font-semibold transition-colors cursor-pointer border border-indigo-200/80"
+                      title={`Inspect ${pathway.targetTitle} on canvas`}
+                    >
+                      <span>Locate on Canvas</span>
+                      <ArrowUpRight className="w-3 h-3 text-indigo-600" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
