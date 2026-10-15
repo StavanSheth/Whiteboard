@@ -291,28 +291,16 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
               </div>
             </div>
 
-            {/* 2. Timeline & Stage Badges */}
-            <div className="grid grid-cols-2 gap-1.5">
-              <div>
-                <label className="text-[9.5px] font-bold text-slate-600 block mb-0.5">Timeline / Duration:</label>
-                <input
-                  type="text"
-                  value={instDraft.examinationTimeline || ''}
-                  onChange={(e) => updateInstDraft('examinationTimeline', e.target.value)}
-                  placeholder="e.g. Age 4 to 6 (2 Years: LKG, UKG)"
-                  className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
-                />
-              </div>
-              <div>
-                <label className="text-[9.5px] font-bold text-slate-600 block mb-0.5">Stage / Admission Route:</label>
-                <input
-                  type="text"
-                  value={instDraft.admissionRoute || ''}
-                  onChange={(e) => updateInstDraft('admissionRoute', e.target.value)}
-                  placeholder="e.g. Kindergarten Stage (LKG & UKG)"
-                  className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
-                />
-              </div>
+            {/* 2. Stage / Admission Route */}
+            <div>
+              <label className="text-[9.5px] font-bold text-slate-600 block mb-0.5">Stage / Admission Route:</label>
+              <input
+                type="text"
+                value={instDraft.admissionRoute || ''}
+                onChange={(e) => updateInstDraft('admissionRoute', e.target.value)}
+                placeholder="e.g. Kindergarten Stage (LKG & UKG)"
+                className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
+              />
             </div>
 
             {/* 3. Executive Summary */}
@@ -544,7 +532,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
 
             {/* Legal Status badge & Domain Badges if present */}
             <div className="mt-1.5 flex flex-wrap gap-1">
-              {data.institutionDetails?.examinationTimeline && (
+              {!isExpanded && data.institutionDetails?.examinationTimeline && (
                 <span
                   onClick={(e) => {
                     e.stopPropagation();
@@ -554,7 +542,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                   title="Click to edit duration / timeline"
                 >
                   <Clock className="w-2.5 h-2.5 text-slate-500" />
-                  {data.institutionDetails.examinationTimeline}
+                  {data.institutionDetails.examinationTimeline.replace(/^Timeline:\s*/i, '')}
                 </span>
               )}
               {data.institutionDetails?.admissionRoute && (
@@ -580,7 +568,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                   Agency: {data.examDetails.examAgency}
                 </span>
               )}
-              {data.institutionDetails?.institutionType && (
+              {!isExpanded && data.institutionDetails?.institutionType && (
                 <span className="inline-block text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
                   {data.institutionDetails.institutionType}
                 </span>
@@ -720,7 +708,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                         <Clock className="w-3 h-3 text-indigo-600 flex-shrink-0 mt-0.5" />
                         <div>
                           <span className="font-semibold text-indigo-900">Timeline: </span>
-                          <span>{data.institutionDetails.examinationTimeline}</span>
+                          <span>{data.institutionDetails.examinationTimeline.replace(/^Timeline:\s*/i, '')}</span>
                         </div>
                       </div>
                     )}
