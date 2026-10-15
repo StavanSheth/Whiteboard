@@ -43,6 +43,8 @@ export interface WhiteboardState {
   dbSynced: boolean;
   
   selectedNodeId: string | null;
+  selectedNodeIds: string[];
+  canvasInteractionMode: 'pan' | 'select';
   searchQuery: string;
   filters: SearchFilters;
   
@@ -96,6 +98,7 @@ export interface WhiteboardState {
   addNode: (node: EducationNode) => Promise<void>;
   deleteNode: (id: string) => Promise<void>;
   updateNodePosition: (id: string, position: { x: number; y: number }) => void;
+  updateMultipleNodePositions: (updates: Array<{ id: string; position: { x: number; y: number } }>) => void;
 
   // Relationship CRUD
   addRelationship: (rel: RelationshipEdgeData) => Promise<void>;
@@ -109,6 +112,8 @@ export interface WhiteboardState {
   deleteSection: (id: string) => Promise<void>;
 
   selectNode: (nodeId: string | null) => void;
+  setSelectedNodeIds: (ids: string[]) => void;
+  setCanvasInteractionMode: (mode: 'pan' | 'select') => void;
   setSearchQuery: (query: string) => void;
   setFilters: (filters: Partial<SearchFilters>) => void;
   resetFilters: () => void;
@@ -180,6 +185,8 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
   dbSynced: true,
 
   selectedNodeId: null,
+  selectedNodeIds: [],
+  canvasInteractionMode: 'pan',
   searchQuery: '',
   filters: initialFilters,
 
@@ -505,6 +512,23 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
     }));
   },
 
+  updateMultipleNodePositions: (updates) => {
+    if (!updates || updates.length === 0) return;
+    const curProjId = get().currentProjectId;
+    const posMap = new Map(updates.map((u) => [u.id, u.position]));
+    updates.forEach((u) => {
+      updateNodeApi(u.id, { position: u.position }, curProjId).catch(() => {});
+    });
+    set((state) => ({
+      nodes: state.nodes.map((n) => {
+        const p = posMap.get(n.id);
+        return p ? { ...n, position: p } : n;
+      }),
+      lastSavedTime: new Date().toLocaleTimeString(),
+      dbSynced: true
+    }));
+  },
+
   // --- Relationship Actions ---
   addRelationship: async (rel) => {
     const curProjId = get().currentProjectId;
@@ -565,8 +589,18 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
   selectNode: (nodeId) =>
     set({
       selectedNodeId: nodeId,
+      selectedNodeIds: nodeId ? [nodeId] : [],
       isDetailPanelOpen: Boolean(nodeId)
     }),
+
+  setSelectedNodeIds: (ids) =>
+    set((state) => ({
+      selectedNodeIds: ids,
+      selectedNodeId: ids.length === 1 ? ids[0] : (ids.length > 1 ? (ids.includes(state.selectedNodeId || '') ? state.selectedNodeId : ids[0]) : null),
+      isDetailPanelOpen: ids.length > 0 ? state.isDetailPanelOpen : false
+    })),
+
+  setCanvasInteractionMode: (mode) => set({ canvasInteractionMode: mode }),
 
   setSearchQuery: (query) => set({ searchQuery: query }),
 

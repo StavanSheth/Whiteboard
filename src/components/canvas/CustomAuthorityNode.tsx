@@ -199,9 +199,11 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
 
   return (
     <div
-      onClick={() => {
+      onClick={(e) => {
         if (!isEditing) {
-          selectNode(data.id);
+          if (!e.shiftKey && !e.ctrlKey && !e.metaKey) {
+            selectNode(data.id);
+          }
         }
       }}
       onDoubleClick={(e) => {
