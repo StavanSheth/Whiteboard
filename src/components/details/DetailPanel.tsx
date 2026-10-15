@@ -451,7 +451,7 @@ export function DetailPanel() {
         )}
 
         {/* Domain-Specific Uncommon Section: Institutions & Qualifications (v3) */}
-        {(node.institutionDetails || (isEditing && draft.institutionDetails)) && (
+        {(node.institutionDetails || isEditing) && (
           <div className="bg-indigo-50/70 border border-indigo-200 rounded-xl p-3.5 space-y-2">
             <h3 className="text-[11px] font-bold uppercase tracking-wider text-indigo-950 flex items-center gap-1.5">
               <Building2 className="w-4 h-4 text-indigo-700" />
@@ -460,6 +460,16 @@ export function DetailPanel() {
 
             {isEditing ? (
               <div className="space-y-2 text-xs">
+                <div>
+                  <label className="text-[10px] font-bold text-indigo-900 block mb-0.5">Career Hierarchy &amp; Promotion Ladder:</label>
+                  <textarea
+                    rows={4}
+                    value={draft.institutionDetails?.careerValue ?? node.institutionDetails?.careerValue ?? ''}
+                    onChange={(e) => setDraft((d) => ({ ...d, institutionDetails: { ...(d.institutionDetails || node.institutionDetails), careerValue: e.target.value } }))}
+                    className="w-full text-xs rounded border border-indigo-300 p-2 bg-white text-slate-800 leading-relaxed font-sans"
+                    placeholder="e.g. Entry Cadre -> Sub-Divisional Officer (SDM) -> District Collector -> Joint Secretary -> Apex Secretary"
+                  />
+                </div>
                 <div>
                   <label className="text-[10px] font-bold text-indigo-900 block mb-0.5">Institution / Board Type:</label>
                   <input
@@ -632,15 +642,45 @@ export function DetailPanel() {
         )}
 
         {/* Career Value & Complete Appointment Hierarchy Ladder */}
-        {node.institutionDetails?.careerValue && (
+        {(node.institutionDetails?.careerValue || (isEditing && (draft.institutionDetails || node.institutionDetails))) && (
           <div className="bg-gradient-to-br from-amber-50 to-orange-50/70 border border-amber-200/90 rounded-xl p-3.5 space-y-2">
-            <h3 className="text-[11px] font-bold uppercase tracking-wider text-amber-950 flex items-center gap-1.5">
-              <Briefcase className="w-4 h-4 text-amber-700" />
-              Hierarchical Career Ladder &amp; Appointment Outcomes
+            <h3 className="text-[11px] font-bold uppercase tracking-wider text-amber-950 flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <Briefcase className="w-4 h-4 text-amber-700" />
+                Hierarchical Career Ladder &amp; Appointment Outcomes
+              </span>
+              {isEditing && (
+                <span className="text-[10px] font-semibold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">
+                  Editing
+                </span>
+              )}
             </h3>
-            <div className="bg-white/90 border border-amber-200/60 rounded-lg p-3 text-xs text-slate-800 leading-relaxed font-sans space-y-1.5 whitespace-pre-line shadow-2xs">
-              {node.institutionDetails.careerValue}
-            </div>
+            {isEditing ? (
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-amber-950 block mb-0.5">
+                  Career Trajectory &amp; Promotion Ladder:
+                </label>
+                <textarea
+                  value={draft.institutionDetails?.careerValue ?? node.institutionDetails?.careerValue ?? ''}
+                  onChange={(e) =>
+                    setDraft((d) => ({
+                      ...d,
+                      institutionDetails: {
+                        ...(d.institutionDetails || node.institutionDetails),
+                        careerValue: e.target.value
+                      }
+                    }))
+                  }
+                  rows={4}
+                  className="w-full text-xs rounded-lg border border-amber-300 p-2.5 bg-white text-slate-800 leading-relaxed font-sans focus:outline-hidden focus:ring-2 focus:ring-amber-500/20"
+                  placeholder="e.g. Entry Cadre -> Sub-Divisional Officer (SDM) -> District Collector -> Joint Secretary -> Apex Secretary"
+                />
+              </div>
+            ) : (
+              <div className="bg-white/90 border border-amber-200/60 rounded-lg p-3 text-xs text-slate-800 leading-relaxed font-sans space-y-1.5 whitespace-pre-line shadow-2xs">
+                {node.institutionDetails?.careerValue}
+              </div>
+            )}
           </div>
         )}
 
