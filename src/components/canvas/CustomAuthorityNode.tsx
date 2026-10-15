@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { EducationNode } from '../../types';
 import { useWhiteboardStore } from '../../store/whiteboardStore';
@@ -160,14 +160,6 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
   const isExpanded = expandedNodeIds[data.id] ?? (nodeViewMode === 'full');
   const isEditing = editingNodeId === data.id;
 
-  const [inlineTab, setInlineTab] = useState<'hierarchy' | 'core' | 'powers' | 'exam'>(() => {
-    if (data.institutionDetails?.careerValue || data.institutionDetails?.institutionType || data.institutionDetails?.examinationTimeline) {
-      return 'hierarchy';
-    }
-    if (data.examDetails) return 'exam';
-    return 'hierarchy';
-  });
-
   const IconComponent = typeIcons[data.type] || Landmark;
   const verif = verificationColors[data.verificationStatus] || verificationColors.verified;
   const theme = getNodeTheme(data);
@@ -207,6 +199,12 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
           selectNode(data.id);
         }
       }}
+      onDoubleClick={(e) => {
+        e.stopPropagation();
+        if (!isEditing) {
+          startEditingNode(data);
+        }
+      }}
       className={`relative bg-white rounded-xl border ${theme.borderTop} transition-all duration-200 shadow-xs group ${
         isEditing
           ? 'border-emerald-500 ring-2 ring-emerald-500/50 shadow-lg z-30'
@@ -224,22 +222,23 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
       <Handle type="target" position={Position.Top} className="!bg-slate-400 !border-white !w-2.5 !h-2.5" />
 
       {isEditing ? (
-        /* Inline Editor on Canvas */
-        <div className="p-3 bg-white rounded-xl space-y-2 border-2 border-emerald-500 shadow-xl" onClick={(e) => e.stopPropagation()}>
-          <div className="flex items-center justify-between border-b border-slate-200 pb-1.5">
+        /* Inline In-Place Node Card Editor */
+        <div className="p-3 bg-white rounded-xl space-y-2.5 border-2 border-emerald-500 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          {/* Editor Header Bar */}
+          <div className="flex items-center justify-between border-b border-emerald-200 pb-2">
             <div className="flex items-center gap-1.5 min-w-0">
-              <span className="font-bold text-[10.5px] text-emerald-950 uppercase tracking-wider flex items-center gap-1">
+              <span className="font-extrabold text-[11px] text-emerald-950 uppercase tracking-wider flex items-center gap-1">
                 <Edit3 className="w-3.5 h-3.5 text-emerald-700" />
-                Edit Card
+                Editing Card
               </span>
-              <span className="font-mono text-[9px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-900 border border-emerald-300 truncate">
+              <span className="font-mono text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300 truncate">
                 {data.id}
               </span>
             </div>
-            <div className="flex items-center gap-1 flex-shrink-0">
+            <div className="flex items-center gap-1.5 flex-shrink-0">
               <button
                 onClick={saveEditingNode}
-                className="px-2.5 py-1 rounded bg-emerald-700 text-amber-300 font-bold text-[10px] hover:bg-emerald-800 flex items-center gap-1 shadow-2xs cursor-pointer transition-colors"
+                className="px-2.5 py-1 rounded bg-emerald-700 hover:bg-emerald-800 text-amber-300 font-bold text-[10.5px] flex items-center gap-1 shadow-xs cursor-pointer transition-colors"
                 title="Save changes to node"
               >
                 <Check className="w-3 h-3" />
@@ -247,7 +246,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
               </button>
               <button
                 onClick={cancelEditingNode}
-                className="px-2 py-1 rounded bg-slate-100 text-slate-700 font-semibold text-[10px] hover:bg-slate-200 flex items-center gap-0.5 cursor-pointer transition-colors"
+                className="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-[10.5px] flex items-center gap-0.5 cursor-pointer transition-colors"
                 title="Cancel edits"
               >
                 <X className="w-3 h-3" />
@@ -258,7 +257,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                   selectNode(data.id);
                   toggleDetailPanel(true);
                 }}
-                className="px-2 py-1 rounded bg-amber-100 text-amber-900 border border-amber-300 font-bold text-[9.5px] hover:bg-amber-200 flex items-center gap-1 cursor-pointer transition-colors"
+                className="px-2 py-1 rounded bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-[9.5px] flex items-center gap-1 cursor-pointer transition-colors"
                 title="Open in full sidebar drawer"
               >
                 <ExternalLink className="w-2.5 h-2.5" />
@@ -267,346 +266,165 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
             </div>
           </div>
 
-          {/* Tab Switcher */}
-          <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-[10px]">
-            <button
-              type="button"
-              onClick={() => setInlineTab('hierarchy')}
-              className={`flex-1 py-1 px-1.5 rounded-md flex items-center justify-center gap-1 font-semibold transition-all cursor-pointer ${
-                inlineTab === 'hierarchy'
-                  ? 'bg-white text-indigo-950 font-bold shadow-2xs border border-indigo-200'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Briefcase className="w-3 h-3 text-indigo-600" />
-              <span>Hierarchy &amp; Framework</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setInlineTab('core')}
-              className={`flex-1 py-1 px-1.5 rounded-md flex items-center justify-center gap-1 font-semibold transition-all cursor-pointer ${
-                inlineTab === 'core'
-                  ? 'bg-white text-emerald-950 font-bold shadow-2xs border border-emerald-200'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <FileText className="w-3 h-3 text-emerald-700" />
-              <span>Core Info</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setInlineTab('powers')}
-              className={`flex-1 py-1 px-1.5 rounded-md flex items-center justify-center gap-1 font-semibold transition-all cursor-pointer ${
-                inlineTab === 'powers'
-                  ? 'bg-white text-purple-950 font-bold shadow-2xs border border-purple-200'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Scale className="w-3 h-3 text-purple-600" />
-              <span>Powers &amp; Acts</span>
-            </button>
-            {(data.examDetails || examDraft.examAgency) && (
-              <button
-                type="button"
-                onClick={() => setInlineTab('exam')}
-                className={`flex-1 py-1 px-1.5 rounded-md flex items-center justify-center gap-1 font-semibold transition-all cursor-pointer ${
-                  inlineTab === 'exam'
-                    ? 'bg-white text-sky-950 font-bold shadow-2xs border border-sky-200'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                <GraduationCap className="w-3 h-3 text-sky-600" />
-                <span>Exam</span>
-              </button>
-            )}
-          </div>
-
-          <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1">
-            {/* Tab 1: Hierarchy & Institutional Framework */}
-            {inlineTab === 'hierarchy' && (
-              <div className="space-y-2 text-[10px]">
-                {/* Career Hierarchy Ladder & Opportunities */}
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50/60 p-2.5 rounded-lg border border-amber-300/80 space-y-1">
-                  <label className="text-[9.5px] font-bold text-amber-950 uppercase tracking-wide flex items-center justify-between">
-                    <span className="flex items-center gap-1">
-                      <Briefcase className="w-3 h-3 text-amber-700" />
-                      Career Hierarchy &amp; Promotion Ladder
-                    </span>
-                    <span className="text-[8.5px] font-normal text-amber-800 lowercase">(multi-tier trajectory)</span>
-                  </label>
-                  <textarea
-                    value={instDraft.careerValue || ''}
-                    onChange={(e) => updateInstDraft('careerValue', e.target.value)}
-                    rows={4}
-                    placeholder="e.g. Entry Cadre -> Sub-Divisional Officer (SDM) -> District Collector -> Joint Secretary -> Apex Secretary"
-                    className="w-full text-[10.5px] px-2 py-1.5 rounded border border-amber-300 bg-white text-slate-800 leading-relaxed font-sans resize-y focus:outline-hidden focus:ring-1 focus:ring-amber-500"
-                  />
-                  <span className="text-[8.5px] text-amber-800 font-medium block">
-                    Displays directly on the card as the official appointment ladder.
-                  </span>
-                </div>
-
-                {/* Institutional Framework Type & Timeline */}
-                <div className="grid grid-cols-2 gap-1.5">
-                  <div>
-                    <label className="text-[9.5px] font-bold text-indigo-950 block mb-0.5">
-                      Framework / Institution Type:
-                    </label>
-                    <input
-                      type="text"
-                      value={instDraft.institutionType || ''}
-                      onChange={(e) => updateInstDraft('institutionType', e.target.value)}
-                      placeholder="e.g. INI, Central University, School Board"
-                      className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[9.5px] font-bold text-indigo-950 block mb-0.5">
-                      Timeline / Exam Duration:
-                    </label>
-                    <input
-                      type="text"
-                      value={instDraft.examinationTimeline || ''}
-                      onChange={(e) => updateInstDraft('examinationTimeline', e.target.value)}
-                      placeholder="e.g. 4 Years (8 Sems); Board Exams Feb-Mar"
-                      className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
-                    />
-                  </div>
-                </div>
-
-                {/* Admission Route & NHEQF */}
-                <div className="grid grid-cols-2 gap-1.5">
-                  <div>
-                    <label className="text-[9.5px] font-bold text-indigo-950 block mb-0.5">
-                      Admission Route / Testing Agency:
-                    </label>
-                    <input
-                      type="text"
-                      value={instDraft.admissionRoute || ''}
-                      onChange={(e) => updateInstDraft('admissionRoute', e.target.value)}
-                      placeholder="e.g. JEE Main/Adv via JoSAA, UPSC CSE, NEET"
-                      className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[9.5px] font-bold text-indigo-950 block mb-0.5">
-                      Qualification / NHEQF Level:
-                    </label>
-                    <input
-                      type="text"
-                      value={instDraft.nheqfLevel || ''}
-                      onChange={(e) => updateInstDraft('nheqfLevel', e.target.value)}
-                      placeholder="e.g. NHEQF Level 6 / 7 / 8"
-                      className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
-                    />
-                  </div>
-                </div>
-
-                {/* Programmes Offered */}
-                <div>
-                  <label className="text-[9.5px] font-bold text-indigo-950 block mb-0.5">
-                    Programmes / Degrees Conferred (comma separated):
-                  </label>
-                  <input
-                    type="text"
-                    value={instDraft.programmesOffered ? instDraft.programmesOffered.join(', ') : ''}
-                    onChange={(e) => {
-                      const progs = e.target.value.split(',').map((s) => s.trim()).filter(Boolean);
-                      updateInstDraft('programmesOffered', progs);
-                    }}
-                    placeholder="e.g. B.Tech, M.Tech, Ph.D. or Class 10 AISSE, Class 12 AISSCE"
-                    className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
-                  />
-                </div>
-
-                {/* Controlled By & Curriculum */}
-                <div className="grid grid-cols-2 gap-1.5">
-                  <div>
-                    <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">
-                      Controlled / Governed By:
-                    </label>
-                    <input
-                      type="text"
-                      value={instDraft.controlledBy || ''}
-                      onChange={(e) => updateInstDraft('controlledBy', e.target.value)}
-                      placeholder="e.g. Ministry of Education (MoE)"
-                      className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">
-                      Curriculum Authority:
-                    </label>
-                    <input
-                      type="text"
-                      value={instDraft.curriculumBody || ''}
-                      onChange={(e) => updateInstDraft('curriculumBody', e.target.value)}
-                      placeholder="e.g. NCERT, State SCERT, Senate"
-                      className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
-                    />
-                  </div>
-                </div>
-
-                {/* Awarding Body & Accreditation */}
-                <div className="grid grid-cols-2 gap-1.5">
-                  <div>
-                    <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">
-                      Awarding Body:
-                    </label>
-                    <input
-                      type="text"
-                      value={instDraft.awardingBody || ''}
-                      onChange={(e) => updateInstDraft('awardingBody', e.target.value)}
-                      placeholder="e.g. Senate of IIT, CBSE"
-                      className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">
-                      Accreditation / Ranking:
-                    </label>
-                    <input
-                      type="text"
-                      value={instDraft.accreditation || ''}
-                      onChange={(e) => updateInstDraft('accreditation', e.target.value)}
-                      placeholder="e.g. NAAC A++, Tier-1 Washington Accord"
-                      className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
-                    />
-                  </div>
-                </div>
+          <div className="space-y-2 max-h-[460px] overflow-y-auto pr-1">
+            {/* 1. Title & Abbreviation */}
+            <div className="flex items-center gap-1.5">
+              <div className="flex-1">
+                <label className="text-[9.5px] font-bold text-slate-600 block mb-0.5">Title:</label>
+                <input
+                  type="text"
+                  value={editDraft.title ?? data.title}
+                  onChange={(e) => setEditDraft({ title: e.target.value })}
+                  placeholder="Official Title"
+                  className="w-full font-bold text-[11px] px-2 py-1 rounded border border-emerald-500 bg-white text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
+                />
               </div>
-            )}
+              <div className="w-28">
+                <label className="text-[9.5px] font-bold text-slate-600 block mb-0.5">Abbreviation / Tag:</label>
+                <input
+                  type="text"
+                  value={editDraft.abbreviation ?? (data.abbreviation || '')}
+                  onChange={(e) => setEditDraft({ abbreviation: e.target.value })}
+                  placeholder="e.g. Junior & Senior KG"
+                  className="w-full font-mono font-bold text-[10px] px-1.5 py-1 rounded border border-emerald-500 bg-white text-slate-900 focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
+                />
+              </div>
+            </div>
 
-            {/* Tab 2: Core Info & Summary */}
-            {inlineTab === 'core' && (
-              <div className="space-y-2 text-[10px]">
-                <div className="flex items-center gap-1.5">
-                  <div className="flex-1">
-                    <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">Title:</label>
-                    <input
-                      type="text"
-                      value={editDraft.title ?? data.title}
-                      onChange={(e) => setEditDraft({ title: e.target.value })}
-                      placeholder="Official Title"
-                      className="w-full font-bold text-[11px] px-2 py-1 rounded border border-emerald-500 bg-white text-slate-900 focus:outline-hidden"
-                    />
-                  </div>
-                  <div className="w-20">
-                    <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">Abbr:</label>
-                    <input
-                      type="text"
-                      value={editDraft.abbreviation ?? (data.abbreviation || '')}
-                      onChange={(e) => setEditDraft({ abbreviation: e.target.value })}
-                      placeholder="Abbr"
-                      className="w-full font-mono font-bold text-[10.5px] px-1.5 py-1 rounded border border-emerald-500 bg-white text-slate-900 focus:outline-hidden"
-                    />
-                  </div>
+            {/* 2. Timeline & Stage Badges */}
+            <div className="grid grid-cols-2 gap-1.5">
+              <div>
+                <label className="text-[9.5px] font-bold text-slate-600 block mb-0.5">Timeline / Duration:</label>
+                <input
+                  type="text"
+                  value={instDraft.examinationTimeline || ''}
+                  onChange={(e) => updateInstDraft('examinationTimeline', e.target.value)}
+                  placeholder="e.g. Age 4 to 6 (2 Years: LKG, UKG)"
+                  className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                />
+              </div>
+              <div>
+                <label className="text-[9.5px] font-bold text-slate-600 block mb-0.5">Stage / Admission Route:</label>
+                <input
+                  type="text"
+                  value={instDraft.admissionRoute || ''}
+                  onChange={(e) => updateInstDraft('admissionRoute', e.target.value)}
+                  placeholder="e.g. Kindergarten Stage (LKG & UKG)"
+                  className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-500"
+                />
+              </div>
+            </div>
+
+            {/* 3. Executive Summary */}
+            <div>
+              <label className="text-[9.5px] font-bold text-slate-600 block mb-0.5">Description / Summary:</label>
+              <textarea
+                value={editDraft.summary ?? data.summary}
+                onChange={(e) => setEditDraft({ summary: e.target.value })}
+                rows={3}
+                placeholder="Executive summary / description"
+                className="w-full text-[10px] px-2 py-1.5 rounded border border-slate-300 bg-white text-slate-800 resize-y focus:outline-hidden focus:border-emerald-500"
+              />
+            </div>
+
+            {/* 4. Institutional Framework & Degrees Box (Matches the purple/indigo card in screenshot) */}
+            <div className="bg-indigo-50/70 p-2.5 rounded-lg border border-indigo-200/90 space-y-1.5">
+              <div className="flex items-center gap-1 text-[10.5px] font-bold text-indigo-950 border-b border-indigo-200/60 pb-1">
+                <Building2 className="w-3.5 h-3.5 text-indigo-700" />
+                <span>Institutional Framework &amp; Degrees</span>
+              </div>
+
+              <div>
+                <label className="text-[9.5px] font-semibold text-indigo-950 block mb-0.5">Type / Framework:</label>
+                <input
+                  type="text"
+                  value={instDraft.institutionType || ''}
+                  onChange={(e) => updateInstDraft('institutionType', e.target.value)}
+                  placeholder="e.g. Kindergarten Stage (LKG & UKG)"
+                  className="w-full text-[10px] px-2 py-1 rounded border border-indigo-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-600"
+                />
+              </div>
+
+              <div>
+                <label className="text-[9.5px] font-semibold text-indigo-950 block mb-0.5">Timeline / Evaluations:</label>
+                <input
+                  type="text"
+                  value={instDraft.examinationTimeline || ''}
+                  onChange={(e) => updateInstDraft('examinationTimeline', e.target.value)}
+                  placeholder="e.g. Age 4 to 6 (2 Years). Term evaluations without pass/fail ranking"
+                  className="w-full text-[10px] px-2 py-1 rounded border border-indigo-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-600"
+                />
+              </div>
+
+              <div>
+                <label className="text-[9.5px] font-semibold text-indigo-950 block mb-0.5">Programmes / Courses Conferred:</label>
+                <input
+                  type="text"
+                  value={instDraft.programmesOffered ? instDraft.programmesOffered.join(', ') : ''}
+                  onChange={(e) => {
+                    const progs = e.target.value.split(',').map((s) => s.trim()).filter(Boolean);
+                    updateInstDraft('programmesOffered', progs);
+                  }}
+                  placeholder="e.g. Junior KG / LKG (Age 4-5), Senior KG / UKG (Age 5-6)"
+                  className="w-full text-[10px] px-2 py-1 rounded border border-indigo-300 bg-white text-slate-800 focus:outline-hidden focus:border-indigo-600"
+                />
+              </div>
+            </div>
+
+            {/* 5. Career Hierarchy & Opportunities Box (Matches the box in screenshot) */}
+            <div className="bg-gradient-to-br from-amber-50 to-orange-50/60 p-2.5 rounded-lg border border-amber-300/80 space-y-1.5">
+              <div className="flex items-center gap-1 text-[10.5px] font-bold text-amber-950 border-b border-amber-200/60 pb-1">
+                <Briefcase className="w-3.5 h-3.5 text-amber-700" />
+                <span>Career Hierarchy &amp; Opportunities</span>
+              </div>
+              <div>
+                <label className="text-[9px] font-semibold text-amber-900 block mb-0.5">
+                  Hierarchy Ladder / Direct Qualifications:
+                </label>
+                <textarea
+                  value={instDraft.careerValue || ''}
+                  onChange={(e) => updateInstDraft('careerValue', e.target.value)}
+                  rows={3}
+                  placeholder="e.g. Qualifies directly for Class 1 admission under RTE Act 2009"
+                  className="w-full text-[10px] px-2 py-1.5 rounded border border-amber-300 bg-white text-slate-800 resize-y focus:outline-hidden focus:ring-1 focus:ring-amber-500 font-sans"
+                />
+              </div>
+            </div>
+
+            {/* 6. Legal Status & Parent Body */}
+            <div className="grid grid-cols-2 gap-1.5">
+              <div>
+                <label className="text-[9.5px] font-bold text-slate-600 block mb-0.5">Legal Status:</label>
+                <input
+                  type="text"
+                  value={editDraft.legalStatus ?? (data.legalStatus || '')}
+                  onChange={(e) => setEditDraft({ legalStatus: e.target.value })}
+                  placeholder="e.g. Foundational Stage"
+                  className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden"
+                />
+              </div>
+              <div>
+                <label className="text-[9.5px] font-bold text-slate-600 block mb-0.5">Governing Body / Department:</label>
+                <input
+                  type="text"
+                  value={editDraft.ministerialRelationship ?? (data.ministerialRelationship || '')}
+                  onChange={(e) => setEditDraft({ ministerialRelationship: e.target.value })}
+                  placeholder="e.g. State School Education Dept"
+                  className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden"
+                />
+              </div>
+            </div>
+
+            {/* 7. Examination & Selection Details (if exam node) */}
+            {(data.examDetails || editDraft.examDetails) && (
+              <div className="bg-sky-50/70 p-2.5 rounded-lg border border-sky-200/90 space-y-1.5">
+                <div className="flex items-center gap-1 text-[10.5px] font-bold text-sky-950 border-b border-sky-200/60 pb-1">
+                  <GraduationCap className="w-3.5 h-3.5 text-sky-700" />
+                  <span>Examination &amp; Selection Details</span>
                 </div>
-
                 <div className="grid grid-cols-2 gap-1.5">
                   <div>
-                    <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">Legal Status:</label>
-                    <input
-                      type="text"
-                      value={editDraft.legalStatus ?? (data.legalStatus || '')}
-                      onChange={(e) => setEditDraft({ legalStatus: e.target.value })}
-                      placeholder="Legal Status"
-                      className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">Ministry / Parent Body:</label>
-                    <input
-                      type="text"
-                      value={editDraft.ministerialRelationship ?? (data.ministerialRelationship || '')}
-                      onChange={(e) => setEditDraft({ ministerialRelationship: e.target.value })}
-                      placeholder="Ministry / Department"
-                      className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 focus:outline-hidden"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-[9.5px] font-bold text-slate-700 block mb-0.5">Executive Summary:</label>
-                  <textarea
-                    value={editDraft.summary ?? data.summary}
-                    onChange={(e) => setEditDraft({ summary: e.target.value })}
-                    rows={3}
-                    placeholder="Executive Summary"
-                    className="w-full text-[10.5px] px-2 py-1.5 rounded border border-slate-300 bg-white text-slate-800 resize-y focus:outline-hidden"
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Tab 3: Powers & Acts */}
-            {inlineTab === 'powers' && (
-              <div className="space-y-2 text-[10px]">
-                <div>
-                  <label className="text-[9.5px] font-bold text-emerald-900 uppercase block mb-0.5">Powers &amp; Remit (one per line):</label>
-                  <textarea
-                    value={
-                      editDraft.powers !== undefined
-                        ? editDraft.powers.join('\n')
-                        : (data.powers || []).join('\n')
-                    }
-                    onChange={(e) =>
-                      setEditDraft({
-                        powers: e.target.value.split('\n')
-                      })
-                    }
-                    rows={3}
-                    placeholder="Enter powers (one per line)"
-                    className="w-full text-[10px] px-2 py-1 rounded border border-emerald-300 bg-white text-slate-800 resize-y focus:outline-hidden"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[9.5px] font-bold text-rose-900 uppercase block mb-0.5">Limitations (one per line):</label>
-                  <textarea
-                    value={
-                      editDraft.limitations !== undefined
-                        ? editDraft.limitations.join('\n')
-                        : (data.limitations || []).join('\n')
-                    }
-                    onChange={(e) =>
-                      setEditDraft({
-                        limitations: e.target.value.split('\n')
-                      })
-                    }
-                    rows={2}
-                    placeholder="Enter limitations (one per line)"
-                    className="w-full text-[10px] px-2 py-1 rounded border border-rose-300 bg-white text-slate-800 resize-y focus:outline-hidden"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[9.5px] font-bold text-slate-700 uppercase block mb-0.5">Acts &amp; Legal Basis (one per line):</label>
-                  <textarea
-                    value={
-                      editDraft.establishingLaw !== undefined
-                        ? editDraft.establishingLaw.join('\n')
-                        : (data.establishingLaw || []).join('\n')
-                    }
-                    onChange={(e) =>
-                      setEditDraft({
-                        establishingLaw: e.target.value.split('\n')
-                      })
-                    }
-                    rows={2}
-                    placeholder="Enter statutory acts (one per line)"
-                    className="w-full text-[10px] px-2 py-1 rounded border border-slate-300 bg-white text-slate-800 resize-y focus:outline-hidden"
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Tab 4: Exam Specs */}
-            {inlineTab === 'exam' && (
-              <div className="space-y-2 text-[10px]">
-                <div className="grid grid-cols-2 gap-1.5">
-                  <div>
-                    <label className="text-[9.5px] font-bold text-sky-950 block mb-0.5">Conducting Agency:</label>
+                    <label className="text-[9px] font-semibold text-sky-950 block mb-0.5">Exam Agency:</label>
                     <input
                       type="text"
                       value={examDraft.examAgency || ''}
@@ -616,7 +434,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                     />
                   </div>
                   <div>
-                    <label className="text-[9.5px] font-bold text-sky-950 block mb-0.5">Application Window:</label>
+                    <label className="text-[9px] font-semibold text-sky-950 block mb-0.5">Application Window:</label>
                     <input
                       type="text"
                       value={examDraft.applicationWindow || ''}
@@ -626,56 +444,45 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                     />
                   </div>
                 </div>
-
                 <div>
-                  <label className="text-[9.5px] font-bold text-sky-950 block mb-0.5">Eligibility Criteria:</label>
+                  <label className="text-[9px] font-semibold text-sky-950 block mb-0.5">Eligibility Criteria:</label>
                   <input
                     type="text"
                     value={examDraft.eligibilityCriteria || ''}
                     onChange={(e) => updateExamDraft('eligibilityCriteria', e.target.value)}
-                    placeholder="e.g. 10+2 with PCM min 75%, or Bachelor Degree"
+                    placeholder="e.g. Class 12 Science PCM, min 75%"
                     className="w-full text-[10px] px-2 py-1 rounded border border-sky-300 bg-white text-slate-800 focus:outline-hidden"
                   />
                 </div>
-
                 <div>
-                  <label className="text-[9.5px] font-bold text-sky-950 block mb-0.5">Exam Stages (comma separated):</label>
+                  <label className="text-[9px] font-semibold text-sky-950 block mb-0.5">Outcome:</label>
                   <input
                     type="text"
-                    value={examDraft.examStages ? examDraft.examStages.join(', ') : ''}
-                    onChange={(e) => {
-                      const stages = e.target.value.split(',').map((s) => s.trim()).filter(Boolean);
-                      updateExamDraft('examStages', stages);
-                    }}
-                    placeholder="e.g. Prelims, Mains, Interview"
+                    value={examDraft.outcome || ''}
+                    onChange={(e) => updateExamDraft('outcome', e.target.value)}
+                    placeholder="e.g. Percentile & All India Rank"
                     className="w-full text-[10px] px-2 py-1 rounded border border-sky-300 bg-white text-slate-800 focus:outline-hidden"
                   />
-                </div>
-
-                <div className="grid grid-cols-2 gap-1.5">
-                  <div>
-                    <label className="text-[9.5px] font-bold text-sky-950 block mb-0.5">Outcome:</label>
-                    <input
-                      type="text"
-                      value={examDraft.outcome || ''}
-                      onChange={(e) => updateExamDraft('outcome', e.target.value)}
-                      placeholder="e.g. Percentile & All India Rank"
-                      className="w-full text-[10px] px-2 py-1 rounded border border-sky-300 bg-white text-slate-800 focus:outline-hidden"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-[9.5px] font-bold text-sky-950 block mb-0.5">Counselling / Allocation Body:</label>
-                    <input
-                      type="text"
-                      value={examDraft.counsellingBody || ''}
-                      onChange={(e) => updateExamDraft('counsellingBody', e.target.value)}
-                      placeholder="e.g. JoSAA, CSAB, MCC, DOPT"
-                      className="w-full text-[10px] px-2 py-1 rounded border border-sky-300 bg-white text-slate-800 focus:outline-hidden"
-                    />
-                  </div>
                 </div>
               </div>
             )}
+
+            {/* Save Action Footer */}
+            <div className="flex items-center justify-end gap-1.5 pt-2 border-t border-slate-200">
+              <button
+                onClick={cancelEditingNode}
+                className="px-3 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-[10.5px] cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={saveEditingNode}
+                className="px-3.5 py-1 rounded bg-emerald-700 hover:bg-emerald-800 text-amber-300 font-bold text-[10.5px] flex items-center gap-1 shadow-xs cursor-pointer"
+              >
+                <Check className="w-3 h-3" />
+                Save Changes
+              </button>
+            </div>
           </div>
         </div>
       ) : (
@@ -705,7 +512,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                     e.stopPropagation();
                     startEditingNode(data);
                   }}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-emerald-100 text-slate-400 hover:text-emerald-800"
+                  className="p-1 rounded bg-slate-100 hover:bg-emerald-100 text-slate-600 hover:text-emerald-800 border border-slate-200 shadow-2xs cursor-pointer transition-colors"
                   title="Click to edit node details inline"
                 >
                   <Edit3 className="w-3.5 h-3.5" />
@@ -738,13 +545,27 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
             {/* Legal Status badge & Domain Badges if present */}
             <div className="mt-1.5 flex flex-wrap gap-1">
               {data.institutionDetails?.examinationTimeline && (
-                <span className="inline-flex items-center gap-1 text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-slate-100/90 text-slate-700 border border-slate-200" title="Duration / Timeline">
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    startEditingNode(data);
+                  }}
+                  className="inline-flex items-center gap-1 text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-slate-100/90 text-slate-700 border border-slate-200 cursor-pointer hover:bg-slate-200 transition-colors"
+                  title="Click to edit duration / timeline"
+                >
                   <Clock className="w-2.5 h-2.5 text-slate-500" />
                   {data.institutionDetails.examinationTimeline}
                 </span>
               )}
               {data.institutionDetails?.admissionRoute && (
-                <span className="inline-flex items-center gap-1 text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200" title="Entrance / Testing Agency">
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    startEditingNode(data);
+                  }}
+                  className="inline-flex items-center gap-1 text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 cursor-pointer hover:bg-blue-100 transition-colors"
+                  title="Click to edit entrance / testing agency"
+                >
                   <Sparkles className="w-2.5 h-2.5 text-blue-600" />
                   {data.institutionDetails.admissionRoute}
                 </span>
@@ -855,10 +676,20 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
 
                 {/* Domain Uncommon Grounds: Institution & Qualification Details (v3) */}
                 {data.institutionDetails && (
-                  <div className="bg-indigo-50/70 rounded-lg p-2.5 border border-indigo-200/80 space-y-1.5">
-                    <div className="flex items-center gap-1 text-[10.5px] font-bold text-indigo-950">
-                      <Building2 className="w-3.5 h-3.5 text-indigo-700" />
-                      <span>Institutional Framework & Degrees</span>
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      startEditingNode(data);
+                    }}
+                    className="bg-indigo-50/70 rounded-lg p-2.5 border border-indigo-200/80 space-y-1.5 cursor-pointer hover:border-indigo-400 hover:shadow-xs transition-all group/inst"
+                    title="Click to edit Institutional Framework, Timeline & Degrees"
+                  >
+                    <div className="flex items-center justify-between gap-1 text-[10.5px] font-bold text-indigo-950">
+                      <span className="flex items-center gap-1">
+                        <Building2 className="w-3.5 h-3.5 text-indigo-700" />
+                        <span>Institutional Framework &amp; Degrees</span>
+                      </span>
+                      <Edit3 className="w-3 h-3 text-indigo-400 group-hover/inst:text-indigo-700 transition-colors" />
                     </div>
                     {data.institutionDetails.institutionType && (
                       <div className="text-[10px] text-slate-700">

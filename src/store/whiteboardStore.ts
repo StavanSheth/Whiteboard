@@ -672,18 +672,27 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
 
   startEditingNode: (node) =>
     set((state) => {
-      if (state.isDirty) {
+      if (state.editingNodeId === node.id) {
+        return { editingNodeId: node.id };
+      }
+      if (state.editingNodeId && state.isDirty) {
+        updateNodeApi(state.editingNodeId, state.editDraft, state.currentProjectId).catch(() => {});
+        const updatedNodes = state.nodes.map((n) =>
+          n.id === state.editingNodeId ? { ...n, ...state.editDraft } : n
+        );
         return {
-          showConfirmModal: true,
-          pendingAction: () => {
-            useWhiteboardStore.getState().startEditingNode(node);
-          }
+          nodes: updatedNodes,
+          editingNodeId: node.id,
+          editDraft: { ...node },
+          isDirty: false,
+          showConfirmModal: false
         };
       }
       return {
         editingNodeId: node.id,
         editDraft: { ...node },
-        isDirty: false
+        isDirty: false,
+        showConfirmModal: false
       };
     }),
 
