@@ -1,0 +1,43 @@
+{
+  "name": "indian-education-governance-whiteboard",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:frontend": "vite --host 127.0.0.1 --port 5173",
+    "dev:backend": "tsx backend/server.ts",
+    "build": "tsc -b && vite build",
+    "test:data": "tsx scripts/verify-data.ts",
+    "test:projects": "tsx scripts/test-projects.ts",
+    "lint": "oxlint",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@xyflow/react": "^12.12.0",
+    "autoprefixer": "^10.6.1",
+    "cors": "^2.8.6",
+    "elkjs": "^0.12.0",
+    "express": "^5.3.0",
+    "lucide-react": "^1.57.0",
+    "postcss": "^8.5.30",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.6.7",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "oxlint": "^1.81.0",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
+  }
+}
