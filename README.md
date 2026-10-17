@@ -7,6 +7,14 @@ Built from the complete specification in [`V1.md`](./V1.md).
 
 ---
 
+## 🌐 Live Deployment
+
+The application is deployed on Vercel:
+- **Production URL:** [https://whiteboard-nine-iota.vercel.app](https://whiteboard-nine-iota.vercel.app)
+- **Custom Alias:** [https://whiteboard-stavan.vercel.app](https://whiteboard-stavan.vercel.app)
+
+---
+
 ## 🏛️ System Architecture & Technology Stack
 
 - **Framework:** React 19 + TypeScript + Vite
