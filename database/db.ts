@@ -3,7 +3,7 @@ import { SECTION_METAS_V2, NODES_V2, RELATIONSHIPS_V2, SOURCES_V2 } from '../src
 import { SECTION_METAS_V3, NODES_V3, RELATIONSHIPS_V3, SOURCES_V3 } from '../src/data/whiteboard2-institutions';
 import { SECTION_METAS_V4, NODES_V4, RELATIONSHIPS_V4, SOURCES_V4 } from '../src/data/whiteboard4-democracy';
 import { SECTION_METAS_V5, NODES_V5, RELATIONSHIPS_V5, SOURCES_V5 } from '../src/data/whiteboard5-banking-judiciary';
-import { EducationNode, RelationshipEdgeData, SourceRecord, DatasetSchema, ProjectRecord, ProjectSummary, SectionMeta } from './schema';
+import { EducationNode, RelationshipEdgeData, SourceRecord, DatasetSchema, ProjectRecord, ProjectSummary, SectionMeta, ProjectSettings } from './schema';
 
 const STORAGE_PREFIX = 'wb_db_v1_';
 const STORAGE_ACTIVE_KEY = 'wb_db_v1_active_project_id';
@@ -45,18 +45,65 @@ class EducationGovernanceDatabase {
               // Intelligently merge any newly introduced nodes, relationships, and sources from code
               const seeded = this.projects.get(parsed.id);
               if (seeded) {
-                const existingNodeIds = new Set(parsed.nodes.map((n) => n.id));
-                const missingNodes = seeded.nodes.filter((n) => !existingNodeIds.has(n.id));
+                // Strictly deduplicate existing stored nodes
+                const seenNodeIds = new Set<string>();
+                const cleanNodes: EducationNode[] = [];
+                for (const n of parsed.nodes) {
+                  if (!seenNodeIds.has(n.id)) {
+                    seenNodeIds.add(n.id);
+                    cleanNodes.push(n);
+                  }
+                }
+                parsed.nodes = cleanNodes;
+
+                // Sync latest seed properties (sections, categories) for default projects
+                const seededNodeMap = new Map(seeded.nodes.map((n) => [n.id, n]));
+                if (seeded.isDefault) {
+                  parsed.nodes = parsed.nodes.map((n) => {
+                    const fresh = seededNodeMap.get(n.id);
+                    if (fresh) {
+                      return {
+                        ...fresh,
+                        position: n.position || fresh.position
+                      };
+                    }
+                    return n;
+                  });
+                }
+
+                // Add missing nodes from latest seed
+                const currentNodeIds = new Set(parsed.nodes.map((n) => n.id));
+                const missingNodes = seeded.nodes.filter((n) => !currentNodeIds.has(n.id));
                 if (missingNodes.length > 0) {
                   parsed.nodes = [...parsed.nodes, ...missingNodes];
-                  parsed.nodeCount = parsed.nodes.length;
                 }
-                const existingRelIds = new Set((parsed.relationships || []).map((r) => r.id));
-                const missingRels = seeded.relationships.filter((r) => !existingRelIds.has(r.id));
+                parsed.nodeCount = parsed.nodes.length;
+
+                // Strictly deduplicate relationships
+                const seenRelIds = new Set<string>();
+                const cleanRels: RelationshipEdgeData[] = [];
+                for (const r of parsed.relationships || []) {
+                  if (!seenRelIds.has(r.id)) {
+                    seenRelIds.add(r.id);
+                    cleanRels.push(r);
+                  }
+                }
+                parsed.relationships = cleanRels;
+
+                // Add missing relationships from latest seed
+                const currentRelIds = new Set(parsed.relationships.map((r) => r.id));
+                const missingRels = seeded.relationships.filter((r) => !currentRelIds.has(r.id));
                 if (missingRels.length > 0) {
-                  parsed.relationships = [...(parsed.relationships || []), ...missingRels];
-                  parsed.relationshipCount = parsed.relationships.length;
+                  parsed.relationships = [...parsed.relationships, ...missingRels];
                 }
+
+                // Filter out any relationships whose endpoints no longer exist
+                const validNodeIds = new Set(parsed.nodes.map((n) => n.id));
+                parsed.relationships = parsed.relationships.filter(
+                  (r) => validNodeIds.has(r.sourceNodeId) && validNodeIds.has(r.targetNodeId)
+                );
+                parsed.relationshipCount = parsed.relationships.length;
+
                 if (seeded.sections && seeded.sections.length > 0) {
                   parsed.sections = seeded.sections;
                 }
@@ -65,6 +112,9 @@ class EducationGovernanceDatabase {
                 if (missingSources.length > 0) {
                   parsed.sources = [...(parsed.sources || []), ...missingSources];
                   parsed.sourceCount = parsed.sources.length;
+                }
+                if (seeded.settings || parsed.settings) {
+                  parsed.settings = { ...(seeded.settings || {}), ...(parsed.settings || {}) };
                 }
               }
               this.projects.set(parsed.id, parsed);
@@ -307,6 +357,7 @@ class EducationGovernanceDatabase {
       relationshipCount: p.relationships.length,
       sourceCount: p.sources.length,
       isDefault: p.isDefault,
+      settings: p.settings,
       isActive: p.id === this.activeProjectId
     }));
   }
@@ -409,13 +460,19 @@ class EducationGovernanceDatabase {
     return newProject;
   }
 
-  public updateProjectMetadata(id: string, partial: { name?: string; description?: string }): ProjectSummary {
+  public updateProjectMetadata(
+    id: string,
+    partial: { name?: string; description?: string; settings?: Partial<ProjectSettings> }
+  ): ProjectSummary {
     const proj = this.projects.get(id);
     if (!proj) {
       throw new Error(`Project with ID '${id}' not found.`);
     }
     if (partial.name !== undefined) proj.name = partial.name.trim();
     if (partial.description !== undefined) proj.description = partial.description.trim();
+    if (partial.settings !== undefined) {
+      proj.settings = { ...(proj.settings || {}), ...partial.settings };
+    }
     proj.updatedAt = new Date().toISOString();
     this.persistProject(proj.id);
     return {
@@ -427,8 +484,28 @@ class EducationGovernanceDatabase {
       nodeCount: proj.nodes.length,
       relationshipCount: proj.relationships.length,
       sourceCount: proj.sources.length,
-      isDefault: proj.isDefault
+      isDefault: proj.isDefault,
+      settings: proj.settings
     };
+  }
+
+  public updateProjectSettings(id: string, settings: Partial<ProjectSettings>): ProjectRecord {
+    const proj = this.projects.get(id);
+    if (!proj) {
+      throw new Error(`Project with ID '${id}' not found.`);
+    }
+    const mergedSectionPrintSettings = {
+      ...(proj.settings?.sectionPrintSettings || {}),
+      ...(settings.sectionPrintSettings || {})
+    };
+    proj.settings = {
+      ...(proj.settings || {}),
+      ...settings,
+      sectionPrintSettings: mergedSectionPrintSettings
+    };
+    proj.updatedAt = new Date().toISOString();
+    this.persistProject(proj.id);
+    return proj;
   }
 
   public deleteProject(id: string): { success: boolean; activeProjectId: string } {

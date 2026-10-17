@@ -178,21 +178,29 @@ a,
     page: landscape-sheet;
   }
 
+  html,
   body {
     background: #ffffff !important;
     color: #0f172a !important;
     overflow: visible !important;
     height: auto !important;
+    min-height: 100% !important;
+    max-height: none !important;
     width: auto !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  #root {
+  #root,
+  #root > div,
+  main {
     height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
     width: auto !important;
     overflow: visible !important;
     display: block !important;
+    position: static !important;
   }
 
   /* Hide app navigation, sidebars and canvas controls */
@@ -224,11 +232,20 @@ a,
     overflow: hidden !important;
   }
 
+  .print-modal-overlay,
+  .print-modal-content,
   .print-document-container {
     overflow: visible !important;
     height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    position: static !important;
+    display: block !important;
     padding: 0 !important;
     margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
   }
 
   .section-page {
@@ -236,6 +253,11 @@ a,
     box-shadow: none !important;
     padding: 0 !important;
     margin-bottom: 0 !important;
+    display: block !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
   .print-page-break {

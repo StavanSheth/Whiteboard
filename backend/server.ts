@@ -71,6 +71,15 @@ export function createServer() {
     }
   });
 
+  app.put('/api/projects/:id/settings', (req: Request, res: Response) => {
+    try {
+      const updated = db.updateProjectSettings(req.params.id, req.body);
+      res.json({ success: true, message: `Project settings updated.`, data: updated.settings });
+    } catch (err) {
+      res.status(400).json({ success: false, error: (err as Error).message });
+    }
+  });
+
   app.delete('/api/projects/:id', (req: Request, res: Response) => {
     try {
       const result = db.deleteProject(req.params.id);

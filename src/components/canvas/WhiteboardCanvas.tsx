@@ -381,9 +381,9 @@ function CanvasInner() {
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         fitView
-        minZoom={0.08}
+        minZoom={0.02}
         maxZoom={1.8}
-        onlyRenderVisibleElements={true}
+        onlyRenderVisibleElements={false}
         nodesDraggable={canvasInteractionMode !== 'zoom'}
         proOptions={{ hideAttribution: true }}
         className={`mode-${canvasInteractionMode}`}

@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { ReactFlowProvider } from '@xyflow/react';
+import { useWhiteboardStore } from './store/whiteboardStore';
 import { TopToolbar } from './components/navigation/TopToolbar';
 import { SectionSidebar } from './components/navigation/SectionSidebar';
 import { WhiteboardCanvas } from './components/canvas/WhiteboardCanvas';
@@ -15,6 +17,14 @@ import { AddRelationshipModal } from './components/modals/AddRelationshipModal';
 import { SectionManagerModal } from './components/modals/SectionManagerModal';
 
 export default function App() {
+  const currentProjectName = useWhiteboardStore((s) => s.currentProjectName);
+
+  useEffect(() => {
+    if (currentProjectName) {
+      document.title = `${currentProjectName} — Education Governance`;
+    }
+  }, [currentProjectName]);
+
   return (
     <ReactFlowProvider>
       <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#f8faf9] text-slate-800 antialiased font-sans select-none">

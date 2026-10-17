@@ -1,4 +1,4 @@
-import { EducationNode, RelationshipEdgeData, SourceRecord, ProjectRecord, ProjectSummary, SectionMeta } from '../types';
+import { EducationNode, RelationshipEdgeData, SourceRecord, ProjectRecord, ProjectSummary, ProjectSettings, SectionMeta } from '../types';
 import { db } from '../../database/db';
 
 const API_BASE = '/api';
@@ -72,7 +72,7 @@ export async function activateProjectApi(id: string): Promise<ProjectRecord> {
 
 export async function updateProjectApi(
   id: string,
-  partial: { name?: string; description?: string }
+  partial: { name?: string; description?: string; settings?: Partial<ProjectSettings> }
 ): Promise<ProjectSummary> {
   try {
     const res = await fetch(`${API_BASE}/projects/${encodeURIComponent(id)}`, {
@@ -86,6 +86,26 @@ export async function updateProjectApi(
     return json.data;
   } catch {
     return db.updateProjectMetadata(id, partial);
+  }
+}
+
+export async function updateProjectSettingsApi(
+  id: string,
+  settings: Partial<ProjectSettings>
+): Promise<ProjectSettings> {
+  try {
+    const res = await fetch(`${API_BASE}/projects/${encodeURIComponent(id)}/settings`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(settings)
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    db.updateProjectSettings(id, settings);
+    return json.data;
+  } catch {
+    const proj = db.updateProjectSettings(id, settings);
+    return proj.settings || {};
   }
 }
 

@@ -36,7 +36,13 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
 
   const arrowStyle = useWhiteboardStore((s) => s.arrowStyle);
   const edgeLabelMode = useWhiteboardStore((s) => s.edgeLabelMode);
+  const customFkArrowHeight = useWhiteboardStore((s) => s.customFkArrowHeight);
   const edgeData = data as unknown as RelationshipEdgeData | undefined;
+
+  const isFk =
+    edgeData?.type === 'CONNECTS_TO_BOARD_2' ||
+    edgeData?.type === 'CONNECTS_TO_BOARD_3' ||
+    id.startsWith('REL-FK-');
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -62,7 +68,8 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
       targetX,
       targetY,
       targetPosition,
-      borderRadius: 0
+      borderRadius: 0,
+      offset: isFk ? customFkArrowHeight : 20
     });
     edgePath = path;
     labelX = lx;
@@ -75,7 +82,8 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
       targetX,
       targetY,
       targetPosition,
-      borderRadius: 14
+      borderRadius: 14,
+      offset: isFk ? customFkArrowHeight : 20
     });
     edgePath = path;
     labelX = lx;
@@ -88,7 +96,8 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
       sourcePosition,
       targetX,
       targetY,
-      targetPosition
+      targetPosition,
+      curvature: isFk ? Math.max(0.1, customFkArrowHeight / 100) : 0.25
     });
     edgePath = path;
     labelX = lx;

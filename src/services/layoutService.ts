@@ -56,15 +56,18 @@ export function estimateNodeHeight(
   const charsPerLine = Math.max(18, Math.floor((safeWidth - 28) / (7.2 * fontScale)));
 
   if (!isFull) {
-    // In compact mode: header (~24px), title (~26px), legal status badge (~20px), clamped summary (~30px), padding (~16px)
-    let baseH = 88 * typoFactor + paraSpacing;
+    // In compact mode: header (~22px), title (~28px), single primary badge (~22px), 1-line summary (~18px), padding (~20px)
+    let baseH = 98 * typoFactor + paraSpacing;
+    if (node.title && node.title.length > charsPerLine) {
+      baseH += 18 * typoFactor;
+    }
     if (node.summary) {
-      baseH += Math.min(2, Math.ceil(node.summary.length / charsPerLine)) * 15 * typoFactor;
+      baseH += 18 * typoFactor;
     }
     if (dockedFkCount > 0) {
       baseH += dockedFkCount * Math.round(22 * fontScale) + 6;
     }
-    return Math.max(50, Math.round(baseH * cardHeightScale));
+    return Math.max(60, Math.round(baseH * cardHeightScale));
   }
 
   // Full Dossier dynamic text wrapping
@@ -780,6 +783,7 @@ export interface SectionTreeLayoutOptions {
   nodeSpacing?: number;
   vSpacing?: number;
   arrowHeight?: number;
+  fkArrowHeight?: number;
   layerSpacing?: number;
   nodeWidth?: number;
   cardHeightScale?: number;
@@ -790,6 +794,7 @@ export interface SectionTreeLayoutOptions {
   paraSpacing?: number;
   fkMode?: 'docked' | 'stubs';
   arrowStyle?: 'curved' | 'straight' | 'orthogonal' | 'rounded-orthogonal';
+  nodePositions?: Record<string, { x: number; y: number }>;
 }
 
 /**
@@ -810,6 +815,7 @@ export async function calculateSectionTreeLayout(
   const nodeSpacing = opts.nodeSpacing ?? (isDossier ? 65 : 45);
   const vSpacing = opts.vSpacing ?? (isDossier ? 65 : 45);
   const arrowHeight = opts.arrowHeight ?? opts.layerSpacing ?? (isDossier ? 140 : 85);
+  const fkArrowHeight = opts.fkArrowHeight ?? (isDossier ? 90 : 65);
   const layerSpacing = Math.max(arrowHeight, vSpacing);
   const customBoxWidth = opts.nodeWidth;
   const cardHeightScale = opts.cardHeightScale ?? 1.0;
@@ -1092,7 +1098,8 @@ export async function calculateSectionTreeLayout(
         }
 
         const maxRightCol = Math.max(...col.map((n) => n.x + n.width));
-        const requiredNextColX = maxRightCol + layerSpacing;
+        const hasFkTransition = col.some((n) => n.isFk) || (colBuckets[colIdx + 1] && colBuckets[colIdx + 1].some((n) => n.isFk));
+        const requiredNextColX = maxRightCol + (hasFkTransition ? fkArrowHeight : layerSpacing);
 
         for (let nextColIdx = colIdx + 1; nextColIdx < colBuckets.length; nextColIdx++) {
           const nextCol = colBuckets[nextColIdx];
@@ -1150,7 +1157,8 @@ export async function calculateSectionTreeLayout(
         }
 
         const maxBottomLayer = Math.max(...layer.map((n) => n.y + n.height));
-        const requiredNextLayerY = maxBottomLayer + layerSpacing;
+        const hasFkTransition = layer.some((n) => n.isFk) || (layerBuckets[layerIdx + 1] && layerBuckets[layerIdx + 1].some((n) => n.isFk));
+        const requiredNextLayerY = maxBottomLayer + (hasFkTransition ? fkArrowHeight : layerSpacing);
 
         // Cascade downstream layers so lower layers are pushed ahead and never collided into!
         for (let nextIdx = layerIdx + 1; nextIdx < layerBuckets.length; nextIdx++) {
@@ -1181,6 +1189,17 @@ export async function calculateSectionTreeLayout(
       computedNodes.forEach((n) => {
         n.x = Math.round(n.x - shiftX);
         n.y = Math.round(n.y - shiftY);
+      });
+    }
+
+    // Apply custom node positions if explicitly repositioned on this page
+    if (opts.nodePositions) {
+      computedNodes.forEach((n) => {
+        const customPos = opts.nodePositions?.[n.id];
+        if (customPos) {
+          n.x = Math.round(customPos.x);
+          n.y = Math.round(customPos.y);
+        }
       });
     }
 
@@ -1277,14 +1296,19 @@ export async function calculateSectionTreeLayout(
               ty = targetNode.y + padY + (inIndex / (inCount - 1)) * spanY;
             }
             const tx = targetNode.x;
+            const isFk = Boolean(meta?.isFk);
 
             if (arrowStyle === 'straight') {
               pathD = `M ${sx} ${sy} L ${tx} ${ty}`;
             } else if (arrowStyle === 'orthogonal') {
-              const midX = (sx + tx) / 2;
+              const midX = isFk
+                ? (tx > sx ? sx + Math.min(fkArrowHeight, (tx - sx) * 0.6) : sx - Math.min(fkArrowHeight, (sx - tx) * 0.6))
+                : (sx + tx) / 2;
               pathD = `M ${sx} ${sy} L ${midX} ${sy} L ${midX} ${ty} L ${tx} ${ty}`;
             } else if (arrowStyle === 'rounded-orthogonal') {
-              const midX = (sx + tx) / 2;
+              const midX = isFk
+                ? (tx > sx ? sx + Math.min(fkArrowHeight, (tx - sx) * 0.6) : sx - Math.min(fkArrowHeight, (sx - tx) * 0.6))
+                : (sx + tx) / 2;
               const radius = Math.min(14, Math.abs(ty - sy) / 2, Math.abs(tx - sx) / 3);
               if (Math.abs(ty - sy) < 4 || radius < 2) {
                 pathD = `M ${sx} ${sy} L ${tx} ${ty}`;
@@ -1295,9 +1319,11 @@ export async function calculateSectionTreeLayout(
             } else {
               // curved (default smooth cubic Bezier)
               const dx = tx - sx;
-              const curveOffset = Math.max(30, Math.min(180, Math.abs(dx) * 0.45));
-              const cx1 = sx + curveOffset;
-              const cx2 = tx - curveOffset;
+              const curveOffset = isFk
+                ? Math.max(15, Math.min(220, fkArrowHeight * 0.8))
+                : Math.max(30, Math.min(180, Math.abs(dx) * 0.45));
+              const cx1 = sx + (dx >= 0 ? curveOffset : -curveOffset);
+              const cx2 = tx - (dx >= 0 ? curveOffset : -curveOffset);
               pathD = `M ${sx} ${sy} C ${cx1} ${sy}, ${cx2} ${ty}, ${tx} ${ty}`;
             }
           } else {
@@ -1323,14 +1349,19 @@ export async function calculateSectionTreeLayout(
               tx = targetNode.x + padX + (inIndex / (inCount - 1)) * spanX;
             }
             const ty = targetNode.y;
+            const isFk = Boolean(meta?.isFk);
 
             if (arrowStyle === 'straight') {
               pathD = `M ${sx} ${sy} L ${tx} ${ty}`;
             } else if (arrowStyle === 'orthogonal') {
-              const midY = (sy + ty) / 2;
+              const midY = isFk
+                ? (ty > sy ? sy + Math.min(fkArrowHeight, (ty - sy) * 0.6) : sy - Math.min(fkArrowHeight, (sy - ty) * 0.6))
+                : (sy + ty) / 2;
               pathD = `M ${sx} ${sy} L ${sx} ${midY} L ${tx} ${midY} L ${tx} ${ty}`;
             } else if (arrowStyle === 'rounded-orthogonal') {
-              const midY = (sy + ty) / 2;
+              const midY = isFk
+                ? (ty > sy ? sy + Math.min(fkArrowHeight, (ty - sy) * 0.6) : sy - Math.min(fkArrowHeight, (sy - ty) * 0.6))
+                : (sy + ty) / 2;
               const radius = Math.min(14, Math.abs(tx - sx) / 2, Math.abs(ty - sy) / 3);
               if (Math.abs(tx - sx) < 4 || radius < 2) {
                 pathD = `M ${sx} ${sy} L ${tx} ${ty}`;
@@ -1341,9 +1372,11 @@ export async function calculateSectionTreeLayout(
             } else {
               // curved (default smooth cubic Bezier)
               const dy = ty - sy;
-              const curveOffset = Math.max(25, Math.min(180, Math.abs(dy) * 0.45));
-              const cy1 = sy + curveOffset;
-              const cy2 = ty - curveOffset;
+              const curveOffset = isFk
+                ? Math.max(15, Math.min(220, fkArrowHeight * 0.8))
+                : Math.max(25, Math.min(180, Math.abs(dy) * 0.45));
+              const cy1 = sy + (dy >= 0 ? curveOffset : -curveOffset);
+              const cy2 = ty - (dy >= 0 ? curveOffset : -curveOffset);
               pathD = `M ${sx} ${sy} C ${sx} ${cy1}, ${tx} ${cy2}, ${tx} ${ty}`;
             }
           }

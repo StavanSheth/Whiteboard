@@ -61,6 +61,8 @@ export function TopToolbar() {
     setCustomVSpacing,
     customArrowHeight,
     setCustomArrowHeight,
+    customFkArrowHeight,
+    setCustomFkArrowHeight,
     arrowStyle,
     setArrowStyle,
     edgeLabelMode,
@@ -574,6 +576,16 @@ export function TopToolbar() {
             unit="px"
             onChange={setCustomArrowHeight}
             title="Connector arrow clearance / layer spacing between node ranks (enter any value)"
+          />
+
+          <NumberStepperInput
+            label={layoutDirection === 'RIGHT' ? 'FK Arrow Len:' : 'FK Arrow H:'}
+            value={customFkArrowHeight}
+            min={0}
+            step={10}
+            unit="px"
+            onChange={setCustomFkArrowHeight}
+            title="Foreign link arrow height and clearance manager for cross-section edges (enter any value)"
           />
 
           <NumberStepperInput

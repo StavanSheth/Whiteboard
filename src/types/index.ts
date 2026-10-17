@@ -212,6 +212,41 @@ export interface SectionMeta {
   expectedAuthorities: string[];
 }
 
+export interface SectionPrintSettings {
+  customNodeSpacing?: number;
+  customVSpacing?: number;
+  customArrowHeight?: number;
+  customFkArrowHeight?: number;
+  nodeBoxWidth?: number;
+  cardHeightPercent?: number;
+  fontSizePx?: number;
+  lineHeightMult?: number;
+  paraSpacingPx?: number;
+  treeDirection?: 'DOWN' | 'RIGHT';
+  alternateDepth?: boolean;
+  alternateSpacingPx?: number;
+  fkMode?: 'docked' | 'stubs';
+  arrowStyle?: 'curved' | 'straight' | 'orthogonal' | 'rounded-orthogonal';
+  pageSplitMode?: 'auto' | 'single' | '2-page' | '4-page';
+  nodePositions?: Record<string, { x: number; y: number }>;
+}
+
+export interface ProjectSettings {
+  customArrowHeight?: number;
+  customFkArrowHeight?: number;
+  customNodeSpacing?: number;
+  customVSpacing?: number;
+  nodeBoxWidth?: number;
+  cardHeightPercent?: number;
+  fontSizePx?: number;
+  lineHeightMult?: number;
+  paraSpacingPx?: number;
+  arrowStyle?: 'curved' | 'straight' | 'orthogonal' | 'rounded-orthogonal';
+  globalPrintSettings?: SectionPrintSettings;
+  sectionPrintSettings?: Record<string, SectionPrintSettings>;
+  [key: string]: any;
+}
+
 export interface ProjectSummary {
   id: string;
   name: string;
@@ -222,6 +257,7 @@ export interface ProjectSummary {
   relationshipCount: number;
   sourceCount: number;
   isDefault?: boolean;
+  settings?: ProjectSettings;
 }
 
 export interface ProjectRecord extends ProjectSummary {
@@ -229,4 +265,5 @@ export interface ProjectRecord extends ProjectSummary {
   relationships: RelationshipEdgeData[];
   sources: SourceRecord[];
   sections?: SectionMeta[];
+  settings?: ProjectSettings;
 }

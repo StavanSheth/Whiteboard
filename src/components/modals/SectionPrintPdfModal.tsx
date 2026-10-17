@@ -1,7 +1,7 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useWhiteboardStore } from '../../store/whiteboardStore';
 import { SECTION_METAS } from '../../data/sections';
-import { EducationNode } from '../../types';
+import { EducationNode, SectionPrintSettings } from '../../types';
 import {
   calculateSectionTreeLayout,
   SectionTreeLayoutResult,
@@ -31,7 +31,11 @@ import {
   Route,
   Landmark,
   Clock,
-  GraduationCap
+  GraduationCap,
+  Sliders,
+  CopyCheck,
+  Search,
+  ChevronDown
 } from 'lucide-react';
 
 interface NumberStepperInputProps {
@@ -45,6 +49,7 @@ interface NumberStepperInputProps {
   icon?: React.ReactNode;
   onChange: (val: number) => void;
   title?: string;
+  className?: string;
 }
 
 function NumberStepperInput({
@@ -57,7 +62,8 @@ function NumberStepperInput({
   decimals = 0,
   icon,
   onChange,
-  title
+  title,
+  className = ''
 }: NumberStepperInputProps) {
   const [localVal, setLocalVal] = useState<string>(
     decimals > 0 ? value.toFixed(decimals) : String(value)
@@ -107,41 +113,582 @@ function NumberStepperInput({
 
   return (
     <div
-      className="flex items-center gap-1 bg-slate-100 px-2 py-1 rounded-lg border border-slate-200 shadow-2xs"
-      title={title}
+      className={`flex items-center justify-between gap-1 bg-slate-100 px-1.5 py-1 rounded-lg border border-slate-200 shadow-2xs ${className}`}
+      title={title || label}
     >
-      {icon && <span className="flex-shrink-0">{icon}</span>}
-      <span className="text-[10px] font-semibold text-slate-600 select-none whitespace-nowrap">{label}</span>
-      <button
-        type="button"
-        onClick={decrement}
-        className="w-4 h-4 flex items-center justify-center font-bold text-[10px] rounded bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 cursor-pointer transition-colors shadow-2xs"
-        title={`Decrease ${label}`}
-      >
-        -
-      </button>
-      <div className="flex items-center bg-white border border-slate-300 rounded px-1 focus-within:ring-1 focus-within:ring-emerald-700 focus-within:border-emerald-700">
-        <input
-          type="number"
-          step={step}
-          min={min}
-          max={max}
-          value={localVal}
-          onChange={handleInputChange}
-          onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
-          className="w-10 sm:w-12 h-5 text-center font-mono text-[10.5px] font-bold text-slate-900 bg-transparent outline-hidden p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-        />
-        {unit && <span className="text-[9.5px] font-mono text-slate-400 font-semibold select-none pl-0.5">{unit}</span>}
+      <div className="flex items-center gap-1 min-w-0 flex-shrink truncate">
+        {icon && <span className="flex-shrink-0 text-slate-500">{icon}</span>}
+        <span className="text-[10px] font-semibold text-slate-600 select-none whitespace-nowrap truncate">{label}</span>
       </div>
-      <button
-        type="button"
-        onClick={increment}
-        className="w-4 h-4 flex items-center justify-center font-bold text-[10px] rounded bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 cursor-pointer transition-colors shadow-2xs"
-        title={`Increase ${label}`}
-      >
-        +
-      </button>
+      <div className="flex items-center gap-0.5 flex-shrink-0">
+        <button
+          type="button"
+          onClick={decrement}
+          className="w-4 h-4 flex items-center justify-center font-bold text-[10px] rounded bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 cursor-pointer transition-colors shadow-2xs"
+          title={`Decrease ${label}`}
+        >
+          -
+        </button>
+        <div className="flex items-center bg-white border border-slate-300 rounded px-0.5 focus-within:ring-1 focus-within:ring-emerald-700 focus-within:border-emerald-700">
+          <input
+            type="number"
+            step={step}
+            min={min}
+            max={max}
+            value={localVal}
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+            className="w-7 sm:w-9 h-4.5 text-center font-mono text-[10px] font-bold text-slate-900 bg-transparent outline-hidden p-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          />
+          {unit && <span className="text-[9px] font-mono text-slate-400 font-semibold select-none pr-0.5">{unit}</span>}
+        </div>
+        <button
+          type="button"
+          onClick={increment}
+          className="w-4 h-4 flex items-center justify-center font-bold text-[10px] rounded bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 cursor-pointer transition-colors shadow-2xs"
+          title={`Increase ${label}`}
+        >
+          +
+        </button>
+      </div>
+    </div>
+  );
+}
+
+interface SectionToolbarDeckProps {
+  arrowStyle: 'curved' | 'straight' | 'orthogonal' | 'rounded-orthogonal';
+  setArrowStyle: (val: 'curved' | 'straight' | 'orthogonal' | 'rounded-orthogonal') => void;
+  pageSplitMode: 'auto' | 'single' | '2-page' | '4-page';
+  setPageSplitMode: (val: 'auto' | 'single' | '2-page' | '4-page') => void;
+  fkMode: 'docked' | 'stubs';
+  setFkMode: (val: 'docked' | 'stubs') => void;
+  alternateDepth: boolean;
+  setAlternateDepth: (val: boolean) => void;
+  alternateSpacingPx: number;
+  setAlternateSpacingPx: (val: number) => void;
+  direction: 'DOWN' | 'RIGHT';
+  setDirection: (val: 'DOWN' | 'RIGHT') => void;
+
+  // Dimensions & Steppers
+  nodeBoxWidth: number;
+  setNodeBoxWidth: (val: number) => void;
+  cardHeightPercent: number;
+  setCardHeightPercent: (val: number) => void;
+  customNodeSpacing: number;
+  setCustomNodeSpacing: (val: number) => void;
+  customVSpacing: number;
+  setCustomVSpacing: (val: number) => void;
+  customArrowHeight: number;
+  setCustomArrowHeight: (val: number) => void;
+  customFkArrowHeight: number;
+  setCustomFkArrowHeight: (val: number) => void;
+  fontSizePx: number;
+  setFontSizePx: (val: number) => void;
+  lineHeightMult: number;
+  setLineHeightMult: (val: number) => void;
+  paraSpacingPx: number;
+  setParaSpacingPx: (val: number) => void;
+
+  // Optional / Global extras
+  isDossier?: boolean;
+  setIsDossier?: (val: boolean) => void;
+  printOrientation?: 'landscape' | 'portrait';
+  setPrintOrientation?: (val: 'landscape' | 'portrait') => void;
+  showFkTable?: boolean;
+  setShowFkTable?: (val: boolean) => void;
+  isAutoFit?: boolean;
+  setIsAutoFit?: (val: boolean) => void;
+  manualScale?: number;
+  setManualScale?: React.Dispatch<React.SetStateAction<number>>;
+
+  // Reset & moved nodes
+  onReset?: () => void;
+  resetTitle?: string;
+  isPerPage?: boolean;
+  hasCustomPositions?: boolean;
+  onClearNodePositions?: () => void;
+  onApplyToAll?: () => void;
+}
+
+function SectionToolbarDeck({
+  arrowStyle,
+  setArrowStyle,
+  pageSplitMode,
+  setPageSplitMode,
+  fkMode,
+  setFkMode,
+  alternateDepth,
+  setAlternateDepth,
+  alternateSpacingPx,
+  setAlternateSpacingPx,
+  direction,
+  setDirection,
+  nodeBoxWidth,
+  setNodeBoxWidth,
+  cardHeightPercent,
+  setCardHeightPercent,
+  customNodeSpacing,
+  setCustomNodeSpacing,
+  customVSpacing,
+  setCustomVSpacing,
+  customArrowHeight,
+  setCustomArrowHeight,
+  customFkArrowHeight,
+  setCustomFkArrowHeight,
+  fontSizePx,
+  setFontSizePx,
+  lineHeightMult,
+  setLineHeightMult,
+  paraSpacingPx,
+  setParaSpacingPx,
+  isDossier,
+  setIsDossier,
+  printOrientation,
+  setPrintOrientation,
+  showFkTable,
+  setShowFkTable,
+  isAutoFit,
+  setIsAutoFit,
+  manualScale,
+  setManualScale,
+  onReset,
+  resetTitle,
+  isPerPage = false,
+  hasCustomPositions = false,
+  onClearNodePositions,
+  onApplyToAll
+}: SectionToolbarDeckProps) {
+  return (
+    <div className="space-y-2 text-xs text-slate-700">
+      {/* Row 1: Presentation & Layout Mode Selectors */}
+      <div className="flex flex-wrap items-center gap-2">
+        {/* Dossier vs Compact Mode (if available) */}
+        {setIsDossier && isDossier !== undefined && (
+          <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+            <button
+              type="button"
+              onClick={() => setIsDossier(false)}
+              className={`flex items-center gap-1 px-2 py-0.5 text-[10.5px] font-semibold rounded-md transition-all cursor-pointer ${
+                !isDossier ? 'bg-white text-emerald-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              }`}
+              title="Compact cards for clean fit"
+            >
+              <Minimize2 className="w-3 h-3" />
+              <span>Compact</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsDossier(true)}
+              className={`flex items-center gap-1 px-2 py-0.5 text-[10.5px] font-semibold rounded-md transition-all cursor-pointer ${
+                isDossier ? 'bg-emerald-900 text-amber-300 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              }`}
+              title="Include powers, limitations, and mandates inside tree nodes"
+            >
+              <Maximize2 className="w-3 h-3" />
+              <span>Full Dossier</span>
+            </button>
+          </div>
+        )}
+
+        {/* Arrow Style Selector */}
+        <div className="flex items-center gap-0.5 bg-slate-100 p-0.5 rounded-lg border border-slate-200" title="Arrow connector routing style">
+          <span className="text-[10px] font-semibold text-slate-500 pl-1 flex items-center gap-1">
+            <Route className="w-3 h-3 text-slate-600" />
+            Arrows:
+          </span>
+          {(['curved', 'straight', 'orthogonal', 'rounded-orthogonal'] as const).map((style) => (
+            <button
+              key={style}
+              type="button"
+              onClick={() => setArrowStyle(style)}
+              className={`px-1.5 py-0.5 text-[10px] font-semibold rounded transition-all cursor-pointer ${
+                arrowStyle === style ? 'bg-white text-emerald-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              {style === 'curved' ? 'Curved' : style === 'straight' ? 'Straight' : style === 'orthogonal' ? '90° Ortho' : 'Rounded'}
+            </button>
+          ))}
+        </div>
+
+        {/* PDF View Mode: 1-Page Fit vs Multi-Page */}
+        <div className="flex items-center gap-0.5 bg-slate-100 p-0.5 rounded-lg border border-slate-300 shadow-2xs">
+          <span className="text-[10px] font-bold text-slate-700 pl-1 flex items-center gap-1">
+            <Printer className="w-3 h-3 text-emerald-800" />
+            Layout:
+          </span>
+          <button
+            type="button"
+            onClick={() => setPageSplitMode('single')}
+            className={`flex items-center gap-1 px-2 py-0.5 text-[10.5px] font-bold rounded-md transition-all cursor-pointer ${
+              pageSplitMode === 'single'
+                ? 'bg-emerald-900 text-amber-300 shadow-xs ring-1 ring-emerald-700'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+            title="1-page fit: scales entire diagram to fit on 1 sheet"
+          >
+            <span>1-Page Fit</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setPageSplitMode('auto')}
+            className={`px-1.5 py-0.5 text-[10px] font-semibold rounded transition-all cursor-pointer ${
+              pageSplitMode === 'auto'
+                ? 'bg-emerald-800 text-amber-300 shadow-2xs'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+            title="Auto split wide diagrams"
+          >
+            Auto
+          </button>
+          <button
+            type="button"
+            onClick={() => setPageSplitMode('2-page')}
+            className={`px-1.5 py-0.5 text-[10px] font-semibold rounded transition-all cursor-pointer ${
+              pageSplitMode === '2-page'
+                ? 'bg-emerald-800 text-amber-300 shadow-2xs'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+            title="Divide horizontally into 2 wide pages (Left / Right)"
+          >
+            2-Page
+          </button>
+          <button
+            type="button"
+            onClick={() => setPageSplitMode('4-page')}
+            className={`px-1.5 py-0.5 text-[10px] font-semibold rounded transition-all cursor-pointer ${
+              pageSplitMode === '4-page'
+                ? 'bg-emerald-800 text-amber-300 shadow-2xs'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+            title="Divide into 4 quadrant pages (Grid)"
+          >
+            4-Page
+          </button>
+        </div>
+
+        {/* FK Bridge Mode */}
+        <div className="flex items-center gap-0.5 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+          <button
+            type="button"
+            onClick={() => setFkMode('docked')}
+            className={`flex items-center gap-1 px-2 py-0.5 text-[10.5px] font-semibold rounded-md transition-all cursor-pointer ${
+              fkMode === 'docked' ? 'bg-emerald-900 text-amber-300 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+            }`}
+            title="Dock FK links inside cards"
+          >
+            <Anchor className="w-3 h-3" />
+            <span>FK: Docked</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setFkMode('stubs')}
+            className={`flex items-center gap-1 px-2 py-0.5 text-[10.5px] font-semibold rounded-md transition-all cursor-pointer ${
+              fkMode === 'stubs' ? 'bg-emerald-900 text-amber-300 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+            }`}
+            title="Render Foreign Keys as external stub boxes"
+          >
+            <ArrowUpRight className="w-3 h-3" />
+            <span>FK: Stubs</span>
+          </button>
+        </div>
+
+        {/* Alternate Depth Placing & Stagger */}
+        <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-lg border transition-all ${
+          alternateDepth
+            ? 'bg-amber-100/90 border-amber-400 text-amber-950 shadow-xs ring-1 ring-amber-400/50'
+            : 'bg-amber-50/70 border-amber-300 text-amber-900'
+        }`}>
+          <button
+            type="button"
+            onClick={() => setAlternateDepth(!alternateDepth)}
+            className="flex items-center gap-1 text-[10.5px] font-bold hover:opacity-80 transition-opacity cursor-pointer"
+            title="Staggers sibling nodes in depth (zig-zag baselines)"
+          >
+            <Layers className={`w-3.5 h-3.5 ${alternateDepth ? 'text-amber-700' : 'text-amber-600'}`} />
+            <span>Alt Depth:</span>
+            <span className={`px-1.5 py-0.2 rounded text-[9.5px] font-mono font-black ${
+              alternateDepth ? 'bg-emerald-800 text-amber-300' : 'bg-white text-slate-500 border border-slate-200'
+            }`}>
+              {alternateDepth ? 'ON' : 'OFF'}
+            </span>
+          </button>
+          <div className="flex items-center gap-0.5 pl-1 border-l border-amber-300">
+            <NumberStepperInput
+              label="Stagger:"
+              value={alternateSpacingPx}
+              min={0}
+              step={10}
+              unit="px"
+              onChange={(val) => {
+                setAlternateDepth(true);
+                setAlternateSpacingPx(val);
+              }}
+              className="bg-transparent border-none shadow-none px-0 py-0"
+            />
+          </div>
+        </div>
+
+        {/* Flow Direction */}
+        <div className="flex items-center gap-0.5 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+          <button
+            type="button"
+            onClick={() => setDirection('DOWN')}
+            className={`flex items-center gap-1 px-2 py-0.5 text-[10.5px] font-semibold rounded-md transition-all cursor-pointer ${
+              direction === 'DOWN' ? 'bg-white text-emerald-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <ArrowDownUp className="w-3 h-3" />
+            <span>Top-Down</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setDirection('RIGHT')}
+            className={`flex items-center gap-1 px-2 py-0.5 text-[10.5px] font-semibold rounded-md transition-all cursor-pointer ${
+              direction === 'RIGHT' ? 'bg-white text-emerald-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <ArrowLeftRight className="w-3 h-3" />
+            <span>Left-Right</span>
+          </button>
+        </div>
+
+        {/* Orientation (if global) */}
+        {setPrintOrientation && printOrientation && (
+          <div className="flex items-center gap-0.5 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+            <button
+              type="button"
+              onClick={() => setPrintOrientation('landscape')}
+              className={`px-2 py-0.5 text-[10.5px] font-semibold rounded-md transition-all cursor-pointer ${
+                printOrientation === 'landscape' ? 'bg-white text-emerald-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Landscape
+            </button>
+            <button
+              type="button"
+              onClick={() => setPrintOrientation('portrait')}
+              className={`px-2 py-0.5 text-[10.5px] font-semibold rounded-md transition-all cursor-pointer ${
+                printOrientation === 'portrait' ? 'bg-white text-emerald-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              Portrait
+            </button>
+          </div>
+        )}
+
+        {/* FK Table (if global) */}
+        {setShowFkTable && showFkTable !== undefined && (
+          <button
+            type="button"
+            onClick={() => setShowFkTable(!showFkTable)}
+            className={`flex items-center gap-1 px-2 py-0.5 text-[10.5px] font-semibold rounded-lg border transition-all cursor-pointer ${
+              showFkTable
+                ? 'bg-emerald-50 border-emerald-300 text-emerald-900 shadow-2xs'
+                : 'bg-slate-100 border-slate-200 text-slate-500 hover:text-slate-800'
+            }`}
+          >
+            <FileCheck2 className={`w-3 h-3 ${showFkTable ? 'text-amber-700' : 'text-slate-400'}`} />
+            <span>FK Table:</span>
+            <span className={`px-1 py-0.2 rounded text-[9.5px] font-mono font-bold ${
+              showFkTable ? 'bg-emerald-800 text-amber-300' : 'bg-slate-200 text-slate-600'
+            }`}>
+              {showFkTable ? 'SHOW' : 'HIDE'}
+            </span>
+          </button>
+        )}
+
+        {/* If Per-Page with moved nodes: Reset Moved Nodes */}
+        {isPerPage && hasCustomPositions && onClearNodePositions && (
+          <button
+            type="button"
+            onClick={onClearNodePositions}
+            className="flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-lg border border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100 shadow-2xs cursor-pointer"
+            title="Reset any manually dragged node positions on this page to automatic tree layout"
+          >
+            <RotateCcw className="w-2.5 h-2.5 text-amber-700" />
+            <span>Reset Moved Nodes</span>
+          </button>
+        )}
+
+        {/* If Per-Page: Apply to All */}
+        {isPerPage && onApplyToAll && (
+          <button
+            type="button"
+            onClick={onApplyToAll}
+            className="flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 shadow-2xs cursor-pointer ml-auto"
+            title="Apply this page's layout parameters to all other pages"
+          >
+            <CopyCheck className="w-3 h-3 text-emerald-800" />
+            <span>Apply to All Pages</span>
+          </button>
+        )}
+      </div>
+
+      {/* Row 2: Responsive Fluid Grid for Dimensions & Steppers */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-6 min-[1400px]:grid-cols-11 gap-1.5 w-full items-center">
+        {/* 1. Auto-Fit / Zoom (if global or provided) */}
+        {setIsAutoFit && setManualScale ? (
+          <div className="flex items-center justify-between gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 w-full">
+            <button
+              type="button"
+              onClick={() => setIsAutoFit(true)}
+              className={`flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-semibold rounded-md transition-all cursor-pointer ${
+                isAutoFit ? 'bg-emerald-800 text-amber-300 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+              }`}
+              title="Auto-calculate scale to fit"
+            >
+              <Sparkles className="w-2.5 h-2.5" />
+              <span>Auto</span>
+            </button>
+            <div className="flex items-center gap-0.5 pl-0.5 border-l border-slate-200">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsAutoFit(false);
+                  setManualScale((prev) => Math.max(0.1, Math.round((prev - 0.1) * 10) / 10));
+                }}
+                className="p-0.5 rounded hover:bg-slate-200 text-slate-700 cursor-pointer"
+                title="Zoom Out"
+              >
+                <ZoomOut className="w-2.5 h-2.5" />
+              </button>
+              <span className="font-mono font-semibold text-[9.5px] px-0.5 text-center min-w-[28px]">
+                {isAutoFit ? 'Fit' : `${Math.round((manualScale || 0.85) * 100)}%`}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsAutoFit(false);
+                  setManualScale((prev) => Math.round((prev + 0.1) * 10) / 10);
+                }}
+                className="p-0.5 rounded hover:bg-slate-200 text-slate-700 cursor-pointer"
+                title="Zoom In"
+              >
+                <ZoomIn className="w-2.5 h-2.5" />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center bg-slate-100 p-1 rounded-lg border border-slate-200 w-full text-[10px] font-bold text-slate-600">
+            Page Custom
+          </div>
+        )}
+
+        {/* 2. Card Width */}
+        <NumberStepperInput
+          label="Card W:"
+          value={nodeBoxWidth}
+          min={50}
+          step={10}
+          unit="px"
+          onChange={setNodeBoxWidth}
+          className="w-full"
+        />
+
+        {/* 3. Card Height */}
+        <NumberStepperInput
+          label="Card H:"
+          value={cardHeightPercent}
+          min={10}
+          step={5}
+          unit="%"
+          onChange={setCardHeightPercent}
+          className="w-full"
+        />
+
+        {/* 4. H-Space */}
+        <NumberStepperInput
+          label="H-Space:"
+          value={customNodeSpacing}
+          min={0}
+          step={10}
+          unit="px"
+          onChange={setCustomNodeSpacing}
+          className="w-full"
+        />
+
+        {/* 5. V-Space */}
+        <NumberStepperInput
+          label="V-Space:"
+          value={customVSpacing}
+          min={0}
+          step={10}
+          unit="px"
+          onChange={setCustomVSpacing}
+          className="w-full"
+        />
+
+        {/* 6. Arrow Height */}
+        <NumberStepperInput
+          label={direction === 'RIGHT' ? 'Arrow L:' : 'Arrow H:'}
+          value={customArrowHeight}
+          min={0}
+          step={10}
+          unit="px"
+          onChange={setCustomArrowHeight}
+          className="w-full"
+        />
+
+        {/* 7. FK Arrow Height */}
+        <NumberStepperInput
+          label={direction === 'RIGHT' ? 'FK L:' : 'FK H:'}
+          value={customFkArrowHeight}
+          min={0}
+          step={10}
+          unit="px"
+          onChange={setCustomFkArrowHeight}
+          className="w-full"
+        />
+
+        {/* 8. Font Size */}
+        <NumberStepperInput
+          label="Font:"
+          value={fontSizePx}
+          min={4}
+          step={1}
+          unit="px"
+          icon={<Type className="w-3 h-3 text-slate-500" />}
+          onChange={setFontSizePx}
+          className="w-full"
+        />
+
+        {/* 9. Line Height */}
+        <NumberStepperInput
+          label="Line H:"
+          value={lineHeightMult}
+          min={0.5}
+          step={0.05}
+          decimals={2}
+          unit="x"
+          onChange={setLineHeightMult}
+          className="w-full"
+        />
+
+        {/* 10. Para Space */}
+        <NumberStepperInput
+          label="Para Sp:"
+          value={paraSpacingPx}
+          min={0}
+          step={1}
+          unit="px"
+          onChange={setParaSpacingPx}
+          className="w-full"
+        />
+
+        {/* 11. Reset */}
+        {onReset && (
+          <button
+            type="button"
+            onClick={onReset}
+            className="flex items-center justify-center gap-1 w-full h-[29px] rounded-lg border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold shadow-2xs transition-colors cursor-pointer"
+            title={resetTitle || 'Reset settings'}
+          >
+            <RotateCcw className="w-3 h-3" />
+            <span>Reset</span>
+          </button>
+        )}
+      </div>
     </div>
   );
 }
@@ -311,14 +858,66 @@ export function SectionPrintPdfModal() {
     currentProjectName,
     updateNode,
     selectNode,
-    toggleDetailPanel
+    toggleDetailPanel,
+    customFkArrowHeight: storeFkArrowHeight,
+    setCustomFkArrowHeight: setStoreFkArrowHeight,
+    sectionPrintSettings,
+    setSectionPrintSettings,
+    setSectionNodePosition,
+    resetSectionPrintSettings,
+    applySectionSettingsToAll
   } = useWhiteboardStore();
 
   const activeSections = useMemo(() => {
     return sections && sections.length > 0 ? sections : SECTION_METAS;
   }, [sections]);
 
-  const [selectedSectionId, setSelectedSectionId] = useState<string>('all');
+  const validSections = useMemo(() => {
+    return activeSections.filter((s) => s.id !== 'SEC-00');
+  }, [activeSections]);
+
+  const [selectedSectionIds, setSelectedSectionIds] = useState<string[]>(() => {
+    return SECTION_METAS.filter((s) => s.id !== 'SEC-00').map((s) => s.id);
+  });
+  const [showScopeDropdown, setShowScopeDropdown] = useState<boolean>(false);
+  const [sectionSearchQuery, setSectionSearchQuery] = useState<string>('');
+  const scopeDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // Close scope dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (scopeDropdownRef.current && !scopeDropdownRef.current.contains(e.target as Node)) {
+        setShowScopeDropdown(false);
+      }
+    };
+    if (showScopeDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showScopeDropdown]);
+
+  // Keep selectedSectionIds in sync if activeSections change
+  useEffect(() => {
+    if (validSections.length > 0) {
+      setSelectedSectionIds((prev) => {
+        const filtered = prev.filter((id) => validSections.some((s) => s.id === id));
+        return filtered.length > 0 ? filtered : validSections.map((s) => s.id);
+      });
+    }
+  }, [validSections]);
+
+  // Determine which sections to render based on multi-section selection
+  const sectionsToRender = useMemo(() => {
+    if (selectedSectionIds.length === 0) return [];
+    return validSections.filter((s) => selectedSectionIds.includes(s.id));
+  }, [selectedSectionIds, validSections]);
+
+  // Dedicated Per-Page Customization Toolbars State
+  const [openPageToolbars, setOpenPageToolbars] = useState<Record<string, boolean>>({});
+  const togglePageToolbar = (secId: string) => {
+    setOpenPageToolbars((prev) => ({ ...prev, [secId]: !prev[secId] }));
+  };
+
   const [printDossierMode, setPrintDossierMode] = useState<boolean>(false);
   const [treeDirection, setTreeDirection] = useState<'DOWN' | 'RIGHT'>('DOWN');
   const [printOrientation, setPrintOrientation] = useState<'landscape' | 'portrait'>('landscape');
@@ -334,6 +933,14 @@ export function SectionPrintPdfModal() {
   const [customNodeSpacing, setCustomNodeSpacing] = useState<number>(50); // H-Space
   const [customVSpacing, setCustomVSpacing] = useState<number>(50);       // V-Space
   const [customArrowHeight, setCustomArrowHeight] = useState<number>(85); // Arrow Height
+  const [customFkArrowHeight, setCustomFkArrowHeight] = useState<number>(storeFkArrowHeight || 70); // FK Arrow Height
+
+  useEffect(() => {
+    if (storeFkArrowHeight && storeFkArrowHeight !== customFkArrowHeight) {
+      setCustomFkArrowHeight(storeFkArrowHeight);
+    }
+  }, [storeFkArrowHeight]);
+
   const [nodeBoxWidth, setNodeBoxWidth] = useState<number>(260);
   const [cardHeightPercent, setCardHeightPercent] = useState<number>(100);
   const [fontSizePx, setFontSizePx] = useState<number>(11);
@@ -349,6 +956,21 @@ export function SectionPrintPdfModal() {
   const [isDirty, setIsDirty] = useState<boolean>(false);
   const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
+
+  // Per-Page / Section Customization & Drag State
+  const [customizingSectionId, setCustomizingSectionId] = useState<string>('all');
+  const [dragState, setDragState] = useState<{
+    sectionId: string;
+    nodeId: string;
+    startX: number;
+    startY: number;
+    initNodeX: number;
+    initNodeY: number;
+    currentDx: number;
+    currentDy: number;
+    sliceScale: number;
+  } | null>(null);
+  const [hasMoved, setHasMoved] = useState<boolean>(false);
 
   const [treeLayouts, setTreeLayouts] = useState<Record<string, SectionTreeLayoutResult>>({});
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -375,61 +997,174 @@ export function SectionPrintPdfModal() {
     };
   }, [isOpen, printOrientation]);
 
-  // Reset selectedSectionId if not found in active project sections
-  useEffect(() => {
-    if (selectedSectionId !== 'all' && !activeSections.some((s) => s.id === selectedSectionId)) {
-      setSelectedSectionId('all');
-    }
-  }, [activeSections, selectedSectionId]);
-
-  // Determine which sections to render
-  const sectionsToRender = useMemo(() => {
-    return selectedSectionId === 'all'
-      ? activeSections.filter((s) => s.id !== 'SEC-00')
-      : activeSections.filter((s) => s.id === selectedSectionId);
-  }, [selectedSectionId, activeSections]);
-
   // Adjust default spacing & width when dossier mode changes
   useEffect(() => {
     if (printDossierMode) {
       setCustomNodeSpacing((prev) => (prev < 65 ? 65 : prev));
       setCustomVSpacing((prev) => (prev < 65 ? 65 : prev));
       setCustomArrowHeight((prev) => (prev < 120 ? 140 : prev));
+      setCustomFkArrowHeight((prev) => (prev < 90 ? 100 : prev));
       setNodeBoxWidth((prev) => (prev < 320 ? 320 : prev));
     } else {
       setCustomNodeSpacing((prev) => (prev > 65 ? 50 : prev));
       setCustomVSpacing((prev) => (prev > 65 ? 50 : prev));
       setCustomArrowHeight((prev) => (prev > 100 ? 85 : prev));
+      setCustomFkArrowHeight((prev) => (prev > 80 ? 70 : prev));
       setNodeBoxWidth((prev) => (prev > 300 ? 260 : prev));
     }
   }, [printDossierMode]);
+
+  // Settings getters & updater for active target (Global 'all' vs Specific Section)
+  const updateActiveSetting = <K extends keyof SectionPrintSettings>(key: K, val: SectionPrintSettings[K]) => {
+    if (customizingSectionId === 'all') {
+      if (key === 'customNodeSpacing') setCustomNodeSpacing(val as number);
+      else if (key === 'customVSpacing') setCustomVSpacing(val as number);
+      else if (key === 'customArrowHeight') setCustomArrowHeight(val as number);
+      else if (key === 'customFkArrowHeight') {
+        setCustomFkArrowHeight(val as number);
+        setStoreFkArrowHeight(val as number);
+      } else if (key === 'nodeBoxWidth') setNodeBoxWidth(val as number);
+      else if (key === 'cardHeightPercent') setCardHeightPercent(val as number);
+      else if (key === 'fontSizePx') setFontSizePx(val as number);
+      else if (key === 'lineHeightMult') setLineHeightMult(val as number);
+      else if (key === 'paraSpacingPx') setParaSpacingPx(val as number);
+      else if (key === 'treeDirection') setTreeDirection(val as any);
+      else if (key === 'alternateDepth') setAlternateDepth(val as boolean);
+      else if (key === 'alternateSpacingPx') setAlternateSpacingPx(val as number);
+      else if (key === 'fkMode') setFkMode(val as any);
+      else if (key === 'arrowStyle') setArrowStyle(val as any);
+      else if (key === 'pageSplitMode') setPageSplitMode(val as any);
+    } else {
+      setSectionPrintSettings(customizingSectionId, { [key]: val });
+    }
+  };
+
+  const activeSecOverrides = customizingSectionId !== 'all' ? (sectionPrintSettings[customizingSectionId] || {}) : {};
+  const curDirection = activeSecOverrides.treeDirection ?? treeDirection;
+  const curArrowStyle = activeSecOverrides.arrowStyle ?? arrowStyle;
+  const curPageSplitMode = activeSecOverrides.pageSplitMode ?? pageSplitMode;
+  const curFkMode = activeSecOverrides.fkMode ?? fkMode;
+  const curAlternateDepth = activeSecOverrides.alternateDepth ?? alternateDepth;
+  const curAlternateSpacingPx = activeSecOverrides.alternateSpacingPx ?? alternateSpacingPx;
+  const curNodeBoxWidth = activeSecOverrides.nodeBoxWidth ?? nodeBoxWidth;
+  const curCardHeightPercent = activeSecOverrides.cardHeightPercent ?? cardHeightPercent;
+  const curCustomNodeSpacing = activeSecOverrides.customNodeSpacing ?? customNodeSpacing;
+  const curCustomVSpacing = activeSecOverrides.customVSpacing ?? customVSpacing;
+  const curCustomArrowHeight = activeSecOverrides.customArrowHeight ?? customArrowHeight;
+  const curCustomFkArrowHeight = activeSecOverrides.customFkArrowHeight ?? customFkArrowHeight;
+  const curFontSizePx = activeSecOverrides.fontSizePx ?? fontSizePx;
+  const curLineHeightMult = activeSecOverrides.lineHeightMult ?? lineHeightMult;
+  const curParaSpacingPx = activeSecOverrides.paraSpacingPx ?? paraSpacingPx;
+
+  // Pointer Drag Handlers for Repositioning Nodes on Printable Page
+  const handleStartDrag = (
+    e: React.PointerEvent,
+    sectionId: string,
+    nodeId: string,
+    nodeX: number,
+    nodeY: number,
+    sliceScale: number
+  ) => {
+    const target = e.target as HTMLElement | null;
+    if (target?.closest?.('input, textarea, button, select') || editingNodeId === nodeId) {
+      return;
+    }
+    e.stopPropagation();
+    setDragState({
+      sectionId,
+      nodeId,
+      startX: e.clientX,
+      startY: e.clientY,
+      initNodeX: nodeX,
+      initNodeY: nodeY,
+      currentDx: 0,
+      currentDy: 0,
+      sliceScale: sliceScale || 1
+    });
+    setHasMoved(false);
+  };
+
+  useEffect(() => {
+    if (!dragState) return;
+
+    const onPointerMove = (e: PointerEvent) => {
+      const dx = (e.clientX - dragState.startX) / dragState.sliceScale;
+      const dy = (e.clientY - dragState.startY) / dragState.sliceScale;
+      if (Math.hypot(dx, dy) > 3) {
+        setHasMoved(true);
+      }
+      setDragState((prev) => (prev ? { ...prev, currentDx: dx, currentDy: dy } : null));
+    };
+
+    const onPointerUp = () => {
+      if (dragState && hasMoved) {
+        const finalX = Math.round(dragState.initNodeX + dragState.currentDx);
+        const finalY = Math.round(dragState.initNodeY + dragState.currentDy);
+
+        // 1. Immediately update treeLayouts in local state so the node stays right where it was released
+        setTreeLayouts((prev) => {
+          const secLayout = prev[dragState.sectionId];
+          if (!secLayout) return prev;
+          const updatedNodes = secLayout.nodes.map((n) =>
+            n.id === dragState.nodeId ? { ...n, x: finalX, y: finalY } : n
+          );
+          return {
+            ...prev,
+            [dragState.sectionId]: {
+              ...secLayout,
+              nodes: updatedNodes
+            }
+          };
+        });
+
+        // 2. Persist to store (and DB / backend)
+        setSectionNodePosition(dragState.sectionId, dragState.nodeId, { x: finalX, y: finalY });
+      }
+      setDragState(null);
+    };
+
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+    return () => {
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+    };
+  }, [dragState, hasMoved]);
 
   // Compute ELK tree layouts for all target sections whenever layout parameters change
   useEffect(() => {
     if (!isOpen) return;
 
-    let isCancelled = false;
-    setIsLoading(true);
+    // Only show full-screen loading spinner on initial load when no layouts exist yet
+    // NEVER show it during node drag or fine-tuning adjustments!
+    if (Object.keys(treeLayouts).length === 0) {
+      setIsLoading(true);
+    }
 
-    const promises = sectionsToRender.map((sec) =>
-      calculateSectionTreeLayout(sec.id, nodes, relationships, {
+    let isCancelled = false;
+
+    const promises = sectionsToRender.map((sec) => {
+      const secOverrides = sectionPrintSettings[sec.id] || {};
+      return calculateSectionTreeLayout(sec.id, nodes, relationships, {
         isDossier: printDossierMode,
-        direction: treeDirection,
-        nodeSpacing: customNodeSpacing,
-        vSpacing: customVSpacing,
-        arrowHeight: customArrowHeight,
-        layerSpacing: customArrowHeight,
-        nodeWidth: nodeBoxWidth,
-        cardHeightScale: cardHeightPercent / 100,
-        alternateDepth: alternateDepth,
-        alternateSpacing: alternateSpacingPx,
-        fontSize: fontSizePx,
-        lineHeight: lineHeightMult,
-        paraSpacing: paraSpacingPx,
-        fkMode: fkMode,
-        arrowStyle: arrowStyle
-      })
-    );
+        direction: secOverrides.treeDirection ?? treeDirection,
+        nodeSpacing: secOverrides.customNodeSpacing ?? customNodeSpacing,
+        vSpacing: secOverrides.customVSpacing ?? customVSpacing,
+        arrowHeight: secOverrides.customArrowHeight ?? customArrowHeight,
+        fkArrowHeight: secOverrides.customFkArrowHeight ?? customFkArrowHeight,
+        layerSpacing: secOverrides.customArrowHeight ?? customArrowHeight,
+        nodeWidth: secOverrides.nodeBoxWidth ?? nodeBoxWidth,
+        cardHeightScale: (secOverrides.cardHeightPercent ?? cardHeightPercent) / 100,
+        alternateDepth: secOverrides.alternateDepth ?? alternateDepth,
+        alternateSpacing: secOverrides.alternateSpacingPx ?? alternateSpacingPx,
+        fontSize: secOverrides.fontSizePx ?? fontSizePx,
+        lineHeight: secOverrides.lineHeightMult ?? lineHeightMult,
+        paraSpacing: secOverrides.paraSpacingPx ?? paraSpacingPx,
+        fkMode: secOverrides.fkMode ?? fkMode,
+        arrowStyle: secOverrides.arrowStyle ?? arrowStyle,
+        nodePositions: secOverrides.nodePositions
+      });
+    });
 
     Promise.all(promises).then((results) => {
       if (!isCancelled) {
@@ -447,12 +1182,13 @@ export function SectionPrintPdfModal() {
     };
   }, [
     isOpen,
-    selectedSectionId,
+    sectionsToRender,
     printDossierMode,
     treeDirection,
     customNodeSpacing,
     customVSpacing,
     customArrowHeight,
+    customFkArrowHeight,
     nodeBoxWidth,
     cardHeightPercent,
     alternateDepth,
@@ -463,7 +1199,8 @@ export function SectionPrintPdfModal() {
     fkMode,
     arrowStyle,
     nodes,
-    relationships
+    relationships,
+    sectionPrintSettings
   ]);
 
   const handlePrint = () => {
@@ -476,6 +1213,8 @@ export function SectionPrintPdfModal() {
     setCustomNodeSpacing(printDossierMode ? 65 : 50);
     setCustomVSpacing(printDossierMode ? 65 : 50);
     setCustomArrowHeight(printDossierMode ? 140 : 85);
+    setCustomFkArrowHeight(printDossierMode ? 100 : 70);
+    setStoreFkArrowHeight(printDossierMode ? 100 : 70);
     setNodeBoxWidth(printDossierMode ? 320 : 260);
     setCardHeightPercent(100);
     setFontSizePx(11);
@@ -596,91 +1335,199 @@ export function SectionPrintPdfModal() {
   const targetPageWidth = printOrientation === 'landscape' ? 1040 : 740;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-2 sm:p-4 print:p-0 print:bg-white print:static print:inset-auto">
-      <div className="relative w-full max-w-7xl h-[96vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 print:h-auto print:max-w-none print:shadow-none print:border-none print:rounded-none">
-        {/* Top Control Bar 1: Main Title, Scope, Print Trigger & Close (Hidden in print) */}
-        <div className="no-print border-b border-slate-200 px-6 py-2 bg-slate-50 flex items-center justify-between gap-4 flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-emerald-900 text-amber-400 flex items-center justify-center shadow-xs">
-              <Printer className="w-5 h-5" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-1 sm:p-2.5 print:p-0 print:bg-white print:static print:inset-auto print-modal-overlay">
+      <div className="relative w-[98vw] max-w-[1750px] h-[98vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 print:h-auto print:max-w-none print:shadow-none print:border-none print:rounded-none print-modal-content">
+        {/* Top Control Bar 1: Main Title, Scope, Target Scope, Print Trigger & Close (Hidden in print) */}
+        <div className="no-print border-b border-slate-200 px-4 py-2 bg-slate-50 flex items-center justify-between gap-3 flex-shrink-0">
+          <div className="flex items-center gap-2.5 flex-shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-emerald-900 text-amber-400 flex items-center justify-center shadow-xs flex-shrink-0">
+              <Printer className="w-4 h-4" />
             </div>
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                Section Tree Diagram Print &amp; PDF Engine
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <h3 className="text-xs sm:text-sm font-bold text-slate-900 whitespace-nowrap">
+                  Section Tree Diagram Print &amp; PDF Engine
+                </h3>
+                <span className="hidden sm:inline-flex text-[9.5px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 whitespace-nowrap">
                   Vector PDF Multi-Page Slicing
                 </span>
-              </h3>
-              <p className="text-[11px] text-slate-500">
-                Click any card to edit details inline or in full drawer. Choose arrow geometry, multi-page PDF splits, and FK linkage options.
+              </div>
+              <p className="hidden lg:block text-[10.5px] text-slate-500 truncate max-w-[500px]">
+                Drag nodes directly on any page. Customize layout settings per-section or globally.
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            {/* Scope Dropdown */}
-            <div className="flex items-center gap-2">
-              <label htmlFor="section-select" className="text-xs font-semibold text-slate-600">
-                Scope:
-              </label>
-              <select
-                id="section-select"
-                value={selectedSectionId}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  if (isDirty) {
-                    setPendingAction(() => () => setSelectedSectionId(val));
-                    setShowConfirmModal(true);
-                  } else {
-                    setSelectedSectionId(val);
-                  }
-                }}
-                className="text-xs font-medium rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-slate-800 shadow-2xs focus:ring-2 focus:ring-emerald-700/30 focus:outline-hidden"
+          <div className="flex items-center gap-2 flex-wrap justify-end min-w-0">
+            {/* Multi-Section Scope Popover */}
+            <div className="relative" ref={scopeDropdownRef}>
+              <button
+                type="button"
+                onClick={() => setShowScopeDropdown(!showScopeDropdown)}
+                className="flex items-center gap-1.5 bg-white border border-slate-300 hover:border-slate-400 rounded-lg px-2.5 py-1 text-[11px] font-bold text-slate-800 shadow-2xs transition-all cursor-pointer"
+                title="Select multiple combinations of sections to print"
               >
-                <option value="all">
-                  All {activeSections.filter((s) => s.id !== 'SEC-00').length} Sections (Multi-Page Tree Diagram Booklet)
-                </option>
-                {activeSections.filter((s) => s.id !== 'SEC-00').map((sec) => (
-                  <option key={sec.id} value={sec.id}>
-                    Sec {sec.number}: {sec.title}
+                <Layers className="w-3.5 h-3.5 text-emerald-800 flex-shrink-0" />
+                <span className="whitespace-nowrap">
+                  Scope: {selectedSectionIds.length === validSections.length
+                    ? `All ${validSections.length} Sections (Booklet)`
+                    : selectedSectionIds.length === 0
+                    ? '0 Sections Selected'
+                    : `${selectedSectionIds.length} of ${validSections.length} Sections Selected`}
+                </span>
+                <ChevronDown className={`w-3 h-3 text-slate-500 transition-transform ${showScopeDropdown ? 'rotate-180' : ''}`} />
+              </button>
+
+              {showScopeDropdown && (
+                <div className="absolute right-0 sm:left-0 mt-1.5 w-76 sm:w-84 max-h-[380px] bg-white border border-slate-200 rounded-xl shadow-2xl z-50 flex flex-col p-2.5 space-y-2">
+                  <div className="flex items-center justify-between pb-1.5 border-b border-slate-100">
+                    <span className="text-[11px] font-bold text-slate-900">Select Sections to Print</span>
+                    <span className="text-[10px] font-mono font-semibold text-slate-500">
+                      {selectedSectionIds.length}/{validSections.length}
+                    </span>
+                  </div>
+
+                  {/* Preset Buttons */}
+                  <div className="grid grid-cols-4 gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedSectionIds(validSections.map((s) => s.id))}
+                      className="px-1.5 py-1 text-[10px] font-bold rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 text-center transition-colors cursor-pointer"
+                    >
+                      All ({validSections.length})
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedSectionIds([])}
+                      className="px-1.5 py-1 text-[10px] font-bold rounded bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-center transition-colors cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedSectionIds(validSections.filter((s) => parseInt(s.number, 10) <= 14).map((s) => s.id))}
+                      className="px-1.5 py-1 text-[10px] font-bold rounded bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200 text-center transition-colors cursor-pointer"
+                      title="Select Whiteboard 1: School, Higher Ed & Gateway exams (Sec 01-14)"
+                    >
+                      Sec 01–14
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedSectionIds(validSections.filter((s) => parseInt(s.number, 10) >= 15).map((s) => s.id))}
+                      className="px-1.5 py-1 text-[10px] font-bold rounded bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-center transition-colors cursor-pointer"
+                      title="Select Whiteboard 2: Degree streams, Judiciary & Democratic pathways (Sec 15-28)"
+                    >
+                      Sec 15–28
+                    </button>
+                  </div>
+
+                  {/* Search Input */}
+                  <div className="relative">
+                    <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2 top-2" />
+                    <input
+                      type="text"
+                      placeholder="Search section by title or ID..."
+                      value={sectionSearchQuery}
+                      onChange={(e) => setSectionSearchQuery(e.target.value)}
+                      className="w-full pl-7 pr-2 py-1 text-xs border border-slate-200 rounded-md focus:outline-emerald-700 focus:ring-1 focus:ring-emerald-700 bg-slate-50 focus:bg-white"
+                    />
+                  </div>
+
+                  {/* Checkbox List */}
+                  <div className="overflow-y-auto max-h-[220px] space-y-0.5 pr-0.5 divide-y divide-slate-50">
+                    {validSections
+                      .filter(
+                        (sec) =>
+                          sec.title.toLowerCase().includes(sectionSearchQuery.toLowerCase()) ||
+                          sec.id.toLowerCase().includes(sectionSearchQuery.toLowerCase()) ||
+                          sec.number.includes(sectionSearchQuery)
+                      )
+                      .map((sec) => {
+                        const isChecked = selectedSectionIds.includes(sec.id);
+                        return (
+                          <label
+                            key={sec.id}
+                            className="flex items-center gap-2 px-2 py-1.5 hover:bg-slate-50 rounded-lg cursor-pointer select-none transition-colors"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={() => {
+                                setSelectedSectionIds((prev) =>
+                                  prev.includes(sec.id)
+                                    ? prev.filter((id) => id !== sec.id)
+                                    : [...prev, sec.id]
+                                );
+                              }}
+                              className="rounded text-emerald-800 focus:ring-emerald-700 w-3.5 h-3.5 accent-emerald-800"
+                            />
+                            <span className="font-mono text-[10px] font-bold px-1 py-0.2 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                              {sec.id}
+                            </span>
+                            <span className="text-[11px] font-medium text-slate-800 truncate flex-1">
+                              Sec {sec.number}: {sec.title}
+                            </span>
+                          </label>
+                        );
+                      })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Target Settings Scope: All Pages (Global) vs Specific Page */}
+            <div className="flex items-center gap-1.5 bg-amber-50/90 border border-amber-300 rounded-lg px-2 py-1 shadow-2xs">
+              <Sliders className="w-3.5 h-3.5 text-amber-700 flex-shrink-0" />
+              <span className="text-[10.5px] font-bold text-amber-950 whitespace-nowrap">Settings Target:</span>
+              <select
+                value={customizingSectionId}
+                onChange={(e) => setCustomizingSectionId(e.target.value)}
+                className="text-[11px] font-bold rounded border border-amber-300 bg-white px-1.5 py-0.5 text-slate-900 shadow-2xs focus:ring-1 focus:ring-amber-500 focus:outline-hidden max-w-[130px] sm:max-w-[170px] truncate"
+              >
+                <option value="all">All Pages (Global Default)</option>
+                {validSections.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    Page: Sec {s.number} ({s.id})
                   </option>
                 ))}
               </select>
-            </div>
 
-            {/* Quick Alternate Depth Indicator / Switch */}
-            <button
-              onClick={() => setAlternateDepth(!alternateDepth)}
-              className={`hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
-                alternateDepth
-                  ? 'border-amber-400 bg-amber-100 text-amber-950 shadow-xs ring-2 ring-amber-400/40'
-                  : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
-              }`}
-              title="Toggle Alternate Depth (Zig-Zag Staggered Baselines) to save space and eliminate horizontal overflow"
-            >
-              <Layers className={`w-4 h-4 ${alternateDepth ? 'text-amber-700' : 'text-slate-500'}`} />
-              <span>Alternate Depth:</span>
-              <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-black ${
-                alternateDepth ? 'bg-emerald-800 text-amber-300' : 'bg-slate-100 text-slate-600'
-              }`}>
-                {alternateDepth ? `ON (${alternateSpacingPx}px)` : 'OFF'}
-              </span>
-            </button>
+              {customizingSectionId !== 'all' && (
+                <div className="flex items-center gap-1 pl-1 border-l border-amber-300">
+                  <button
+                    onClick={() => applySectionSettingsToAll(customizingSectionId)}
+                    className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-800 hover:bg-emerald-700 text-amber-300 font-bold text-[9.5px] shadow-2xs cursor-pointer transition-colors whitespace-nowrap"
+                    title="Apply this section's layout settings to all other pages"
+                  >
+                    <CopyCheck className="w-2.5 h-2.5" />
+                    <span>Apply All</span>
+                  </button>
+                  <button
+                    onClick={() => resetSectionPrintSettings(customizingSectionId)}
+                    className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 font-bold text-[9.5px] cursor-pointer transition-colors whitespace-nowrap"
+                    title="Reset this page's custom settings and moved nodes back to auto"
+                  >
+                    <RotateCcw className="w-2.5 h-2.5" />
+                    <span>Reset</span>
+                  </button>
+                </div>
+              )}
+            </div>
 
             {/* Print Trigger Button */}
             <button
               onClick={handlePrint}
-              disabled={isLoading}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-900 hover:bg-emerald-800 text-amber-300 hover:text-amber-200 text-xs font-bold shadow-md hover:shadow-lg transition-all disabled:opacity-50"
+              disabled={isLoading || sectionsToRender.length === 0}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-900 hover:bg-emerald-800 text-amber-300 hover:text-amber-200 text-xs font-bold shadow-md hover:shadow-lg transition-all disabled:opacity-50 cursor-pointer flex-shrink-0"
             >
-              <Printer className="w-4 h-4" />
-              <span>Save as PDF / Print</span>
+              <Printer className="w-3.5 h-3.5" />
+              <span className="whitespace-nowrap">Save as PDF / Print</span>
             </button>
 
             {/* Close Button */}
             <button
               onClick={handleCloseModal}
-              className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors"
+              className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors cursor-pointer flex-shrink-0"
               title="Close print preview"
             >
               <X className="w-5 h-5" />
@@ -688,421 +1535,62 @@ export function SectionPrintPdfModal() {
           </div>
         </div>
 
-        {/* Top Control Bar 2: Fine-Tuning Layout, Spacing, Sizing, Arrows, Splitting (Hidden in print) */}
-        <div className="no-print bg-white border-b border-slate-200 px-6 py-2 flex flex-wrap items-center justify-between gap-2.5 text-xs text-slate-700">
-          <div className="flex flex-wrap items-center gap-2.5">
-            {/* Dossier vs No Dossier Mode */}
-            <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
-              <button
-                onClick={() => setPrintDossierMode(false)}
-                className={`flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold rounded-md transition-all ${
-                  !printDossierMode
-                    ? 'bg-white text-emerald-900 shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Compact cards for clean 1-sheet fit"
-              >
-                <Minimize2 className="w-3.5 h-3.5" />
-                <span>Compact</span>
-              </button>
-              <button
-                onClick={() => setPrintDossierMode(true)}
-                className={`flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold rounded-md transition-all ${
-                  printDossierMode
-                    ? 'bg-emerald-900 text-amber-300 shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Include powers, limitations, and mandates inside tree nodes"
-              >
-                <Maximize2 className="w-3.5 h-3.5" />
-                <span>Full Dossier</span>
-              </button>
-            </div>
-
-            {/* Arrow Style Selector */}
-            <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200" title="Arrow connector routing style">
-              <span className="text-[10px] font-semibold text-slate-500 pl-1 flex items-center gap-1">
-                <Route className="w-3 h-3 text-slate-600" />
-                Arrows:
-              </span>
-              <button
-                onClick={() => setArrowStyle('curved')}
-                className={`px-2 py-0.5 text-[10.5px] font-semibold rounded transition-all ${
-                  arrowStyle === 'curved' ? 'bg-white text-emerald-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Smooth curved Bezier lines"
-              >
-                Curved
-              </button>
-              <button
-                onClick={() => setArrowStyle('straight')}
-                className={`px-2 py-0.5 text-[10.5px] font-semibold rounded transition-all ${
-                  arrowStyle === 'straight' ? 'bg-white text-emerald-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Direct straight point-to-point lines"
-              >
-                Straight
-              </button>
-              <button
-                onClick={() => setArrowStyle('orthogonal')}
-                className={`px-2 py-0.5 text-[10.5px] font-semibold rounded transition-all ${
-                  arrowStyle === 'orthogonal' ? 'bg-white text-emerald-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="90° sharp orthogonal elbow lines"
-              >
-                90° Ortho
-              </button>
-              <button
-                onClick={() => setArrowStyle('rounded-orthogonal')}
-                className={`px-2 py-0.5 text-[10.5px] font-semibold rounded transition-all ${
-                  arrowStyle === 'rounded-orthogonal' ? 'bg-white text-emerald-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Rounded orthogonal elbow lines with smooth fillets"
-              >
-                Rounded
-              </button>
-            </div>
-
-            {/* PDF View Mode: Normal Zoomed-Out View (Original) vs Multi-Page Division */}
-            <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-300 shadow-2xs" title="PDF Page Division: Choose between original single-sheet fit or multi-page slicing">
-              <span className="text-[10px] font-bold text-slate-700 pl-1.5 flex items-center gap-1">
-                <Printer className="w-3 h-3 text-emerald-800" />
-                Print Layout:
-              </span>
-              <button
-                type="button"
-                onClick={() => setPageSplitMode('single')}
-                className={`flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-md transition-all cursor-pointer ${
-                  pageSplitMode === 'single'
-                    ? 'bg-emerald-900 text-amber-300 shadow-xs ring-1 ring-emerald-700'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
-                }`}
-                title="Normal zoomed-out view (Original 1-page fit): scales entire diagram to fit on 1 sheet"
-              >
-                <Minimize2 className="w-3 h-3 text-amber-400" />
-                <span>Normal Zoomed-Out View (Original 1-Page Fit)</span>
-              </button>
-              <div className="flex items-center gap-0.5 pl-1 border-l border-slate-300">
-                <span className="text-[9.5px] font-semibold text-slate-400 px-1">Multi-Page:</span>
-                <button
-                  type="button"
-                  onClick={() => setPageSplitMode('auto')}
-                  className={`px-2 py-0.5 text-[10.5px] font-semibold rounded transition-all cursor-pointer ${
-                    pageSplitMode === 'auto'
-                      ? 'bg-emerald-800 text-amber-300 shadow-2xs'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                  title="Automatically divides wide diagrams into 2 or 4 pages for crystal-clear readability"
-                >
-                  Auto Split
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPageSplitMode('2-page')}
-                  className={`px-2 py-0.5 text-[10.5px] font-semibold rounded transition-all cursor-pointer ${
-                    pageSplitMode === '2-page'
-                      ? 'bg-emerald-800 text-amber-300 shadow-2xs'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                  title="Divide horizontally into 2 wide pages (Left / Right)"
-                >
-                  2 Pages (L/R)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPageSplitMode('4-page')}
-                  className={`px-2 py-0.5 text-[10.5px] font-semibold rounded transition-all cursor-pointer ${
-                    pageSplitMode === '4-page'
-                      ? 'bg-emerald-800 text-amber-300 shadow-2xs'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                  title="Divide into 4 quadrant pages (2x2 grid) for massive trees"
-                >
-                  4 Pages (Grid)
-                </button>
-              </div>
-            </div>
-
-            {/* FK Table Toggle (Keep or Remove Sub-Section) */}
-            <button
-              onClick={() => setShowFkTable(!showFkTable)}
-              className={`flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-semibold rounded-lg border transition-all ${
-                showFkTable
-                  ? 'bg-emerald-50 border-emerald-300 text-emerald-900 shadow-2xs'
-                  : 'bg-slate-100 border-slate-200 text-slate-500 hover:text-slate-800'
-              }`}
-              title="Toggle Foreign Key Linkage Stubs subsection from printed booklet"
-            >
-              <FileCheck2 className={`w-3.5 h-3.5 ${showFkTable ? 'text-amber-700' : 'text-slate-400'}`} />
-              <span>FK Table:</span>
-              <span className={`px-1.5 py-0.2 rounded text-[10px] font-mono font-bold ${
-                showFkTable ? 'bg-emerald-800 text-amber-300' : 'bg-slate-200 text-slate-600'
-              }`}>
-                {showFkTable ? 'SHOW' : 'HIDE'}
-              </span>
-            </button>
-
-            {/* Foreign Key Bridge Placement Style */}
-            <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
-              <button
-                onClick={() => setFkMode('docked')}
-                className={`flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold rounded-md transition-all ${
-                  fkMode === 'docked'
-                    ? 'bg-emerald-900 text-amber-300 shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Dock FK links cleanly inside cards for 100% overlap-free compact diagrams"
-              >
-                <Anchor className="w-3.5 h-3.5" />
-                <span>FKs: Docked</span>
-              </button>
-              <button
-                onClick={() => setFkMode('stubs')}
-                className={`flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold rounded-md transition-all ${
-                  fkMode === 'stubs'
-                    ? 'bg-emerald-900 text-amber-300 shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Render Foreign Keys as standalone external stub boxes with connector lines"
-              >
-                <ArrowUpRight className="w-3.5 h-3.5" />
-                <span>FKs: Stubs</span>
-              </button>
-            </div>
-
-            {/* Alternate Depth Placing (Staggered Baselines) & Height Spacing */}
-            <div className={`flex items-center gap-2 px-3 py-1 rounded-xl border transition-all ${
-              alternateDepth
-                ? 'bg-amber-100/90 border-amber-400 text-amber-950 shadow-xs ring-2 ring-amber-400/40'
-                : 'bg-amber-50/70 border-amber-300 text-amber-900'
-            }`}>
-              <button
-                onClick={() => setAlternateDepth(!alternateDepth)}
-                className="flex items-center gap-1.5 text-[11px] font-bold hover:opacity-80 transition-opacity"
-                title="Staggers sibling nodes in depth (zig-zag baselines) to reduce horizontal breadth"
-              >
-                <Layers className={`w-4 h-4 ${alternateDepth ? 'text-amber-700 animate-pulse' : 'text-amber-600'}`} />
-                <span>Alternate Depth:</span>
-                <span className={`px-2 py-0.5 rounded-md text-[10px] font-mono font-black uppercase transition-colors ${
-                  alternateDepth
-                    ? 'bg-emerald-800 text-amber-300 shadow-2xs'
-                    : 'bg-white text-slate-500 border border-slate-200'
-                }`}>
-                  {alternateDepth ? 'ON' : 'OFF'}
-                </span>
-              </button>
-
-              {/* Numerical Stagger Stepper - NO UPPER LIMIT */}
-              <div className="flex items-center gap-1 pl-1 border-l border-amber-300">
-                <NumberStepperInput
-                  label="Stagger:"
-                  value={alternateSpacingPx}
-                  min={0}
-                  step={10}
-                  unit="px"
-                  onChange={(val) => {
-                    setAlternateDepth(true);
-                    setAlternateSpacingPx(val);
-                  }}
-                  title="Alternate depth vertical stagger offset (enter any desired value)"
-                />
-              </div>
-            </div>
-
-            {/* Tree Flow Direction */}
-            <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
-              <button
-                onClick={() => setTreeDirection('DOWN')}
-                className={`flex items-center gap-1 px-2 py-1 text-[11px] font-semibold rounded-md transition-all ${
-                  treeDirection === 'DOWN'
-                    ? 'bg-white text-emerald-900 shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Vertical hierarchy flow"
-              >
-                <ArrowDownUp className="w-3.5 h-3.5" />
-                <span>Top-Down</span>
-              </button>
-              <button
-                onClick={() => setTreeDirection('RIGHT')}
-                className={`flex items-center gap-1 px-2 py-1 text-[11px] font-semibold rounded-md transition-all ${
-                  treeDirection === 'RIGHT'
-                    ? 'bg-white text-emerald-900 shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Horizontal hierarchy flow"
-              >
-                <ArrowLeftRight className="w-3.5 h-3.5" />
-                <span>Left-Right</span>
-              </button>
-            </div>
-
-            {/* Print Page Orientation */}
-            <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
-              <button
-                onClick={() => setPrintOrientation('landscape')}
-                className={`px-2 py-1 text-[11px] font-semibold rounded-md transition-all ${
-                  printOrientation === 'landscape'
-                    ? 'bg-white text-emerald-900 shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Landscape
-              </button>
-              <button
-                onClick={() => setPrintOrientation('portrait')}
-                className={`px-2 py-1 text-[11px] font-semibold rounded-md transition-all ${
-                  printOrientation === 'portrait'
-                    ? 'bg-white text-emerald-900 shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                Portrait
-              </button>
-            </div>
-          </div>
-
-          {/* Sizing, Spacing, Box Width & Font Scale Steppers (NO UPPER LIMITS) */}
-          <div className="flex flex-wrap items-center gap-2">
-            {/* Auto-Fit vs Manual Zoom */}
-            <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200">
-              <button
-                onClick={() => setIsAutoFit(true)}
-                className={`flex items-center gap-1 px-2 py-0.5 text-[10.5px] font-semibold rounded-md transition-all ${
-                  isAutoFit ? 'bg-emerald-800 text-amber-300 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Auto-calculate scale to prevent scroll cutoffs on printable page"
-              >
-                <Sparkles className="w-3 h-3" />
-                <span>Auto-Fit</span>
-              </button>
-
-              <div className="flex items-center gap-1 pl-1 border-l border-slate-200">
-                <button
-                  onClick={() => {
-                    setIsAutoFit(false);
-                    setManualScale((prev) => Math.max(0.1, Math.round((prev - 0.1) * 10) / 10));
-                  }}
-                  className="p-1 rounded hover:bg-slate-200 text-slate-700"
-                  title="Zoom Out"
-                >
-                  <ZoomOut className="w-3 h-3" />
-                </button>
-                <span className="font-mono font-semibold text-[10.5px] px-1 min-w-[34px] text-center">
-                  {isAutoFit ? 'Auto' : `${Math.round(manualScale * 100)}%`}
-                </span>
-                <button
-                  onClick={() => {
-                    setIsAutoFit(false);
-                    setManualScale((prev) => Math.round((prev + 0.1) * 10) / 10);
-                  }}
-                  className="p-1 rounded hover:bg-slate-200 text-slate-700"
-                  title="Zoom In"
-                >
-                  <ZoomIn className="w-3 h-3" />
-                </button>
-              </div>
-            </div>
-
-            {/* Card Width */}
-            <NumberStepperInput
-              label="Card Width:"
-              value={nodeBoxWidth}
-              min={50}
-              step={10}
-              unit="px"
-              onChange={setNodeBoxWidth}
-              title="Width of each card box (enter any value)"
-            />
-
-            {/* Card Height */}
-            <NumberStepperInput
-              label="Card Height:"
-              value={cardHeightPercent}
-              min={10}
-              step={5}
-              unit="%"
-              onChange={setCardHeightPercent}
-              title="Card height scaling percentage to eliminate empty space below cards (enter any value)"
-            />
-
-            {/* Horizontal Card Spacing */}
-            <NumberStepperInput
-              label="H-Space:"
-              value={customNodeSpacing}
-              min={0}
-              step={10}
-              unit="px"
-              onChange={setCustomNodeSpacing}
-              title="Horizontal spacing between cards in the tree diagram (enter any value)"
-            />
-
-            {/* Vertical Card Spacing */}
-            <NumberStepperInput
-              label="V-Space:"
-              value={customVSpacing}
-              min={0}
-              step={10}
-              unit="px"
-              onChange={setCustomVSpacing}
-              title="Vertical spacing between cards in the tree diagram (enter any value)"
-            />
-
-            {/* Arrow Height */}
-            <NumberStepperInput
-              label={treeDirection === 'RIGHT' ? 'Arrow Len:' : 'Arrow Height:'}
-              value={customArrowHeight}
-              min={0}
-              step={10}
-              unit="px"
-              onChange={setCustomArrowHeight}
-              title="Connector arrow clearance between node ranks (enter any value)"
-            />
-
-            {/* Font Size */}
-            <NumberStepperInput
-              label="Font:"
-              value={fontSizePx}
-              min={4}
-              step={1}
-              unit="px"
-              icon={<Type className="w-3.5 h-3.5 text-slate-500" />}
-              onChange={setFontSizePx}
-              title="Base font size for card text (enter any value)"
-            />
-
-            {/* Line Height */}
-            <NumberStepperInput
-              label="Line H:"
-              value={lineHeightMult}
-              min={0.5}
-              step={0.05}
-              decimals={2}
-              unit="x"
-              onChange={setLineHeightMult}
-              title="Line height multiplier (enter any value)"
-            />
-
-            {/* Paragraph / Block Spacing */}
-            <NumberStepperInput
-              label="Para Space:"
-              value={paraSpacingPx}
-              min={0}
-              step={1}
-              unit="px"
-              onChange={setParaSpacingPx}
-              title="Paragraph and block vertical spacing inside cards (enter any value)"
-            />
-
-            {/* Reset Defaults Button */}
-            <button
-              onClick={resetSpacingAndSizing}
-              className="p-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-600"
-              title="Reset spacing, sizing, and styling to optimal defaults"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-            </button>
-          </div>
+        {/* Top Control Bar 2: Fine-Tuning Layout, Spacing, Sizing, Arrows, Splitting */}
+        <div className="no-print bg-white border-b border-slate-200 px-4 py-2 text-xs text-slate-700">
+          <SectionToolbarDeck
+            isDossier={printDossierMode}
+            setIsDossier={setPrintDossierMode}
+            arrowStyle={curArrowStyle}
+            setArrowStyle={(val) => updateActiveSetting('arrowStyle', val)}
+            pageSplitMode={curPageSplitMode}
+            setPageSplitMode={(val) => updateActiveSetting('pageSplitMode', val)}
+            fkMode={curFkMode}
+            setFkMode={(val) => updateActiveSetting('fkMode', val)}
+            alternateDepth={curAlternateDepth}
+            setAlternateDepth={(val) => updateActiveSetting('alternateDepth', val)}
+            alternateSpacingPx={curAlternateSpacingPx}
+            setAlternateSpacingPx={(val) => updateActiveSetting('alternateSpacingPx', val)}
+            direction={curDirection}
+            setDirection={(val) => updateActiveSetting('treeDirection', val)}
+            printOrientation={printOrientation}
+            setPrintOrientation={setPrintOrientation}
+            showFkTable={showFkTable}
+            setShowFkTable={setShowFkTable}
+            nodeBoxWidth={curNodeBoxWidth}
+            setNodeBoxWidth={(val) => updateActiveSetting('nodeBoxWidth', val)}
+            cardHeightPercent={curCardHeightPercent}
+            setCardHeightPercent={(val) => updateActiveSetting('cardHeightPercent', val)}
+            customNodeSpacing={curCustomNodeSpacing}
+            setCustomNodeSpacing={(val) => updateActiveSetting('customNodeSpacing', val)}
+            customVSpacing={curCustomVSpacing}
+            setCustomVSpacing={(val) => updateActiveSetting('customVSpacing', val)}
+            customArrowHeight={curCustomArrowHeight}
+            setCustomArrowHeight={(val) => updateActiveSetting('customArrowHeight', val)}
+            customFkArrowHeight={curCustomFkArrowHeight}
+            setCustomFkArrowHeight={(val) => updateActiveSetting('customFkArrowHeight', val)}
+            fontSizePx={curFontSizePx}
+            setFontSizePx={(val) => updateActiveSetting('fontSizePx', val)}
+            lineHeightMult={curLineHeightMult}
+            setLineHeightMult={(val) => updateActiveSetting('lineHeightMult', val)}
+            paraSpacingPx={curParaSpacingPx}
+            setParaSpacingPx={(val) => updateActiveSetting('paraSpacingPx', val)}
+            isAutoFit={isAutoFit}
+            setIsAutoFit={setIsAutoFit}
+            manualScale={manualScale}
+            setManualScale={setManualScale}
+            onReset={() => {
+              if (customizingSectionId === 'all') {
+                resetSpacingAndSizing();
+              } else {
+                resetSectionPrintSettings(customizingSectionId);
+              }
+            }}
+            resetTitle={
+              customizingSectionId === 'all'
+                ? 'Reset global spacing, sizing, and styling to optimal defaults'
+                : 'Reset this section page to global defaults'
+            }
+          />
         </div>
 
         {/* Top Sticky Inline Edit Banner (Visible when an authority node is actively being edited) */}
@@ -1203,11 +1691,13 @@ export function SectionPrintPdfModal() {
               const layout = treeLayouts[sec.id];
               if (!layout) return null;
 
+              const secOverrides = sectionPrintSettings[sec.id] || {};
+              const secSplitMode = secOverrides.pageSplitMode ?? pageSplitMode;
               const totalFks = layout.foreignKeys.length;
               const slices = getSlicesForLayout(
                 layout,
                 targetPageWidth,
-                pageSplitMode,
+                secSplitMode,
                 isAutoFit,
                 manualScale,
                 printOrientation
@@ -1244,6 +1734,38 @@ export function SectionPrintPdfModal() {
                             <p className="text-xs text-slate-600 mt-0.5 font-medium leading-relaxed">
                               {sec.subtitle}
                             </p>
+
+                            {/* Per-Page Customization Controls */}
+                            <div className="flex flex-wrap items-center gap-2 no-print mt-2">
+                              <button
+                                onClick={() => togglePageToolbar(sec.id)}
+                                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-all cursor-pointer shadow-2xs ${
+                                  openPageToolbars[sec.id]
+                                    ? 'bg-amber-400 text-emerald-950 border-amber-500 ring-2 ring-amber-400/50'
+                                    : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-300'
+                                }`}
+                                title="Toggle dedicated configuration toolbar for this page"
+                              >
+                                <Sliders className="w-3.5 h-3.5 text-amber-700" />
+                                <span>{openPageToolbars[sec.id] ? 'Hide Page Settings Toolbar ▲' : 'Page Settings Toolbar ▼'}</span>
+                              </button>
+                              {Boolean(secOverrides.nodePositions && Object.keys(secOverrides.nodePositions).length > 0) && (
+                                <button
+                                  onClick={() => {
+                                    const { nodePositions: _rem, ...rest } = secOverrides;
+                                    setSectionPrintSettings(sec.id, { ...rest, nodePositions: {} });
+                                  }}
+                                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-700 border border-slate-200 hover:border-rose-300 transition-colors cursor-pointer"
+                                  title="Reset all dragged node positions on this page to automatic tree layout"
+                                >
+                                  <RotateCcw className="w-3 h-3" />
+                                  <span>Reset Positions ({Object.keys(secOverrides.nodePositions || {}).length})</span>
+                                </button>
+                              )}
+                              <span className="text-[10.5px] font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                Drag any card to reposition • Changes auto-save
+                              </span>
+                            </div>
                           </div>
 
                           <div className="flex flex-col items-end gap-1 flex-shrink-0 text-right">
@@ -1254,23 +1776,74 @@ export function SectionPrintPdfModal() {
                               {totalFks} Foreign Key {totalFks === 1 ? 'Stub' : 'Stubs'}
                             </span>
                             <span className="text-[10px] font-mono text-slate-400">
-                              Scale: {Math.round(slice.scale * 100)}% • {arrowStyle} arrows • {alternateDepth ? 'Zig-Zag' : 'Standard'}
+                              Scale: {Math.round(slice.scale * 100)}% • {secOverrides.arrowStyle ?? arrowStyle} arrows • {(secOverrides.alternateDepth ?? alternateDepth) ? 'Zig-Zag' : 'Standard'}
                             </span>
-                            <button
-                              onClick={() => setAlternateDepth(!alternateDepth)}
-                              className="no-print mt-0.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold border transition-colors cursor-pointer bg-amber-50 hover:bg-amber-100 text-amber-950 border-amber-300 shadow-2xs"
-                              title="Click to toggle Alternate Depth placing (staggered baselines) on this tree"
-                            >
-                              <Layers className="w-3.5 h-3.5 text-amber-700" />
-                              <span>Alternate Depth:</span>
-                              <span className={`px-1.5 py-0.5 rounded font-mono text-[10px] font-black ${
-                                alternateDepth ? 'bg-emerald-800 text-amber-300' : 'bg-slate-200 text-slate-700'
-                              }`}>
-                                {alternateDepth ? `ON (${alternateSpacingPx}px)` : 'OFF'}
-                              </span>
-                            </button>
                           </div>
                         </div>
+
+                        {/* Collapsible Dedicated Per-Page Configuration Toolbar Deck */}
+                        {openPageToolbars[sec.id] && (
+                          <div className="no-print mb-6 p-3 bg-amber-50/70 rounded-xl border border-amber-300 shadow-sm transition-all">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-2">
+                                <Sliders className="w-4 h-4 text-amber-700" />
+                                <span className="text-xs font-bold text-amber-950 uppercase tracking-wide">
+                                  Section {sec.number} ({sec.id}) Dedicated Configuration Toolbar
+                                </span>
+                                <span className="text-[10px] font-mono text-emerald-900 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300 font-bold">
+                                  Customized for this page
+                                </span>
+                              </div>
+                              <button
+                                onClick={() => togglePageToolbar(sec.id)}
+                                className="text-[11px] font-bold text-slate-500 hover:text-slate-800 px-2 py-0.5 rounded bg-white border border-slate-200 shadow-2xs cursor-pointer"
+                              >
+                                ✕ Close Toolbar
+                              </button>
+                            </div>
+                            <SectionToolbarDeck
+                              arrowStyle={secOverrides.arrowStyle ?? arrowStyle}
+                              setArrowStyle={(val) => setSectionPrintSettings(sec.id, { arrowStyle: val })}
+                              pageSplitMode={secOverrides.pageSplitMode ?? pageSplitMode}
+                              setPageSplitMode={(val) => setSectionPrintSettings(sec.id, { pageSplitMode: val })}
+                              fkMode={secOverrides.fkMode ?? fkMode}
+                              setFkMode={(val) => setSectionPrintSettings(sec.id, { fkMode: val })}
+                              alternateDepth={secOverrides.alternateDepth ?? alternateDepth}
+                              setAlternateDepth={(val) => setSectionPrintSettings(sec.id, { alternateDepth: val })}
+                              alternateSpacingPx={secOverrides.alternateSpacingPx ?? alternateSpacingPx}
+                              setAlternateSpacingPx={(val) => setSectionPrintSettings(sec.id, { alternateSpacingPx: val })}
+                              direction={secOverrides.treeDirection ?? treeDirection}
+                              setDirection={(val) => setSectionPrintSettings(sec.id, { treeDirection: val })}
+                              nodeBoxWidth={secOverrides.nodeBoxWidth ?? nodeBoxWidth}
+                              setNodeBoxWidth={(val) => setSectionPrintSettings(sec.id, { nodeBoxWidth: val })}
+                              cardHeightPercent={secOverrides.cardHeightPercent ?? cardHeightPercent}
+                              setCardHeightPercent={(val) => setSectionPrintSettings(sec.id, { cardHeightPercent: val })}
+                              customNodeSpacing={secOverrides.customNodeSpacing ?? customNodeSpacing}
+                              setCustomNodeSpacing={(val) => setSectionPrintSettings(sec.id, { customNodeSpacing: val })}
+                              customVSpacing={secOverrides.customVSpacing ?? customVSpacing}
+                              setCustomVSpacing={(val) => setSectionPrintSettings(sec.id, { customVSpacing: val })}
+                              customArrowHeight={secOverrides.customArrowHeight ?? customArrowHeight}
+                              setCustomArrowHeight={(val) => setSectionPrintSettings(sec.id, { customArrowHeight: val })}
+                              customFkArrowHeight={secOverrides.customFkArrowHeight ?? customFkArrowHeight}
+                              setCustomFkArrowHeight={(val) => setSectionPrintSettings(sec.id, { customFkArrowHeight: val })}
+                              fontSizePx={secOverrides.fontSizePx ?? fontSizePx}
+                              setFontSizePx={(val) => setSectionPrintSettings(sec.id, { fontSizePx: val })}
+                              lineHeightMult={secOverrides.lineHeightMult ?? lineHeightMult}
+                              setLineHeightMult={(val) => setSectionPrintSettings(sec.id, { lineHeightMult: val })}
+                              paraSpacingPx={secOverrides.paraSpacingPx ?? paraSpacingPx}
+                              setParaSpacingPx={(val) => setSectionPrintSettings(sec.id, { paraSpacingPx: val })}
+                              isPerPage={true}
+                              hasCustomPositions={Boolean(secOverrides.nodePositions && Object.keys(secOverrides.nodePositions).length > 0)}
+                              onClearNodePositions={() => {
+                                const { nodePositions: _rem, ...rest } = secOverrides;
+                                setSectionPrintSettings(sec.id, { ...rest, nodePositions: {} });
+                              }}
+                              onApplyToAll={() => applySectionSettingsToAll(sec.id)}
+                              onReset={() => resetSectionPrintSettings(sec.id)}
+                              resetTitle="Reset this page to default settings"
+                            />
+                          </div>
+                        )}
 
                         {/* VISUAL TREE DIAGRAM (Auto-Scaled or Multi-Page Sliced) */}
                         <div className="mb-6 overflow-x-auto print:overflow-visible border border-slate-200 rounded-xl bg-slate-50/40 p-3 sm:p-4">
@@ -1291,105 +1864,172 @@ export function SectionPrintPdfModal() {
                               }}
                             >
                               {/* SVG Vector Connector Edges Layer */}
-                              <svg
-                                className="absolute inset-0 pointer-events-none"
-                                width={layout.width}
-                                height={layout.height}
-                              >
-                                <defs>
-                                  <marker
-                                    id={`arrow-internal-${sec.id}`}
-                                    viewBox="0 0 10 10"
-                                    refX="8"
-                                    refY="5"
-                                    markerWidth="7"
-                                    markerHeight="7"
-                                    orient="auto"
-                                  >
-                                    <polygon points="0 1.5, 8 5, 0 8.5" fill="#15803d" />
-                                  </marker>
-                                  <marker
-                                    id={`arrow-fk-out-${sec.id}`}
-                                    viewBox="0 0 10 10"
-                                    refX="8"
-                                    refY="5"
-                                    markerWidth="7"
-                                    markerHeight="7"
-                                    orient="auto"
-                                  >
-                                    <polygon points="0 1.5, 8 5, 0 8.5" fill="#d97706" />
-                                  </marker>
-                                  <marker
-                                    id={`arrow-fk-in-${sec.id}`}
-                                    viewBox="0 0 10 10"
-                                    refX="8"
-                                    refY="5"
-                                    markerWidth="7"
-                                    markerHeight="7"
-                                    orient="auto"
-                                  >
-                                    <polygon points="0 1.5, 8 5, 0 8.5" fill="#0284c7" />
-                                  </marker>
-                                </defs>
+                              {(() => {
+                                // Build a drag-aware node position lookup for live edge recomputation
+                                const isDraggingInThisSection = dragState && dragState.sectionId === sec.id;
+                                const dragNodeId = isDraggingInThisSection ? dragState.nodeId : null;
+                                const dx = isDraggingInThisSection ? dragState.currentDx : 0;
+                                const dy = isDraggingInThisSection ? dragState.currentDy : 0;
 
-                                {/* Pass 1: White Contrast Halo Underlay */}
-                                {layout.edges.map((edge) => (
-                                  <path
-                                    key={`halo-${edge.id}`}
-                                    d={edge.pathD}
-                                    fill="none"
-                                    stroke="#ffffff"
-                                    strokeWidth={edge.isFk ? 5.2 : 4.6}
-                                    strokeLinecap="round"
-                                    opacity="0.95"
-                                  />
-                                ))}
+                                // Fast node lookup map (built once per render)
+                                const nodeMap = new Map<string, { x: number; y: number; width: number; height: number }>();
+                                for (const n of layout.nodes) {
+                                  nodeMap.set(n.id, {
+                                    x: n.id === dragNodeId ? n.x + dx : n.x,
+                                    y: n.id === dragNodeId ? n.y + dy : n.y,
+                                    width: n.width,
+                                    height: n.height
+                                  });
+                                }
 
-                                {/* Pass 2: Crisp Colored Vector Paths with Sharp Arrowheads */}
-                                {layout.edges.map((edge) => {
-                                  const isFkOut = edge.target.startsWith('FK-OUT-');
-                                  const isFkIn = edge.source.startsWith('FK-IN-');
-                                  const strokeColor = isFkOut ? '#d97706' : isFkIn ? '#0284c7' : '#15803d';
-                                  const markerId = isFkOut
-                                    ? `arrow-fk-out-${sec.id}`
-                                    : isFkIn
-                                    ? `arrow-fk-in-${sec.id}`
-                                    : `arrow-internal-${sec.id}`;
+                                // Recompute pathD for an edge when its source or target is being dragged
+                                const secOverridesDir = secOverrides.treeDirection ?? treeDirection;
+                                const isRight = secOverridesDir === 'RIGHT';
 
-                                  return (
-                                    <path
-                                      key={edge.id}
-                                      d={edge.pathD}
-                                      fill="none"
-                                      stroke={strokeColor}
-                                      strokeWidth={edge.isFk ? 2.2 : 2.0}
-                                      strokeDasharray={edge.isFk ? '6,4' : undefined}
-                                      strokeLinecap="round"
-                                      markerEnd={`url(#${markerId})`}
-                                    />
-                                  );
-                                })}
-                              </svg>
+                                const getLivePathD = (edge: typeof layout.edges[0]): string => {
+                                  // If nothing is being dragged, or this edge isn't connected to the dragged node, use precomputed
+                                  if (!dragNodeId || (edge.source !== dragNodeId && edge.target !== dragNodeId)) {
+                                    return edge.pathD || '';
+                                  }
+
+                                  const sn = nodeMap.get(edge.source);
+                                  const tn = nodeMap.get(edge.target);
+                                  if (!sn || !tn) return edge.pathD || '';
+
+                                  if (isRight) {
+                                    // Horizontal: right edge of source → left edge of target
+                                    const sx = sn.x + sn.width;
+                                    const sy = sn.y + sn.height / 2;
+                                    const tx = tn.x;
+                                    const ty = tn.y + tn.height / 2;
+                                    const cdx = tx - sx;
+                                    const curveOffset = Math.max(30, Math.min(180, Math.abs(cdx) * 0.45));
+                                    const cx1 = sx + (cdx >= 0 ? curveOffset : -curveOffset);
+                                    const cx2 = tx - (cdx >= 0 ? curveOffset : -curveOffset);
+                                    return `M ${sx} ${sy} C ${cx1} ${sy}, ${cx2} ${ty}, ${tx} ${ty}`;
+                                  } else {
+                                    // Vertical: bottom of source → top of target
+                                    const sx = sn.x + sn.width / 2;
+                                    const sy = sn.y + sn.height;
+                                    const tx = tn.x + tn.width / 2;
+                                    const ty = tn.y;
+                                    const cdy = ty - sy;
+                                    const curveOffset = Math.max(25, Math.min(180, Math.abs(cdy) * 0.45));
+                                    const cy1 = sy + (cdy >= 0 ? curveOffset : -curveOffset);
+                                    const cy2 = ty - (cdy >= 0 ? curveOffset : -curveOffset);
+                                    return `M ${sx} ${sy} C ${sx} ${cy1}, ${tx} ${cy2}, ${tx} ${ty}`;
+                                  }
+                                };
+
+                                return (
+                                  <svg
+                                    className="absolute inset-0 pointer-events-none"
+                                    width={layout.width}
+                                    height={layout.height}
+                                  >
+                                    <defs>
+                                      <marker
+                                        id={`arrow-internal-${sec.id}`}
+                                        viewBox="0 0 10 10"
+                                        refX="8"
+                                        refY="5"
+                                        markerWidth="7"
+                                        markerHeight="7"
+                                        orient="auto"
+                                      >
+                                        <polygon points="0 1.5, 8 5, 0 8.5" fill="#15803d" />
+                                      </marker>
+                                      <marker
+                                        id={`arrow-fk-out-${sec.id}`}
+                                        viewBox="0 0 10 10"
+                                        refX="8"
+                                        refY="5"
+                                        markerWidth="7"
+                                        markerHeight="7"
+                                        orient="auto"
+                                      >
+                                        <polygon points="0 1.5, 8 5, 0 8.5" fill="#d97706" />
+                                      </marker>
+                                      <marker
+                                        id={`arrow-fk-in-${sec.id}`}
+                                        viewBox="0 0 10 10"
+                                        refX="8"
+                                        refY="5"
+                                        markerWidth="7"
+                                        markerHeight="7"
+                                        orient="auto"
+                                      >
+                                        <polygon points="0 1.5, 8 5, 0 8.5" fill="#0284c7" />
+                                      </marker>
+                                    </defs>
+
+                                    {/* Pass 1: White Contrast Halo Underlay */}
+                                    {layout.edges.map((edge) => (
+                                      <path
+                                        key={`halo-${edge.id}`}
+                                        d={getLivePathD(edge)}
+                                        fill="none"
+                                        stroke="#ffffff"
+                                        strokeWidth={edge.isFk ? 5.2 : 4.6}
+                                        strokeLinecap="round"
+                                        opacity="0.95"
+                                      />
+                                    ))}
+
+                                    {/* Pass 2: Crisp Colored Vector Paths with Sharp Arrowheads */}
+                                    {layout.edges.map((edge) => {
+                                      const isFkOut = edge.target.startsWith('FK-OUT-');
+                                      const isFkIn = edge.source.startsWith('FK-IN-');
+                                      const strokeColor = isFkOut ? '#d97706' : isFkIn ? '#0284c7' : '#15803d';
+                                      const markerId = isFkOut
+                                        ? `arrow-fk-out-${sec.id}`
+                                        : isFkIn
+                                        ? `arrow-fk-in-${sec.id}`
+                                        : `arrow-internal-${sec.id}`;
+
+                                      return (
+                                        <path
+                                          key={edge.id}
+                                          d={getLivePathD(edge)}
+                                          fill="none"
+                                          stroke={strokeColor}
+                                          strokeWidth={edge.isFk ? 2.2 : 2.0}
+                                          strokeDasharray={edge.isFk ? '6,4' : undefined}
+                                          strokeLinecap="round"
+                                          markerEnd={`url(#${markerId})`}
+                                        />
+                                      );
+                                    })}
+                                  </svg>
+                                );
+                              })()}
 
                               {/* Render Nodes Layer */}
                               {layout.nodes.map((node) => {
+                                const isThisDragging = dragState?.nodeId === node.id && dragState?.sectionId === sec.id;
+                                const renderX = node.x + (isThisDragging ? dragState.currentDx : 0);
+                                const renderY = node.y + (isThisDragging ? dragState.currentDy : 0);
+
                                 // 1. Foreign Key Link Stub Node
                                 if (node.isFk) {
                                   const isOut = node.fkDirection === 'out';
                                   return (
                                     <div
                                       key={node.id}
-                                      className={`absolute rounded-xl border p-2 flex flex-col justify-start shadow-2xs ${
+                                      onPointerDown={(e) => handleStartDrag(e, sec.id, node.id, node.x, node.y, slice.scale)}
+                                      className={`absolute rounded-xl border p-2 flex flex-col justify-start shadow-2xs select-none ${
                                         isOut
                                           ? 'bg-amber-50/95 border-amber-300 text-amber-900'
                                           : 'bg-sky-50/95 border-sky-300 text-sky-900'
-                                      }`}
+                                      } ${isThisDragging ? 'z-30 ring-2 ring-amber-500 shadow-xl' : ''}`}
                                       style={{
-                                        left: `${node.x}px`,
-                                        top: `${node.y}px`,
+                                        left: `${renderX}px`,
+                                        top: `${renderY}px`,
                                         width: `${node.width}px`,
                                         height: `${node.height}px`,
-                                        lineHeight: typo.lineHeight
+                                        lineHeight: typo.lineHeight,
+                                        cursor: isThisDragging ? 'grabbing' : 'grab',
+                                        touchAction: 'none'
                                       }}
                                     >
                                       <div className="flex items-center justify-between gap-1" style={{ marginBottom: typo.spacingQuarter }}>
@@ -1441,13 +2081,18 @@ export function SectionPrintPdfModal() {
                                   return (
                                     <div
                                       key={node.id}
-                                      className="absolute rounded-xl border-2 border-emerald-900 bg-emerald-900 text-white p-3 shadow-md flex flex-col justify-center"
+                                      onPointerDown={(e) => handleStartDrag(e, sec.id, node.id, node.x, node.y, slice.scale)}
+                                      className={`absolute rounded-xl border-2 border-emerald-900 bg-emerald-900 text-white p-3 shadow-md flex flex-col justify-center select-none ${
+                                        isThisDragging ? 'z-30 ring-2 ring-amber-400 shadow-2xl' : ''
+                                      }`}
                                       style={{
-                                        left: `${node.x}px`,
-                                        top: `${node.y}px`,
+                                        left: `${renderX}px`,
+                                        top: `${renderY}px`,
                                         width: `${node.width}px`,
                                         height: `${node.height}px`,
-                                        lineHeight: typo.lineHeight
+                                        lineHeight: typo.lineHeight,
+                                        cursor: isThisDragging ? 'grabbing' : 'grab',
+                                        touchAction: 'none'
                                       }}
                                     >
                                       <div>
@@ -1474,26 +2119,35 @@ export function SectionPrintPdfModal() {
                                   );
                                 }
 
-                                // 3. Standard Authority Node (With Direct Inline Editing & Hover Indicators)
+                                // 3. Standard Authority Node (With Direct Inline Editing, Drag Repositioning & Hover Indicators)
                                 const isEditing = editingNodeId === node.id;
 
                                 return (
                                   <div
                                     key={node.id}
-                                    onClick={() => handleNodeClick(node)}
-                                    className={`absolute rounded-xl border p-2.5 shadow-2xs flex flex-col justify-start overflow-hidden print-avoid-break transition-all group ${
+                                    onPointerDown={(e) => handleStartDrag(e, sec.id, node.id, node.x, node.y, slice.scale)}
+                                    onClick={() => {
+                                      if (!hasMoved) {
+                                        handleNodeClick(node);
+                                      }
+                                    }}
+                                    className={`absolute rounded-xl border p-2.5 shadow-2xs flex flex-col justify-start overflow-hidden print-avoid-break transition-shadow group ${
                                       isEditing
                                         ? 'bg-emerald-50/50 border-emerald-500 ring-2 ring-emerald-500/50 z-20 shadow-lg'
-                                        : 'bg-white border-slate-200 hover:border-emerald-500 hover:shadow-md cursor-pointer'
+                                        : isThisDragging
+                                        ? 'bg-white border-amber-500 ring-2 ring-amber-400 z-30 shadow-2xl'
+                                        : 'bg-white border-slate-200 hover:border-emerald-500 hover:shadow-md'
                                     }`}
                                     style={{
-                                      left: `${node.x}px`,
-                                      top: `${node.y}px`,
+                                      left: `${renderX}px`,
+                                      top: `${renderY}px`,
                                       width: `${node.width}px`,
                                       height: `${node.height}px`,
-                                      lineHeight: typo.lineHeight
+                                      lineHeight: typo.lineHeight,
+                                      cursor: isEditing ? 'default' : (isThisDragging ? 'grabbing' : 'grab'),
+                                      touchAction: 'none'
                                     }}
-                                    title="Click to edit details of this authority"
+                                    title={isEditing ? undefined : "Drag to reposition on this page, or click to edit"}
                                   >
                                     {isEditing ? (
                                       /* Active Inline Editor Form inside Card */
@@ -1680,69 +2334,85 @@ export function SectionPrintPdfModal() {
                                           </h4>
 
                                           {/* Badges Container */}
-                                          <div className="flex flex-wrap items-center gap-1" style={{ marginBottom: typo.spacingHalf }}>
-                                            {data.legalStatus && (
-                                              <span
-                                                className="font-medium px-1.5 py-0.2 rounded bg-slate-100 text-slate-700 border border-slate-200 inline-block"
-                                                style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
-                                              >
-                                                {data.legalStatus}
-                                              </span>
-                                            )}
-                                            {data.institutionDetails?.institutionType && (
-                                              <span
-                                                className="font-semibold px-1.5 py-0.2 rounded bg-purple-50 text-purple-900 border border-purple-200 inline-block"
-                                                style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
-                                              >
-                                                {data.institutionDetails.institutionType}
-                                              </span>
-                                            )}
-                                            {!printDossierMode && data.institutionDetails?.examinationTimeline && (
-                                              <span
-                                                className="font-medium px-1.5 py-0.2 rounded bg-sky-50 text-sky-800 border border-sky-200 inline-flex items-center gap-1"
-                                                style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
-                                              >
-                                                <Clock className="w-2.5 h-2.5 text-sky-600" />
-                                                {data.institutionDetails.examinationTimeline.replace(/^Timeline:\s*/i, '')}
-                                              </span>
-                                            )}
-                                            {data.examDetails?.examAgency && (
-                                              <span
-                                                className="font-semibold px-1.5 py-0.2 rounded bg-blue-50 text-blue-900 border border-blue-200 inline-block"
-                                                style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
-                                              >
-                                                {data.examDetails.examAgency}
-                                              </span>
-                                            )}
-                                            {data.governanceDetails?.constitutionalArticle && (
-                                              <span
-                                                className="font-semibold px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 inline-block"
-                                                style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
-                                              >
-                                                {data.governanceDetails.constitutionalArticle}
-                                              </span>
-                                            )}
-                                            {data.bankingJudicialDetails?.regulatoryBodyOrApex && (
-                                              <span
-                                                className="font-semibold px-1.5 py-0.2 rounded bg-amber-50 text-amber-900 border border-amber-200 inline-block"
-                                                style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
-                                              >
-                                                {data.bankingJudicialDetails.regulatoryBodyOrApex}
-                                              </span>
+                                          <div className="flex flex-wrap items-center gap-1" style={{ marginBottom: typo.spacingQuarter }}>
+                                            {printDossierMode ? (
+                                              <>
+                                                {data.legalStatus && (
+                                                  <span
+                                                    className="font-medium px-1.5 py-0.2 rounded bg-slate-100 text-slate-700 border border-slate-200 inline-block"
+                                                    style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                                  >
+                                                    {data.legalStatus}
+                                                  </span>
+                                                )}
+                                                {data.institutionDetails?.institutionType && (
+                                                  <span
+                                                    className="font-semibold px-1.5 py-0.2 rounded bg-purple-50 text-purple-900 border border-purple-200 inline-block"
+                                                    style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                                  >
+                                                    {data.institutionDetails.institutionType}
+                                                  </span>
+                                                )}
+                                                {data.examDetails?.examAgency && (
+                                                  <span
+                                                    className="font-semibold px-1.5 py-0.2 rounded bg-blue-50 text-blue-900 border border-blue-200 inline-block"
+                                                    style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                                  >
+                                                    {data.examDetails.examAgency}
+                                                  </span>
+                                                )}
+                                                {data.governanceDetails?.constitutionalArticle && (
+                                                  <span
+                                                    className="font-semibold px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 inline-block"
+                                                    style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                                  >
+                                                    {data.governanceDetails.constitutionalArticle}
+                                                  </span>
+                                                )}
+                                                {data.bankingJudicialDetails?.regulatoryBodyOrApex && (
+                                                  <span
+                                                    className="font-semibold px-1.5 py-0.2 rounded bg-amber-50 text-amber-900 border border-amber-200 inline-block"
+                                                    style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                                  >
+                                                    {data.bankingJudicialDetails.regulatoryBodyOrApex}
+                                                  </span>
+                                                )}
+                                              </>
+                                            ) : (
+                                              /* Compact mode: Show only ONE clean primary badge */
+                                              (() => {
+                                                const primaryBadge =
+                                                  data.institutionDetails?.institutionType ||
+                                                  data.examDetails?.examAgency ||
+                                                  data.governanceDetails?.constitutionalArticle ||
+                                                  data.bankingJudicialDetails?.regulatoryBodyOrApex ||
+                                                  data.legalStatus;
+                                                if (!primaryBadge) return null;
+                                                return (
+                                                  <span
+                                                    className="font-semibold px-1.5 py-0.2 rounded bg-purple-50 text-purple-900 border border-purple-200 inline-block truncate max-w-[95%]"
+                                                    style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                                  >
+                                                    {primaryBadge}
+                                                  </span>
+                                                );
+                                              })()
                                             )}
                                           </div>
 
                                           {/* Summary Synopsis */}
-                                          <p
-                                            className={`text-slate-600 ${printDossierMode ? '' : 'line-clamp-2'}`}
-                                            style={{
-                                              fontSize: typo.body,
-                                              lineHeight: typo.lineHeight,
-                                              marginBottom: typo.spacingHalf
-                                            }}
-                                          >
-                                            {data.summary}
-                                          </p>
+                                          {data.summary && (
+                                            <p
+                                              className={`text-slate-600 ${printDossierMode ? '' : 'line-clamp-1 overflow-hidden text-ellipsis'}`}
+                                              style={{
+                                                fontSize: typo.body,
+                                                lineHeight: typo.lineHeight,
+                                                marginBottom: typo.spacingQuarter
+                                              }}
+                                            >
+                                              {data.summary}
+                                            </p>
+                                          )}
 
                                           {/* FULL DOSSIER CONTENT (if toggle is active) */}
                                           {printDossierMode && (

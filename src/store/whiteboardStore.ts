@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { EducationNode, RelationshipEdgeData, SourceRecord, ProjectSummary, ProjectRecord, SectionMeta } from '../types';
+import { EducationNode, RelationshipEdgeData, SourceRecord, ProjectSummary, ProjectRecord, SectionMeta, SectionPrintSettings } from '../types';
 import { ALL_NODES, ALL_RELATIONSHIPS, ALL_SOURCES, ALL_SECTION_METAS } from '../data/content-index';
 import { SECTION_METAS_V2, NODES_V2, RELATIONSHIPS_V2, SOURCES_V2 } from '../data/whiteboard3-exams';
 import { SECTION_METAS_V3, NODES_V3, RELATIONSHIPS_V3, SOURCES_V3 } from '../data/whiteboard2-institutions';
@@ -22,7 +22,8 @@ import {
   createProjectApi,
   activateProjectApi,
   updateProjectApi,
-  deleteProjectApi
+  deleteProjectApi,
+  updateProjectSettingsApi
 } from '../services/apiClient';
 import { db } from '../../database/db';
 
@@ -64,11 +65,13 @@ export interface WhiteboardState {
   customNodeSpacing: number;
   customVSpacing: number;
   customArrowHeight: number;
+  customFkArrowHeight: number;
   arrowStyle: 'curved' | 'straight' | 'orthogonal' | 'rounded-orthogonal';
   fontSizePx: number;
   lineHeightMult: number;
   paraSpacingPx: number;
   edgeLabelMode: 'wrapped' | 'badge' | 'hover' | 'off';
+  sectionPrintSettings: Record<string, SectionPrintSettings>;
 
   // Inline Editing State on Canvas
   editingNodeId: string | null;
@@ -133,12 +136,17 @@ export interface WhiteboardState {
   setCustomNodeSpacing: (val: number) => void;
   setCustomVSpacing: (val: number) => void;
   setCustomArrowHeight: (val: number) => void;
+  setCustomFkArrowHeight: (val: number) => void;
   setArrowStyle: (style: 'curved' | 'straight' | 'orthogonal' | 'rounded-orthogonal') => void;
   setFontSizePx: (val: number) => void;
   setLineHeightMult: (val: number) => void;
   setParaSpacingPx: (val: number) => void;
   setEdgeLabelMode: (mode: 'wrapped' | 'badge' | 'hover' | 'off') => void;
   resetSpacingAndSizing: () => void;
+  setSectionPrintSettings: (sectionId: string, settings: Partial<SectionPrintSettings>) => void;
+  setSectionNodePosition: (sectionId: string, nodeId: string, pos: { x: number; y: number }) => void;
+  resetSectionPrintSettings: (sectionId: string) => void;
+  applySectionSettingsToAll: (sourceSectionId: string) => void;
 
   startEditingNode: (node: EducationNode) => void;
   setEditDraft: (partial: Partial<EducationNode>) => void;
@@ -208,11 +216,13 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
   customNodeSpacing: 90,
   customVSpacing: 90,
   customArrowHeight: 180,
+  customFkArrowHeight: initialProject.settings?.customFkArrowHeight ?? 70,
   arrowStyle: 'curved',
   fontSizePx: 11,
   lineHeightMult: 1.35,
   paraSpacingPx: 6,
   edgeLabelMode: 'wrapped',
+  sectionPrintSettings: initialProject.settings?.sectionPrintSettings || {},
 
   // Inline Editing
   editingNodeId: null,
@@ -264,6 +274,8 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
           editingNodeId: null,
           editDraft: {},
           isDirty: false,
+          customFkArrowHeight: proj.settings?.customFkArrowHeight ?? 70,
+          sectionPrintSettings: proj.settings?.sectionPrintSettings || {},
           searchQuery: '',
           filters: initialFilters,
           focusSectionId: null,
@@ -652,27 +664,97 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
   setCustomNodeSpacing: (val) => set({ customNodeSpacing: val }),
   setCustomVSpacing: (val) => set({ customVSpacing: val }),
   setCustomArrowHeight: (val) => set({ customArrowHeight: val }),
+  setCustomFkArrowHeight: (val) => {
+    const curProjId = get().currentProjectId;
+    db.updateProjectSettings(curProjId, { customFkArrowHeight: val });
+    updateProjectSettingsApi(curProjId, { customFkArrowHeight: val }).catch(() => {});
+    set({ customFkArrowHeight: val });
+  },
   setArrowStyle: (style) => set({ arrowStyle: style }),
   setFontSizePx: (val) => set({ fontSizePx: val }),
   setLineHeightMult: (val) => set({ lineHeightMult: val }),
   setParaSpacingPx: (val) => set({ paraSpacingPx: val }),
 
-  resetSpacingAndSizing: () =>
+  resetSpacingAndSizing: () => {
+    const curProjId = get().currentProjectId;
+    db.updateProjectSettings(curProjId, { customFkArrowHeight: 70 });
+    updateProjectSettingsApi(curProjId, { customFkArrowHeight: 70 }).catch(() => {});
     set((state) => ({
       nodeBoxWidth: state.nodeViewMode === 'full' ? 340 : 280,
       cardHeightPercent: 100,
       customNodeSpacing: state.nodeViewMode === 'full' ? 90 : 65,
       customVSpacing: state.nodeViewMode === 'full' ? 90 : 65,
       customArrowHeight: state.nodeViewMode === 'full' ? 180 : 120,
+      customFkArrowHeight: 70,
       arrowStyle: 'curved',
       fontSizePx: 11,
       lineHeightMult: 1.35,
       paraSpacingPx: 6,
       alternateDepth: false,
       alternateSpacing: 50
-    })),
+    }));
+  },
 
   setEdgeLabelMode: (mode) => set({ edgeLabelMode: mode }),
+
+  setSectionPrintSettings: (sectionId, settings) => {
+    const curProjId = get().currentProjectId;
+    const currentSec = get().sectionPrintSettings[sectionId] || {};
+    const updated = {
+      ...get().sectionPrintSettings,
+      [sectionId]: { ...currentSec, ...settings }
+    };
+    set({ sectionPrintSettings: updated });
+    db.updateProjectSettings(curProjId, { sectionPrintSettings: updated });
+    updateProjectSettingsApi(curProjId, { sectionPrintSettings: updated }).catch(() => {});
+  },
+
+  setSectionNodePosition: (sectionId, nodeId, pos) => {
+    const curProjId = get().currentProjectId;
+    const currentSec = get().sectionPrintSettings[sectionId] || {};
+    const currentPositions = currentSec.nodePositions || {};
+    const updated = {
+      ...get().sectionPrintSettings,
+      [sectionId]: {
+        ...currentSec,
+        nodePositions: {
+          ...currentPositions,
+          [nodeId]: pos
+        }
+      }
+    };
+    set({ sectionPrintSettings: updated });
+    db.updateProjectSettings(curProjId, { sectionPrintSettings: updated });
+    updateProjectSettingsApi(curProjId, { sectionPrintSettings: updated }).catch(() => {});
+  },
+
+  resetSectionPrintSettings: (sectionId) => {
+    const curProjId = get().currentProjectId;
+    const updated = { ...get().sectionPrintSettings };
+    delete updated[sectionId];
+    set({ sectionPrintSettings: updated });
+    db.updateProjectSettings(curProjId, { sectionPrintSettings: updated });
+    updateProjectSettingsApi(curProjId, { sectionPrintSettings: updated }).catch(() => {});
+  },
+
+  applySectionSettingsToAll: (sourceSectionId) => {
+    const curProjId = get().currentProjectId;
+    const src = get().sectionPrintSettings[sourceSectionId];
+    if (!src) return;
+    const { nodePositions: _discard, ...commonSettings } = src;
+    const allSections = get().sections || [];
+    const updated: Record<string, SectionPrintSettings> = {};
+    for (const s of allSections) {
+      const existing = get().sectionPrintSettings[s.id] || {};
+      updated[s.id] = {
+        ...existing,
+        ...commonSettings
+      };
+    }
+    set({ sectionPrintSettings: updated });
+    db.updateProjectSettings(curProjId, { sectionPrintSettings: updated });
+    updateProjectSettingsApi(curProjId, { sectionPrintSettings: updated }).catch(() => {});
+  },
 
   startEditingNode: (node) =>
     set((state) => {
@@ -878,6 +960,7 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
       customNodeSpacing: 65,
       customVSpacing: 65,
       customArrowHeight: 140,
+      customFkArrowHeight: 70,
       arrowStyle: 'curved',
       fontSizePx: 11,
       lineHeightMult: 1.35,
