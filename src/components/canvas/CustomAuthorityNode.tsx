@@ -585,6 +585,16 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                   {data.governanceDetails.constitutionalArticle}
                 </span>
               )}
+              {data.governanceDetails?.cadreOrService && (
+                <span className="inline-block text-[9.5px] font-semibold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
+                  {data.governanceDetails.cadreOrService}
+                </span>
+              )}
+              {data.governanceDetails?.positionName && (
+                <span className="inline-block text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                  {data.governanceDetails.positionName}
+                </span>
+              )}
               {data.bankingJudicialDetails?.regulatoryBodyOrApex && (
                 <span className="inline-block text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
                   Apex: {data.bankingJudicialDetails.regulatoryBodyOrApex}
@@ -780,6 +790,18 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                       <Landmark className="w-3.5 h-3.5 text-purple-700" />
                       <span>Constitutional & Democratic Hierarchy</span>
                     </div>
+                    {data.governanceDetails.positionName && (
+                      <div className="text-[10px] text-slate-700">
+                        <span className="font-semibold text-purple-900">Post / Designation: </span>
+                        <span className="font-bold text-slate-900">{data.governanceDetails.positionName}</span>
+                      </div>
+                    )}
+                    {data.governanceDetails.cadreOrService && (
+                      <div className="text-[10px] text-slate-700">
+                        <span className="font-semibold text-purple-900">Cadre / Service: </span>
+                        <span className="font-bold text-rose-800 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">{data.governanceDetails.cadreOrService}</span>
+                      </div>
+                    )}
                     {data.governanceDetails.constitutionalArticle && (
                       <div className="text-[10px] text-slate-700 font-mono">
                         <span className="font-semibold text-purple-900">Article / Provision: </span>

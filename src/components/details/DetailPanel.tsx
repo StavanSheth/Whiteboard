@@ -641,6 +641,60 @@ export function DetailPanel() {
           </div>
         )}
 
+        {/* Constitutional & Democratic Governance Details */}
+        {node.governanceDetails && (
+          <div className="bg-gradient-to-br from-purple-50 to-indigo-50/50 border border-purple-200/90 rounded-xl p-3.5 space-y-2">
+            <h3 className="text-[11px] font-bold uppercase tracking-wider text-purple-950 flex items-center gap-1.5">
+              <Landmark className="w-4 h-4 text-purple-700" />
+              Constitutional &amp; Democratic Hierarchy Specification
+            </h3>
+            <div className="space-y-1.5 text-xs text-slate-700">
+              {node.governanceDetails.positionName && (
+                <div className="flex items-start gap-1">
+                  <span className="font-semibold text-purple-950 w-32 flex-shrink-0">Official Post:</span>
+                  <span className="font-bold text-slate-900">{node.governanceDetails.positionName}</span>
+                </div>
+              )}
+              {node.governanceDetails.cadreOrService && (
+                <div className="flex items-start gap-1">
+                  <span className="font-semibold text-purple-950 w-32 flex-shrink-0">Cadre / Service:</span>
+                  <span className="font-bold text-rose-800 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">{node.governanceDetails.cadreOrService}</span>
+                </div>
+              )}
+              {node.governanceDetails.constitutionalArticle && (
+                <div className="flex items-start gap-1">
+                  <span className="font-semibold text-purple-950 w-32 flex-shrink-0">Statute / Provision:</span>
+                  <span className="font-mono text-purple-900 font-semibold">{node.governanceDetails.constitutionalArticle}</span>
+                </div>
+              )}
+              {node.governanceDetails.electoralOrSelectionMethod && (
+                <div className="flex items-start gap-1">
+                  <span className="font-semibold text-purple-950 w-32 flex-shrink-0">Selection / Election:</span>
+                  <span>{node.governanceDetails.electoralOrSelectionMethod}</span>
+                </div>
+              )}
+              {node.governanceDetails.reportingTo && (
+                <div className="flex items-start gap-1">
+                  <span className="font-semibold text-purple-950 w-32 flex-shrink-0">Reports To:</span>
+                  <span className="font-medium text-slate-900">{node.governanceDetails.reportingTo}</span>
+                </div>
+              )}
+              {node.governanceDetails.geographicalJurisdiction && (
+                <div className="flex items-start gap-1">
+                  <span className="font-semibold text-purple-950 w-32 flex-shrink-0">Jurisdiction:</span>
+                  <span>{node.governanceDetails.geographicalJurisdiction}</span>
+                </div>
+              )}
+              {node.governanceDetails.tenure && (
+                <div className="flex items-start gap-1">
+                  <span className="font-semibold text-purple-950 w-32 flex-shrink-0">Tenure:</span>
+                  <span>{node.governanceDetails.tenure}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Career Value & Complete Appointment Hierarchy Ladder */}
         {(node.institutionDetails?.careerValue || (isEditing && (draft.institutionDetails || node.institutionDetails))) && (
           <div className="bg-gradient-to-br from-amber-50 to-orange-50/70 border border-amber-200/90 rounded-xl p-3.5 space-y-2">

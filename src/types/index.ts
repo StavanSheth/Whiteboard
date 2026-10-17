@@ -78,6 +78,7 @@ export interface InstitutionDetails {
 export interface GovernanceDetails {
   constitutionalArticle?: string;  // E.g. 'Article 52-62', 'Article 243'
   positionName?: string;           // E.g. 'President of India', 'District Collector'
+  cadreOrService?: string;         // E.g. 'Indian Police Service (IPS)', 'Elected Representative', 'Indian Administrative Service (IAS)'
   electoralOrSelectionMethod?: string; // E.g. 'Electoral College of MPs and MLAs', 'UPSC CSE'
   tenure?: string;                 // E.g. '5 years', 'Up to age 60'
   geographicalJurisdiction?: string; // E.g. 'Pan-India', 'Revenue District'

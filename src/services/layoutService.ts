@@ -135,6 +135,7 @@ export function estimateNodeHeight(
     let govH = 45 * typoFactor;
     if (node.governanceDetails.constitutionalArticle) govH += 24 * typoFactor;
     if (node.governanceDetails.positionName) govH += 24 * typoFactor;
+    if (node.governanceDetails.cadreOrService) govH += 24 * typoFactor;
     if (node.governanceDetails.electoralOrSelectionMethod) govH += 26 * typoFactor;
     if (node.governanceDetails.geographicalJurisdiction) govH += 28 * typoFactor;
     if (node.governanceDetails.tenure) govH += 26 * typoFactor;

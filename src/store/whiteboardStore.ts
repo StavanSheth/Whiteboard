@@ -339,7 +339,7 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
         set((state) => ({
           currentProjectId: 'proj-whiteboard-4',
           currentProjectName: 'Democratic Offices & Administrative Hierarchy (Whiteboard 4 of 5)',
-          currentProjectDescription: '9 key sections: Union Executive, Cabinet Secretariat, Parliament, State Executive, State Secretariat, District Administration, Local Governance, and Election Commission of India',
+          currentProjectDescription: '12 structured governance tiers: Sovereign Citizens, Union Parliament & Executive, Central Ministries (Home/MHA, Finance, Law, DoPT), State Legislature & Executive, State Departments, Complete Police Hierarchy (DGP to Constable), District Field Administration, Urban & Rural Local Governance, and Constitutional Oversight',
           nodes: NODES_V4,
           relationships: RELATIONSHIPS_V4,
           sources: SOURCES_V4,

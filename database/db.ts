@@ -56,9 +56,17 @@ class EducationGovernanceDatabase {
                 }
                 parsed.nodes = cleanNodes;
 
-                // Sync latest seed properties (sections, categories) for default projects
-                const seededNodeMap = new Map(seeded.nodes.map((n) => [n.id, n]));
-                if (seeded.isDefault) {
+                // For Whiteboard 4, use the clean new 12-tier hierarchy and non-crossing relationships
+                if (parsed.id === 'proj-whiteboard-4') {
+                  parsed.nodes = seeded.nodes.map((n) => ({ ...n }));
+                  parsed.relationships = seeded.relationships.map((r) => ({ ...r }));
+                  parsed.sections = (seeded.sections || []).map((s) => ({ ...s }));
+                  parsed.description = seeded.description;
+                  parsed.nodeCount = parsed.nodes.length;
+                  parsed.relationshipCount = parsed.relationships.length;
+                } else if (seeded.isDefault) {
+                  // Sync latest seed properties (sections, categories) for default projects
+                  const seededNodeMap = new Map(seeded.nodes.map((n) => [n.id, n]));
                   parsed.nodes = parsed.nodes.map((n) => {
                     const fresh = seededNodeMap.get(n.id);
                     if (fresh) {
@@ -209,7 +217,7 @@ class EducationGovernanceDatabase {
       reseeded = {
         id: 'proj-whiteboard-4',
         name: 'Indian Democracy and Government Hierarchy (v4)',
-        description: 'Complete constitutional, union, state, district, rural Panchayati Raj and urban municipal hierarchy from President to citizen',
+        description: '12 structured governance tiers: Sovereign Citizens, Union Parliament & Executive, Central Ministries (Home/MHA, Finance, Law, DoPT), State Legislature & Executive, State Departments, Complete Police Hierarchy (DGP to Constable), District Field Administration, Urban & Rural Local Governance, and Constitutional Oversight',
         createdAt: now,
         updatedAt: now,
         isDefault: false,
@@ -307,7 +315,7 @@ class EducationGovernanceDatabase {
     const whiteboard4Project: ProjectRecord = {
       id: 'proj-whiteboard-4',
       name: 'Indian Democracy and Government Hierarchy (v4)',
-      description: 'Complete constitutional, union, state, district, rural Panchayati Raj and urban municipal hierarchy from President to citizen',
+      description: '12 structured governance tiers: Sovereign Citizens, Union Parliament & Executive, Central Ministries (Home/MHA, Finance, Law, DoPT), State Legislature & Executive, State Departments, Complete Police Hierarchy (DGP to Constable), District Field Administration, Urban & Rural Local Governance, and Constitutional Oversight',
       createdAt: now,
       updatedAt: now,
       isDefault: false,
