@@ -662,7 +662,7 @@ export async function calculateElkLayout(
     const rfEdges: Edge[] = filteredEdges.map((e) => {
       const isCrossBoard =
         e.type === 'CONNECTS_TO_BOARD_2' || e.type === 'CONNECTS_TO_BOARD_3';
-      const isAdvisory = e.isAdvisory || e.type === 'ADVISES';
+      const isAdvisory = e.isAdvisory || e.type === 'ADVISES' || e.type === 'COORDINATES';
       const strokeColor = isCrossBoard ? '#d97706' : isAdvisory ? '#64748b' : '#0d9488';
 
       return {

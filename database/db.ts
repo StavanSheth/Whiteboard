@@ -217,7 +217,7 @@ class EducationGovernanceDatabase {
       reseeded = {
         id: 'proj-whiteboard-4',
         name: 'Indian Democracy and Government Hierarchy (v4)',
-        description: '12 structured governance tiers: Sovereign Citizens, Union Parliament & Executive, Central Ministries (Home/MHA, Finance, Law, DoPT), State Legislature & Executive, State Departments, Complete Police Hierarchy (DGP to Constable), District Field Administration, Urban & Rural Local Governance, and Constitutional Oversight',
+        description: 'President-to-Citizen tree hierarchy across 3 wide parallel tracks: (1) Home & 10-Rank Police Chain, (2) Civil Governance & Field Magistracy, and (3) Revenue, Finance & Constitutional Oversight, converging at the Sovereign Citizens',
         createdAt: now,
         updatedAt: now,
         isDefault: false,
@@ -315,7 +315,7 @@ class EducationGovernanceDatabase {
     const whiteboard4Project: ProjectRecord = {
       id: 'proj-whiteboard-4',
       name: 'Indian Democracy and Government Hierarchy (v4)',
-      description: '12 structured governance tiers: Sovereign Citizens, Union Parliament & Executive, Central Ministries (Home/MHA, Finance, Law, DoPT), State Legislature & Executive, State Departments, Complete Police Hierarchy (DGP to Constable), District Field Administration, Urban & Rural Local Governance, and Constitutional Oversight',
+      description: 'President-to-Citizen tree hierarchy across 3 wide parallel tracks: (1) Home & 10-Rank Police Chain, (2) Civil Governance & Field Magistracy, and (3) Revenue, Finance & Constitutional Oversight, converging at the Sovereign Citizens',
       createdAt: now,
       updatedAt: now,
       isDefault: false,
