@@ -48,7 +48,13 @@ export type FunctionalCategory =
   | 'accreditation-ranking'
   | 'funding-finance'
   | 'oversight-remedies'
-  | 'procedural-reform';
+  | 'procedural-reform'
+  | 'security-law-enforcement'
+  | 'judicial'
+  | 'citizen-participation'
+  | 'infrastructure'
+  | 'education'
+  | 'healthcare';
 
 // Domain-Specific Uncommon Metadata Fields
 export interface ExamDetails {
@@ -81,8 +87,15 @@ export interface GovernanceDetails {
   cadreOrService?: string;         // E.g. 'Indian Police Service (IPS)', 'Elected Representative', 'Indian Administrative Service (IAS)'
   electoralOrSelectionMethod?: string; // E.g. 'Electoral College of MPs and MLAs', 'UPSC CSE'
   tenure?: string;                 // E.g. '5 years', 'Up to age 60'
+  tenureOrTerm?: string;           // E.g. 'Fixed 2 years', 'Pleasure of President'
   geographicalJurisdiction?: string; // E.g. 'Pan-India', 'Revenue District'
   reportingTo?: string;            // E.g. 'The Constitution of India', 'Chief Secretary'
+  reportsTo?: string;              // E.g. 'Prime Minister of India'
+  subordinatesCountOrScope?: string;
+  discretionaryPowers?: string[];
+  checksAndBalances?: string[];
+  appealForum?: string;
+  historicalOrigin?: string;
 }
 
 export interface BankingJudicialDetails {
@@ -173,7 +186,22 @@ export type RelationshipType =
   | 'RECOGNISES'                   // UGC / AIU -> Institutional Degree Recognition
   | 'PROGRESSES_TO'                // Undergraduate Degree -> Master's / Postgraduate Entrance
   | 'CONNECTS_TO_BOARD_2'          // Authority -> Institution/Qualification Profile
-  | 'CONNECTS_TO_BOARD_3';         // Authority -> Exam Lifecycle/Career Progression
+  | 'CONNECTS_TO_BOARD_3'          // Authority -> Exam Lifecycle/Career Progression
+  // Democratic Governance Hierarchy (Whiteboard 4)
+  | 'ELECTS'                       // Citizens / Electorate -> Representatives
+  | 'APPOINTS'                     // President / Governor -> Constitutional Officials
+  | 'COMMISSIONS'                  // President -> Prime Minister / Armed Forces
+  | 'DIRECTS'                      // Prime Minister / Minister -> Department Secretary
+  | 'COMMANDS'                     // Superior Rank -> Subordinate Officers in Linear Command
+  | 'HEADS'                        // Minister / Speaker / CJI -> Department or House
+  | 'DELEGATES'                    // Cabinet Minister -> Minister of State
+  | 'SUPERVISES'                   // Secretary -> Joint Secretary / Agency
+  | 'PRESIDES'                     // Speaker / Chairman -> Members of Parliament
+  | 'FORMS'                        // Members -> Standing Committees
+  | 'ADMINISTERS'                  // Commissioner -> DM -> SDM -> Tehsildar
+  | 'REGULATES'                    // Ministry -> Statutory Regulators
+  | 'CONTAINS'                     // Hub -> Member Authorities
+  | 'FOUNDS';                      // Base -> Foundational Pillars
 
 export interface RelationshipEdgeData {
   id: string;                      // Stable ID (e.g., 'REL-001')

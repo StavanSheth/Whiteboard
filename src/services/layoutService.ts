@@ -223,10 +223,15 @@ export interface LayoutOptions {
 }
 
 /**
- * Dedicated Column-Branch Tree Layout for Whiteboard 4 (Indian Democracy & Government Hierarchy).
- * Organizes nodes into 6 parallel descending columns (Parliament, Ministries, State Legislature,
- * 10-Rank Police Command, District Magistracy, and Local Governance) with Apex at the top center
- * and Sovereign Citizens at the bottom center, separated by clean 260px aisles.
+ * Dedicated Multi-Tier Cluster Layout for Whiteboard 4 (Indian Democracy & Government Hierarchy).
+ * Organizes 23 modular Government Body sections across 7 horizontal tiers with zero bounding-box overlaps:
+ * Tier 1: Apex Constitutional Executive (President & Vice-President)
+ * Tier 2: Union Parliament & Higher Judiciary / Constitutional Commissions (4 parallel columns)
+ * Tier 3: Prime Minister's Office & Cabinet Secretariat
+ * Tier 4: 10 Central Ministries in a 5-Column Balanced Grid (2 ministries per column)
+ * Tier 5: State Executive & State Legislature (2 columns)
+ * Tier 6: Field Administration, Police (10 ranks), District Magistracy & Local Bodies (4 parallel columns)
+ * Tier 7: Sovereign Democratic Base (Citizens & Village Gram Sabha)
  */
 function layoutWhiteboard4Columnar(
   nodes: EducationNode[],
@@ -236,10 +241,10 @@ function layoutWhiteboard4Columnar(
   const isFull = options.nodeViewMode === 'full';
   const cardW = options.nodeWidth || (isFull ? 340 : 280);
   const hubW = Math.round(cardW * 1.15);
-  const dualColW = cardW * 2 + 40;
-  const singleColW = cardW;
-  const aisle = 260;
-  const vGap = options.vSpacing ?? (isFull ? 50 : 35);
+  const colWidth = hubW;
+  const aisle = 120;
+  const vGap = options.vSpacing ?? (isFull ? 45 : 35);
+  const tierGap = 90;
   const fontScale = (options.fontSize ?? 11) / 11;
   const lineScale = (options.lineHeight ?? 1.35) / 1.35;
   const paraSpacing = options.paraSpacing ?? 6;
@@ -249,131 +254,309 @@ function layoutWhiteboard4Columnar(
   nodes.forEach((n) => nodeMap.set(n.id, n));
   const positionMap = new Map<string, { x: number; y: number }>();
 
-  // Helper to layout a vertical track of nodes with dynamic heights
-  function layoutTrack(nodeIds: string[], startX: number, startY: number): number {
+  // Function to calculate exact height of any node
+  const getNodeHeight = (node: EducationNode, isHub = false): number => {
+    return estimateNodeHeight(
+      node,
+      isFull,
+      fontScale,
+      lineScale,
+      paraSpacing,
+      isHub ? hubW : cardW,
+      0,
+      cardHeightScale
+    );
+  };
+
+  // Helper to layout a section track vertically (Hub first, then member cards)
+  function layoutSectionTrack(
+    hubId: string,
+    memberIds: string[],
+    startX: number,
+    startY: number
+  ): number {
     let curY = startY;
-    for (const id of nodeIds) {
-      const node = nodeMap.get(id);
-      if (!node) continue;
-      positionMap.set(id, { x: startX, y: curY });
-      const h = estimateNodeHeight(
-        node,
-        isFull,
-        fontScale,
-        lineScale,
-        paraSpacing,
-        cardW,
-        0,
-        cardHeightScale
-      );
-      curY += h + vGap;
+    if (nodeMap.has(hubId)) {
+      const hubNode = nodeMap.get(hubId)!;
+      positionMap.set(hubId, { x: startX, y: curY });
+      curY += getNodeHeight(hubNode, true) + vGap;
+    }
+    for (const mid of memberIds) {
+      if (nodeMap.has(mid)) {
+        const memberNode = nodeMap.get(mid)!;
+        positionMap.set(mid, { x: startX, y: curY });
+        curY += getNodeHeight(memberNode, false) + vGap;
+      }
     }
     return curY;
   }
 
-  // Column X Origins (Left to Right across 6 columns)
-  const col1X = 100;
-  const col2X = col1X + dualColW + aisle;
-  const col3X = col2X + dualColW + aisle;
-  const col4X = col3X + dualColW + aisle;
-  const col5X = col4X + singleColW + aisle;
-  const col6X = col5X + singleColW + aisle;
+  // Handle Focused Single Section View
+  if (options.focusSectionId) {
+    const sectionNodes = nodes.filter(
+      (n) => n.id === options.focusSectionId || n.sectionId === options.focusSectionId
+    );
+    const hubNode = sectionNodes.find((n) => n.type === 'sectionHub');
+    const memberNodes = sectionNodes.filter((n) => n.type !== 'sectionHub');
 
-  const totalBoardW = col6X + dualColW - col1X;
-  const boardCenterX = col1X + totalBoardW / 2;
+    let curY = 60;
+    if (hubNode) {
+      positionMap.set(hubNode.id, { x: 100, y: curY });
+      curY += getNodeHeight(hubNode, true) + vGap;
+    }
 
-  // 1. APEX CONSTITUTIONAL AUTHORITY (Top Center)
-  if (nodeMap.has('HUB-DEM-APEX')) {
-    positionMap.set('HUB-DEM-APEX', { x: Math.round(boardCenterX - hubW / 2), y: 40 });
+    if (memberNodes.length <= 4) {
+      for (const m of memberNodes) {
+        positionMap.set(m.id, { x: 100, y: curY });
+        curY += getNodeHeight(m, false) + vGap;
+      }
+    } else {
+      const mid = Math.ceil(memberNodes.length / 2);
+      const leftCol = memberNodes.slice(0, mid);
+      const rightCol = memberNodes.slice(mid);
+
+      let leftY = curY;
+      for (const m of leftCol) {
+        positionMap.set(m.id, { x: 40, y: leftY });
+        leftY += getNodeHeight(m, false) + vGap;
+      }
+
+      let rightY = curY;
+      for (const m of rightCol) {
+        positionMap.set(m.id, { x: 40 + cardW + 60, y: rightY });
+        rightY += getNodeHeight(m, false) + vGap;
+      }
+    }
+
+    const rfNodes: Node[] = nodes.map((n) => {
+      const pos = positionMap.get(n.id) || n.position || { x: 0, y: 0 };
+      return {
+        id: n.id,
+        type: n.type === 'sectionHub' ? 'sectionNode' : 'authorityNode',
+        position: { ...pos },
+        data: { ...n }
+      };
+    });
+
+    const rfEdges: Edge[] = edges.map((e) => ({
+      id: e.id,
+      source: e.sourceNodeId,
+      target: e.targetNodeId,
+      type: 'relationshipEdge',
+      data: { ...e },
+      markerEnd: { type: MarkerType.ArrowClosed, width: 14, height: 14, color: '#0d9488' },
+      style: { stroke: '#0d9488', strokeWidth: 2 }
+    }));
+
+    return { nodes: rfNodes, edges: rfEdges };
   }
+
+  // Full Master Canvas Layout across 5 horizontal columns
+  const col0X = 100;
+  const col1X = col0X + colWidth + aisle;
+  const col2X = col1X + colWidth + aisle;
+  const col3X = col2X + colWidth + aisle;
+  const col4X = col3X + colWidth + aisle;
+  const totalBoardW = col4X + colWidth - col0X;
+  const boardCenterX = col0X + totalBoardW / 2;
+
+  // 1. TIER 1: APEX CONSTITUTIONAL AUTHORITY (SEC-DEM-01 - Top Center)
+  let curTierY = 60;
+  if (nodeMap.has('HUB-DEM-APEX')) {
+    const hubNode = nodeMap.get('HUB-DEM-APEX')!;
+    positionMap.set('HUB-DEM-APEX', { x: Math.round(boardCenterX - hubW / 2), y: curTierY });
+    curTierY += getNodeHeight(hubNode, true) + vGap;
+  }
+  let presH = 260;
+  let vpH = 260;
   if (nodeMap.has('DEM-PRESIDENT')) {
-    positionMap.set('DEM-PRESIDENT', { x: Math.round(boardCenterX - cardW - 20), y: 160 });
+    presH = getNodeHeight(nodeMap.get('DEM-PRESIDENT')!, false);
+    positionMap.set('DEM-PRESIDENT', { x: Math.round(boardCenterX - cardW - 20), y: curTierY });
   }
   if (nodeMap.has('DEM-VICE-PRESIDENT')) {
-    positionMap.set('DEM-VICE-PRESIDENT', { x: Math.round(boardCenterX + 20), y: 160 });
+    vpH = getNodeHeight(nodeMap.get('DEM-VICE-PRESIDENT')!, false);
+    positionMap.set('DEM-VICE-PRESIDENT', { x: Math.round(boardCenterX + 20), y: curTierY });
   }
+  curTierY += Math.max(presH, vpH) + tierGap;
 
-  const COLUMNS_START_Y = 400;
-  let maxBottomY = COLUMNS_START_Y;
+  // 2. TIER 2: UNION PARLIAMENT & JUDICIARY / COMMISSIONS (4 Columns)
+  const t2Y = curTierY;
+  const t2b1 = layoutSectionTrack('HUB-DEM-RAJYA-SABHA', ['DEM-RS-CHAIRMAN', 'DEM-MP-RAJYA-SABHA'], col0X, t2Y);
+  const t2b2 = layoutSectionTrack('HUB-DEM-LOK-SABHA', ['DEM-LS-SPEAKER', 'DEM-MP-LOK-SABHA', 'DEM-PARL-COMMITTEES'], col1X, t2Y);
+  const t2b3 = layoutSectionTrack('HUB-DEM-JUDICIARY', ['DEM-JUDICIARY-SC', 'DEM-JUDICIARY-HC', 'DEM-JUDICIARY-DISTRICT'], col3X, t2Y);
+  const t2b4 = layoutSectionTrack('HUB-DEM-COMMISSIONS', ['DEM-ECI', 'DEM-CAG-INDIA', 'DEM-UPSC', 'DEM-CVC-CBI', 'DEM-SPSC'], col4X, t2Y);
+  curTierY = Math.max(t2b1, t2b2, t2b3, t2b4) + tierGap;
 
-  // 2. COLUMN 1: UNION PARLIAMENT (SEC-DEM-02)
-  if (nodeMap.has('HUB-DEM-PARLIAMENT')) {
-    positionMap.set('HUB-DEM-PARLIAMENT', {
-      x: Math.round(col1X + (dualColW - hubW) / 2),
-      y: COLUMNS_START_Y
-    });
+  // 3. TIER 3: PRIME MINISTER'S OFFICE & CABINET SECRETARIAT (SEC-DEM-04 - Center)
+  if (nodeMap.has('HUB-DEM-PMO-CABINET')) {
+    const pmoHub = nodeMap.get('HUB-DEM-PMO-CABINET')!;
+    positionMap.set('HUB-DEM-PMO-CABINET', { x: Math.round(boardCenterX - hubW / 2), y: curTierY });
+    curTierY += getNodeHeight(pmoHub, true) + vGap;
   }
-  const col1TrackAY = layoutTrack(['DEM-LS-SPEAKER', 'DEM-MP-LOK-SABHA'], col1X, COLUMNS_START_Y + 110);
-  const col1TrackBY = layoutTrack(['DEM-RS-CHAIRMAN', 'DEM-MP-RAJYA-SABHA'], col1X + cardW + 40, COLUMNS_START_Y + 110);
-  maxBottomY = Math.max(maxBottomY, col1TrackAY, col1TrackBY);
-
-  // 3. COLUMN 2: CENTRAL MINISTRIES SUITE (SEC-DEM-03)
-  if (nodeMap.has('HUB-DEM-MINISTRIES')) {
-    positionMap.set('HUB-DEM-MINISTRIES', {
-      x: Math.round(col2X + (dualColW - hubW) / 2),
-      y: COLUMNS_START_Y
-    });
-  }
-  let col2HeaderBottom = COLUMNS_START_Y + 110;
+  let pmH = 260;
+  let cabH = 260;
   if (nodeMap.has('DEM-PM')) {
-    positionMap.set('DEM-PM', { x: col2X, y: COLUMNS_START_Y + 110 });
-    const pmH = estimateNodeHeight(nodeMap.get('DEM-PM')!, isFull, fontScale, lineScale, paraSpacing, cardW, 0, cardHeightScale);
-    col2HeaderBottom = Math.max(col2HeaderBottom, COLUMNS_START_Y + 110 + pmH + vGap);
+    pmH = getNodeHeight(nodeMap.get('DEM-PM')!, false);
+    positionMap.set('DEM-PM', { x: Math.round(boardCenterX - cardW - 20), y: curTierY });
   }
   if (nodeMap.has('DEM-CABINET-SEC')) {
-    positionMap.set('DEM-CABINET-SEC', { x: col2X + cardW + 40, y: COLUMNS_START_Y + 110 });
-    const cabH = estimateNodeHeight(nodeMap.get('DEM-CABINET-SEC')!, isFull, fontScale, lineScale, paraSpacing, cardW, 0, cardHeightScale);
-    col2HeaderBottom = Math.max(col2HeaderBottom, COLUMNS_START_Y + 110 + cabH + vGap);
+    cabH = getNodeHeight(nodeMap.get('DEM-CABINET-SEC')!, false);
+    positionMap.set('DEM-CABINET-SEC', { x: Math.round(boardCenterX + 20), y: curTierY });
   }
+  curTierY += Math.max(pmH, cabH) + vGap;
+  if (nodeMap.has('DEM-DOPT-SEC')) {
+    const doptH = getNodeHeight(nodeMap.get('DEM-DOPT-SEC')!, false);
+    positionMap.set('DEM-DOPT-SEC', { x: Math.round(boardCenterX - cardW / 2), y: curTierY });
+    curTierY += doptH;
+  }
+  curTierY += tierGap;
 
-  const col2TrackAY = layoutTrack(
-    ['DEM-MHA-MINISTER', 'DEM-CAPF-HEADS', 'DEM-MOF-MINISTER', 'DEM-CBDT-IRS-REVENUE'],
+  // 4. TIER 4: 10 CENTRAL MINISTRIES (SEC-DEM-05 to SEC-DEM-14) in 5 Columns x 2 Rows
+  const t4Y = curTierY;
+  // Col 0: Defence & Armed Forces -> Home Affairs & CAPFs
+  let c0Y = layoutSectionTrack(
+    'HUB-DEM-DEFENCE',
+    [
+      'DEM-DEF-MINISTER',
+      'DEM-DEF-MOS',
+      'DEM-DEF-SECRETARY',
+      'DEM-ARMED-FORCES-CDS',
+      'DEM-DEF-DRDO-CHAIRMAN',
+      'DEM-ARMY-HEADS',
+      'DEM-NAVY-AIRFORCE-HEADS'
+    ],
+    col0X,
+    t4Y
+  );
+  c0Y = layoutSectionTrack(
+    'HUB-DEM-HOME-AFFAIRS',
+    [
+      'DEM-HOME-MINISTER',
+      'DEM-HOME-MOS',
+      'DEM-HOME-SECRETARY',
+      'DEM-HOME-SPL-SEC-IS',
+      'DEM-CAPF-HEADS'
+    ],
+    col0X,
+    c0Y + 40
+  );
+
+  // Col 1: External Affairs -> Finance & Revenue
+  let c1Y = layoutSectionTrack(
+    'HUB-DEM-EXTERNAL-AFFAIRS',
+    [
+      'DEM-MEA-MINISTER',
+      'DEM-MEA-MOS',
+      'DEM-MEA-FOREIGN-SEC',
+      'DEM-MEA-SECRETARIES',
+      'DEM-MEA-PASSPORT-CPV'
+    ],
+    col1X,
+    t4Y
+  );
+  c1Y = layoutSectionTrack(
+    'HUB-DEM-FINANCE',
+    [
+      'DEM-MOF-MINISTER',
+      'DEM-MOF-MOS',
+      'DEM-MOF-FINANCE-SEC',
+      'DEM-MOF-REVENUE-SEC',
+      'DEM-MOF-CEA',
+      'DEM-CBDT-IRS-REVENUE',
+      'DEM-COMMERCE-MINISTER'
+    ],
+    col1X,
+    c1Y + 40
+  );
+
+  // Col 2: Railways -> Education
+  let c2Y = layoutSectionTrack(
+    'HUB-DEM-RAILWAYS',
+    [
+      'DEM-RLY-MINISTER',
+      'DEM-RLY-MOS',
+      'DEM-RLY-CRB-CEO',
+      'DEM-RLY-BOARD-MEMBERS'
+    ],
     col2X,
-    col2HeaderBottom
+    t4Y
   );
-  const col2TrackBY = layoutTrack(
-    ['DEM-MOLJ-MINISTER', 'DEM-AG-INDIA', 'DEM-DOPT-SEC', 'DEM-UPSC', 'DEM-SPSC', 'DEM-ECI'],
-    col2X + cardW + 40,
-    col2HeaderBottom
+  c2Y = layoutSectionTrack(
+    'HUB-DEM-EDUCATION',
+    [
+      'DEM-EDU-MINISTER',
+      'DEM-EDU-MOS',
+      'DEM-EDU-SEC-HIGHER',
+      'DEM-EDU-SEC-SCHOOL'
+    ],
+    col2X,
+    c2Y + 40
   );
-  maxBottomY = Math.max(maxBottomY, col2TrackAY, col2TrackBY);
 
-  // 4. COLUMN 3: STATE LEGISLATURE & GOVERNMENT (SEC-DEM-05)
-  if (nodeMap.has('HUB-DEM-VIDHAN-SABHA')) {
-    positionMap.set('HUB-DEM-VIDHAN-SABHA', {
-      x: Math.round(col3X + (dualColW - hubW) / 2),
-      y: COLUMNS_START_Y
-    });
-  }
-  let col3HeaderBottom = COLUMNS_START_Y + 110;
-  if (nodeMap.has('DEM-GOVERNOR')) {
-    positionMap.set('DEM-GOVERNOR', { x: col3X, y: COLUMNS_START_Y + 110 });
-    const govH = estimateNodeHeight(nodeMap.get('DEM-GOVERNOR')!, isFull, fontScale, lineScale, paraSpacing, cardW, 0, cardHeightScale);
-    col3HeaderBottom = Math.max(col3HeaderBottom, COLUMNS_START_Y + 110 + govH + vGap);
-  }
-  if (nodeMap.has('DEM-CM')) {
-    positionMap.set('DEM-CM', { x: col3X + cardW + 40, y: COLUMNS_START_Y + 110 });
-    const cmH = estimateNodeHeight(nodeMap.get('DEM-CM')!, isFull, fontScale, lineScale, paraSpacing, cardW, 0, cardHeightScale);
-    col3HeaderBottom = Math.max(col3HeaderBottom, COLUMNS_START_Y + 110 + cmH + vGap);
-  }
-  if (nodeMap.has('DEM-CS-STATE')) {
-    positionMap.set('DEM-CS-STATE', { x: Math.round(col3X + (dualColW - cardW) / 2), y: col3HeaderBottom });
-    const csH = estimateNodeHeight(nodeMap.get('DEM-CS-STATE')!, isFull, fontScale, lineScale, paraSpacing, cardW, 0, cardHeightScale);
-    col3HeaderBottom += csH + vGap;
-  }
+  // Col 3: Health -> Agriculture, Rural Dev & Food
+  let c3Y = layoutSectionTrack(
+    'HUB-DEM-HEALTH',
+    [
+      'DEM-HLTH-MINISTER',
+      'DEM-HLTH-MOS',
+      'DEM-HLTH-SECRETARY',
+      'DEM-HLTH-DGHS',
+      'DEM-HLTH-NHA-NMC'
+    ],
+    col3X,
+    t4Y
+  );
+  c3Y = layoutSectionTrack(
+    'HUB-DEM-AGRI-RURAL',
+    [
+      'DEM-AGRI-MINISTER',
+      'DEM-AGRI-MOS',
+      'DEM-AGRI-SEC-AGRI',
+      'DEM-AGRI-SEC-RURAL',
+      'DEM-AGRI-SEC-FOOD'
+    ],
+    col3X,
+    c3Y + 40
+  );
 
-  const col3TrackAY = layoutTrack(['DEM-MLA'], col3X, col3HeaderBottom);
-  const col3TrackBY = layoutTrack(['DEM-MLC'], col3X + cardW + 40, col3HeaderBottom);
-  maxBottomY = Math.max(maxBottomY, col3TrackAY, col3TrackBY);
+  // Col 4: Core Infrastructure -> Technology, Law & Science
+  let c4Y = layoutSectionTrack(
+    'HUB-DEM-INFRASTRUCTURE',
+    [
+      'DEM-INFRA-MINISTER',
+      'DEM-INFRA-MOS',
+      'DEM-INFRA-SEC-MORTH',
+      'DEM-INFRA-SEC-POWER',
+      'DEM-INFRA-SEC-MOEFCC'
+    ],
+    col4X,
+    t4Y
+  );
+  c4Y = layoutSectionTrack(
+    'HUB-DEM-TECH-LAW',
+    [
+      'DEM-TECH-MINISTER',
+      'DEM-TECH-MOS',
+      'DEM-TECH-SEC-MEITY',
+      'DEM-LAW-UNION-SEC',
+      'DEM-SPACE-ISRO-DAE'
+    ],
+    col4X,
+    c4Y + 40
+  );
 
-  // 5. COLUMN 4: 10-RANK STATE POLICE HIERARCHY (SEC-DEM-04)
-  if (nodeMap.has('HUB-DEM-POLICE')) {
-    positionMap.set('HUB-DEM-POLICE', {
-      x: Math.round(col4X + (singleColW - hubW) / 2),
-      y: COLUMNS_START_Y
-    });
-  }
-  const col4Y = layoutTrack(
+  curTierY = Math.max(c0Y, c1Y, c2Y, c3Y, c4Y) + tierGap;
+
+  // 5. TIER 5: STATE GOVERNMENT & STATE LEGISLATURE (SEC-DEM-17 & SEC-DEM-18)
+  const t5Y = curTierY;
+  const s1Y = layoutSectionTrack('HUB-DEM-STATE-EXECUTIVE', ['DEM-GOVERNOR', 'DEM-CM', 'DEM-CS-STATE'], col1X, t5Y);
+  const s2Y = layoutSectionTrack('HUB-DEM-STATE-LEGISLATURE', ['DEM-MLA', 'DEM-MLC'], col3X, t5Y);
+  curTierY = Math.max(s1Y, s2Y) + tierGap;
+
+  // 6. TIER 6: LAW ENFORCEMENT, DISTRICT MAGISTRACY & LOCAL GOVERNANCE (4 Columns)
+  const t6Y = curTierY;
+  const pY = layoutSectionTrack(
+    'HUB-DEM-POLICE',
     [
       'DEM-STATE-HOME-DEPT',
       'DEM-POL-DGP',
@@ -387,19 +570,11 @@ function layoutWhiteboard4Columnar(
       'DEM-POL-HC',
       'DEM-POL-CONSTABLE'
     ],
-    col4X,
-    COLUMNS_START_Y + 110
+    col0X,
+    t6Y
   );
-  maxBottomY = Math.max(maxBottomY, col4Y);
-
-  // 6. COLUMN 5: DISTRICT MAGISTRACY & REVENUE (SEC-DEM-06)
-  if (nodeMap.has('HUB-DEM-MAGISTRACY')) {
-    positionMap.set('HUB-DEM-MAGISTRACY', {
-      x: Math.round(col5X + (singleColW - hubW) / 2),
-      y: COLUMNS_START_Y
-    });
-  }
-  const col5Y = layoutTrack(
+  const dY = layoutSectionTrack(
+    'HUB-DEM-MAGISTRACY',
     [
       'DEM-DIV-COMMISSIONER',
       'DEM-DM-COLLECTOR',
@@ -407,68 +582,46 @@ function layoutWhiteboard4Columnar(
       'DEM-TEHSILDAR-MAGISTRATE',
       'DEM-TALATHI-PATWARI'
     ],
-    col5X,
-    COLUMNS_START_Y + 110
+    col1X,
+    t6Y
   );
-  maxBottomY = Math.max(maxBottomY, col5Y);
-
-  // 7. COLUMN 6: LOCAL GOVERNANCE (BMC SEC-DEM-07 & PANCHAYATI RAJ SEC-DEM-08)
-  if (nodeMap.has('HUB-DEM-BMC')) {
-    positionMap.set('HUB-DEM-BMC', { x: col6X, y: COLUMNS_START_Y });
-  }
-  if (nodeMap.has('HUB-DEM-PANCHAYAT')) {
-    positionMap.set('HUB-DEM-PANCHAYAT', { x: col6X + cardW + 40, y: COLUMNS_START_Y });
-  }
-
-  const col6TrackAY = layoutTrack(
+  const uY = layoutSectionTrack(
+    'HUB-DEM-URBAN-LOCAL',
     [
       'DEM-MUNICIPAL-COMMISSIONER',
       'DEM-MAYOR-COUNCIL',
       'DEM-ADDL-MUNICIPAL-COMMISSIONER',
       'DEM-WARD-CORPORATOR'
     ],
-    col6X,
-    COLUMNS_START_Y + 110
+    col3X,
+    t6Y
   );
-
-  const col6TrackBY = layoutTrack(
-    [
-      'DEM-ZP-CEO',
-      'DEM-BDO-BLOCK',
-      'DEM-SARPANCH',
-      'DEM-GRAM-SEVAK',
-      'DEM-WARD-PANCH'
-    ],
-    col6X + cardW + 40,
-    COLUMNS_START_Y + 110
+  const rY = layoutSectionTrack(
+    'HUB-DEM-RURAL-PANCHAYAT',
+    ['DEM-ZP-CEO', 'DEM-BDO-BLOCK', 'DEM-SARPANCH', 'DEM-GRAM-SEVAK', 'DEM-WARD-PANCH'],
+    col4X,
+    t6Y
   );
-  maxBottomY = Math.max(maxBottomY, col6TrackAY, col6TrackBY);
+  curTierY = Math.max(pY, dY, uY, rY) + tierGap;
 
-  // 8. SOVEREIGN DEMOCRATIC BASE (SEC-DEM-09 - Bottom Center)
-  const baseY = maxBottomY + 180;
-  if (nodeMap.has('HUB-DEM-CITIZEN')) {
-    positionMap.set('HUB-DEM-CITIZEN', {
-      x: Math.round(boardCenterX - hubW / 2),
-      y: baseY
-    });
+  // 7. TIER 7: SOVEREIGN DEMOCRATIC BASE (SEC-DEM-23 - Bottom Center)
+  if (nodeMap.has('HUB-DEM-CITIZENS')) {
+    const citHub = nodeMap.get('HUB-DEM-CITIZENS')!;
+    positionMap.set('HUB-DEM-CITIZENS', { x: Math.round(boardCenterX - hubW / 2), y: curTierY });
+    curTierY += getNodeHeight(citHub, true) + vGap;
   }
   if (nodeMap.has('DEM-CITIZENS')) {
-    positionMap.set('DEM-CITIZENS', {
-      x: Math.round(boardCenterX - cardW - 20),
-      y: baseY + 110
-    });
+    positionMap.set('DEM-CITIZENS', { x: Math.round(boardCenterX - cardW - 20), y: curTierY });
   }
   if (nodeMap.has('DEM-GRAM-SABHA')) {
-    positionMap.set('DEM-GRAM-SABHA', {
-      x: Math.round(boardCenterX + 20),
-      y: baseY + 110
-    });
+    positionMap.set('DEM-GRAM-SABHA', { x: Math.round(boardCenterX + 20), y: curTierY });
   }
 
-  // Fallback for any unmapped nodes in filtered list
+  // Safety fallback: any unmapped nodes placed cleanly below with distinct vertical offsets
   nodes.forEach((n) => {
     if (!positionMap.has(n.id)) {
-      positionMap.set(n.id, n.position || { x: col1X, y: COLUMNS_START_Y });
+      curTierY += 320;
+      positionMap.set(n.id, { x: col2X, y: curTierY });
     }
   });
 
@@ -487,9 +640,11 @@ function layoutWhiteboard4Columnar(
   const rfEdges: Edge[] = edges.map((e) => {
     const isAdvisory = e.isAdvisory || e.type === 'ADVISES' || e.type === 'COORDINATES';
     const isCitizenFeed =
-      e.targetNodeId === 'DEM-CITIZENS' ||
-      e.targetNodeId === 'DEM-GRAM-SABHA' ||
-      e.sourceNodeId === 'DEM-CITIZENS';
+      e.targetNodeId === 'HUB-DEM-LOK-SABHA' ||
+      e.targetNodeId === 'HUB-DEM-STATE-LEGISLATURE' ||
+      e.targetNodeId === 'HUB-DEM-URBAN-LOCAL' ||
+      e.targetNodeId === 'HUB-DEM-RURAL-PANCHAYAT' ||
+      e.sourceNodeId === 'HUB-DEM-CITIZENS';
     const strokeColor = isCitizenFeed ? '#f59e0b' : isAdvisory ? '#64748b' : '#0d9488';
 
     return {
