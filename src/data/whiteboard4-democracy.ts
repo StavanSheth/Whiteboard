@@ -4,79 +4,126 @@ export const SECTION_METAS_V4: SectionMeta[] = [
   {
     id: 'SEC-DEM-01',
     number: '01',
-    title: 'Apex Constitutional Authority (President & Union Executive)',
+    title: 'Apex Constitutional Authority (President & Vice-President)',
     subtitle: 'Head of State, Supreme Commander of Armed Forces & Constitutional Grundnorm',
     summary: 'The constitutional apex of the Republic of India under Articles 52 and 53. Executive power of the Union is formally vested in the President, exercised on the aid and advice of the Council of Ministers under Article 74.',
     iconName: 'Crown',
     expectedSubsections: ['President of India', 'Vice-President of India'],
-    expectedAuthorities: ['DEM-PRESIDENT', 'DEM-VICE-PRESIDENT']
+    expectedAuthorities: ['HUB-DEM-APEX', 'DEM-PRESIDENT', 'DEM-VICE-PRESIDENT']
   },
   {
     id: 'SEC-DEM-02',
     number: '02',
-    title: 'Track 1: Home Affairs, Public Order & Police Chain (Apex to Constable)',
-    subtitle: 'Union Home Ministry, Central Armed Police Forces (CAPFs) & 10-Rank State Police Command',
-    summary: 'The complete law enforcement hierarchy under Schedule 7 (Union List Entry 2A & State List Entry 2). Traces from MHA and CAPFs to State Home Department and the 10-tier linear police command from DGP down to the Police Constable on the beat.',
-    iconName: 'ShieldAlert',
-    expectedSubsections: ['Union MHA & CAPFs', 'State Home & Police Headquarters', 'District & Sub-Divisional Police', 'Police Station & Beat Constabulary'],
-    expectedAuthorities: ['DEM-MHA-MINISTER', 'DEM-MHA-SECRETARY', 'DEM-CAPF-HEADS', 'DEM-STATE-HOME-DEPT', 'DEM-POL-DGP', 'DEM-POL-ADG', 'DEM-POL-IG', 'DEM-POL-DIG', 'DEM-POL-SP', 'DEM-POL-ASP-DSP', 'DEM-POL-SHO', 'DEM-POL-SI', 'DEM-POL-HC', 'DEM-POL-CONSTABLE']
+    title: 'Union Parliament Zone (Lok Sabha & Rajya Sabha)',
+    subtitle: 'Supreme Legislative Authority of the Union (Articles 79-122)',
+    summary: 'Bicameral Parliament consisting of the President, the House of the People (Lok Sabha - 543 directly elected MPs), and the Council of States (Rajya Sabha - 245 representatives of States & UTs).',
+    iconName: 'Landmark',
+    expectedSubsections: ['Lok Sabha (House of the People)', 'Rajya Sabha (Council of States)'],
+    expectedAuthorities: ['HUB-DEM-PARLIAMENT', 'DEM-LS-SPEAKER', 'DEM-MP-LOK-SABHA', 'DEM-RS-CHAIRMAN', 'DEM-MP-RAJYA-SABHA']
   },
   {
     id: 'SEC-DEM-03',
     number: '03',
-    title: 'Track 2A: Union Parliamentary & Civil Governance Track',
-    subtitle: 'Prime Minister, Union Cabinet, Cabinet Secretariat & Parliament of India',
-    summary: 'The core democratic and civil executive branch at the Union level. The Prime Minister serves as Head of Government and elected Lok Sabha MP, leading the Council of Ministers and aided by the Cabinet Secretary (senior-most civil servant).',
-    iconName: 'Landmark',
-    expectedSubsections: ['Prime Minister & Union Cabinet', 'Cabinet Secretariat', 'Lok Sabha', 'Rajya Sabha'],
-    expectedAuthorities: ['DEM-PM', 'DEM-CABINET-SEC', 'DEM-LS-SPEAKER', 'DEM-MP-LOK-SABHA', 'DEM-RS-CHAIRMAN', 'DEM-MP-RAJYA-SABHA']
+    title: 'Central Ministries Suite (Home, Finance, Law & Personnel)',
+    subtitle: 'Union Cabinet, Strategic Ministries, Central Services & Oversight',
+    summary: 'The administrative heart of the Government of India headed by the Prime Minister and Cabinet Ministers, executed by Secretaries to the Government of India under Allocation of Business Rules 1961.',
+    iconName: 'Building',
+    expectedSubsections: ['Prime Minister & Cabinet Secretariat', 'Ministry of Home Affairs (MHA) & CAPFs', 'Ministry of Finance & Revenue (CBDT/IRS)', 'Ministry of Law and Justice & Attorney General', 'DoPT & Constitutional Commissions'],
+    expectedAuthorities: ['HUB-DEM-MINISTRIES', 'DEM-PM', 'DEM-CABINET-SEC', 'DEM-DOPT-SEC', 'DEM-MHA-MINISTER', 'DEM-MHA-SECRETARY', 'DEM-CAPF-HEADS', 'DEM-MOF-MINISTER', 'DEM-CBDT-IRS-REVENUE', 'DEM-MOLJ-MINISTER', 'DEM-AG-INDIA', 'DEM-ECI', 'DEM-UPSC', 'DEM-SPSC']
   },
   {
     id: 'SEC-DEM-04',
     number: '04',
-    title: 'Track 2B: State Executive & District Field Magistracy',
-    subtitle: 'Governor, Chief Minister, State Secretariat & Collectorate Field Revenue Administration',
-    summary: 'State-level executive governance and field territorial magistracy. Governor appoints the Chief Minister; the Chief Secretary leads the civil secretariat; and the District Magistrate / Collector commands revenue, developmental, and regulatory administration.',
-    iconName: 'Building2',
-    expectedSubsections: ['State Executive & Secretariat', 'Divisional Administration', 'District Collectorate & Sub-Divisions', 'Taluka Revenue Administration'],
-    expectedAuthorities: ['DEM-GOVERNOR', 'DEM-CM', 'DEM-CS-STATE', 'DEM-DIV-COMMISSIONER', 'DEM-DM-COLLECTOR', 'DEM-SDM-SUBDIV', 'DEM-TEHSILDAR-MAGISTRATE', 'DEM-TALATHI-PATWARI']
+    title: 'State Police Hierarchy Zone (10-Rank Linear Command: DGP to Constable)',
+    subtitle: 'Schedule 7, List II, Entry 2 — Complete Law Enforcement Chain of Command',
+    summary: 'Full 10-tier linear hierarchy of state police administration under Section 4 of the Police Act 1861, starting from the Director General of Police (DGP) down to the frontline Police Constable on the beat.',
+    iconName: 'ShieldAlert',
+    expectedSubsections: ['State Home Department', 'Apex Police Headquarters (DGP, ADGP)', 'Field Supervisory Ranks (IG, DIG, SP)', 'Sub-Divisional & Police Station Frontline (SDPO, SHO, SI, HC, Constable)'],
+    expectedAuthorities: ['HUB-DEM-POLICE', 'DEM-STATE-HOME-DEPT', 'DEM-POL-DGP', 'DEM-POL-ADG', 'DEM-POL-IG', 'DEM-POL-DIG', 'DEM-POL-SP', 'DEM-POL-ASP-DSP', 'DEM-POL-SHO', 'DEM-POL-SI', 'DEM-POL-HC', 'DEM-POL-CONSTABLE']
   },
   {
     id: 'SEC-DEM-05',
     number: '05',
-    title: 'Track 2C: Urban & Rural Local Self-Governance (Municipalities & Panchayati Raj)',
-    subtitle: '73rd & 74th Constitutional Amendments — Municipal Corporations, Zilla Parishad & Village Panchayats',
-    summary: 'Decentralized local governance. Urban tier headed by Municipal Commissioners & Mayors. Rural 3-tier Panchayati Raj headed by Zilla Parishad CEOs, Block Development Officers (BDOs), Sarpanches, Gram Sevaks, and Village Ward Panchs.',
-    iconName: 'MapPin',
-    expectedSubsections: ['Urban Municipal Corporation', 'Zilla Parishad (District Rural)', 'Panchayat Samiti (Block Rural)', 'Gram Panchayat & Village Ward'],
-    expectedAuthorities: ['DEM-MUNICIPAL-COMMISSIONER', 'DEM-MAYOR-COUNCIL', 'DEM-WARD-CORPORATOR', 'DEM-ZP-CEO', 'DEM-BDO-BLOCK', 'DEM-SARPANCH', 'DEM-GRAM-SEVAK', 'DEM-WARD-PANCH']
+    title: 'State Legislature Zone (Governor, Vidhan Sabha & Vidhan Parishad)',
+    subtitle: 'Articles 153-213 — State Constitutional Executive & Bicameral Legislature',
+    summary: 'State constitutional structure: Governor (Constitutional Head), Chief Minister & Cabinet (Executive Head), State Legislative Assembly (Vidhan Sabha - directly elected MLAs), and State Legislative Council (Vidhan Parishad - MLCs).',
+    iconName: 'Building2',
+    expectedSubsections: ['Governor & Chief Minister', 'Vidhan Sabha (Legislative Assembly)', 'Vidhan Parishad (Legislative Council)', 'State Chief Secretariat'],
+    expectedAuthorities: ['HUB-DEM-VIDHAN-SABHA', 'DEM-GOVERNOR', 'DEM-CM', 'DEM-CS-STATE', 'DEM-MLA', 'DEM-MLC']
   },
   {
     id: 'SEC-DEM-06',
     number: '06',
-    title: 'Track 3: Revenue, Finance, Legal & Constitutional Oversight',
-    subtitle: 'Finance Ministries, Revenue Services (CBDT/IRS), Law Ministry & Independent Commissions',
-    summary: 'Fiscal administration, statutory legal counsel, and independent constitutional oversight. Encompasses Ministry of Finance & CBDT/IRS, State Finance, Ministry of Law & Justice, Election Commission of India (ECI), UPSC, and State Public Service Commissions.',
-    iconName: 'Scale',
-    expectedSubsections: ['Union & State Finance / IRS', 'Law & Justice / Attorney General', 'Electoral Oversight (ECI)', 'Merit Recruitment Commissions (UPSC / State PSC)'],
-    expectedAuthorities: ['DEM-MOF-MINISTER', 'DEM-CBDT-IRS-REVENUE', 'DEM-STATE-FINANCE-DEPT', 'DEM-MOLJ-MINISTER', 'DEM-AG-INDIA', 'DEM-DOPT-SEC', 'DEM-ECI', 'DEM-UPSC', 'DEM-SPSC']
+    title: 'District Field Administration & Revenue Magistracy',
+    subtitle: 'Territorial Administration from Divisional Commissioner to Village Talathi',
+    summary: 'The administrative backbone of Indian field governance: Divisional Commissioner, District Magistrate & Collector (DM/DC), Sub-Divisional Magistrate (SDM), Tehsildar (Executive Magistrate), and Village Talathi / Patwari.',
+    iconName: 'MapPin',
+    expectedSubsections: ['Divisional Revenue Administration', 'District Collectorate & Magistracy', 'Sub-Division (Prant)', 'Taluka / Tehsil Administration', 'Village Land Records (Saza)'],
+    expectedAuthorities: ['HUB-DEM-MAGISTRACY', 'DEM-DIV-COMMISSIONER', 'DEM-DM-COLLECTOR', 'DEM-SDM-SUBDIV', 'DEM-TEHSILDAR-MAGISTRATE', 'DEM-TALATHI-PATWARI']
   },
   {
     id: 'SEC-DEM-07',
     number: '07',
+    title: 'Urban Municipal Corporation Zone — BMC Model',
+    subtitle: '74th Constitutional Amendment (Article 243W) & Mumbai Municipal Corporation Act',
+    summary: 'Urban municipal self-governance exemplified by the Brihanmumbai Municipal Corporation (BMC): Municipal Commissioner (IAS Principal Executive), Mayor & Council (First Citizen), Additional Municipal Commissioners, and 227 Ward Corporators.',
+    iconName: 'Building',
+    expectedSubsections: ['Municipal Commissionerate (IAS)', 'Mayoral Political Executive', 'Additional Municipal Commissioners', 'Elected Ward Corporators & Ward Committees'],
+    expectedAuthorities: ['HUB-DEM-BMC', 'DEM-MUNICIPAL-COMMISSIONER', 'DEM-MAYOR-COUNCIL', 'DEM-ADDL-MUNICIPAL-COMMISSIONER', 'DEM-WARD-CORPORATOR']
+  },
+  {
+    id: 'SEC-DEM-08',
+    number: '08',
+    title: 'Rural Panchayati Raj Zone (Zilla Parishad to Gram Panchayat)',
+    subtitle: '73rd Constitutional Amendment (Articles 243-243O) & 3-Tier Rural Governance',
+    summary: 'Decentralized rural self-government: Zilla Parishad CEO (IAS) & District President (District Tier) &rarr; Block Development Officer (BDO) & Panchayat Samiti (Block Tier) &rarr; Sarpanch, Gram Sevak & Ward Panch (Village Tier).',
+    iconName: 'Trees',
+    expectedSubsections: ['District Zilla Parishad', 'Block Panchayat Samiti', 'Village Gram Panchayat'],
+    expectedAuthorities: ['HUB-DEM-PANCHAYAT', 'DEM-ZP-CEO', 'DEM-BDO-BLOCK', 'DEM-SARPANCH', 'DEM-GRAM-SEVAK', 'DEM-WARD-PANCH']
+  },
+  {
+    id: 'SEC-DEM-09',
+    number: '09',
     title: 'Sovereign Democratic Base: Citizens & Gram Sabha',
     subtitle: 'We, The People of India — The Ultimate Sovereign Foundation (Articles 326 & 243A)',
-    summary: 'The ultimate source of democratic authority in the Indian Republic. Citizens elect representatives to Lok Sabha, Vidhan Sabha, Municipal Corporations, and Gram Panchayats, and directly deliberate in the Sovereign Village Gram Sabha.',
+    summary: 'The ultimate source of democratic authority in the Indian Republic. Citizens elect representatives across Parliament, Vidhan Sabha, BMC/Municipalities, and Panchayats, and directly deliberate in the Sovereign Village Gram Sabha.',
     iconName: 'Users',
     expectedSubsections: ['Universal Adult Franchise Electors', 'Sovereign Village Assembly (Gram Sabha)'],
-    expectedAuthorities: ['DEM-CITIZENS', 'DEM-GRAM-SABHA']
+    expectedAuthorities: ['HUB-DEM-CITIZEN', 'DEM-CITIZENS', 'DEM-GRAM-SABHA']
   }
 ];
 
 export const NODES_V4: EducationNode[] = [
   // ==========================================
-  // APEX CONSTITUTIONAL AUTHORITY (Top Center)
+  // ZONE 1: APEX CONSTITUTIONAL AUTHORITY (Top Center)
+  // X: 2150 - 2950, Y: 30 - 320
   // ==========================================
+  {
+    id: 'HUB-DEM-APEX',
+    type: 'sectionHub',
+    title: 'SECTION 01: APEX CONSTITUTIONAL AUTHORITY',
+    abbreviation: 'HUB-APEX',
+    sectionId: 'SEC-DEM-01',
+    sectionNumber: '01',
+    level: 'constitutional',
+    category: 'legislation',
+    position: { x: 2350, y: 30 },
+    summary: 'Supreme Constitutional Apex of the Republic of India under Articles 52-78. Formally vests all union executive power in the President of India, exercised on the aid and advice of the Council of Ministers.',
+    mandate: [
+      'Preserve, protect and defend the Constitution and the law of India (Article 60)',
+      'Act as the supreme formal head of the sovereign Republic and Supreme Commander of Armed Forces'
+    ],
+    powers: [
+      'Appoints Prime Minister, Cabinet Ministers, Supreme Court & High Court judges, Governors, and constitutional officers',
+      'Exercises executive authority of the Union on binding aid and advice of the Union Council of Ministers (Article 74)'
+    ],
+    limitations: [
+      'Constitutional executive acts are strictly governed by ministerial advice under Article 74',
+      'Cannot exercise personal veto over sustained parliamentary legislation passed under reconsidered terms'
+    ],
+    sourceIds: ['SRC-V4-CONST'],
+    verificationStatus: 'verified'
+  },
   {
     id: 'DEM-PRESIDENT',
     type: 'constitutional',
@@ -86,7 +133,7 @@ export const NODES_V4: EducationNode[] = [
     sectionNumber: '01',
     level: 'constitutional',
     category: 'legislation',
-    position: { x: 2350, y: 50 },
+    position: { x: 2100, y: 130 },
     summary: 'The de jure Supreme Executive Head of the Republic of India and Supreme Commander of the Armed Forces (Articles 52 & 53). All union executive actions are taken in the President\'s name (Art 77). Acts on the binding aid and advice of the Union Council of Ministers headed by the Prime Minister (Art 74). Appoints the Prime Minister, Union Ministers, Governors, Chief Election Commissioner, UPSC Members, and Judges.',
     mandate: [
       'Article 52: There shall be a President of India.',
@@ -126,7 +173,7 @@ export const NODES_V4: EducationNode[] = [
     sectionNumber: '01',
     level: 'constitutional',
     category: 'legislation',
-    position: { x: 2950, y: 50 },
+    position: { x: 2750, y: 130 },
     summary: 'The second-highest constitutional office in India under Article 63. Functions as the Ex-Officio Chairman of the Council of States (Rajya Sabha) under Article 64, presiding over its legislative sessions and maintaining parliamentary decorum. Discharges presidential duties in case of a vacancy or absence.',
     mandate: [
       'Article 63: There shall be a Vice-President of India.',
@@ -156,126 +203,48 @@ export const NODES_V4: EducationNode[] = [
   },
 
   // =========================================================================
-  // TRACK 1: HOME AFFAIRS, PUBLIC ORDER & 10-RANK POLICE HIERARCHY (LEFT COLUMN)
-  // X Range: 100 to 1100
+  // ZONE 4: STATE POLICE HIERARCHY (DEDICATED LEFT COLUMN)
+  // X: 150 - 950, Y: 400 - 4300
   // =========================================================================
   {
-    id: 'DEM-MHA-MINISTER',
-    type: 'executive',
-    title: 'Union Home Minister (Ministry of Home Affairs - MHA)',
-    abbreviation: 'HOME-MINISTER',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
-    level: 'union',
+    id: 'HUB-DEM-POLICE',
+    type: 'sectionHub',
+    title: 'SECTION 04: STATE POLICE HIERARCHY (10-RANK LINEAR COMMAND)',
+    abbreviation: 'HUB-POLICE',
+    sectionId: 'SEC-DEM-04',
+    sectionNumber: '04',
+    level: 'state',
     category: 'executive-administration',
-    position: { x: 300, y: 380 },
-    summary: 'Senior Union Cabinet Minister overseeing internal security, border management, Centre-State relations, administration of Union Territories, and central intelligence and law enforcement agencies. Exercises constitutional authority over Central Armed Police Forces.',
+    position: { x: 300, y: 400 },
+    summary: 'Schedule 7, List II, Entry 2: Complete 10-tier linear hierarchy of state police administration under Section 4 of Police Act 1861, from DGP down to Constable.',
     mandate: [
-      'Government of India (Allocation of Business) Rules 1961: Internal Security & Union Police matters.',
-      'Article 355: Duty of the Union to protect every State against external aggression and internal disturbance.'
+      'Maintain public order, prevent and detect crime, and enforce criminal statutes across the State',
+      'Execute lawful warrants and orders issued by competent judicial authorities and District Magistrates'
     ],
     powers: [
-      'Formulates national internal security strategy and counter-terrorism policies.',
-      'Commands and deploys Central Armed Police Forces (CRPF, BSF, CISF, ITBP, SSB, NSG).',
-      'Controls intelligence agencies (Intelligence Bureau - IB) and anti-terror agencies (NIA).'
+      'Statutory powers of investigation, arrest, and search under the Code of Criminal Procedure / BNSS',
+      'Hierarchical discipline and command over all uniformed police personnel under the Police Act 1861'
     ],
     limitations: [
-      'Public order and police are State List subjects (Schedule 7, List II Entry 1 & 2); cannot supersede state police without constitutional emergency or state consent.'
+      'Subject to general superintendence and direction of District Magistrate for district peace maintenance under Section 4',
+      'Must strictly respect constitutional safeguards, fundamental rights, and statutory custody guidelines'
     ],
-    governanceDetails: {
-      positionName: 'Union Minister of Home Affairs (Cabinet Minister)',
-      cadreOrService: 'Elected Member of Parliament (Cabinet Rank)',
-      constitutionalArticle: 'Articles 74 & 75 of Constitution of India',
-      electoralOrSelectionMethod: 'Appointed by President on advice of Prime Minister from among MPs',
-      tenure: 'Pleasure of Prime Minister / Lok Sabha majority',
-      geographicalJurisdiction: 'Republic of India (National Internal Security)',
-      reportingTo: 'Prime Minister of India & Lok Sabha'
-    },
-    sourceIds: ['SRC-V4-BUSINESS-RULES'],
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'DEM-MHA-SECRETARY',
-    type: 'department',
-    title: 'Union Home Secretary (Administrative Head, Ministry of Home Affairs)',
-    abbreviation: 'HOME-SECRETARY',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
-    level: 'union',
-    category: 'executive-administration',
-    position: { x: 750, y: 380 },
-    summary: 'Senior-most civil servant in the Ministry of Home Affairs, traditionally an apex-scale IAS officer. Responsible for the administrative execution of national internal security directives, joint counter-terror operations, central police modernization, and cadre management of the AGMUT IPS/IAS cadres.',
-    mandate: [
-      'Cabinet Secretariat Allocation of Business Rules 1961: Administrative Secretary to GoI.',
-      'All India Services Act 1951: Cadre controlling authority for AGMUT cadre.'
-    ],
-    powers: [
-      'Directs the administrative operations of all MHA divisions (Internal Security, Border Management, Police).',
-      'Acts as Cadre Controlling Authority for the Indian Police Service (IPS) at the national level.',
-      'Issues statutory interception authorizations and federal operational orders under telecom and security acts.'
-    ],
-    limitations: [
-      'Civil servant bound by decisions of the Union Cabinet and the Home Minister.'
-    ],
-    governanceDetails: {
-      positionName: 'Union Home Secretary (Secretary to Government of India)',
-      cadreOrService: 'Indian Administrative Service (IAS) — Apex Scale (Pay Level 17)',
-      constitutionalArticle: 'Article 77(3) Rules & Article 311 of Constitution of India',
-      electoralOrSelectionMethod: 'Appointed by Appointments Committee of the Cabinet (ACC)',
-      tenure: 'Minimum 2-year fixed tenure by statute',
-      geographicalJurisdiction: 'Ministry of Home Affairs, New Delhi (National)',
-      reportingTo: 'Union Home Minister & Cabinet Secretary'
-    },
-    sourceIds: ['SRC-V4-AIS'],
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'DEM-CAPF-HEADS',
-    type: 'department',
-    title: 'Directors General — Central Armed Police Forces (CRPF, BSF, CISF, ITBP, SSB, NSG)',
-    abbreviation: 'CAPF-DG',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
-    level: 'union',
-    category: 'executive-administration',
-    position: { x: 750, y: 700 },
-    summary: 'Senior IPS officers serving in Apex Scale as Directors General of federal armed police formations. Responsible for national border security (BSF, ITBP, SSB), critical infrastructure protection (CISF), counter-insurgency & election security deployment (CRPF), and elite counter-terror intervention (NSG).',
-    mandate: [
-      'Central Reserve Police Force Act 1949, Border Security Force Act 1968, CISF Act 1968.',
-      'Entry 2A of List I (Union List): Deployment of armed forces of the Union in aid of civil power.'
-    ],
-    powers: [
-      'Operational and administrative command of over 1 million armed personnel across federal forces.',
-      'Deploy battalions in aid of civil power during elections, riots, and counter-terror operations on MHA requisition.'
-    ],
-    limitations: [
-      'When deployed in states in aid of civil power, operate in coordination with local Executive Magistrates and State Police.'
-    ],
-    governanceDetails: {
-      positionName: 'Director General (DG), Central Armed Police Force',
-      cadreOrService: 'Indian Police Service (IPS) — Apex Scale (Pay Level 17)',
-      constitutionalArticle: 'Entry 2A, List I (Union List), 7th Schedule',
-      electoralOrSelectionMethod: 'Empaneled by MHA and appointed by Appointments Committee of the Cabinet (ACC)',
-      tenure: 'Up to superannuation (Age 60)',
-      geographicalJurisdiction: 'National borders, central infrastructure, and operational deployment areas',
-      reportingTo: 'Union Home Secretary & Union Home Minister'
-    },
-    sourceIds: ['SRC-V4-BUSINESS-RULES'],
+    sourceIds: ['SRC-V4-POLICE-ACT'],
     verificationStatus: 'verified'
   },
   {
     id: 'DEM-STATE-HOME-DEPT',
     type: 'department',
-    title: 'State Home Department (Additional Chief Secretary / Principal Secretary — Home)',
+    title: 'State Home Department (Additional Chief Secretary — Home)',
     abbreviation: 'STATE-HOME-ACS',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
+    sectionId: 'SEC-DEM-04',
+    sectionNumber: '04',
     level: 'state',
     category: 'executive-administration',
-    position: { x: 300, y: 700 },
+    position: { x: 300, y: 520 },
     summary: 'The administrative department of the State Government possessing statutory authority over the State Police, prisons, home guards, and public order under State List Entry 1 & 2. Led by the State Home Minister politically and the Additional Chief Secretary (Home) administratively.',
     mandate: [
-      'Schedule 7, List II (State List) Entry 1: Public order (not including deployment of naval, military or air forces).',
+      'Schedule 7, List II (State List) Entry 1: Public order.',
       'Schedule 7, List II (State List) Entry 2: Police (including railway and village police).',
       'State Police Acts and Rules of Business of State Government.'
     ],
@@ -299,18 +268,16 @@ export const NODES_V4: EducationNode[] = [
     sourceIds: ['SRC-V4-POLICE-ACT'],
     verificationStatus: 'verified'
   },
-
-  // State Police 10-Tier Linear Command
   {
     id: 'DEM-POL-DGP',
     type: 'executive',
     title: '1. Director General of Police (DGP) — State Police Chief',
     abbreviation: 'POL-DGP',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
+    sectionId: 'SEC-DEM-04',
+    sectionNumber: '04',
     level: 'state',
     category: 'executive-administration',
-    position: { x: 300, y: 1050 },
+    position: { x: 300, y: 880 },
     summary: 'The highest-ranking police officer in the State, holding overall operational and administrative command of the entire state police force under Section 4 of the Police Act 1861. Head of Police Force (HoPF) selected from a UPSC empaneled shortlist with a statutory 2-year fixed tenure pursuant to the Supreme Court Prakash Singh judgment.',
     mandate: [
       'Section 4, Police Act 1861: The administration of the police throughout the general police-district is vested in the Director-General of Police.',
@@ -341,11 +308,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'department',
     title: '2. Additional Director General of Police (ADGP)',
     abbreviation: 'POL-ADGP',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
+    sectionId: 'SEC-DEM-04',
+    sectionNumber: '04',
     level: 'state',
     category: 'executive-administration',
-    position: { x: 300, y: 1400 },
+    position: { x: 300, y: 1240 },
     summary: 'Senior police leadership commanding state-wide functional wings: Law & Order, Criminal Investigation Department (CID), Intelligence Wing, Anti-Terror Squad (ATS), Highway Police, and Special Task Forces. Also serves as Commissioner of Police in major metropolitan cities (e.g. Pune, Thane, Ahmedabad).',
     mandate: [
       'State Police Act & Police Manual: Heading specialized executive formations and major commissionerates.'
@@ -374,11 +341,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'department',
     title: '3. Inspector General of Police (IGP / IG Range)',
     abbreviation: 'POL-IG',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
+    sectionId: 'SEC-DEM-04',
+    sectionNumber: '04',
     level: 'state',
     category: 'executive-administration',
-    position: { x: 300, y: 1750 },
+    position: { x: 300, y: 1600 },
     summary: 'Heads a territorial Police Range consisting of 3 to 6 revenue districts. Supervises District Superintendents of Police (SPs), conducts annual inspections of district police headquarters, and mobilizes inter-district reinforcements during public disorders.',
     mandate: [
       'Police Act 1861 Section 4: Administration of police in a local range.'
@@ -408,11 +375,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'department',
     title: '4. Deputy Inspector General of Police (DIG)',
     abbreviation: 'POL-DIG',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
+    sectionId: 'SEC-DEM-04',
+    sectionNumber: '04',
     level: 'state',
     category: 'executive-administration',
-    position: { x: 300, y: 2100 },
+    position: { x: 300, y: 1960 },
     summary: 'Senior supervisory police officer who either assists the Inspector General in running a large police range, heads a specialized range, or commands a major city as Joint Commissioner of Police. Directly inspects district crime records and ensures police integrity.',
     mandate: [
       'Police Act 1861 Section 4 & State Police Manual.'
@@ -441,14 +408,14 @@ export const NODES_V4: EducationNode[] = [
     type: 'executive',
     title: '5. Superintendent of Police (SP / SSP) — District Police Chief',
     abbreviation: 'POL-SP',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
+    sectionId: 'SEC-DEM-04',
+    sectionNumber: '04',
     level: 'district',
     category: 'executive-administration',
-    position: { x: 300, y: 2450 },
+    position: { x: 300, y: 2320 },
     summary: 'The operational head of the police force in a revenue district under Section 4 of the Police Act 1861. Exercises administrative control over all police stations, armed police reserves, traffic branches, and crime branch units in the district. Under Section 4, police administration is under the general control and direction of the District Magistrate.',
     mandate: [
-      'Section 4, Police Act 1861: The administration of the police throughout a district is vested in the District Superintendent under the general control and direction of the District Magistrate.',
+      'Section 4, Police Act 1861: District police administration under general control and direction of District Magistrate.',
       'Code of Criminal Procedure 1973 (CrPC) / Bharatiya Nagarik Suraksha Sanhita (BNSS).'
     ],
     powers: [
@@ -457,7 +424,7 @@ export const NODES_V4: EducationNode[] = [
       'Mobilizes district armed reserve force and orders anti-riot measures.'
     ],
     limitations: [
-      'Under Police Act Section 4, functions under the general oversight of the District Magistrate for law and order.',
+      'Under Police Act Section 4, functions under general oversight of District Magistrate for law and order.',
       'Requires judicial / executive magistrate orders for Section 144 CrPC / BNSS curfews.'
     ],
     governanceDetails: {
@@ -477,11 +444,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'department',
     title: '6. Assistant / Deputy Superintendent of Police (ASP / DSP / SDPO)',
     abbreviation: 'POL-DSP',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
+    sectionId: 'SEC-DEM-04',
+    sectionNumber: '04',
     level: 'district',
     category: 'executive-administration',
-    position: { x: 300, y: 2800 },
+    position: { x: 300, y: 2680 },
     summary: 'Gazetted police officer commanding a Police Sub-Division (comprising 3 to 6 police stations), known as Sub-Divisional Police Officer (SDPO) in rural districts or Assistant Commissioner of Police (ACP) in commissionerate cities. Conducts statutory supervision of serious investigations.',
     mandate: [
       'Police Act 1861 & CrPC / BNSS provisions mandating investigation of heinous offenses by Gazetted Officer.'
@@ -492,7 +459,7 @@ export const NODES_V4: EducationNode[] = [
       'Leads armed police deployment during communal or political flashpoints in the sub-division.'
     ],
     limitations: [
-      'Under operational command of the District SP; coordinates with the Sub-Divisional Magistrate (SDM).'
+      'Under operational command of District SP; coordinates with Sub-Divisional Magistrate (SDM).'
     ],
     governanceDetails: {
       positionName: 'Sub-Divisional Police Officer (SDPO) / Deputy SP (DySP) / Assistant SP (ASP)',
@@ -511,15 +478,15 @@ export const NODES_V4: EducationNode[] = [
     type: 'department',
     title: '7. Police Inspector / Station House Officer (SHO)',
     abbreviation: 'POL-SHO',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
+    sectionId: 'SEC-DEM-04',
+    sectionNumber: '04',
     level: 'local',
     category: 'executive-administration',
-    position: { x: 300, y: 3150 },
+    position: { x: 300, y: 3040 },
     summary: 'The Officer-in-Charge of a Police Station under Section 2(o) of CrPC / BNSS. The critical frontline pillar of criminal justice administration where citizens lodge First Information Reports (FIRs) under Section 154 CrPC. Commands all station personnel, investigations, and night patrols.',
     mandate: [
       'Section 2(o), CrPC 1973: Definition of Officer-in-Charge of a Police Station.',
-      'Section 154, CrPC / BNSS: Mandatory registration of First Information Report (FIR) for cognizable offenses (Lalita Kumari judgment).'
+      'Section 154, CrPC / BNSS: Mandatory registration of First Information Report (FIR) for cognizable offenses.'
     ],
     powers: [
       'Registers FIRs, initiates formal criminal investigations, and orders searches under Section 165 CrPC.',
@@ -547,11 +514,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'department',
     title: '8. Sub-Inspector of Police (SI) — Primary Investigating Officer',
     abbreviation: 'POL-SI',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
+    sectionId: 'SEC-DEM-04',
+    sectionNumber: '04',
     level: 'local',
     category: 'executive-administration',
-    position: { x: 300, y: 3500 },
+    position: { x: 300, y: 3400 },
     summary: 'The foundational investigating officer (IO) in the Indian criminal justice system empowered by law to investigate cognizable cases, draw panchanamas (seizure memos), record witness statements under Section 161 CrPC, and file chargesheets in court.',
     mandate: [
       'Section 156 & 157 CrPC: Procedure for investigation by police officer.',
@@ -581,11 +548,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'department',
     title: '9. Head Constable (HC) — Station Section Commander',
     abbreviation: 'POL-HC',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
+    sectionId: 'SEC-DEM-04',
+    sectionNumber: '04',
     level: 'local',
     category: 'executive-administration',
-    position: { x: 300, y: 3850 },
+    position: { x: 300, y: 3760 },
     summary: 'Senior non-commissioned police rank (wearing 3 chevrons). Acts as Station Duty Officer in charge of general diary entries, arms and ammunition kote, lockup custody, escorting prisoners to judicial courts, and heading beat patrol parties.',
     mandate: [
       'State Police Regulations: Station administration and beat supervision.'
@@ -615,11 +582,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'department',
     title: '10. Police Constable (PC) — Frontline Public Contact & Beat Patrol',
     abbreviation: 'POL-CONSTABLE',
-    sectionId: 'SEC-DEM-02',
-    sectionNumber: '02',
+    sectionId: 'SEC-DEM-04',
+    sectionNumber: '04',
     level: 'local',
     category: 'executive-administration',
-    position: { x: 300, y: 4200 },
+    position: { x: 300, y: 4120 },
     summary: 'The fundamental bedrock of Indian policing comprising over 70% of the total police strength. The primary interface between the citizen and the state machinery. Responsible for foot patrols, surveillance of history-sheeters, crowd control, traffic regulation, and emergency response.',
     mandate: [
       'Police Act 1861 Section 23: Duties of police officers to obey orders, collect intelligence, prevent commission of offenses, and apprehend offenders.'
@@ -646,10 +613,212 @@ export const NODES_V4: EducationNode[] = [
     verificationStatus: 'verified'
   },
 
-  // ====================================================================================
-  // TRACK 2: CIVIL GOVERNANCE, PARLIAMENT, STATE EXECUTIVE & FIELD MAGISTRACY (CENTER)
-  // X Range: 1500 to 3200
   // =========================================================================
+  // ZONE 2: UNION PARLIAMENT ZONE (LOK SABHA & RAJYA SABHA)
+  // X: 1450 - 2350, Y: 400 - 1100
+  // =========================================================================
+  {
+    id: 'HUB-DEM-PARLIAMENT',
+    type: 'sectionHub',
+    title: 'SECTION 02: UNION PARLIAMENT ZONE (LOK SABHA & RAJYA SABHA)',
+    abbreviation: 'HUB-PARLIAMENT',
+    sectionId: 'SEC-DEM-02',
+    sectionNumber: '02',
+    level: 'union',
+    category: 'legislation',
+    position: { x: 1800, y: 400 },
+    summary: 'Supreme Legislative Body of the Union (Articles 79-122). Enacts central laws, approves Union Budgets, and holds the Council of Ministers collectively accountable.',
+    mandate: [
+      'Enact union legislation, amend the Constitution, and deliberate national policy matters',
+      'Exercise parliamentary scrutiny and financial control over the Union Executive'
+    ],
+    powers: [
+      'Exclusive jurisdiction over Union List (List I) and Concurrent List (List III) subjects',
+      'Passes the Annual Financial Statement (Budget) and holds the Council of Ministers accountable via confidence motions'
+    ],
+    limitations: [
+      'Statutes subject to judicial review for basic structure and constitutional compliance',
+      'Cannot legislate on exclusive State List (List II) subjects except during emergencies or under Article 249/252'
+    ],
+    sourceIds: ['SRC-V4-CONST'],
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'DEM-LS-SPEAKER',
+    type: 'legislature',
+    title: 'Speaker of the Lok Sabha (Presiding Officer of Lower House)',
+    abbreviation: 'SPEAKER-LS',
+    sectionId: 'SEC-DEM-02',
+    sectionNumber: '02',
+    level: 'union',
+    category: 'legislation',
+    position: { x: 1450, y: 520 },
+    summary: 'The constitutional presiding officer of the House of the People (Article 93). Represents the collective authority of the House, certifies Money Bills (whose certification is final under Article 110), presides over Joint Sittings of Parliament (Article 118), and adjudicates anti-defection petitions under the 10th Schedule.',
+    mandate: [
+      'Article 93: Election of Speaker and Deputy Speaker of the Lok Sabha.',
+      'Article 110(4): Final authority to certify a legislative Bill as a Money Bill.',
+      'Article 118(4): Presides over joint sitting of both Houses of Parliament.',
+      'Tenth Schedule: Adjudicates disqualification of MPs on grounds of defection.'
+    ],
+    powers: [
+      'Decides parliamentary agenda, admits notices, questions, and No-Confidence Motions.',
+      'Sole and final authority to certify whether a proposed bill is a Money Bill.',
+      'Maintains order in the House; can suspend disorderly members.'
+    ],
+    limitations: [
+      'Does not vote in the first instance; exercises a casting vote only in case of an equality of votes (Article 100(1)).',
+      'Decisions under Tenth Schedule subject to judicial review (Kihoto Hollohan judgment).'
+    ],
+    governanceDetails: {
+      positionName: 'Speaker of the Lok Sabha (Presiding Officer)',
+      cadreOrService: 'Elected Member of Parliament (Elected by Lok Sabha MPs)',
+      constitutionalArticle: 'Articles 93, 100, 110, 118 & 10th Schedule of Constitution',
+      electoralOrSelectionMethod: 'Elected by majority vote of Lok Sabha Members from amongst themselves',
+      tenure: 'Term of Lok Sabha (Remains in office until first meeting of newly elected House)',
+      geographicalJurisdiction: 'Parliament of India (Sansad Bhavan, New Delhi)',
+      reportingTo: 'House of the People (Lok Sabha)'
+    },
+    sourceIds: ['SRC-V4-CONST'],
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'DEM-MP-LOK-SABHA',
+    type: 'legislature',
+    title: 'Member of Parliament — Lok Sabha (543 Elected MPs)',
+    abbreviation: 'MP-LOK-SABHA',
+    sectionId: 'SEC-DEM-02',
+    sectionNumber: '02',
+    level: 'union',
+    category: 'legislation',
+    position: { x: 1450, y: 850 },
+    summary: 'Directly elected representative of the citizens from single-member territorial constituencies under universal adult suffrage (Article 81 & 326). Holds primary legislative, financial, and executive accountability powers. The Prime Minister and Council of Ministers must maintain confidence in this House.',
+    mandate: [
+      'Article 81: Composition of the House of the People (up to 543 elected territorial seats).',
+      'Article 326: Elections based on Universal Adult Suffrage (every citizen age 18+).',
+      'Article 109 & 113: Exclusive power over Money Bills and Demands for Grants (Budget).'
+    ],
+    powers: [
+      'Vote on Central Legislation, Union Budgets, and Demands for Grants.',
+      'Introduce Private Member Bills, ask Parliamentary Questions, and initiate Call-Attention Motions.',
+      'Move and vote on No-Confidence Motions to bring down an incumbent Government.'
+    ],
+    limitations: [
+      'Subject to anti-defection law under Tenth Schedule (party whip).',
+      'Disqualified upon criminal conviction with 2+ years imprisonment under RPA Section 8.'
+    ],
+    governanceDetails: {
+      positionName: 'Member of Parliament (MP) — Lok Sabha',
+      cadreOrService: 'Directly Elected People\'s Representative',
+      constitutionalArticle: 'Articles 81, 84, 101, 102, 326 of Constitution of India',
+      electoralOrSelectionMethod: 'Direct Universal Adult Franchise (First-Past-The-Post in single-member constituencies)',
+      tenure: '5 Years (unless House is dissolved earlier)',
+      geographicalJurisdiction: 'Parliamentary Constituency (representing ~1.5 to 2.5 million citizens)',
+      reportingTo: 'Constituency Electors & Speaker of Lok Sabha'
+    },
+    sourceIds: ['SRC-V4-CONST', 'SRC-V4-RPA'],
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'DEM-RS-CHAIRMAN',
+    type: 'legislature',
+    title: 'Rajya Sabha Presiding Hierarchy (Chairman & Deputy Chairman)',
+    abbreviation: 'RS-PRESIDING',
+    sectionId: 'SEC-DEM-02',
+    sectionNumber: '02',
+    level: 'union',
+    category: 'legislation',
+    position: { x: 2100, y: 520 },
+    summary: 'Presiding hierarchy of the Council of States. Headed by the Vice-President of India as Ex-Officio Chairman (Art 89(1)), assisted by the Deputy Chairman elected by Rajya Sabha members from among themselves (Art 89(2)) to conduct proceedings in the Chairman\'s absence.',
+    mandate: [
+      'Article 89: The Chairman and Deputy Chairman of the Council of States.'
+    ],
+    powers: [
+      'Regulates legislative debates, admits special mentions, and decides questions of privilege.',
+      'Rules on admissibility of amendments to Ordinary and Constitutional Amendment Bills.'
+    ],
+    limitations: [
+      'Cannot certify Money Bills (exclusive prerogative of Lok Sabha Speaker).'
+    ],
+    governanceDetails: {
+      positionName: 'Chairman & Deputy Chairman of the Council of States',
+      cadreOrService: 'Constitutional Parliamentary Presiding Officers',
+      constitutionalArticle: 'Articles 89, 90, 91 of Constitution of India',
+      electoralOrSelectionMethod: 'Chairman is Ex-Officio (VP); Deputy Chairman elected by Rajya Sabha members',
+      tenure: 'Term of Rajya Sabha membership (Deputy Chairman: 6 years)',
+      geographicalJurisdiction: 'Rajya Sabha (Parliament of India)',
+      reportingTo: 'Council of States (Rajya Sabha)'
+    },
+    sourceIds: ['SRC-V4-CONST'],
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'DEM-MP-RAJYA-SABHA',
+    type: 'legislature',
+    title: 'Member of Parliament — Rajya Sabha (245 MPs - States\' Voice)',
+    abbreviation: 'MP-RAJYA-SABHA',
+    sectionId: 'SEC-DEM-02',
+    sectionNumber: '02',
+    level: 'union',
+    category: 'legislation',
+    position: { x: 2100, y: 850 },
+    summary: 'Upper House representative reflecting India\'s federal character. 233 MPs are elected by elected MLAs of States and UTs via Proportional Representation with Single Transferable Vote (STV); 12 are nominated by the President for literature, science, art, and social service. Permanent House not subject to dissolution.',
+    mandate: [
+      'Article 80: Composition of the Council of States (238 state/UT reps + 12 nominated).',
+      'Article 249: Special power to authorize Parliament to legislate on State List subjects in national interest.',
+      'Article 312: Special power to create new All-India Services (IAS, IPS, IFoS).'
+    ],
+    powers: [
+      'Debate, amend, and vote on Ordinary Bills and Constitutional Amendment Bills.',
+      'Pass Article 312 resolutions with 2/3rd majority to create new All-India Services.',
+      'Pass Article 249 resolutions to allow Parliament temporary legislation on State List.'
+    ],
+    limitations: [
+      'Cannot reject or amend Money Bills (can only recommend changes within 14 days; Art 109).',
+      'Cannot vote on Demands for Grants or express lack of confidence in Government.'
+    ],
+    governanceDetails: {
+      positionName: 'Member of Parliament (MP) — Rajya Sabha',
+      cadreOrService: 'Indirectly Elected / Nominated Federal Representative',
+      constitutionalArticle: 'Articles 80, 84, 101, 102 of Constitution of India',
+      electoralOrSelectionMethod: 'Elected by elected MLAs of States/UTs (Proportional Representation via Single Transferable Vote)',
+      tenure: '6 Years (One-third of members retire every 2nd year; Permanent House)',
+      geographicalJurisdiction: 'Electoral representation of the respective State/UT at Union level',
+      reportingTo: 'State Legislative Assembly Electors & Chairman of Rajya Sabha'
+    },
+    sourceIds: ['SRC-V4-CONST'],
+    verificationStatus: 'verified'
+  },
+
+  // =========================================================================
+  // ZONE 3: CENTRAL MINISTRIES SUITE (RIGHT COLUMN)
+  // X: 2800 - 4300, Y: 400 - 1400
+  // =========================================================================
+  {
+    id: 'HUB-DEM-MINISTRIES',
+    type: 'sectionHub',
+    title: 'SECTION 03: CENTRAL MINISTRIES SUITE (HOME, FINANCE, LAW, DOPT)',
+    abbreviation: 'HUB-MINISTRIES',
+    sectionId: 'SEC-DEM-03',
+    sectionNumber: '03',
+    level: 'union',
+    category: 'executive-administration',
+    position: { x: 3500, y: 400 },
+    summary: 'Executive machinery of the Union Government headed by the Prime Minister and Union Cabinet, directing internal security (MHA), fiscal revenue (MOF), legal counsel (MOLJ), and civil services (DoPT/UPSC).',
+    mandate: [
+      'Formulate and execute Union Government policies across designated ministerial portfolios',
+      'Administer central statutory schemes and oversee attached departments and subordinate directorates'
+    ],
+    powers: [
+      'Issue executive notifications, rules, and statutory guidelines under Government of India Transaction of Business Rules',
+      'Direct national civil services (IAS, IPS, IRS) and allocate central budgetary resources'
+    ],
+    limitations: [
+      'Subordinate to parliamentary legislation and financial appropriations',
+      'Actions are subject to judicial review under Articles 32 and 226'
+    ],
+    sourceIds: ['SRC-V4-BUSINESS-RULES'],
+    verificationStatus: 'verified'
+  },
   {
     id: 'DEM-PM',
     type: 'executive',
@@ -659,7 +828,7 @@ export const NODES_V4: EducationNode[] = [
     sectionNumber: '03',
     level: 'union',
     category: 'executive-administration',
-    position: { x: 2050, y: 380 },
+    position: { x: 2800, y: 520 },
     summary: 'The de facto Chief Executive of the Republic of India and Head of Government under Article 74 & 75. Must be an elected Member of Parliament (traditionally Lok Sabha MP representing a constituency). Advises the President on ministerial appointments and portfolio allocations; chairs the Union Cabinet and National Security Council.',
     mandate: [
       'Article 74(1): There shall be a Council of Ministers with the Prime Minister at the head to aid and advise the President.',
@@ -696,7 +865,7 @@ export const NODES_V4: EducationNode[] = [
     sectionNumber: '03',
     level: 'union',
     category: 'executive-administration',
-    position: { x: 2600, y: 380 },
+    position: { x: 3400, y: 520 },
     summary: 'The administrative apex of the Republic of India and senior-most civil servant in the Government of India (ranked #11 on the Table of Precedence). Directly reports to the Prime Minister. Administers the Government of India (Allocation of Business) Rules 1961, manages the Cabinet agenda, and acts as ex-officio head of the Civil Services Board.',
     mandate: [
       'Government of India (Transaction of Business) Rules 1961 & Allocation of Business Rules 1961.',
@@ -723,162 +892,389 @@ export const NODES_V4: EducationNode[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'DEM-LS-SPEAKER',
-    type: 'legislature',
-    title: 'Speaker of the Lok Sabha (Presiding Officer of Lower House)',
-    abbreviation: 'SPEAKER-LS',
+    id: 'DEM-DOPT-SEC',
+    type: 'department',
+    title: 'Department of Personnel and Training (DoPT Secretary)',
+    abbreviation: 'DOPT-SECRETARY',
     sectionId: 'SEC-DEM-03',
     sectionNumber: '03',
     level: 'union',
-    category: 'legislation',
-    position: { x: 1700, y: 700 },
-    summary: 'The constitutional presiding officer of the House of the People (Article 93). Represents the collective authority of the House, certifies Money Bills (whose certification is final under Article 110), presides over Joint Sittings of Parliament (Article 118), and adjudicates anti-defection petitions under the 10th Schedule.',
+    category: 'executive-administration',
+    position: { x: 4000, y: 520 },
+    summary: 'The central personnel authority of the Government of India, operating under the Prime Minister\'s Ministry of Personnel, Public Grievances and Pensions. Controls the All India Services (IAS, IPS, IFoS), civil service rules, disciplinary codes, anti-corruption vigilance policy, and liaison with UPSC.',
     mandate: [
-      'Article 93: Election of Speaker and Deputy Speaker of the Lok Sabha.',
-      'Article 110(4): Final authority to certify a legislative Bill as a Money Bill.',
-      'Article 118(4): Presides over joint sitting of both Houses of Parliament.',
-      'Tenth Schedule: Adjudicates disqualification of MPs on grounds of defection.'
+      'All India Services Act 1951 & Civil Services (Classification, Control and Appeal) Rules.',
+      'Cadre Controlling Authority for the Indian Administrative Service (IAS).'
     ],
     powers: [
-      'Decides parliamentary agenda, admits notices, questions, and No-Confidence Motions.',
-      'Sole and final authority to certify whether a proposed bill is a Money Bill.',
-      'Maintains order in the House; can suspend disorderly members.'
+      'Determines civil service recruitment vacancies, cadre allocations, and central deputation panels.',
+      'Administers Central Vigilance policy, integrity rules, and civil service training (LBSNAA Mussoorie).'
     ],
     limitations: [
-      'Does not vote in the first instance; exercises a casting vote only in case of an equality of votes (Article 100(1)).',
-      'Decisions under Tenth Schedule subject to judicial review (Kihoto Hollohan judgment).'
+      'Works under the Appointments Committee of the Cabinet (ACC) chaired by the Prime Minister.'
     ],
     governanceDetails: {
-      positionName: 'Speaker of the Lok Sabha (Presiding Officer)',
-      cadreOrService: 'Elected Member of Parliament (Elected by Lok Sabha MPs)',
-      constitutionalArticle: 'Articles 93, 100, 110, 118 & 10th Schedule of Constitution',
-      electoralOrSelectionMethod: 'Elected by majority vote of Lok Sabha Members from amongst themselves',
-      tenure: 'Term of Lok Sabha (Remains in office until first meeting of newly elected House)',
-      geographicalJurisdiction: 'Parliament of India (Sansad Bhavan, New Delhi)',
-      reportingTo: 'House of the People (Lok Sabha)'
+      positionName: 'Secretary, Department of Personnel and Training (DoPT)',
+      cadreOrService: 'Indian Administrative Service (IAS) — Apex Scale (Pay Level 17)',
+      constitutionalArticle: 'Article 309, 311, 312 of Constitution of India',
+      electoralOrSelectionMethod: 'Appointed by Appointments Committee of the Cabinet (ACC)',
+      tenure: 'Central posting (~2 years)',
+      geographicalJurisdiction: 'Government of India (North Block, New Delhi)',
+      reportingTo: 'Minister of Personnel (Prime Minister) & Cabinet Secretary'
+    },
+    sourceIds: ['SRC-V4-AIS'],
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'DEM-MHA-MINISTER',
+    type: 'executive',
+    title: 'Union Home Minister (Ministry of Home Affairs - MHA)',
+    abbreviation: 'HOME-MINISTER',
+    sectionId: 'SEC-DEM-03',
+    sectionNumber: '03',
+    level: 'union',
+    category: 'executive-administration',
+    position: { x: 2800, y: 880 },
+    summary: 'Senior Union Cabinet Minister overseeing internal security, border management, Centre-State relations, administration of Union Territories, and central intelligence and law enforcement agencies. Exercises constitutional authority over Central Armed Police Forces.',
+    mandate: [
+      'Government of India (Allocation of Business) Rules 1961: Internal Security & Union Police matters.',
+      'Article 355: Duty of the Union to protect every State against external aggression and internal disturbance.'
+    ],
+    powers: [
+      'Formulates national internal security strategy and counter-terrorism policies.',
+      'Commands and deploys Central Armed Police Forces (CRPF, BSF, CISF, ITBP, SSB, NSG).',
+      'Controls intelligence agencies (Intelligence Bureau - IB) and anti-terror agencies (NIA).'
+    ],
+    limitations: [
+      'Public order and police are State List subjects (Schedule 7, List II Entry 1 & 2); cannot supersede state police without constitutional emergency or state consent.'
+    ],
+    governanceDetails: {
+      positionName: 'Union Minister of Home Affairs (Cabinet Minister)',
+      cadreOrService: 'Elected Member of Parliament (Cabinet Rank)',
+      constitutionalArticle: 'Articles 74 & 75 of Constitution of India',
+      electoralOrSelectionMethod: 'Appointed by President on advice of Prime Minister from among MPs',
+      tenure: 'Pleasure of Prime Minister / Lok Sabha majority',
+      geographicalJurisdiction: 'Republic of India (National Internal Security)',
+      reportingTo: 'Prime Minister of India & Lok Sabha'
+    },
+    sourceIds: ['SRC-V4-BUSINESS-RULES'],
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'DEM-MOF-MINISTER',
+    type: 'executive',
+    title: 'Union Finance Minister (Ministry of Finance - MOF)',
+    abbreviation: 'FINANCE-MINISTER',
+    sectionId: 'SEC-DEM-03',
+    sectionNumber: '03',
+    level: 'union',
+    category: 'executive-administration',
+    position: { x: 3400, y: 880 },
+    summary: 'Union Cabinet Minister in charge of economic management, taxation, national fiscal policy, banking system, and presentation of the Annual Financial Statement (Union Budget) to Parliament under Article 112.',
+    mandate: [
+      'Article 112: Annual Financial Statement laid before both Houses of Parliament.',
+      'Articles 265 to 281: Distribution of revenues between Union and States.'
+    ],
+    powers: [
+      'Presents the Union Budget and Finance Bill introducing direct and indirect tax rates.',
+      'Oversees the Department of Revenue, Department of Economic Affairs, and Department of Expenditure.',
+      'Coordinates national GST policy as Vice-Chair/member of the GST Council.'
+    ],
+    limitations: [
+      'Taxation and expenditure proposals require parliamentary approval by Lok Sabha under Article 265.'
+    ],
+    governanceDetails: {
+      positionName: 'Union Minister of Finance & Corporate Affairs (Cabinet Minister)',
+      cadreOrService: 'Elected Member of Parliament (Cabinet Rank)',
+      constitutionalArticle: 'Articles 74, 75, 112 of Constitution of India',
+      electoralOrSelectionMethod: 'Appointed by President on advice of Prime Minister from among MPs',
+      tenure: 'Pleasure of Prime Minister / Lok Sabha majority',
+      geographicalJurisdiction: 'Republic of India (National Economy & Fiscal Policy)',
+      reportingTo: 'Prime Minister of India & Lok Sabha'
+    },
+    sourceIds: ['SRC-V4-BUSINESS-RULES'],
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'DEM-MOLJ-MINISTER',
+    type: 'executive',
+    title: 'Union Law Minister (Ministry of Law and Justice - MOLJ)',
+    abbreviation: 'LAW-MINISTER',
+    sectionId: 'SEC-DEM-03',
+    sectionNumber: '03',
+    level: 'union',
+    category: 'executive-administration',
+    position: { x: 4000, y: 880 },
+    summary: 'Union Cabinet Minister overseeing legislative drafting, legal affairs, administration of justice, legal aid, and liaison with the higher judiciary and Election Commission.',
+    mandate: [
+      'Allocation of Business Rules 1961: Legislative Department & Department of Legal Affairs.'
+    ],
+    powers: [
+      'Drafts all Government Bills, Ordinances, and statutory rules.',
+      'Processes judicial appointments to the Supreme Court and High Courts under the Collegium system.'
+    ],
+    limitations: [
+      'Independence of the Judiciary (Article 50): Cannot direct or interfere in judicial adjudications.'
+    ],
+    governanceDetails: {
+      positionName: 'Union Minister of Law and Justice (Cabinet Minister)',
+      cadreOrService: 'Elected Member of Parliament (Cabinet Rank)',
+      constitutionalArticle: 'Articles 74, 75 of Constitution of India',
+      electoralOrSelectionMethod: 'Appointed by President on advice of Prime Minister from among MPs',
+      tenure: 'Pleasure of Prime Minister',
+      geographicalJurisdiction: 'Republic of India (Legal & Legislative Affairs)',
+      reportingTo: 'Prime Minister of India'
+    },
+    sourceIds: ['SRC-V4-BUSINESS-RULES'],
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'DEM-CAPF-HEADS',
+    type: 'department',
+    title: 'Directors General — Central Armed Police Forces (CRPF, BSF, CISF, ITBP, SSB, NSG)',
+    abbreviation: 'CAPF-DG',
+    sectionId: 'SEC-DEM-03',
+    sectionNumber: '03',
+    level: 'union',
+    category: 'executive-administration',
+    position: { x: 2800, y: 1220 },
+    summary: 'Senior IPS officers serving in Apex Scale as Directors General of federal armed police formations. Responsible for national border security (BSF, ITBP, SSB), critical infrastructure protection (CISF), counter-insurgency & election security deployment (CRPF), and elite counter-terror intervention (NSG).',
+    mandate: [
+      'Central Reserve Police Force Act 1949, Border Security Force Act 1968, CISF Act 1968.',
+      'Entry 2A of List I (Union List): Deployment of armed forces of the Union in aid of civil power.'
+    ],
+    powers: [
+      'Operational and administrative command of over 1 million armed personnel across federal forces.',
+      'Deploy battalions in aid of civil power during elections, riots, and counter-terror operations on MHA requisition.'
+    ],
+    limitations: [
+      'When deployed in states in aid of civil power, operate in coordination with local Executive Magistrates and State Police.'
+    ],
+    governanceDetails: {
+      positionName: 'Director General (DG), Central Armed Police Force',
+      cadreOrService: 'Indian Police Service (IPS) — Apex Scale (Pay Level 17)',
+      constitutionalArticle: 'Entry 2A, List I (Union List), 7th Schedule',
+      electoralOrSelectionMethod: 'Empaneled by MHA and appointed by Appointments Committee of the Cabinet (ACC)',
+      tenure: 'Up to superannuation (Age 60)',
+      geographicalJurisdiction: 'National borders, central infrastructure, and operational deployment areas',
+      reportingTo: 'Union Home Secretary & Union Home Minister'
+    },
+    sourceIds: ['SRC-V4-BUSINESS-RULES'],
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'DEM-CBDT-IRS-REVENUE',
+    type: 'department',
+    title: 'Central Board of Direct Taxes (CBDT / IRS Revenue Hierarchy)',
+    abbreviation: 'CBDT-IRS',
+    sectionId: 'SEC-DEM-03',
+    sectionNumber: '03',
+    level: 'union',
+    category: 'executive-administration',
+    position: { x: 3400, y: 1220 },
+    summary: 'Statutory authority under the Central Boards of Revenue Act 1963 administering direct taxes (Income Tax, Corporation Tax). Staffed by the Indian Revenue Service (IRS). Linear hierarchy: Principal Chief Commissioner of Income Tax (PCCIT) &rarr; Chief Commissioner (CCIT) &rarr; Commissioner / Pr. Commissioner (CIT) &rarr; Joint / Additional Commissioner (JCIT) &rarr; Assistant / Deputy Commissioner (ACIT) &rarr; Income Tax Officer (ITO) &rarr; Tax Inspector.',
+    mandate: [
+      'Income-tax Act 1961 & Central Boards of Revenue Act 1963.',
+      'Article 265: No tax shall be levied or collected except by authority of law.'
+    ],
+    powers: [
+      'Assess income tax returns, conduct search and seizure operations, and freeze illicit bank accounts.',
+      'Issues statutory assessment orders, tax penalties, and criminal prosecution for tax evasion.'
+    ],
+    limitations: [
+      'Subject to statutory tax appeals before CIT(Appeals), Income Tax Appellate Tribunal (ITAT), and High Courts.'
+    ],
+    governanceDetails: {
+      positionName: 'Chairman, CBDT & Indian Revenue Service (IRS) Cadre Hierarchy',
+      cadreOrService: 'Indian Revenue Service (IRS — Direct Taxes) — Apex to Senior Time Scale',
+      constitutionalArticle: 'Central Boards of Revenue Act 1963 & Income-tax Act 1961',
+      electoralOrSelectionMethod: 'IRS recruited through UPSC Civil Services Examination',
+      tenure: 'Permanent civil service cadre',
+      geographicalJurisdiction: 'Income Tax Regions and Assessment Circles across India',
+      reportingTo: 'Revenue Secretary & Union Finance Minister'
+    },
+    sourceIds: ['SRC-V4-BUSINESS-RULES'],
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'DEM-AG-INDIA',
+    type: 'constitutional',
+    title: 'Attorney General for India (First Law Officer of the Republic)',
+    abbreviation: 'ATTORNEY-GENERAL',
+    sectionId: 'SEC-DEM-03',
+    sectionNumber: '03',
+    level: 'constitutional',
+    category: 'legislation',
+    position: { x: 4000, y: 1220 },
+    summary: 'The highest legal officer in the country appointed by the President under Article 76. Qualified to be appointed a Judge of the Supreme Court. Advises the Government of India upon legal matters, represents the Union in all Supreme Court litigation, and has the right of audience in all courts in India.',
+    mandate: [
+      'Article 76: Attorney-General for India appointed by the President.',
+      'Article 88: Right of Attorney-General to speak and take part in proceedings of either House of Parliament.'
+    ],
+    powers: [
+      'Appears on behalf of the Government of India in all cases in the Supreme Court.',
+      'Represents the President in Article 143 Presidential Reference matters before the Supreme Court.',
+      'Addresses Parliament on constitutional and statutory matters (without voting right).'
+    ],
+    limitations: [
+      'Does not hold the right to vote in Parliament (Article 88).',
+      'Holds office during the pleasure of the President of India (Article 76(4)).'
+    ],
+    governanceDetails: {
+      positionName: 'Attorney General for India (Highest Law Officer of Union)',
+      cadreOrService: 'Constitutional Legal Officer (Senior Advocate of Supreme Court)',
+      constitutionalArticle: 'Articles 76 & 88 of Constitution of India',
+      electoralOrSelectionMethod: 'Appointed by President on advice of the Union Cabinet',
+      tenure: 'Pleasure of the President (traditionally linked to Government term)',
+      geographicalJurisdiction: 'All Courts in the Territory of India & Parliament',
+      reportingTo: 'President of India & Union Ministry of Law and Justice'
     },
     sourceIds: ['SRC-V4-CONST'],
     verificationStatus: 'verified'
   },
   {
-    id: 'DEM-MP-LOK-SABHA',
-    type: 'legislature',
-    title: 'Member of Parliament — Lok Sabha (543 Elected MPs)',
-    abbreviation: 'MP-LOK-SABHA',
+    id: 'DEM-ECI',
+    type: 'constitutional',
+    title: 'Election Commission of India (Chief Election Commissioner & ECs)',
+    abbreviation: 'ECI-CEC',
     sectionId: 'SEC-DEM-03',
     sectionNumber: '03',
-    level: 'union',
-    category: 'legislation',
-    position: { x: 2150, y: 700 },
-    summary: 'Directly elected representative of the citizens from single-member territorial constituencies under universal adult suffrage (Article 81 & 326). Holds primary legislative, financial, and executive accountability powers. The Prime Minister and Council of Ministers must maintain confidence in this House.',
+    level: 'constitutional',
+    category: 'oversight-remedies',
+    position: { x: 3000, y: 1600 },
+    summary: 'Autonomous constitutional authority under Article 324 vested with superintendence, direction, and control of all elections to Parliament, State Legislatures, and the offices of President and Vice-President. Enforces the Model Code of Conduct (MCC) and registers political parties.',
     mandate: [
-      'Article 81: Composition of the House of the People (up to 543 elected territorial seats).',
-      'Article 326: Elections based on Universal Adult Suffrage (every citizen age 18+).',
-      'Article 109 & 113: Exclusive power over Money Bills and Demands for Grants (Budget).'
+      'Article 324: Superintendence, direction, and control of elections to be vested in an Election Commission.',
+      'Representation of the People Act 1950 & 1951.'
     ],
     powers: [
-      'Vote on Central Legislation, Union Budgets, and Demands for Grants.',
-      'Introduce Private Member Bills, ask Parliamentary Questions, and initiate Call-Attention Motions.',
-      'Move and vote on No-Confidence Motions to bring down an incumbent Government.'
+      'Announces national and state election schedules; enforces Model Code of Conduct (MCC).',
+      'Commands all civil and police officers on election duty under deemed central deputation.',
+      'Allots election symbols, monitors campaign expenditure, and registers political parties.'
     ],
     limitations: [
-      'Subject to anti-defection law under Tenth Schedule (party whip).',
-      'Disqualified upon criminal conviction with 2+ years imprisonment under RPA Section 8.'
+      'Supreme Court judicial review over election petitions; does not conduct Panchayat/Municipal elections (handled by State Election Commissions under Art 243K/243ZA).'
     ],
     governanceDetails: {
-      positionName: 'Member of Parliament (MP) — Lok Sabha',
-      cadreOrService: 'Directly Elected People\'s Representative',
-      constitutionalArticle: 'Articles 81, 84, 101, 102, 326 of Constitution of India',
-      electoralOrSelectionMethod: 'Direct Universal Adult Franchise (First-Past-The-Post in single-member constituencies)',
-      tenure: '5 Years (unless House is dissolved earlier)',
-      geographicalJurisdiction: 'Parliamentary Constituency (representing ~1.5 to 2.5 million citizens)',
-      reportingTo: 'Constituency Electors & Speaker of Lok Sabha'
+      positionName: 'Chief Election Commissioner of India (CEC) & Election Commissioners',
+      cadreOrService: 'Constitutional Oversight Head (Rank equivalent to Supreme Court Judge)',
+      constitutionalArticle: 'Articles 324-329 of Constitution of India & RPA Acts',
+      electoralOrSelectionMethod: 'Appointed by President on advice of Selection Committee under Chief Election Commissioner Act 2023',
+      tenure: '6 Years or until Age 65 (Removal only by parliamentary impeachment like SC Judge)',
+      geographicalJurisdiction: 'Republic of India (Nirvachan Sadan, New Delhi)',
+      reportingTo: 'Constitution of India & Parliament of India'
     },
     sourceIds: ['SRC-V4-CONST', 'SRC-V4-RPA'],
     verificationStatus: 'verified'
   },
   {
-    id: 'DEM-RS-CHAIRMAN',
-    type: 'legislature',
-    title: 'Rajya Sabha Presiding Hierarchy (Chairman & Deputy Chairman)',
-    abbreviation: 'RS-PRESIDING',
+    id: 'DEM-UPSC',
+    type: 'constitutional',
+    title: 'Union Public Service Commission (Chairman & Members, UPSC)',
+    abbreviation: 'UPSC-CHAIRMAN',
     sectionId: 'SEC-DEM-03',
     sectionNumber: '03',
-    level: 'union',
-    category: 'legislation',
-    position: { x: 2600, y: 700 },
-    summary: 'Presiding hierarchy of the Council of States. Headed by the Vice-President of India as Ex-Officio Chairman (Art 89(1)), assisted by the Deputy Chairman elected by Rajya Sabha members from among themselves (Art 89(2)) to conduct proceedings in the Chairman\'s absence.',
+    level: 'constitutional',
+    category: 'oversight-remedies',
+    position: { x: 3700, y: 1600 },
+    summary: 'The central recruiting agency of India established under Article 315 of the Constitution. Conducts nationwide competitive examinations for appointment to the All-India Services (IAS, IPS, IFoS), Central Civil Services (IFS, IRS), and Defence forces (NDA, CDS). Mandatory consultation on disciplinary matters under Article 320.',
     mandate: [
-      'Article 89: The Chairman and Deputy Chairman of the Council of States.'
+      'Article 315: Public Service Commission for the Union.',
+      'Article 320: Functions of Public Service Commissions (Recruitment and Disciplinary Consultation).'
     ],
     powers: [
-      'Regulates legislative debates, admits special mentions, and decides questions of privilege.',
-      'Rules on admissibility of amendments to Ordinary and Constitutional Amendment Bills.'
+      'Conducts annual Civil Services Examination (CSE) and other national recruitments.',
+      'Advises the President on promotions, cadre transfers, and major disciplinary penalties for All India Services.'
     ],
     limitations: [
-      'Cannot certify Money Bills (exclusive prerogative of Lok Sabha Speaker).'
+      'Consultative and recruiting body; actual appointment orders are issued by the President / DoPT.'
     ],
     governanceDetails: {
-      positionName: 'Chairman & Deputy Chairman of the Council of States',
-      cadreOrService: 'Constitutional Parliamentary Presiding Officers',
-      constitutionalArticle: 'Articles 89, 90, 91 of Constitution of India',
-      electoralOrSelectionMethod: 'Chairman is Ex-Officio (VP); Deputy Chairman elected by Rajya Sabha members',
-      tenure: 'Term of Rajya Sabha membership (Deputy Chairman: 6 years)',
-      geographicalJurisdiction: 'Rajya Sabha (Parliament of India)',
-      reportingTo: 'Council of States (Rajya Sabha)'
+      positionName: 'Chairman and Members, Union Public Service Commission (UPSC)',
+      cadreOrService: 'Constitutional Commission Dignitary',
+      constitutionalArticle: 'Articles 315-323 of Constitution of India',
+      electoralOrSelectionMethod: 'Appointed by President of India (at least half must have held 10+ years government service)',
+      tenure: '6 Years or until Age 65 (Ineligible for further employment under Central/State Govt)',
+      geographicalJurisdiction: 'Republic of India (Dholpur House, New Delhi)',
+      reportingTo: 'President of India (Annual Report submitted to Parliament)'
     },
-    sourceIds: ['SRC-V4-CONST'],
+    sourceIds: ['SRC-V4-CONST', 'SRC-V4-AIS'],
     verificationStatus: 'verified'
   },
   {
-    id: 'DEM-MP-RAJYA-SABHA',
-    type: 'legislature',
-    title: 'Member of Parliament — Rajya Sabha (245 MPs - States\' Voice)',
-    abbreviation: 'MP-RAJYA-SABHA',
+    id: 'DEM-SPSC',
+    type: 'constitutional',
+    title: 'State Public Service Commission (Chairman & Members, MPSC / SPSC)',
+    abbreviation: 'SPSC-CHAIRMAN',
     sectionId: 'SEC-DEM-03',
     sectionNumber: '03',
-    level: 'union',
-    category: 'legislation',
-    position: { x: 3000, y: 700 },
-    summary: 'Upper House representative reflecting India\'s federal character. 233 MPs are elected by elected MLAs of States and UTs via Proportional Representation with Single Transferable Vote (STV); 12 are nominated by the President for literature, science, art, and social service. Permanent House not subject to dissolution.',
+    level: 'state',
+    category: 'oversight-remedies',
+    position: { x: 4300, y: 1600 },
+    summary: 'State constitutional recruiting body under Article 315 (e.g. Maharashtra Public Service Commission - MPSC). Conducts competitive examinations for State Civil Services (Deputy Collector / Tehsildar) and State Police Service (Deputy SP).',
     mandate: [
-      'Article 80: Composition of the Council of States (238 state/UT reps + 12 nominated).',
-      'Article 249: Special power to authorize Parliament to legislate on State List subjects in national interest.',
-      'Article 312: Special power to create new All-India Services (IAS, IPS, IFoS).'
+      'Article 315 & 320: State Public Service Commission.'
     ],
     powers: [
-      'Debate, amend, and vote on Ordinary Bills and Constitutional Amendment Bills.',
-      'Pass Article 312 resolutions with 2/3rd majority to create new All-India Services.',
-      'Pass Article 249 resolutions to allow Parliament temporary legislation on State List.'
+      'Conducts state civil services examinations; recommends merit list to State Government for appointments.',
+      'Mandatory consultation by State Government on disciplinary penalties against State Gazetted officers.'
     ],
     limitations: [
-      'Cannot reject or amend Money Bills (can only recommend changes within 14 days; Art 109).',
-      'Cannot vote on Demands for Grants or express lack of confidence in Government.'
+      'Appointed by Governor but can ONLY be removed by order of the President of India after SC inquiry (Art 317).'
     ],
     governanceDetails: {
-      positionName: 'Member of Parliament (MP) — Rajya Sabha',
-      cadreOrService: 'Indirectly Elected / Nominated Federal Representative',
-      constitutionalArticle: 'Articles 80, 84, 101, 102 of Constitution of India',
-      electoralOrSelectionMethod: 'Elected by elected MLAs of States/UTs (Proportional Representation via Single Transferable Vote)',
-      tenure: '6 Years (One-third of members retire every 2nd year; Permanent House)',
-      geographicalJurisdiction: 'Electoral representation of the respective State/UT at Union level',
-      reportingTo: 'State Legislative Assembly Electors & Chairman of Rajya Sabha'
+      positionName: 'Chairman and Members, State Public Service Commission (MPSC / SPSC)',
+      cadreOrService: 'State Constitutional Commission Dignitary',
+      constitutionalArticle: 'Articles 315-323 of Constitution of India',
+      electoralOrSelectionMethod: 'Appointed by Governor of the State (Removal exclusively by President of India under Art 317)',
+      tenure: '6 Years or until Age 62',
+      geographicalJurisdiction: 'State Territory',
+      reportingTo: 'Governor of the State (Annual Report submitted to State Legislature)'
     },
     sourceIds: ['SRC-V4-CONST'],
     verificationStatus: 'verified'
   },
 
-  // State Executive & Field Magistracy
+  // =========================================================================
+  // ZONE 5: STATE LEGISLATURE ZONE (VIDHAN SABHA & PARISHAD)
+  // X: 1450 - 2100, Y: 1300 - 2000
+  // =========================================================================
+  {
+    id: 'HUB-DEM-VIDHAN-SABHA',
+    type: 'sectionHub',
+    title: 'SECTION 05: STATE LEGISLATURE ZONE (VIDHAN SABHA & VIDHAN PARISHAD)',
+    abbreviation: 'HUB-VIDHAN-SABHA',
+    sectionId: 'SEC-DEM-05',
+    sectionNumber: '05',
+    level: 'state',
+    category: 'legislation',
+    position: { x: 1800, y: 1300 },
+    summary: 'State Constitutional Governance & Legislative Machinery (Articles 153-213). Features the Governor, Chief Minister & Cabinet, directly elected Vidhan Sabha MLAs, and upper house Vidhan Parishad MLCs.',
+    mandate: [
+      'Enact state laws, vote on the State Budget, and hold the State Council of Ministers accountable',
+      'Represent regional constituencies and articulate citizen grievances within the state'
+    ],
+    powers: [
+      'Exclusive authority over State List (List II) and concurrent powers over List III subjects',
+      'Passes state money bills and controls state executive administration'
+    ],
+    limitations: [
+      'State enactments subject to President\'s assent if conflicting with Union law on Concurrent subjects (Article 254)',
+      'Subordinate to constitutional basic structure and fundamental rights'
+    ],
+    sourceIds: ['SRC-V4-CONST'],
+    verificationStatus: 'verified'
+  },
   {
     id: 'DEM-GOVERNOR',
     type: 'constitutional',
     title: 'Governor of the State (Constitutional Head of State)',
     abbreviation: 'GOVERNOR-STATE',
-    sectionId: 'SEC-DEM-04',
-    sectionNumber: '04',
+    sectionId: 'SEC-DEM-05',
+    sectionNumber: '05',
     level: 'state',
     category: 'legislation',
-    position: { x: 1700, y: 1050 },
+    position: { x: 1450, y: 1420 },
     summary: 'The constitutional Head of the State appointed by the President of India under Article 153 & 155. Executive power of the State is vested in the Governor (Article 154), exercised on the aid and advice of the State Council of Ministers headed by the Chief Minister (Article 163), except in discretionary matters.',
     mandate: [
       'Article 153: There shall be a Governor for each State.',
@@ -913,11 +1309,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'executive',
     title: 'Chief Minister of the State (Head of State Government & MLA)',
     abbreviation: 'CHIEF-MINISTER',
-    sectionId: 'SEC-DEM-04',
-    sectionNumber: '04',
+    sectionId: 'SEC-DEM-05',
+    sectionNumber: '05',
     level: 'state',
     category: 'executive-administration',
-    position: { x: 2150, y: 1050 },
+    position: { x: 2100, y: 1420 },
     summary: 'The de facto Chief Executive of the State Government and Head of the State Council of Ministers under Article 163 & 164. Directly elected as an MLA (or MLC). Recommends appointment and portfolios of State Ministers, leads the State Cabinet, and directs state policy.',
     mandate: [
       'Article 163(1): Council of Ministers with Chief Minister at the head to aid and advise the Governor.',
@@ -948,14 +1344,14 @@ export const NODES_V4: EducationNode[] = [
   {
     id: 'DEM-MLA',
     type: 'legislature',
-    title: 'Member of Legislative Assembly (MLA — Vidhan Sabha, 5-Yr Term)',
+    title: 'Member of Legislative Assembly (MLA — Vidhan Sabha, Directly Elected)',
     abbreviation: 'MLA-VIDHAN-SABHA',
-    sectionId: 'SEC-DEM-04',
-    sectionNumber: '04',
+    sectionId: 'SEC-DEM-05',
+    sectionNumber: '05',
     level: 'state',
     category: 'legislation',
-    position: { x: 2600, y: 1050 },
-    summary: 'Directly elected representative of the citizens to the State Legislative Assembly (Vidhan Sabha) under universal adult suffrage (Article 170 & 326). Enacts state legislation across State List and Concurrent List, passes the State Annual Budget, and holds the State Government accountable.',
+    position: { x: 1450, y: 1750 },
+    summary: 'Directly elected representative of the citizens to the State Legislative Assembly (Vidhan Sabha) under universal adult suffrage (Article 170 & 326). E.g., 288 MLAs in Maharashtra. Enacts state legislation across State List and Concurrent List, passes State Budgets, and holds Government accountable.',
     mandate: [
       'Article 170: Composition of the Legislative Assemblies (direct election from territorial constituencies).',
       'Article 246(3): Exclusive power to make laws for State on matters in List II (State List).'
@@ -970,7 +1366,7 @@ export const NODES_V4: EducationNode[] = [
       'State laws are subject to Presidential assent if conflicting with Central laws (Article 254).'
     ],
     governanceDetails: {
-      positionName: 'Member of Legislative Assembly (MLA)',
+      positionName: 'Member of Legislative Assembly (MLA) — Vidhan Sabha',
       cadreOrService: 'Directly Elected State People\'s Representative',
       constitutionalArticle: 'Articles 170, 173, 190, 191, 326 of Constitution of India',
       electoralOrSelectionMethod: 'Direct Election by Citizens under Universal Adult Suffrage (FPTP in Assembly constituency)',
@@ -982,15 +1378,49 @@ export const NODES_V4: EducationNode[] = [
     verificationStatus: 'verified'
   },
   {
+    id: 'DEM-MLC',
+    type: 'legislature',
+    title: 'Member of Legislative Council (MLC — Vidhan Parishad, Upper House)',
+    abbreviation: 'MLC-VIDHAN-PARISHAD',
+    sectionId: 'SEC-DEM-05',
+    sectionNumber: '05',
+    level: 'state',
+    category: 'legislation',
+    position: { x: 2100, y: 1750 },
+    summary: 'Member of the State Legislative Council (Vidhan Parishad) in bicameral states (e.g. Maharashtra, UP, Bihar, Karnataka). Composed of representatives elected by MLAs, Local Authorities, Graduates, Teachers, and Governor nominees.',
+    mandate: [
+      'Article 171: Composition of the Legislative Councils of States.',
+      'Article 197: Restriction on powers of Legislative Council as to Bills other than Money Bills.'
+    ],
+    powers: [
+      'Scrutinizes and debates state legislation passed by the Legislative Assembly.',
+      'Deliberates on state policies and represents specialized functional constituencies (Teachers, Graduates, Local Bodies).'
+    ],
+    limitations: [
+      'Cannot defeat Money Bills; can delay Ordinary Bills for at most 4 months total.'
+    ],
+    governanceDetails: {
+      positionName: 'Member of Legislative Council (MLC) — Vidhan Parishad',
+      cadreOrService: 'Indirectly Elected / Nominated State Upper House Member',
+      constitutionalArticle: 'Articles 171 & 173 of Constitution of India',
+      electoralOrSelectionMethod: 'Elected by MLAs (1/3rd), Local Bodies (1/3rd), Graduates (1/12th), Teachers (1/12th) & Nominated by Governor (1/6th)',
+      tenure: '6 Years (One-third retire every 2 years; Permanent House)',
+      geographicalJurisdiction: 'State of Maharashtra / Bicameral State',
+      reportingTo: 'Chairman, Maharashtra Legislative Council'
+    },
+    sourceIds: ['SRC-V4-CONST'],
+    verificationStatus: 'verified'
+  },
+  {
     id: 'DEM-CS-STATE',
     type: 'department',
     title: 'Chief Secretary to the State Government (Administrative Head of State)',
     abbreviation: 'CHIEF-SECRETARY',
-    sectionId: 'SEC-DEM-04',
-    sectionNumber: '04',
+    sectionId: 'SEC-DEM-05',
+    sectionNumber: '05',
     level: 'state',
     category: 'executive-administration',
-    position: { x: 2150, y: 1400 },
+    position: { x: 1800, y: 2000 },
     summary: 'The administrative leader of the State Civil Services and senior-most IAS officer in the state government. Secretary to the State Cabinet, head of the General Administration Department (GAD), and chair of the State Civil Services Board. Directs state administrative machinery and field governance.',
     mandate: [
       'State Rules of Business under Article 166(3) of Constitution of India.',
@@ -1016,16 +1446,47 @@ export const NODES_V4: EducationNode[] = [
     sourceIds: ['SRC-V4-AIS'],
     verificationStatus: 'verified'
   },
+
+  // =========================================================================
+  // ZONE 6: DISTRICT FIELD ADMINISTRATION & REVENUE MAGISTRACY
+  // X: 1450 - 2100, Y: 2200 - 3350
+  // =========================================================================
+  {
+    id: 'HUB-DEM-MAGISTRACY',
+    type: 'sectionHub',
+    title: 'SECTION 06: DISTRICT ADMINISTRATION & REVENUE MAGISTRACY',
+    abbreviation: 'HUB-MAGISTRACY',
+    sectionId: 'SEC-DEM-06',
+    sectionNumber: '06',
+    level: 'district',
+    category: 'executive-administration',
+    position: { x: 1800, y: 2200 },
+    summary: 'The territorial backbone of Indian civil governance: Divisional Commissioner, District Magistrate & Collector (DM/DC), Sub-Divisional Magistrate (SDM), Tehsildar, and Village Talathi / Patwari.',
+    mandate: [
+      'Administer district land revenue, maintain public peace, and coordinate all state government departments',
+      'Ensure crisis and disaster management across sub-divisions, tehsils, and revenue villages'
+    ],
+    powers: [
+      'Preventive magisterial powers under Section 144 CrPC / BNSS and supervisory control over police under Section 4 Police Act',
+      'Head of district development administration, revenue collection, and statutory licensing'
+    ],
+    limitations: [
+      'Executive decisions subject to writ jurisdiction of the High Court and statutory appellate tribunals',
+      'Cannot exercise regular judicial trial powers separated under Article 50'
+    ],
+    sourceIds: ['SRC-V4-AIS', 'SRC-V4-POLICE-ACT'],
+    verificationStatus: 'verified'
+  },
   {
     id: 'DEM-DIV-COMMISSIONER',
     type: 'department',
     title: 'Divisional Commissioner (Head of Revenue Division)',
     abbreviation: 'DIV-COMMISSIONER',
-    sectionId: 'SEC-DEM-04',
-    sectionNumber: '04',
+    sectionId: 'SEC-DEM-06',
+    sectionNumber: '06',
     level: 'state',
     category: 'executive-administration',
-    position: { x: 2150, y: 1750 },
+    position: { x: 1450, y: 2320 },
     summary: 'Senior IAS officer (Principal Secretary / Secretary rank) heading an administrative Revenue Division comprising 4 to 7 revenue districts (e.g. Konkan, Pune, Nashik, Chhatrapati Sambhajinagar divisions). Supervises District Collectors, hears appellate land revenue appeals, and coordinates inter-district administration.',
     mandate: [
       'State Land Revenue Code: Appellate revenue authority over District Collectors.',
@@ -1056,11 +1517,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'executive',
     title: 'District Magistrate & Collector (DM / DC / District Collector)',
     abbreviation: 'DM-COLLECTOR',
-    sectionId: 'SEC-DEM-04',
-    sectionNumber: '04',
+    sectionId: 'SEC-DEM-06',
+    sectionNumber: '06',
     level: 'district',
     category: 'executive-administration',
-    position: { x: 2150, y: 2100 },
+    position: { x: 2100, y: 2320 },
     summary: 'The administrative linchpin of field governance in India. Triple-hatted role: (1) District Collector (head of land revenue, survey, recovery, and custodian of government lands); (2) District Magistrate (head of executive magistracy, Section 144 CrPC, preventive detention, arms licenses, general superintendence of police under Police Act S.4); (3) District Election Officer (conducts parliamentary and assembly elections).',
     mandate: [
       'Code of Criminal Procedure 1973 (CrPC) Section 20 / BNSS: District Magistrate.',
@@ -1094,11 +1555,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'department',
     title: 'Sub-Divisional Magistrate / Sub-Divisional Officer (SDM / SDO / Prant)',
     abbreviation: 'SDM-SUBDIV',
-    sectionId: 'SEC-DEM-04',
-    sectionNumber: '04',
+    sectionId: 'SEC-DEM-06',
+    sectionNumber: '06',
     level: 'district',
     category: 'executive-administration',
-    position: { x: 2150, y: 2450 },
+    position: { x: 1450, y: 2680 },
     summary: 'Executive Magistrate and administrative head of a Sub-Division (comprising 2 to 4 Talukas/Tehsils). Exercises executive magisterial powers under Sections 107-110, 133, and 145 CrPC, handles land acquisition, hears revenue appeals against Tehsildar orders, and coordinates field revenue administration.',
     mandate: [
       'Code of Criminal Procedure 1973 Section 20 & 23: Sub-Divisional Magistrate.',
@@ -1129,11 +1590,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'department',
     title: 'Tehsildar / Talukdar (Executive Magistrate & Taluka Head)',
     abbreviation: 'TEHSILDAR',
-    sectionId: 'SEC-DEM-04',
-    sectionNumber: '04',
+    sectionId: 'SEC-DEM-06',
+    sectionNumber: '06',
     level: 'district',
     category: 'executive-administration',
-    position: { x: 2150, y: 2800 },
+    position: { x: 2100, y: 2680 },
     summary: 'The administrative chief of a Taluka / Tehsil, serving as Executive Magistrate under Section 20 CrPC, Assistant Electoral Registration Officer (AERO), and chief revenue and recovery officer. Manages circle revenue officers, issues caste and income certificates, and executes disaster relief.',
     mandate: [
       'State Land Revenue Code: Tehsildar as Chief Taluka Revenue Officer and Mamlatdar.',
@@ -1164,11 +1625,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'department',
     title: 'Talathi / Patwari / Village Accountant (Village Land Records)',
     abbreviation: 'TALATHI-PATWARI',
-    sectionId: 'SEC-DEM-04',
-    sectionNumber: '04',
+    sectionId: 'SEC-DEM-06',
+    sectionNumber: '06',
     level: 'local',
     category: 'executive-administration',
-    position: { x: 2150, y: 3150 },
+    position: { x: 1800, y: 3040 },
     summary: 'The grass-roots village revenue official custodian of all village land records, land ownership mutations, crop inspection registers (Pik Pahani), and agricultural damage assessments (Panchnama) during natural calamities.',
     mandate: [
       'State Land Revenue Code: Village Accountant maintaining Record of Rights under Section 148.'
@@ -1194,37 +1655,66 @@ export const NODES_V4: EducationNode[] = [
     verificationStatus: 'verified'
   },
 
-  // Urban & Rural Local Self-Governance
+  // =========================================================================
+  // ZONE 7: URBAN MUNICIPAL CORPORATION ZONE (BMC MODEL)
+  // X: 2900 - 3900, Y: 2200 - 3200
+  // =========================================================================
+  {
+    id: 'HUB-DEM-BMC',
+    type: 'sectionHub',
+    title: 'SECTION 07: URBAN MUNICIPAL CORPORATION — BMC (BRIHANMUMBAI MODEL)',
+    abbreviation: 'HUB-BMC',
+    sectionId: 'SEC-DEM-07',
+    sectionNumber: '07',
+    level: 'local',
+    category: 'executive-administration',
+    position: { x: 3400, y: 2200 },
+    summary: 'Urban municipal self-governance under 74th Amendment (Art 243W) and Mumbai Municipal Corporation Act (MMC Act 1888), highlighting the Commissioner-Council structure of India\'s richest civic body.',
+    mandate: [
+      'Deliver civic infrastructure, urban sanitation, public health, primary education, and roads in Brihanmumbai',
+      'Implement urban planning, building regulations, and property tax administration under MMC Act 1888'
+    ],
+    powers: [
+      'Statutory executive powers vested in the Municipal Commissioner by Section 64 of MMC Act 1888',
+      'Deliberative authority and budget sanction vested in the Municipal Corporation and Standing Committee'
+    ],
+    limitations: [
+      'Subject to superintendence and policy directives of the State Urban Development Department',
+      'All major capital projects and loan sanctions subject to Corporation and Standing Committee approvals'
+    ],
+    sourceIds: ['SRC-V4-CONST'],
+    verificationStatus: 'verified'
+  },
   {
     id: 'DEM-MUNICIPAL-COMMISSIONER',
     type: 'executive',
-    title: 'Municipal Commissioner (IAS Executive Head of City Corporation)',
-    abbreviation: 'MUNICIPAL-COMMISSIONER',
-    sectionId: 'SEC-DEM-05',
-    sectionNumber: '05',
+    title: 'Municipal Commissioner / BMC Chief (IAS Principal Executive Officer)',
+    abbreviation: 'BMC-COMMISSIONER',
+    sectionId: 'SEC-DEM-07',
+    sectionNumber: '07',
     level: 'local',
     category: 'executive-administration',
-    position: { x: 1700, y: 3500 },
-    summary: 'The statutory Principal Executive Officer of a Municipal Corporation under the 74th Constitutional Amendment (Article 243W) and State Municipal Corporation Acts. A senior IAS officer possessing all executive powers to run the civic corporation, manage urban planning, execute public works, and enforce building bylaws.',
+    position: { x: 3000, y: 2320 },
+    summary: 'The statutory Principal Executive Officer of the Municipal Corporation (e.g. BMC Mumbai). A senior IAS officer (Additional Chief Secretary / Principal Secretary rank) in whom the entire executive power of the corporation is vested by statute (Section 54 of the MMC Act 1888). Runs the municipal administration, water supply, health, coastal roads, and annual civic budget (~₹50,000+ Crore).',
     mandate: [
       '74th Constitutional Amendment Act 1992 (Article 243W & 12th Schedule).',
-      'State Municipal Corporation Acts: Entire executive power vests in the Commissioner.'
+      'Mumbai Municipal Corporation Act 1888 (Section 54: Entire executive power vests in Commissioner).'
     ],
     powers: [
-      'Executes all resolutions and projects approved by the elected General Body.',
-      'Prepares and presents the annual Municipal Budget; manages civic water, sanitation, and health.',
+      'Executes all resolutions and infrastructure projects approved by the elected General Body.',
+      'Prepares and presents the annual Municipal Budget; manages civic hospitals, water reservoirs, and sewage.',
       'Acts as planning authority: sanctions building plans, evicts encroachments, issues trade permits.'
     ],
     limitations: [
-      'Accountable to the elected Corporation Council for budgetary allocations and civic resolutions.'
+      'Accountable to the elected Corporation Council for budgetary allocations and civic bylaws.'
     ],
     governanceDetails: {
-      positionName: 'Municipal Commissioner (Chief Executive Officer of Municipal Corporation)',
-      cadreOrService: 'Indian Administrative Service (IAS) — Senior Time / Super Time Scale (Pay Level 11-14)',
+      positionName: 'Municipal Commissioner & Chief Executive Officer (BMC / City Corporation)',
+      cadreOrService: 'Indian Administrative Service (IAS) — Apex / HAG+ Scale (Pay Level 16/17)',
       constitutionalArticle: 'Article 243W & 12th Schedule of Constitution & State Municipal Corp Acts',
       electoralOrSelectionMethod: 'Appointed by State Government from IAS cadre',
       tenure: 'City posting (~2 to 3 years)',
-      geographicalJurisdiction: 'Municipal Corporation Limits (Metropolitan / Urban City)',
+      geographicalJurisdiction: 'Brihanmumbai Municipal Corporation Limits (Greater Mumbai / City)',
       reportingTo: 'State Urban Development Department & Elected Municipal Council'
     },
     sourceIds: ['SRC-V4-CONST'],
@@ -1233,34 +1723,67 @@ export const NODES_V4: EducationNode[] = [
   {
     id: 'DEM-MAYOR-COUNCIL',
     type: 'legislature',
-    title: 'Mayor & Municipal Corporation Council (Elected Urban City Body)',
-    abbreviation: 'MAYOR-COUNCIL',
-    sectionId: 'SEC-DEM-05',
-    sectionNumber: '05',
+    title: 'Mayor of the City & Corporation General Body (First Citizen of City)',
+    abbreviation: 'BMC-MAYOR',
+    sectionId: 'SEC-DEM-07',
+    sectionNumber: '07',
     level: 'local',
     category: 'legislation',
-    position: { x: 1700, y: 3850 },
-    summary: 'The elected urban political executive. Mayor is the First Citizen of the city, elected by the municipal corporators (or directly in some states), presiding over General Body meetings and Standing Committees that deliberate on civic policy and approve municipal budgets.',
+    position: { x: 3700, y: 2320 },
+    summary: 'The elected political head and First Citizen of the city. Elected by the municipal corporators, presiding over the General Body meetings and Standing Committee of the Municipal Corporation. Deliberates on municipal policies, reviews civic works, and represents the city.',
     mandate: [
       'Article 243R & 243S: Composition of Municipalities and Ward Committees.',
       '12th Schedule of Constitution of India: 18 urban municipal functional domains.'
     ],
     powers: [
-      'Presides over monthly Corporation meetings; debates city development and welfare plans.',
+      'Presides over monthly Corporation meetings; debates city development, health, and education.',
       'Approves municipal taxation rates, developmental contracts, and city master plans.',
-      'Represents the city in civic functions, international partnerships, and state delegations.'
+      'Represents the city in civic functions, international municipal partnerships, and state delegations.'
     ],
     limitations: [
       'Under the Commissioner-type municipal model, executive implementation is vested in the Municipal Commissioner, not the Mayor.'
     ],
     governanceDetails: {
-      positionName: 'Mayor of the City & Municipal Corporation Council',
-      cadreOrService: 'Elected Urban Political Dignitary',
+      positionName: 'Mayor of the City & President of Municipal Corporation Council',
+      cadreOrService: 'Elected Urban Political Dignitary (First Citizen of the City)',
       constitutionalArticle: 'Articles 243Q, 243R, 243S, 243W & 12th Schedule',
-      electoralOrSelectionMethod: 'Elected by elected Ward Corporators (or directly by city electors)',
-      tenure: '2.5 to 5 Years (governed by State Municipal Act)',
-      geographicalJurisdiction: 'City Corporation Territory',
+      electoralOrSelectionMethod: 'Elected by majority vote of elected Ward Corporators',
+      tenure: '2.5 to 5 Years (governed by State Municipal Corporation Act)',
+      geographicalJurisdiction: 'Municipal Corporation City Limits',
       reportingTo: 'City Electors & General Body of Corporators'
+    },
+    sourceIds: ['SRC-V4-CONST'],
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'DEM-ADDL-MUNICIPAL-COMMISSIONER',
+    type: 'department',
+    title: 'Additional Municipal Commissioners (IAS Functional Chiefs — Projects, Health, City)',
+    abbreviation: 'ADDL-MC-BMC',
+    sectionId: 'SEC-DEM-07',
+    sectionNumber: '07',
+    level: 'local',
+    category: 'executive-administration',
+    position: { x: 3000, y: 2680 },
+    summary: 'Senior IAS officers (typically 4 in BMC: Projects, Western Suburbs, Eastern Suburbs, City) assisting the Municipal Commissioner in executing mega infrastructure (Coastal Road, Sewage Disposal), public health hospitals (KEM, Sion, Nair), and ward administration.',
+    mandate: [
+      'Mumbai Municipal Corporation Act 1888: Delegation of Commissioner\'s powers.'
+    ],
+    powers: [
+      'Commands zonal Deputy Municipal Commissioners (DMCs) and Assistant Municipal Commissioners (Ward Officers).',
+      'Sanctions engineering contracts, hospital tenders, and road reconstruction projects.'
+    ],
+    limitations: [
+      'Functions under the administrative and statutory authority of the Municipal Commissioner.'
+    ],
+    governanceDetails: {
+      positionName: 'Additional Municipal Commissioner (AMC) — Projects / City / Suburbs',
+      cadreOrService: 'Indian Administrative Service (IAS) — Super Time Scale (Pay Level 14)',
+      constitutionalArticle: 'MMC Act 1888 & State Urban Development Rules',
+      electoralOrSelectionMethod: 'Appointed by State Government from senior IAS cadre',
+      tenure: 'City posting (~2-3 years)',
+      geographicalJurisdiction: 'Designated Zones / Portfolios within Municipal Corporation',
+      reportingTo: 'Municipal Commissioner'
     },
     sourceIds: ['SRC-V4-CONST'],
     verificationStatus: 'verified'
@@ -1268,25 +1791,25 @@ export const NODES_V4: EducationNode[] = [
   {
     id: 'DEM-WARD-CORPORATOR',
     type: 'legislature',
-    title: 'Ward Corporator / Municipal Councillor (Urban Ward Representative)',
+    title: 'Ward Corporator / Municipal Councillor (227 BMC Wards & Ward Committees)',
     abbreviation: 'WARD-CORPORATOR',
-    sectionId: 'SEC-DEM-05',
-    sectionNumber: '05',
+    sectionId: 'SEC-DEM-07',
+    sectionNumber: '07',
     level: 'local',
     category: 'legislation',
-    position: { x: 1700, y: 4200 },
-    summary: 'Directly elected urban ward representative representing a city municipal ward (population ~15,000 to 50,000). Resolves local street, water, sanitation, and gutter grievances, and allocates Ward Development Funds.',
+    position: { x: 3700, y: 2680 },
+    summary: 'Directly elected urban ward representative representing an electoral ward (e.g. 227 wards in BMC Mumbai, ~50,000 citizens per ward). Sits in the General Body and Ward Committees under Article 243S, addresses local water, sewage, and street grievances, and utilizes Councillor Ward Funds.',
     mandate: [
       'Article 243R: Election of Municipal Councillors directly by ward voters.',
       'Article 243S: Constitution of Ward Committees in urban areas.'
     ],
     powers: [
-      'Votes on resolutions in the Municipal Corporation and Ward Committee.',
+      'Votes on resolutions in the Municipal Corporation General Body and Ward Committee.',
       'Recommends local civic works (paving, LED lighting, drainage) from municipal ward funds.',
       'Certifies local residential identity, hardship, and welfare scheme eligibility.'
     ],
     limitations: [
-      'Legislative representative; execution carried out by Assistant Municipal Commissioner (Ward Officer).'
+      'Legislative representative; execution carried out by Assistant Municipal Commissioner (Ward Officer / Ward A-T).'
     ],
     governanceDetails: {
       positionName: 'Ward Corporator / Municipal Councillor (Nagar Sevak)',
@@ -1294,9 +1817,40 @@ export const NODES_V4: EducationNode[] = [
       constitutionalArticle: 'Article 243R, 243S of Constitution of India',
       electoralOrSelectionMethod: 'Direct Election by Urban Ward Voters under Universal Adult Suffrage',
       tenure: '5 Years',
-      geographicalJurisdiction: 'Municipal Electoral Ward',
+      geographicalJurisdiction: 'Municipal Electoral Ward (Ward 1 to 227 in BMC)',
       reportingTo: 'Ward Citizens & Municipal Corporation General Body'
     },
+    sourceIds: ['SRC-V4-CONST'],
+    verificationStatus: 'verified'
+  },
+
+  // =========================================================================
+  // ZONE 8: RURAL PANCHAYATI RAJ (ZILLA PARISHAD TO GRAM PANCHAYAT)
+  // X: 1450 - 2100, Y: 3500 - 4350
+  // =========================================================================
+  {
+    id: 'HUB-DEM-PANCHAYAT',
+    type: 'sectionHub',
+    title: 'SECTION 08: RURAL PANCHAYATI RAJ (3-TIER LOCAL GOVERNANCE)',
+    abbreviation: 'HUB-PANCHAYAT',
+    sectionId: 'SEC-DEM-08',
+    sectionNumber: '08',
+    level: 'district',
+    category: 'executive-administration',
+    position: { x: 1800, y: 3500 },
+    summary: '73rd Constitutional Amendment (Articles 243-243O) & 11th Schedule: 3-tier decentralized rural self-governance from Zilla Parishad down to Village Gram Panchayat.',
+    mandate: [
+      'Plan and implement rural economic development and social justice schemes under 11th Schedule',
+      'Deliver local civic amenities, rural water supply, sanitation, and primary education'
+    ],
+    powers: [
+      'Levy authorized local village taxes, fees, and tolls under State Panchayati Raj Acts',
+      'Execute central and state rural development programs (e.g. MGNREGS, rural roads)'
+    ],
+    limitations: [
+      'Financially dependent on State Finance Commission awards and central grant allocations',
+      'Panchayat resolutions subject to state government audit and statutory oversight'
+    ],
     sourceIds: ['SRC-V4-CONST'],
     verificationStatus: 'verified'
   },
@@ -1305,11 +1859,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'executive',
     title: 'Chief Executive Officer, Zilla Parishad (ZP CEO — IAS District Rural Head)',
     abbreviation: 'ZP-CEO',
-    sectionId: 'SEC-DEM-05',
-    sectionNumber: '05',
+    sectionId: 'SEC-DEM-08',
+    sectionNumber: '08',
     level: 'district',
     category: 'executive-administration',
-    position: { x: 2600, y: 3500 },
+    position: { x: 1450, y: 3620 },
     summary: 'The administrative chief of rural development and Panchayati Raj in the district under the 73rd Constitutional Amendment. A senior IAS officer exercising executive powers over primary education (Zilla Parishad schools), rural health (PHCs), rural roads, and drinking water supply.',
     mandate: [
       '73rd Constitutional Amendment Act 1992 (Article 243G & 11th Schedule).',
@@ -1340,11 +1894,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'department',
     title: 'Block Development Officer (BDO — Panchayat Samiti Intermediate Tier)',
     abbreviation: 'BDO-BLOCK',
-    sectionId: 'SEC-DEM-05',
-    sectionNumber: '05',
+    sectionId: 'SEC-DEM-08',
+    sectionNumber: '08',
     level: 'local',
     category: 'executive-administration',
-    position: { x: 2600, y: 3850 },
+    position: { x: 2100, y: 3620 },
     summary: 'Executive Officer of the intermediate Panchayati Raj tier (Panchayat Samiti / Block) under Article 243B. Coordinates rural development across 40 to 100 villages, supervises Gram Sevaks, and inspects village development projects.',
     mandate: [
       'Article 243B: Intermediate tier of Panchayats (Panchayat Samiti).',
@@ -1375,11 +1929,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'executive',
     title: 'Sarpanch / Village Pradhan (Constitutional Head of Gram Panchayat)',
     abbreviation: 'SARPANCH',
-    sectionId: 'SEC-DEM-05',
-    sectionNumber: '05',
+    sectionId: 'SEC-DEM-08',
+    sectionNumber: '08',
     level: 'local',
     category: 'executive-administration',
-    position: { x: 2350, y: 4200 },
+    position: { x: 1450, y: 3980 },
     summary: 'The elected constitutional head and political executive of the Gram Panchayat under Article 243D. Directly elected by all village adult voters (or by Ward Panchs, depending on state law). Chairs meetings of the Gram Panchayat and convenes mandatory sessions of the Sovereign Village Gram Sabha.',
     mandate: [
       '73rd Constitutional Amendment Act 1992 (Article 243C & 243D).',
@@ -1410,11 +1964,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'department',
     title: 'Gram Sevak / Village Secretary (Village Administrative Staff)',
     abbreviation: 'GRAM-SEVAK',
-    sectionId: 'SEC-DEM-05',
-    sectionNumber: '05',
+    sectionId: 'SEC-DEM-08',
+    sectionNumber: '08',
     level: 'local',
     category: 'executive-administration',
-    position: { x: 2750, y: 4200 },
+    position: { x: 2100, y: 3980 },
     summary: 'The permanent civil servant and administrative secretary of the Gram Panchayat appointed by the ZP CEO. Maintains the cash books, records Gram Sabha proceedings, registers births and deaths, and ensures statutory compliance for all village expenditures.',
     mandate: [
       'State Village Panchayats Act: Secretary of the Gram Panchayat appointed by ZP CEO.',
@@ -1445,11 +1999,11 @@ export const NODES_V4: EducationNode[] = [
     type: 'legislature',
     title: 'Ward Panch / Gram Panchayat Member (Village Ward Representative)',
     abbreviation: 'WARD-PANCH',
-    sectionId: 'SEC-DEM-05',
-    sectionNumber: '05',
+    sectionId: 'SEC-DEM-08',
+    sectionNumber: '08',
     level: 'local',
     category: 'legislation',
-    position: { x: 3100, y: 4200 },
+    position: { x: 1800, y: 4300 },
     summary: 'Elected village ward representative representing a neighborhood ward (population ~300 to 800). Sits on the Gram Panchayat committee (consisting of 7 to 17 members) and votes on local resolutions.',
     mandate: [
       'Article 243C: Composition of Panchayats by direct election from wards.'
@@ -1475,333 +2029,46 @@ export const NODES_V4: EducationNode[] = [
     verificationStatus: 'verified'
   },
 
-  // =========================================================================================
-  // TRACK 3: REVENUE, FINANCE, LEGAL & CONSTITUTIONAL OVERSIGHT (RIGHT COLUMN)
-  // X Range: 3700 to 4800
+  // =========================================================================
+  // ZONE 9: SOVEREIGN DEMOCRATIC BASE: CITIZENS & GRAM SABHA (BOTTOM CENTER)
+  // X: 1800 - 2900, Y: 4700 - 5050
   // =========================================================================
   {
-    id: 'DEM-MOF-MINISTER',
-    type: 'executive',
-    title: 'Union Finance Minister (Ministry of Finance - MOF)',
-    abbreviation: 'FINANCE-MINISTER',
-    sectionId: 'SEC-DEM-06',
-    sectionNumber: '06',
-    level: 'union',
-    category: 'executive-administration',
-    position: { x: 3800, y: 380 },
-    summary: 'Union Cabinet Minister in charge of economic management, taxation, national fiscal policy, banking system, and presentation of the Annual Financial Statement (Union Budget) to Parliament under Article 112.',
-    mandate: [
-      'Article 112: Annual Financial Statement laid before both Houses of Parliament.',
-      'Articles 265 to 281: Distribution of revenues between Union and States.'
-    ],
-    powers: [
-      'Presents the Union Budget and Finance Bill introducing direct and indirect tax rates.',
-      'Oversees the Department of Revenue, Department of Economic Affairs, and Department of Expenditure.',
-      'Coordinates national GST policy as Vice-Chair/member of the GST Council.'
-    ],
-    limitations: [
-      'Taxation and expenditure proposals require parliamentary approval by Lok Sabha under Article 265.'
-    ],
-    governanceDetails: {
-      positionName: 'Union Minister of Finance & Corporate Affairs (Cabinet Minister)',
-      cadreOrService: 'Elected Member of Parliament (Cabinet Rank)',
-      constitutionalArticle: 'Articles 74, 75, 112 of Constitution of India',
-      electoralOrSelectionMethod: 'Appointed by President on advice of Prime Minister from among MPs',
-      tenure: 'Pleasure of Prime Minister / Lok Sabha majority',
-      geographicalJurisdiction: 'Republic of India (National Economy & Fiscal Policy)',
-      reportingTo: 'Prime Minister of India & Lok Sabha'
-    },
-    sourceIds: ['SRC-V4-BUSINESS-RULES'],
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'DEM-MOLJ-MINISTER',
-    type: 'executive',
-    title: 'Union Law Minister (Ministry of Law and Justice - MOLJ)',
-    abbreviation: 'LAW-MINISTER',
-    sectionId: 'SEC-DEM-06',
-    sectionNumber: '06',
-    level: 'union',
-    category: 'executive-administration',
-    position: { x: 4400, y: 380 },
-    summary: 'Union Cabinet Minister overseeing legislative drafting, legal affairs, administration of justice, legal aid, and liaison with the higher judiciary and Election Commission.',
-    mandate: [
-      'Allocation of Business Rules 1961: Legislative Department & Department of Legal Affairs.'
-    ],
-    powers: [
-      'Drafts all Government Bills, Ordinances, and statutory rules.',
-      'Processes judicial appointments to the Supreme Court and High Courts under the Collegium system.'
-    ],
-    limitations: [
-      'Independence of the Judiciary (Article 50): Cannot direct or interfere in judicial adjudications.'
-    ],
-    governanceDetails: {
-      positionName: 'Union Minister of Law and Justice (Cabinet Minister)',
-      cadreOrService: 'Elected Member of Parliament (Cabinet Rank)',
-      constitutionalArticle: 'Articles 74, 75 of Constitution of India',
-      electoralOrSelectionMethod: 'Appointed by President on advice of Prime Minister from among MPs',
-      tenure: 'Pleasure of Prime Minister',
-      geographicalJurisdiction: 'Republic of India (Legal & Legislative Affairs)',
-      reportingTo: 'Prime Minister of India'
-    },
-    sourceIds: ['SRC-V4-BUSINESS-RULES'],
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'DEM-CBDT-IRS-REVENUE',
-    type: 'department',
-    title: 'Central Board of Direct Taxes (CBDT / IRS Revenue Hierarchy)',
-    abbreviation: 'CBDT-IRS',
-    sectionId: 'SEC-DEM-06',
-    sectionNumber: '06',
-    level: 'union',
-    category: 'executive-administration',
-    position: { x: 3800, y: 700 },
-    summary: 'Statutory authority under the Central Boards of Revenue Act 1963 administering direct taxes (Income Tax, Corporation Tax). Staffed by the Indian Revenue Service (IRS). Linear hierarchy: Principal Chief Commissioner of Income Tax (PCCIT) &rarr; Chief Commissioner (CCIT) &rarr; Commissioner / Pr. Commissioner (CIT) &rarr; Joint / Additional Commissioner (JCIT) &rarr; Assistant / Deputy Commissioner (ACIT) &rarr; Income Tax Officer (ITO) &rarr; Tax Inspector.',
-    mandate: [
-      'Income-tax Act 1961 & Central Boards of Revenue Act 1963.',
-      'Article 265: No tax shall be levied or collected except by authority of law.'
-    ],
-    powers: [
-      'Assess income tax returns, conduct search and seizure operations, and freeze illicit bank accounts.',
-      'Issues statutory assessment orders, tax penalties, and criminal prosecution for tax evasion.'
-    ],
-    limitations: [
-      'Subject to statutory tax appeals before CIT(Appeals), Income Tax Appellate Tribunal (ITAT), and High Courts.'
-    ],
-    governanceDetails: {
-      positionName: 'Chairman, CBDT & Indian Revenue Service (IRS) Cadre Hierarchy',
-      cadreOrService: 'Indian Revenue Service (IRS — Direct Taxes) — Apex to Senior Time Scale',
-      constitutionalArticle: 'Central Boards of Revenue Act 1963 & Income-tax Act 1961',
-      electoralOrSelectionMethod: 'IRS recruited through UPSC Civil Services Examination',
-      tenure: 'Permanent civil service cadre',
-      geographicalJurisdiction: 'Income Tax Regions and Assessment Circles across India',
-      reportingTo: 'Revenue Secretary & Union Finance Minister'
-    },
-    sourceIds: ['SRC-V4-BUSINESS-RULES'],
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'DEM-AG-INDIA',
-    type: 'constitutional',
-    title: 'Attorney General for India (First Law Officer of the Republic)',
-    abbreviation: 'ATTORNEY-GENERAL',
-    sectionId: 'SEC-DEM-06',
-    sectionNumber: '06',
+    id: 'HUB-DEM-CITIZEN',
+    type: 'sectionHub',
+    title: 'SECTION 09: SOVEREIGN DEMOCRATIC BASE (WE, THE PEOPLE OF INDIA)',
+    abbreviation: 'HUB-CITIZEN',
+    sectionId: 'SEC-DEM-09',
+    sectionNumber: '09',
     level: 'constitutional',
     category: 'legislation',
-    position: { x: 4400, y: 700 },
-    summary: 'The highest legal officer in the country appointed by the President under Article 76. Qualified to be appointed a Judge of the Supreme Court. Advises the Government of India upon legal matters, represents the Union in all Supreme Court litigation, and has the right of audience in all courts in India.',
+    position: { x: 2350, y: 4700 },
+    summary: 'The ultimate fountainhead of constitutional sovereignty under the Preamble & Article 326. Adult citizens exercise direct franchise electing the Union Parliament, State Assemblies, BMC/Municipalities, and Panchayats.',
     mandate: [
-      'Article 76: Attorney-General for India appointed by the President.',
-      'Article 88: Right of Attorney-General to speak and take part in proceedings of either House of Parliament.'
+      'Exercise sovereign constitutional power through universal adult suffrage under Article 326',
+      'Participate in direct grassroots democracy through village Gram Sabhas and ward committee forums'
     ],
     powers: [
-      'Appears on behalf of the Government of India in all cases in the Supreme Court.',
-      'Represents the President in Article 143 Presidential Reference matters before the Supreme Court.',
-      'Addresses Parliament on constitutional and statutory matters (without voting right).'
+      'Elect representatives to the Lok Sabha, Vidhan Sabha, Municipal Corporations, and Village Panchayats',
+      'Enforce fundamental rights under Article 32 (Supreme Court) and Article 226 (High Court) via prerogative writs'
     ],
     limitations: [
-      'Does not hold the right to vote in Parliament (Article 88).',
-      'Holds office during the pleasure of the President of India (Article 76(4)).'
+      'Subject to statutory rule of law and reasonable restrictions under Article 19(2)-(6)',
+      'Bound by constitutional fundamental duties articulated under Article 51A'
     ],
-    governanceDetails: {
-      positionName: 'Attorney General for India (Highest Law Officer of Union)',
-      cadreOrService: 'Constitutional Legal Officer (Senior Advocate of Supreme Court)',
-      constitutionalArticle: 'Articles 76 & 88 of Constitution of India',
-      electoralOrSelectionMethod: 'Appointed by President on advice of the Union Cabinet',
-      tenure: 'Pleasure of the President (traditionally linked to Government term)',
-      geographicalJurisdiction: 'All Courts in the Territory of India & Parliament',
-      reportingTo: 'President of India & Union Ministry of Law and Justice'
-    },
-    sourceIds: ['SRC-V4-CONST'],
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'DEM-STATE-FINANCE-DEPT',
-    type: 'department',
-    title: 'State Finance & State Tax Department (Finance Secretary / State GST)',
-    abbreviation: 'STATE-FINANCE',
-    sectionId: 'SEC-DEM-06',
-    sectionNumber: '06',
-    level: 'state',
-    category: 'executive-administration',
-    position: { x: 3800, y: 1050 },
-    summary: 'The state department administering state budgetary finances, treasury systems, and commercial taxes (State GST, excise duty, stamp duty, motor vehicle taxes). Staffed by the State Commercial Tax Service and headed by an IAS Principal Secretary.',
-    mandate: [
-      'State Goods and Services Tax (SGST) Act 2017 & State Financial Rules.',
-      'Schedule 7, List II: State taxes and duties.'
-    ],
-    powers: [
-      'Administers state budget expenditures, treasury payments, and state debt management.',
-      'Collects State GST, stamp duties, and registration fees via Commissioner of State Tax.'
-    ],
-    limitations: [
-      'GST tax rates are unified and determined collectively by the federal GST Council.'
-    ],
-    governanceDetails: {
-      positionName: 'Principal Secretary (Finance) & Commissioner of State Tax (SGST)',
-      cadreOrService: 'Indian Administrative Service (IAS) & State Taxation Service',
-      constitutionalArticle: 'State GST Act 2017 & Article 279A (GST Council)',
-      electoralOrSelectionMethod: 'Appointed by State Government',
-      tenure: 'State posting (~2-3 years)',
-      geographicalJurisdiction: 'Entire State Territory',
-      reportingTo: 'State Finance Minister & Chief Secretary'
-    },
-    sourceIds: ['SRC-V4-CONST'],
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'DEM-DOPT-SEC',
-    type: 'department',
-    title: 'Department of Personnel and Training (DoPT Secretary)',
-    abbreviation: 'DOPT-SECRETARY',
-    sectionId: 'SEC-DEM-06',
-    sectionNumber: '06',
-    level: 'union',
-    category: 'executive-administration',
-    position: { x: 4400, y: 1050 },
-    summary: 'The central personnel authority of the Government of India, operating under the Prime Minister\'s Ministry of Personnel, Public Grievances and Pensions. Controls the All India Services (IAS, IPS, IFoS), civil service rules, disciplinary codes, anti-corruption vigilance policy, and the Central Vigilance Commission (CVC) & CBI.',
-    mandate: [
-      'All India Services Act 1951 & Civil Services (Classification, Control and Appeal) Rules.',
-      'Cadre Controlling Authority for the Indian Administrative Service (IAS).'
-    ],
-    powers: [
-      'Determines civil service recruitment vacancies, cadre allocations, and central deputation panels.',
-      'Administers Central Vigilance policy, integrity rules, and civil service training (LBSNAA Mussoorie).'
-    ],
-    limitations: [
-      'Works under the Appointments Committee of the Cabinet (ACC) chaired by the Prime Minister.'
-    ],
-    governanceDetails: {
-      positionName: 'Secretary, Department of Personnel and Training (DoPT)',
-      cadreOrService: 'Indian Administrative Service (IAS) — Apex Scale (Pay Level 17)',
-      constitutionalArticle: 'Article 309, 311, 312 of Constitution of India',
-      electoralOrSelectionMethod: 'Appointed by Appointments Committee of the Cabinet (ACC)',
-      tenure: 'Central posting (~2 years)',
-      geographicalJurisdiction: 'Government of India (North Block, New Delhi)',
-      reportingTo: 'Minister of Personnel (Prime Minister) & Cabinet Secretary'
-    },
-    sourceIds: ['SRC-V4-AIS'],
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'DEM-ECI',
-    type: 'constitutional',
-    title: 'Election Commission of India (Chief Election Commissioner & ECs)',
-    abbreviation: 'ECI-CEC',
-    sectionId: 'SEC-DEM-06',
-    sectionNumber: '06',
-    level: 'constitutional',
-    category: 'oversight-remedies',
-    position: { x: 4100, y: 1400 },
-    summary: 'Autonomous constitutional authority under Article 324 vested with superintendence, direction, and control of all elections to Parliament, State Legislatures, and the offices of President and Vice-President. Enforces the Model Code of Conduct (MCC) and registers political parties.',
-    mandate: [
-      'Article 324: Superintendence, direction, and control of elections to be vested in an Election Commission.',
-      'Representation of the People Act 1950 & 1951.'
-    ],
-    powers: [
-      'Announces national and state election schedules; enforces Model Code of Conduct (MCC).',
-      'Commands all civil and police officers on election duty under deemed central deputation.',
-      'Allots election symbols, monitors campaign expenditure, and registers political parties.'
-    ],
-    limitations: [
-      'Supreme Court judicial review over election petitions; does not conduct Panchayat/Municipal elections (handled by State Election Commissions under Art 243K/243ZA).'
-    ],
-    governanceDetails: {
-      positionName: 'Chief Election Commissioner of India (CEC) & Election Commissioners',
-      cadreOrService: 'Constitutional Oversight Head (Rank equivalent to Supreme Court Judge)',
-      constitutionalArticle: 'Articles 324-329 of Constitution of India & RPA Acts',
-      electoralOrSelectionMethod: 'Appointed by President on advice of Selection Committee under Chief Election Commissioner Act 2023',
-      tenure: '6 Years or until Age 65 (Removal only by parliamentary impeachment like SC Judge)',
-      geographicalJurisdiction: 'Republic of India (Nirvachan Sadan, New Delhi)',
-      reportingTo: 'Constitution of India & Parliament of India'
-    },
     sourceIds: ['SRC-V4-CONST', 'SRC-V4-RPA'],
     verificationStatus: 'verified'
   },
-  {
-    id: 'DEM-UPSC',
-    type: 'constitutional',
-    title: 'Union Public Service Commission (Chairman & Members, UPSC)',
-    abbreviation: 'UPSC-CHAIRMAN',
-    sectionId: 'SEC-DEM-06',
-    sectionNumber: '06',
-    level: 'constitutional',
-    category: 'oversight-remedies',
-    position: { x: 4100, y: 1750 },
-    summary: 'The central recruiting agency of India established under Article 315 of the Constitution. Conducts nationwide competitive examinations for appointment to the All-India Services (IAS, IPS, IFoS), Central Civil Services (IFS, IRS), and Defence forces (NDA, CDS). Mandatory consultation on disciplinary matters under Article 320.',
-    mandate: [
-      'Article 315: Public Service Commission for the Union.',
-      'Article 320: Functions of Public Service Commissions (Recruitment and Disciplinary Consultation).'
-    ],
-    powers: [
-      'Conducts annual Civil Services Examination (CSE) and other national recruitments.',
-      'Advises the President on promotions, cadre transfers, and major disciplinary penalties for All India Services.'
-    ],
-    limitations: [
-      'Consultative and recruiting body; actual appointment orders are issued by the President / DoPT.'
-    ],
-    governanceDetails: {
-      positionName: 'Chairman and Members, Union Public Service Commission (UPSC)',
-      cadreOrService: 'Constitutional Commission Dignitary',
-      constitutionalArticle: 'Articles 315-323 of Constitution of India',
-      electoralOrSelectionMethod: 'Appointed by President of India (at least half must have held 10+ years government service)',
-      tenure: '6 Years or until Age 65 (Ineligible for further employment under Central/State Govt)',
-      geographicalJurisdiction: 'Republic of India (Dholpur House, New Delhi)',
-      reportingTo: 'President of India (Annual Report submitted to Parliament)'
-    },
-    sourceIds: ['SRC-V4-CONST', 'SRC-V4-AIS'],
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'DEM-SPSC',
-    type: 'constitutional',
-    title: 'State Public Service Commission (Chairman & Members, SPSC)',
-    abbreviation: 'SPSC-CHAIRMAN',
-    sectionId: 'SEC-DEM-06',
-    sectionNumber: '06',
-    level: 'state',
-    category: 'oversight-remedies',
-    position: { x: 4100, y: 2100 },
-    summary: 'State constitutional recruiting body under Article 315 (e.g. MPSC in Maharashtra, UPPSC in Uttar Pradesh, TNPSC in Tamil Nadu). Conducts competitive examinations for State Civil Services (Deputy Collector / Tehsildar) and State Police Service (Deputy SP).',
-    mandate: [
-      'Article 315 & 320: State Public Service Commission.'
-    ],
-    powers: [
-      'Conducts state civil services examinations; recommends merit list to State Government for appointments.',
-      'Mandatory consultation by State Government on disciplinary penalties against State Gazetted officers.'
-    ],
-    limitations: [
-      'Appointed by Governor but can ONLY be removed by order of the President of India after SC inquiry (Art 317).'
-    ],
-    governanceDetails: {
-      positionName: 'Chairman and Members, State Public Service Commission (SPSC / MPSC / UPPSC)',
-      cadreOrService: 'State Constitutional Commission Dignitary',
-      constitutionalArticle: 'Articles 315-323 of Constitution of India',
-      electoralOrSelectionMethod: 'Appointed by Governor of the State (Removal exclusively by President of India under Art 317)',
-      tenure: '6 Years or until Age 62',
-      geographicalJurisdiction: 'State Territory',
-      reportingTo: 'Governor of the State (Annual Report submitted to State Legislature)'
-    },
-    sourceIds: ['SRC-V4-CONST'],
-    verificationStatus: 'verified'
-  },
-
-  // =========================================================================
-  // SOVEREIGN DEMOCRATIC BASE: CITIZENS & GRAM SABHA (BOTTOM CENTER)
-  // X Range: 1900 to 2900, Y: 4600
-  // =========================================================================
   {
     id: 'DEM-GRAM-SABHA',
     type: 'constitutional',
     title: 'Gram Sabha (Sovereign Assembly of All Village Voters)',
     abbreviation: 'GRAM-SABHA',
-    sectionId: 'SEC-DEM-07',
-    sectionNumber: '07',
+    sectionId: 'SEC-DEM-09',
+    sectionNumber: '09',
     level: 'constitutional',
     category: 'legislation',
-    position: { x: 1900, y: 4600 },
+    position: { x: 1800, y: 4820 },
     summary: 'The constitutional embodiment of direct democracy in India under Article 243A. Comprises every adult citizen residing in the village whose name is registered in the electoral roll. The Gram Sabha ratifies annual village development plans, approves the budget, audits all expenditures (Social Audit), and selects beneficiaries for welfare schemes.',
     mandate: [
       'Article 243A: Gram Sabha may exercise powers and functions at village level as State Legislature provides.',
@@ -1833,12 +2100,12 @@ export const NODES_V4: EducationNode[] = [
     type: 'constitutional',
     title: 'Citizen of India (Sovereign People & Electoral Franchise)',
     abbreviation: 'SOVEREIGN-CITIZENS',
-    sectionId: 'SEC-DEM-07',
-    sectionNumber: '07',
+    sectionId: 'SEC-DEM-09',
+    sectionNumber: '09',
     level: 'constitutional',
     category: 'legislation',
-    position: { x: 2500, y: 4600 },
-    summary: 'We, The People of India — the ultimate sovereign fountainhead of the Republic from whom the Constitution derives its authority (Preamble). Sovereign adult citizens exercise direct voting power under Article 326 (Universal Adult Suffrage) to elect Members of Parliament (Lok Sabha), Members of Legislative Assemblies (MLAs), Urban Corporators, and Village Panchayats, holding all public authorities democratically accountable.',
+    position: { x: 2500, y: 4820 },
+    summary: 'We, The People of India — the ultimate sovereign fountainhead of the Republic from whom the Constitution derives its authority (Preamble). Sovereign adult citizens exercise direct voting power under Article 326 (Universal Adult Suffrage) to elect Members of Parliament (Lok Sabha), Members of Legislative Assemblies (MLAs), Urban Corporators (BMC), and Village Panchayats, holding all public authorities democratically accountable.',
     mandate: [
       'Preamble: We, The People of India, having solemnly resolved to constitute India into a Sovereign Socialist Secular Democratic Republic...',
       'Article 326: Elections to the House of the People and to the Legislative Assemblies of States to be on the basis of adult suffrage (Age 18+).',
@@ -1846,7 +2113,7 @@ export const NODES_V4: EducationNode[] = [
     ],
     powers: [
       'Directly elects Members of the Lok Sabha (Union Government mandate) and State Legislative Assemblies (MLAs).',
-      'Directly elects Urban Ward Corporators and Village Ward Panchs / Sarpanches.',
+      'Directly elects Urban Ward Corporators (BMC) and Village Ward Panchs / Sarpanches.',
       'Holds constitutional right to petition the Supreme Court (Article 32) and High Courts (Article 226) via Writ Petitions.',
       'Exercises Right to Information (RTI Act 2005) demanding accountability from all public offices.'
     ],
@@ -1930,42 +2197,10 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
   },
 
   // ==========================================
-  // TRACK 1: HOME & POLICE COMMAND (SOLID DOWNWARD)
+  // STATE POLICE COMMAND (SOLID DOWNWARD HIERARCHY)
   // ==========================================
   {
     id: 'REL-V4-010',
-    sourceNodeId: 'DEM-PM',
-    targetNodeId: 'DEM-MHA-MINISTER',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Recommends appointment & allocates Home portfolio to Union Home Minister',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-011',
-    sourceNodeId: 'DEM-MHA-MINISTER',
-    targetNodeId: 'DEM-MHA-SECRETARY',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Directs administrative policies & internal security execution',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-012',
-    sourceNodeId: 'DEM-MHA-SECRETARY',
-    targetNodeId: 'DEM-CAPF-HEADS',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Administrative superintendence & operational tasking of CAPF forces',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-013',
-    sourceNodeId: 'DEM-MHA-SECRETARY',
-    targetNodeId: 'DEM-STATE-HOME-DEPT',
-    type: 'COORDINATES', isAdvisory: true,
-    label: 'Federal security coordination, intelligence sharing & CAPF deployments (Art 355)',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-014',
     sourceNodeId: 'DEM-STATE-HOME-DEPT',
     targetNodeId: 'DEM-POL-DGP',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -1973,7 +2208,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-015',
+    id: 'REL-V4-011',
     sourceNodeId: 'DEM-POL-DGP',
     targetNodeId: 'DEM-POL-ADG',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -1981,7 +2216,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-016',
+    id: 'REL-V4-012',
     sourceNodeId: 'DEM-POL-ADG',
     targetNodeId: 'DEM-POL-IG',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -1989,7 +2224,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-017',
+    id: 'REL-V4-013',
     sourceNodeId: 'DEM-POL-IG',
     targetNodeId: 'DEM-POL-DIG',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -1997,7 +2232,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-018',
+    id: 'REL-V4-014',
     sourceNodeId: 'DEM-POL-DIG',
     targetNodeId: 'DEM-POL-SP',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -2005,7 +2240,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-019',
+    id: 'REL-V4-015',
     sourceNodeId: 'DEM-POL-SP',
     targetNodeId: 'DEM-POL-ASP-DSP',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -2013,7 +2248,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-020',
+    id: 'REL-V4-016',
     sourceNodeId: 'DEM-POL-ASP-DSP',
     targetNodeId: 'DEM-POL-SHO',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -2021,7 +2256,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-021',
+    id: 'REL-V4-017',
     sourceNodeId: 'DEM-POL-SHO',
     targetNodeId: 'DEM-POL-SI',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -2029,7 +2264,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-022',
+    id: 'REL-V4-018',
     sourceNodeId: 'DEM-POL-SI',
     targetNodeId: 'DEM-POL-HC',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -2037,7 +2272,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-023',
+    id: 'REL-V4-019',
     sourceNodeId: 'DEM-POL-HC',
     targetNodeId: 'DEM-POL-CONSTABLE',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -2045,7 +2280,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-024',
+    id: 'REL-V4-020',
     sourceNodeId: 'DEM-POL-CONSTABLE',
     targetNodeId: 'DEM-CITIZENS',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -2053,9 +2288,45 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
 
-  // =========================================================================
-  // TRACK 2: CIVIL GOVERNANCE, PARLIAMENT, STATE EXECUTIVE & FIELD MAGISTRACY
-  // =========================================================================
+  // ==========================================
+  // PARLIAMENT ZONE RELATIONSHIPS
+  // ==========================================
+  {
+    id: 'REL-V4-025',
+    sourceNodeId: 'DEM-LS-SPEAKER',
+    targetNodeId: 'DEM-MP-LOK-SABHA',
+    type: 'LEGISLATES',
+    label: 'Presides over 543 elected MPs and regulates parliamentary proceedings',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-026',
+    sourceNodeId: 'DEM-RS-CHAIRMAN',
+    targetNodeId: 'DEM-MP-RAJYA-SABHA',
+    type: 'LEGISLATES',
+    label: 'Presides over 245 Upper House representatives of States',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-027',
+    sourceNodeId: 'DEM-PM',
+    targetNodeId: 'DEM-MP-LOK-SABHA',
+    type: 'CONSTITUTIONALLY_EMPOWERS',
+    label: 'Prime Minister serves as elected MP in Lok Sabha (Leader of the House)',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-028',
+    sourceNodeId: 'DEM-MP-LOK-SABHA',
+    targetNodeId: 'DEM-PM',
+    type: 'LEGISLATES',
+    label: 'Lok Sabha majority confidence sustains Prime Minister & Cabinet in office (Art 75(3))',
+    verificationStatus: 'verified'
+  },
+
+  // ==========================================
+  // CENTRAL MINISTRIES SUITE RELATIONSHIPS
+  // ==========================================
   {
     id: 'REL-V4-030',
     sourceNodeId: 'DEM-PM',
@@ -2067,205 +2338,13 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
   {
     id: 'REL-V4-031',
     sourceNodeId: 'DEM-PM',
-    targetNodeId: 'DEM-MP-LOK-SABHA',
-    type: 'CONSTITUTIONALLY_EMPOWERS',
-    label: 'Prime Minister serves as elected MP in Lok Sabha (Leader of the House)',
+    targetNodeId: 'DEM-MHA-MINISTER',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Recommends appointment & allocates Home portfolio to Union Home Minister',
     verificationStatus: 'verified'
   },
   {
     id: 'REL-V4-032',
-    sourceNodeId: 'DEM-LS-SPEAKER',
-    targetNodeId: 'DEM-MP-LOK-SABHA',
-    type: 'LEGISLATES',
-    label: 'Presides over 543 elected MPs and regulates parliamentary proceedings',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-033',
-    sourceNodeId: 'DEM-RS-CHAIRMAN',
-    targetNodeId: 'DEM-MP-RAJYA-SABHA',
-    type: 'LEGISLATES',
-    label: 'Presides over 245 Upper House representatives of States',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-034',
-    sourceNodeId: 'DEM-MP-LOK-SABHA',
-    targetNodeId: 'DEM-PM',
-    type: 'LEGISLATES',
-    label: 'Lok Sabha majority confidence sustains Prime Minister & Cabinet in office (Art 75(3))',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-035',
-    sourceNodeId: 'DEM-GOVERNOR',
-    targetNodeId: 'DEM-CM',
-    type: 'CONSTITUTIONALLY_EMPOWERS',
-    label: 'Appoints Chief Minister (Art 164(1)) & administers Oath of Office',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-036',
-    sourceNodeId: 'DEM-CM',
-    targetNodeId: 'DEM-GOVERNOR',
-    type: 'CONSTITUTIONALLY_EMPOWERS',
-    label: 'Aids and advises the Governor (Art 163) & communicates state decisions (Art 167)',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-037',
-    sourceNodeId: 'DEM-CM',
-    targetNodeId: 'DEM-MLA',
-    type: 'CONSTITUTIONALLY_EMPOWERS',
-    label: 'Chief Minister serves as elected MLA (or MLC) leading the Assembly majority',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-038',
-    sourceNodeId: 'DEM-MLA',
-    targetNodeId: 'DEM-CM',
-    type: 'LEGISLATES',
-    label: 'Vidhan Sabha majority confidence sustains State Government in office (Art 164(2))',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-039',
-    sourceNodeId: 'DEM-CM',
-    targetNodeId: 'DEM-CS-STATE',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Directs State Administration & chairs State Cabinet through Chief Secretary',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-040',
-    sourceNodeId: 'DEM-CS-STATE',
-    targetNodeId: 'DEM-DIV-COMMISSIONER',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Commands Divisional Commissioners for regional development and revenue oversight',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-041',
-    sourceNodeId: 'DEM-DIV-COMMISSIONER',
-    targetNodeId: 'DEM-DM-COLLECTOR',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Directs District Collectors and hears revenue appeals against Collectorate orders',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-042',
-    sourceNodeId: 'DEM-DM-COLLECTOR',
-    targetNodeId: 'DEM-SDM-SUBDIV',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Delegates sub-divisional executive magistracy & land acquisition to SDM',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-043',
-    sourceNodeId: 'DEM-SDM-SUBDIV',
-    targetNodeId: 'DEM-TEHSILDAR-MAGISTRATE',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Supervises Taluka revenue collection, mutation trials & executive orders',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-044',
-    sourceNodeId: 'DEM-TEHSILDAR-MAGISTRATE',
-    targetNodeId: 'DEM-TALATHI-PATWARI',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Commands Village Talathis for Record of Rights (7/12) & crop assessments',
-    verificationStatus: 'verified'
-  },
-
-  // Cross-Track Coordination: DM & District SP
-  {
-    id: 'REL-V4-045',
-    sourceNodeId: 'DEM-DM-COLLECTOR',
-    targetNodeId: 'DEM-POL-SP',
-    type: 'COORDINATES', isAdvisory: true,
-    label: 'General control & direction of police for district law & order (Police Act S.4 / CrPC S.144)',
-    verificationStatus: 'verified'
-  },
-
-  // Urban & Rural Local Governance Command Links
-  {
-    id: 'REL-V4-050',
-    sourceNodeId: 'DEM-CS-STATE',
-    targetNodeId: 'DEM-MUNICIPAL-COMMISSIONER',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Supervises urban governance policy through Principal Secretary, Urban Development',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-051',
-    sourceNodeId: 'DEM-MUNICIPAL-COMMISSIONER',
-    targetNodeId: 'DEM-MAYOR-COUNCIL',
-    type: 'LEGISLATES',
-    label: 'Submits municipal budget & executes resolutions of elected General Body',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-052',
-    sourceNodeId: 'DEM-MAYOR-COUNCIL',
-    targetNodeId: 'DEM-WARD-CORPORATOR',
-    type: 'LEGISLATES',
-    label: 'Presides over Council of Ward Corporators for municipal bylaws',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-053',
-    sourceNodeId: 'DEM-DM-COLLECTOR',
-    targetNodeId: 'DEM-ZP-CEO',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Coordinates district developmental planning and disaster relief with ZP CEO',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-054',
-    sourceNodeId: 'DEM-ZP-CEO',
-    targetNodeId: 'DEM-BDO-BLOCK',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Administrative command of Block Development Officers for rural schemes',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-055',
-    sourceNodeId: 'DEM-BDO-BLOCK',
-    targetNodeId: 'DEM-SARPANCH',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Sanctions block funding & monitors Gram Panchayat scheme execution',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-056',
-    sourceNodeId: 'DEM-BDO-BLOCK',
-    targetNodeId: 'DEM-GRAM-SEVAK',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Direct administrative control over Gram Sevaks for village cash books',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-057',
-    sourceNodeId: 'DEM-SARPANCH',
-    targetNodeId: 'DEM-WARD-PANCH',
-    type: 'LEGISLATES',
-    label: 'Chairs monthly Gram Panchayat committee of elected ward members',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-058',
-    sourceNodeId: 'DEM-SARPANCH',
-    targetNodeId: 'DEM-GRAM-SABHA',
-    type: 'CONSTITUTIONALLY_EMPOWERS',
-    label: 'Convenes Sovereign Gram Sabha and submits village accounts for Social Audit',
-    verificationStatus: 'verified'
-  },
-
-  // =========================================================================
-  // TRACK 3: FINANCE, LAW & CONSTITUTIONAL OVERSIGHT LINKS
-  // =========================================================================
-  {
-    id: 'REL-V4-060',
     sourceNodeId: 'DEM-PM',
     targetNodeId: 'DEM-MOF-MINISTER',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -2273,15 +2352,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-061',
-    sourceNodeId: 'DEM-MOF-MINISTER',
-    targetNodeId: 'DEM-CBDT-IRS-REVENUE',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Superintends direct taxation policy & revenue collection targets',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-062',
+    id: 'REL-V4-033',
     sourceNodeId: 'DEM-PM',
     targetNodeId: 'DEM-MOLJ-MINISTER',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -2289,15 +2360,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-063',
-    sourceNodeId: 'DEM-MOLJ-MINISTER',
-    targetNodeId: 'DEM-AG-INDIA',
-    type: 'CONSTITUTIONALLY_EMPOWERS',
-    label: 'Coordinates Union litigation & constitutional advice with Attorney General',
-    verificationStatus: 'verified'
-  },
-  {
-    id: 'REL-V4-064',
+    id: 'REL-V4-034',
     sourceNodeId: 'DEM-PM',
     targetNodeId: 'DEM-DOPT-SEC',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -2305,35 +2368,280 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-065',
+    id: 'REL-V4-035',
+    sourceNodeId: 'DEM-MHA-MINISTER',
+    targetNodeId: 'DEM-MHA-SECRETARY',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Directs administrative policies & internal security execution',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-036',
+    sourceNodeId: 'DEM-MHA-SECRETARY',
+    targetNodeId: 'DEM-CAPF-HEADS',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Administrative superintendence & operational tasking of CAPF forces',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-037',
+    sourceNodeId: 'DEM-MHA-SECRETARY',
+    targetNodeId: 'DEM-STATE-HOME-DEPT',
+    type: 'COORDINATES',
+    isAdvisory: true,
+    label: 'Federal security coordination, intelligence sharing & CAPF deployments (Art 355)',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-038',
+    sourceNodeId: 'DEM-MOF-MINISTER',
+    targetNodeId: 'DEM-CBDT-IRS-REVENUE',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Superintends direct taxation policy & revenue collection targets',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-039',
+    sourceNodeId: 'DEM-MOLJ-MINISTER',
+    targetNodeId: 'DEM-AG-INDIA',
+    type: 'CONSTITUTIONALLY_EMPOWERS',
+    label: 'Coordinates Union litigation & constitutional advice with Attorney General',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-040',
     sourceNodeId: 'DEM-DOPT-SEC',
     targetNodeId: 'DEM-UPSC',
     type: 'CONSTITUTIONALLY_EMPOWERS',
     label: 'Requisitions annual civil service vacancies (IAS, IPS, IRS) to UPSC',
     verificationStatus: 'verified'
   },
+
+  // ==========================================
+  // STATE LEGISLATURE (VIDHAN SABHA & PARISHAD)
+  // ==========================================
+  {
+    id: 'REL-V4-045',
+    sourceNodeId: 'DEM-GOVERNOR',
+    targetNodeId: 'DEM-CM',
+    type: 'CONSTITUTIONALLY_EMPOWERS',
+    label: 'Appoints Chief Minister (Art 164(1)) & administers Oath of Office',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-046',
+    sourceNodeId: 'DEM-CM',
+    targetNodeId: 'DEM-GOVERNOR',
+    type: 'CONSTITUTIONALLY_EMPOWERS',
+    label: 'Aids and advises the Governor (Art 163) & communicates state decisions (Art 167)',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-047',
+    sourceNodeId: 'DEM-CM',
+    targetNodeId: 'DEM-MLA',
+    type: 'CONSTITUTIONALLY_EMPOWERS',
+    label: 'Chief Minister serves as elected MLA (or MLC) leading the Assembly majority',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-048',
+    sourceNodeId: 'DEM-MLA',
+    targetNodeId: 'DEM-CM',
+    type: 'LEGISLATES',
+    label: 'Vidhan Sabha majority confidence sustains State Government in office (Art 164(2))',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-049',
+    sourceNodeId: 'DEM-MLA',
+    targetNodeId: 'DEM-MLC',
+    type: 'LEGISLATES',
+    label: 'MLAs elect one-third of the members of the Vidhan Parishad (Art 171(3)(d))',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-050',
+    sourceNodeId: 'DEM-CM',
+    targetNodeId: 'DEM-CS-STATE',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Directs State Administration & chairs State Cabinet through Chief Secretary',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-051',
+    sourceNodeId: 'DEM-CS-STATE',
+    targetNodeId: 'DEM-STATE-HOME-DEPT',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Administrative superintendence over State Home Department & public order',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-052',
+    sourceNodeId: 'DEM-CS-STATE',
+    targetNodeId: 'DEM-SPSC',
+    type: 'CONSTITUTIONALLY_EMPOWERS',
+    label: 'Requisitions state civil service vacancies (Deputy Collector, DySP) to SPSC/MPSC',
+    verificationStatus: 'verified'
+  },
+
+  // ==========================================
+  // DISTRICT ADMINISTRATION & MAGISTRACY
+  // ==========================================
+  {
+    id: 'REL-V4-055',
+    sourceNodeId: 'DEM-CS-STATE',
+    targetNodeId: 'DEM-DIV-COMMISSIONER',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Commands Divisional Commissioners for regional development and revenue oversight',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-056',
+    sourceNodeId: 'DEM-DIV-COMMISSIONER',
+    targetNodeId: 'DEM-DM-COLLECTOR',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Directs District Collectors and hears revenue appeals against Collectorate orders',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-057',
+    sourceNodeId: 'DEM-DM-COLLECTOR',
+    targetNodeId: 'DEM-SDM-SUBDIV',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Delegates sub-divisional executive magistracy & land acquisition to SDM',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-058',
+    sourceNodeId: 'DEM-SDM-SUBDIV',
+    targetNodeId: 'DEM-TEHSILDAR-MAGISTRATE',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Supervises Taluka revenue collection, mutation trials & executive orders',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-059',
+    sourceNodeId: 'DEM-TEHSILDAR-MAGISTRATE',
+    targetNodeId: 'DEM-TALATHI-PATWARI',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Commands Village Talathis for Record of Rights (7/12) & crop assessments',
+    verificationStatus: 'verified'
+  },
+
+  // Cross-Cluster Coordination: DM & District SP
+  {
+    id: 'REL-V4-060',
+    sourceNodeId: 'DEM-DM-COLLECTOR',
+    targetNodeId: 'DEM-POL-SP',
+    type: 'COORDINATES',
+    isAdvisory: true,
+    label: 'General control & direction of police for district law & order (Police Act S.4 / CrPC S.144)',
+    verificationStatus: 'verified'
+  },
+
+  // ==========================================
+  // URBAN MUNICIPAL CORPORATION — BMC MODEL
+  // ==========================================
+  {
+    id: 'REL-V4-065',
+    sourceNodeId: 'DEM-CS-STATE',
+    targetNodeId: 'DEM-MUNICIPAL-COMMISSIONER',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'State Urban Development Department superintends municipal governance policy',
+    verificationStatus: 'verified'
+  },
   {
     id: 'REL-V4-066',
-    sourceNodeId: 'DEM-CS-STATE',
-    targetNodeId: 'DEM-STATE-FINANCE-DEPT',
-    type: 'ADMINISTRATIVELY_OVERSEES',
-    label: 'Supervises state treasury, fiscal discipline, and State GST collection',
+    sourceNodeId: 'DEM-MUNICIPAL-COMMISSIONER',
+    targetNodeId: 'DEM-MAYOR-COUNCIL',
+    type: 'LEGISLATES',
+    label: 'Submits municipal budget & executes resolutions of elected General Body',
     verificationStatus: 'verified'
   },
   {
     id: 'REL-V4-067',
-    sourceNodeId: 'DEM-CS-STATE',
-    targetNodeId: 'DEM-SPSC',
-    type: 'CONSTITUTIONALLY_EMPOWERS',
-    label: 'Requisitions state civil service vacancies (Deputy Collector, DySP) to SPSC',
+    sourceNodeId: 'DEM-MUNICIPAL-COMMISSIONER',
+    targetNodeId: 'DEM-ADDL-MUNICIPAL-COMMISSIONER',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Directs Additional Municipal Commissioners for Projects, Health & City Zones',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-068',
+    sourceNodeId: 'DEM-MAYOR-COUNCIL',
+    targetNodeId: 'DEM-WARD-CORPORATOR',
+    type: 'LEGISLATES',
+    label: 'Presides over Council of 227 Ward Corporators for civic bylaws',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-069',
+    sourceNodeId: 'DEM-ADDL-MUNICIPAL-COMMISSIONER',
+    targetNodeId: 'DEM-WARD-CORPORATOR',
+    type: 'COORDINATES',
+    isAdvisory: true,
+    label: 'Coordinates with Ward Committees and allocates Ward Development Works',
     verificationStatus: 'verified'
   },
 
-  // =========================================================================
-  // CITIZEN FRANCHISE & PARTICIPATORY SOVEREIGNTY (UPWARD & HORIZONTAL)
-  // =========================================================================
+  // ==========================================
+  // RURAL PANCHAYATI RAJ RELATIONSHIPS
+  // ==========================================
   {
-    id: 'REL-V4-070',
+    id: 'REL-V4-075',
+    sourceNodeId: 'DEM-DM-COLLECTOR',
+    targetNodeId: 'DEM-ZP-CEO',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Coordinates district developmental planning and disaster relief with ZP CEO',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-076',
+    sourceNodeId: 'DEM-ZP-CEO',
+    targetNodeId: 'DEM-BDO-BLOCK',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Administrative command of Block Development Officers for rural schemes',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-077',
+    sourceNodeId: 'DEM-BDO-BLOCK',
+    targetNodeId: 'DEM-SARPANCH',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Sanctions block funding & monitors Gram Panchayat scheme execution',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-078',
+    sourceNodeId: 'DEM-BDO-BLOCK',
+    targetNodeId: 'DEM-GRAM-SEVAK',
+    type: 'ADMINISTRATIVELY_OVERSEES',
+    label: 'Direct administrative control over Gram Sevaks for village cash books',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-079',
+    sourceNodeId: 'DEM-SARPANCH',
+    targetNodeId: 'DEM-WARD-PANCH',
+    type: 'LEGISLATES',
+    label: 'Chairs monthly Gram Panchayat committee of elected ward members',
+    verificationStatus: 'verified'
+  },
+  {
+    id: 'REL-V4-080',
+    sourceNodeId: 'DEM-SARPANCH',
+    targetNodeId: 'DEM-GRAM-SABHA',
+    type: 'CONSTITUTIONALLY_EMPOWERS',
+    label: 'Convenes Sovereign Gram Sabha and submits village accounts for Social Audit',
+    verificationStatus: 'verified'
+  },
+
+  // ==========================================
+  // CITIZEN FRANCHISE & PARTICIPATORY SOVEREIGNTY
+  // ==========================================
+  {
+    id: 'REL-V4-085',
     sourceNodeId: 'DEM-CITIZENS',
     targetNodeId: 'DEM-MP-LOK-SABHA',
     type: 'LEGISLATES',
@@ -2341,7 +2649,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-071',
+    id: 'REL-V4-086',
     sourceNodeId: 'DEM-CITIZENS',
     targetNodeId: 'DEM-MLA',
     type: 'LEGISLATES',
@@ -2349,15 +2657,15 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-072',
+    id: 'REL-V4-087',
     sourceNodeId: 'DEM-CITIZENS',
     targetNodeId: 'DEM-WARD-CORPORATOR',
     type: 'LEGISLATES',
-    label: 'Direct election of Urban Ward Corporators in city municipal elections (Art 243R)',
+    label: 'Direct election of Ward Corporators in city municipal elections (Art 243R)',
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-073',
+    id: 'REL-V4-088',
     sourceNodeId: 'DEM-CITIZENS',
     targetNodeId: 'DEM-SARPANCH',
     type: 'LEGISLATES',
@@ -2365,7 +2673,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-074',
+    id: 'REL-V4-089',
     sourceNodeId: 'DEM-CITIZENS',
     targetNodeId: 'DEM-WARD-PANCH',
     type: 'LEGISLATES',
@@ -2373,7 +2681,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-075',
+    id: 'REL-V4-090',
     sourceNodeId: 'DEM-CITIZENS',
     targetNodeId: 'DEM-GRAM-SABHA',
     type: 'CONSTITUTIONALLY_EMPOWERS',
@@ -2381,15 +2689,16 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-076',
+    id: 'REL-V4-091',
     sourceNodeId: 'DEM-ECI',
     targetNodeId: 'DEM-CITIZENS',
-    type: 'COORDINATES', isAdvisory: true,
+    type: 'COORDINATES',
+    isAdvisory: true,
     label: 'Guarantees free and fair universal adult franchise & voter registration (Art 324)',
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-077',
+    id: 'REL-V4-092',
     sourceNodeId: 'DEM-CBDT-IRS-REVENUE',
     targetNodeId: 'DEM-CITIZENS',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -2397,7 +2706,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-078',
+    id: 'REL-V4-093',
     sourceNodeId: 'DEM-TALATHI-PATWARI',
     targetNodeId: 'DEM-CITIZENS',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -2405,7 +2714,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     verificationStatus: 'verified'
   },
   {
-    id: 'REL-V4-079',
+    id: 'REL-V4-094',
     sourceNodeId: 'DEM-WARD-CORPORATOR',
     targetNodeId: 'DEM-CITIZENS',
     type: 'ADMINISTRATIVELY_OVERSEES',
@@ -2424,7 +2733,7 @@ export const SOURCES_V4: SourceRecord[] = [
     lastVerifiedDate: '2026-10-18',
     sourcePriority: 1,
     verificationStatus: 'verified',
-    relatedNodeIds: ['DEM-PRESIDENT', 'DEM-PM', 'DEM-LS-SPEAKER', 'DEM-GOVERNOR', 'DEM-CM', 'DEM-ECI', 'DEM-CITIZENS']
+    relatedNodeIds: ['DEM-PRESIDENT', 'DEM-PM', 'DEM-LS-SPEAKER', 'DEM-GOVERNOR', 'DEM-CM', 'DEM-ECI', 'DEM-CITIZENS', 'DEM-MLA', 'DEM-MLC']
   },
   {
     id: 'SRC-V4-POLICE-ACT',
@@ -2469,5 +2778,16 @@ export const SOURCES_V4: SourceRecord[] = [
     sourcePriority: 1,
     verificationStatus: 'verified',
     relatedNodeIds: ['DEM-PM', 'DEM-CABINET-SEC', 'DEM-MHA-MINISTER', 'DEM-MOF-MINISTER', 'DEM-MOLJ-MINISTER']
+  },
+  {
+    id: 'SRC-V4-MMC-ACT',
+    name: 'Mumbai Municipal Corporation Act, 1888 (MMC Act)',
+    officialUrl: 'https://www.indiacode.nic.in',
+    documentTitle: 'The Mumbai Municipal Corporation Act, 1888 (Bombay Act No. III of 1888)',
+    sectionCitation: 'Section 4, 54, 64 & 68 (Executive Powers of the Commissioner)',
+    lastVerifiedDate: '2026-10-18',
+    sourcePriority: 1,
+    verificationStatus: 'verified',
+    relatedNodeIds: ['DEM-MUNICIPAL-COMMISSIONER', 'DEM-MAYOR-COUNCIL', 'DEM-ADDL-MUNICIPAL-COMMISSIONER', 'DEM-WARD-CORPORATOR']
   }
 ];

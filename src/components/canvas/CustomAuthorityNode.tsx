@@ -101,6 +101,79 @@ function getNodeTheme(data: EducationNode) {
       glowRing: 'ring-amber-500/30 border-amber-600'
     };
   }
+  // Democratic Governance (Whiteboard 4) - Body-Wise Visual Clusters
+  if (id.startsWith('DEM-POL-') || id === 'DEM-STATE-HOME-DEPT' || id === 'DEM-CAPF-HEADS') {
+    return {
+      borderTop: 'border-t-4 border-t-blue-700',
+      headerBg: 'bg-gradient-to-r from-blue-50 via-slate-50 to-white',
+      badgeBg: 'bg-blue-100 text-blue-900 border-blue-200',
+      iconBox: 'bg-blue-100 text-blue-800 border-blue-200',
+      glowRing: 'ring-blue-600/30 border-blue-700'
+    };
+  }
+  if (id.startsWith('DEM-LS-') || id.startsWith('DEM-RS-') || id === 'DEM-MP-LOK-SABHA' || id === 'DEM-MP-RAJYA-SABHA') {
+    return {
+      borderTop: 'border-t-4 border-t-rose-700',
+      headerBg: 'bg-gradient-to-r from-rose-50 via-red-50/40 to-white',
+      badgeBg: 'bg-rose-100 text-rose-900 border-rose-200',
+      iconBox: 'bg-rose-100 text-rose-800 border-rose-200',
+      glowRing: 'ring-rose-600/30 border-rose-700'
+    };
+  }
+  if (id === 'DEM-MLA' || id === 'DEM-MLC' || id === 'DEM-GOVERNOR' || id === 'DEM-CM') {
+    return {
+      borderTop: 'border-t-4 border-t-purple-700',
+      headerBg: 'bg-gradient-to-r from-purple-50 via-fuchsia-50/40 to-white',
+      badgeBg: 'bg-purple-100 text-purple-900 border-purple-200',
+      iconBox: 'bg-purple-100 text-purple-800 border-purple-200',
+      glowRing: 'ring-purple-600/30 border-purple-700'
+    };
+  }
+  if (id.startsWith('DEM-MUNICIPAL') || id === 'DEM-MAYOR-COUNCIL' || id === 'DEM-ADDL-MUNICIPAL-COMMISSIONER' || id === 'DEM-WARD-CORPORATOR') {
+    return {
+      borderTop: 'border-t-4 border-t-teal-600',
+      headerBg: 'bg-gradient-to-r from-teal-50 via-emerald-50/40 to-white',
+      badgeBg: 'bg-teal-100 text-teal-900 border-teal-200',
+      iconBox: 'bg-teal-100 text-teal-800 border-teal-200',
+      glowRing: 'ring-teal-500/30 border-teal-600'
+    };
+  }
+  if (id.startsWith('DEM-DIV-') || id.startsWith('DEM-DM-') || id.startsWith('DEM-SDM-') || id.startsWith('DEM-TEHSILDAR') || id.startsWith('DEM-TALATHI')) {
+    return {
+      borderTop: 'border-t-4 border-t-amber-600',
+      headerBg: 'bg-gradient-to-r from-amber-50 via-orange-50/40 to-white',
+      badgeBg: 'bg-amber-100 text-amber-900 border-amber-200',
+      iconBox: 'bg-amber-100 text-amber-800 border-amber-200',
+      glowRing: 'ring-amber-500/30 border-amber-600'
+    };
+  }
+  if (id.startsWith('DEM-ZP-') || id.startsWith('DEM-BDO-') || id.startsWith('DEM-SARPANCH') || id.startsWith('DEM-GRAM-SEVAK') || id.startsWith('DEM-WARD-PANCH')) {
+    return {
+      borderTop: 'border-t-4 border-t-emerald-700',
+      headerBg: 'bg-gradient-to-r from-emerald-50 via-green-50/40 to-white',
+      badgeBg: 'bg-emerald-100 text-emerald-900 border-emerald-200',
+      iconBox: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+      glowRing: 'ring-emerald-600/30 border-emerald-700'
+    };
+  }
+  if (id.startsWith('DEM-MHA-') || id.startsWith('DEM-MOF-') || id.startsWith('DEM-MOLJ-') || id.startsWith('DEM-DOPT-') || id.startsWith('DEM-CBDT-') || id.startsWith('DEM-AG-') || id === 'DEM-PM' || id === 'DEM-CABINET-SEC') {
+    return {
+      borderTop: 'border-t-4 border-t-indigo-700',
+      headerBg: 'bg-gradient-to-r from-indigo-50 via-blue-50/40 to-white',
+      badgeBg: 'bg-indigo-100 text-indigo-900 border-indigo-200',
+      iconBox: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+      glowRing: 'ring-indigo-600/30 border-indigo-700'
+    };
+  }
+  if (id === 'DEM-PRESIDENT' || id === 'DEM-VICE-PRESIDENT' || id === 'DEM-CITIZENS' || id === 'DEM-GRAM-SABHA') {
+    return {
+      borderTop: 'border-t-4 border-t-amber-500',
+      headerBg: 'bg-gradient-to-r from-amber-50 via-yellow-50 to-white',
+      badgeBg: 'bg-amber-100 text-amber-950 border-amber-300 font-semibold',
+      iconBox: 'bg-amber-100 text-amber-900 border-amber-300',
+      glowRing: 'ring-amber-500/40 border-amber-500'
+    };
+  }
   return {
     borderTop: 'border-t-4 border-t-emerald-700',
     headerBg: 'bg-gradient-to-r from-slate-50 to-white',
