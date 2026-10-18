@@ -286,28 +286,52 @@ export function SectionSidebar() {
 
                       const getTierName = () => {
                         switch (tier.id) {
-                          case 'TIER-UNION': return t('tier.union', currentLanguage);
-                          case 'TIER-STATE': return t('tier.state', currentLanguage);
-                          case 'TIER-DISTRICT': return t('tier.district', currentLanguage);
-                          case 'TIER-LOCAL': return t('tier.local', currentLanguage);
-                          case 'TIER-SOVEREIGN': return t('tier.sovereign', currentLanguage);
+                          case 'TIER-UNION': return t('tier.union', currentLanguage, tier.name);
+                          case 'TIER-STATE': return t('tier.state', currentLanguage, tier.name);
+                          case 'TIER-DISTRICT': return t('tier.district', currentLanguage, tier.name);
+                          case 'TIER-LOCAL': return t('tier.local', currentLanguage, tier.name);
+                          case 'TIER-SOVEREIGN': return t('tier.sovereign', currentLanguage, tier.name);
                           default: return tier.name;
                         }
                       };
 
+                      const isTierActive = focusSectionId === tier.id;
+
                       return (
-                        <div key={tier.id} className="rounded-lg overflow-hidden border border-slate-200/90 shadow-2xs">
-                          {/* Tier Category Header */}
-                          <button
-                            onClick={() => toggleTier(tier.id)}
-                            className={`w-full text-left px-2.5 py-2 flex items-center justify-between gap-1.5 transition-colors cursor-pointer ${style.bg} ${style.text}`}
+                        <div
+                          key={tier.id}
+                          className={`rounded-lg overflow-hidden border transition-all ${
+                            isTierActive
+                              ? 'border-amber-400 ring-2 ring-amber-400/80 shadow-md'
+                              : 'border-slate-200/90 shadow-2xs'
+                          }`}
+                        >
+                          {/* Tier Category Header - Clicking focuses all sections in this Tier on the canvas */}
+                          <div
+                            onClick={() => {
+                              // Focus this Tier's sections on canvas (or toggle back to all if already active)
+                              setFocusSection(isTierActive ? null : tier.id);
+                              // If collapsed, expand it so the user sees the constituent sections
+                              if (isCollapsed) {
+                                toggleTier(tier.id);
+                              }
+                            }}
+                            className={`w-full text-left px-2.5 py-2 flex items-center justify-between gap-1.5 transition-colors cursor-pointer select-none ${style.bg} ${style.text}`}
+                            title={`Click to show all ${tierSections.length} sections in Tier ${tierIdx + 1} on the whiteboard`}
                           >
                             <div className="flex items-center gap-2 min-w-0">
                               {icon}
                               <div className="min-w-0">
-                                <span className="text-[9px] font-bold tracking-wider uppercase text-amber-300 block">
-                                  Tier {tierIdx + 1} • {tier.badge}
-                                </span>
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-[9px] font-bold tracking-wider uppercase text-amber-300 block">
+                                    Tier {tierIdx + 1} • {tier.badge}
+                                  </span>
+                                  {isTierActive && (
+                                    <span className="text-[8px] font-extrabold uppercase bg-amber-400 text-slate-950 px-1 py-0.2 rounded font-mono">
+                                      Active
+                                    </span>
+                                  )}
+                                </div>
                                 <h4 className="text-[11px] font-bold truncate leading-tight">
                                   {getTierName()}
                                 </h4>
@@ -317,13 +341,23 @@ export function SectionSidebar() {
                               <span className={`text-[9.5px] font-mono px-1.5 py-0.5 rounded-full ${style.badgeBg}`}>
                                 {tierSections.length} Secs
                               </span>
-                              {isCollapsed ? (
-                                <ChevronRight className="w-3.5 h-3.5 opacity-70" />
-                              ) : (
-                                <ChevronDown className="w-3.5 h-3.5 opacity-70" />
-                              )}
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleTier(tier.id);
+                                }}
+                                className="p-1 hover:bg-white/20 rounded transition-colors"
+                                title={isCollapsed ? 'Expand section list' : 'Collapse section list'}
+                              >
+                                {isCollapsed ? (
+                                  <ChevronRight className="w-3.5 h-3.5 opacity-80" />
+                                ) : (
+                                  <ChevronDown className="w-3.5 h-3.5 opacity-80" />
+                                )}
+                              </button>
                             </div>
-                          </button>
+                          </div>
 
                           {/* Tier Child Sections */}
                           {!isCollapsed && (

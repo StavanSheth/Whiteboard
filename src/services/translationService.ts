@@ -80,6 +80,13 @@ export const UI_TRANSLATIONS: Record<string, { en?: string; hi: string; gu: stri
  'sidebar.addSection': { en: '+ Add Section', hi: '+ नया अनुभाग', gu: '+ નવો વિભાગ' },
  'sidebar.nodesCount': { en: 'Total Nodes:', hi: 'कुल पद:', gu: 'કુલ હોદ્દા:' },
 
+ // Jurisdictional Tiers
+ 'tier.union': { en: 'Union / Central Government Jurisdiction', hi: 'संघ / केंद्र सरकार क्षेत्राधिकार', gu: 'સંઘ / કેન્દ્ર સરકાર અધિકારક્ષેત્ર' },
+ 'tier.state': { en: 'State Government Jurisdiction', hi: 'राज्य सरकार क्षेत्राधिकार', gu: 'રાજ્ય સરકાર અધિકારક્ષેત્ર' },
+ 'tier.district': { en: 'District Administration & Magistracy', hi: 'जिला प्रशासन एवं फील्ड दंडाधिकारी', gu: 'જિલ્લા વહીવટ અને મેજિસ્ટ્રેસી' },
+ 'tier.local': { en: 'Local Self-Government Jurisdiction', hi: 'स्थानीय स्वशासन क्षेत्राधिकार', gu: 'સ્થાનિક સ્વરાજ્ય અધિકારક્ષેત્ર' },
+ 'tier.sovereign': { en: 'Sovereign Democratic Base', hi: 'संप्रभु लोकतांत्रिक आधार', gu: 'સાર્વભૌમ લોકશાહી પાયો' },
+
  // Detail Panel
  'detail.mandate': { en: 'Statutory Mandate & Powers', hi: 'वैधानिक अधिदेश एवं कार्यक्षेत्र', gu: 'કાનૂની આદેશ અને કાર્યક્ષેત્ર' },
  'detail.powers': { en: 'Specific Powers & Authorities', hi: 'विशिष्ट शक्तियाँ एवं निर्णय अधिकार', gu: 'વિશેષ સત્તાઓ અને નિર્ણાયક સત્તાઓ' },

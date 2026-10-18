@@ -19,6 +19,7 @@ import { calculateElkLayout } from '../../services/layoutService';
 import { CustomSectionNode } from './CustomSectionNode';
 import { CustomAuthorityNode } from './CustomAuthorityNode';
 import { RelationshipEdge } from './RelationshipEdge';
+import { JURISDICTIONAL_TIERS } from '../../data/whiteboard4-democracy';
 import {
   Loader2,
   Layers,
@@ -59,6 +60,7 @@ function CanvasInner() {
     setRelationshipDraft,
     openModal,
     focusSectionId,
+    setFocusSection,
     layoutDirection,
     nodeViewMode,
     alternateDepth,
@@ -80,7 +82,22 @@ function CanvasInner() {
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [isLoadingLayout, setIsLoadingLayout] = useState(true);
   const isPositionUpdateOnlyRef = useRef(false);
-  const { fitView, zoomIn, zoomOut } = useReactFlow();
+  const { fitView, zoomIn, zoomOut, setCenter } = useReactFlow();
+  const selectedNodeId = useWhiteboardStore((s) => s.selectedNodeId);
+
+  // Auto-center canvas on selected node
+  useEffect(() => {
+    if (!selectedNodeId || nodes.length === 0) return;
+    const targetNode = nodes.find((n) => n.id === selectedNodeId);
+    if (targetNode) {
+      setCenter(targetNode.position.x + 180, targetNode.position.y + 420, { zoom: 0.82, duration: 450 });
+    }
+  }, [selectedNodeId, nodes, setCenter]);
+
+  const focusedTier = useMemo(() => {
+    if (!focusSectionId || !focusSectionId.startsWith('TIER-')) return null;
+    return JURISDICTIONAL_TIERS.find((t) => t.id === focusSectionId) || null;
+  }, [focusSectionId]);
 
   // Re-layout when raw nodes, relationships, or any layout/sizing options change
   useEffect(() => {
@@ -554,6 +571,29 @@ function CanvasInner() {
           </div>
         )}
       </div>
+
+      {/* Floating Status Banner for Focused Tier / Section */}
+      {focusSectionId && (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3 px-4 py-2 bg-slate-900/95 text-white rounded-xl shadow-xl backdrop-blur-md border border-amber-500/70 animate-in fade-in slide-in-from-top-2 duration-200 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-slate-300 font-medium">Viewing:</span>
+            <strong className="text-amber-300 font-bold">
+              {focusedTier ? `${focusedTier.name} (${focusedTier.badge})` : `Section ${focusSectionId}`}
+            </strong>
+            <span className="text-[10.5px] text-emerald-300 font-mono px-1.5 py-0.5 rounded bg-emerald-950/80 border border-emerald-800">
+              {nodes.length} authorities
+            </span>
+          </div>
+          <button
+            onClick={() => setFocusSection(null)}
+            className="px-2.5 py-1 rounded bg-emerald-700 hover:bg-emerald-600 text-white font-semibold text-[11px] transition-colors cursor-pointer shadow-xs flex items-center gap-1"
+          >
+            <X className="w-3.5 h-3.5" />
+            <span>Show All Tiers</span>
+          </button>
+        </div>
+      )}
       {/* Floating Prompt for Connect Tool */}
       {canvasInteractionMode === 'connect' && (
         <div className="absolute top-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2 px-4 py-2 bg-slate-900/95 text-white rounded-xl shadow-xl backdrop-blur-md border border-purple-500/70 animate-in fade-in slide-in-from-top-2 duration-200 text-xs">

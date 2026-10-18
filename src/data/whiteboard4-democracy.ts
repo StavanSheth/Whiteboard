@@ -888,7 +888,7 @@ export const NODES_V4: EducationNode[] = [
       "constitutionalArticle": "",
       "positionName": "Prime Minister of India",
       "cadreOrService": "Elected Head of Government (Member of Parliament)",
-      "electoralOrSelectionMethod": "Appointed by President based on majority in Lok Sabha (Article 75(1))",
+      "electoralOrSelectionMethod": "Appointed by President based on majority in Lok Sabha)",
       "tenure": "At the pleasure of the President / Dependent on Lok Sabha majority (normally 5 years)",
       "geographicalJurisdiction": "Republic of India (Pan-India)",
       "reportingTo": "President of India (Art 78) & Lok Sabha (Art 75(3))",
@@ -1129,7 +1129,7 @@ export const NODES_V4: EducationNode[] = [
         "Parliamentary Public Accounts Committee"
       ],
       "appealForum": "Central Administrative Tribunal (CAT) / High Court",
-      "historicalOrigin": "Established as Secretariat head under Government of India Acts",
+      "historicalOrigin": "Established as Secretariat heads",
       "superiorAuthority": "Defence Minister, Cabinet Secretary, and Prime Minister.",
       "removalOrDeElectionMethod": "Transferred or replaced by the Appointments Committee of the Cabinet (ACC)."
     },
@@ -1529,7 +1529,7 @@ export const NODES_V4: EducationNode[] = [
       "reportsTo": "Secretary (CPV & OIA) & Foreign Secretary",
       "subordinatesCountOrScope": "37 Regional Passport Offices and 500+ PSK / Post Office PSK facilities",
       "checksAndBalances": [
-        "Statutory appeals under Passports Act",
+        "Statutory appeals",
         "High Court writ jurisdiction"
       ],
       "appealForum": "Chief Passport Officer (Appellate) / High Court",
@@ -1718,7 +1718,7 @@ export const NODES_V4: EducationNode[] = [
         "Parliamentary Public Accounts Committee"
       ],
       "appealForum": "Central Administrative Tribunal / Supreme Court",
-      "historicalOrigin": "Finance Department secretary post created under Charter Act of 1833",
+      "historicalOrigin": "Finance Department secretary post created of 1833",
       "superiorAuthority": "Union Finance Minister and Prime Minister.",
       "removalOrDeElectionMethod": "Transferred or replaced by the Appointments Committee of the Cabinet."
     },
@@ -1762,7 +1762,7 @@ export const NODES_V4: EducationNode[] = [
         "CAG of India constitutional audit"
       ],
       "appealForum": "Parliament / Supreme Court",
-      "historicalOrigin": "Finance Department created under Charter Act of 1833",
+      "historicalOrigin": "Finance Department created of 1833",
       "superiorAuthority": "Prime Minister of India, Union Cabinet, and Parliament.",
       "removalOrDeElectionMethod": "Dismissed by the President on the advice of the Prime Minister."
     },
@@ -1932,7 +1932,7 @@ export const NODES_V4: EducationNode[] = [
         "Commission of Railway Safety"
       ],
       "appealForum": "Central Administrative Tribunal / High Court",
-      "historicalOrigin": "Formed under Railway Board Act 1905, restructured in 2020 with CEO post",
+      "historicalOrigin": "Formed, restructured in 2020 with CEO post",
       "superiorAuthority": "Union Minister of Railways and Appointments Committee of the Cabinet.",
       "removalOrDeElectionMethod": "Appointed by ACC for fixed tenure; can be transferred, retired, or replaced by Central Government order."
     },
@@ -2783,7 +2783,7 @@ export const NODES_V4: EducationNode[] = [
         "Arbitration tribunals and High Courts"
       ],
       "appealForum": "Central Administrative Tribunal / High Court",
-      "historicalOrigin": "NHAI operationalized under NHAI Act 1988",
+      "historicalOrigin": "NHAI operationalized",
       "superiorAuthority": "Minister of Road Transport & Highways and Cabinet Secretary.",
       "removalOrDeElectionMethod": "Transferred by the Appointments Committee of the Cabinet."
     },
@@ -4309,7 +4309,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-VICE-PRESIDENT",
     "type": "COMMISSIONS",
-    "label": "Constitutional Executive Succession & Administration (Article 65)",
+    "label": "Constitutional Executive Succession & Administration",
     "verificationStatus": "verified"
   },
   {
@@ -4317,7 +4317,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-PM",
     "type": "APPOINTS",
-    "label": "Appoints Prime Minister commanding Lok Sabha majority (Article 75(1))",
+    "label": "Appoints Prime Minister commanding Lok Sabha majority)",
     "verificationStatus": "verified"
   },
   {
@@ -4325,7 +4325,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-JUDICIARY-SC",
     "type": "APPOINTS",
-    "label": "Appoints Chief Justice of India & Supreme Court Judges (Article 124(2))",
+    "label": "Appoints Chief Justice of India & Supreme Court Judges)",
     "verificationStatus": "verified"
   },
   {
@@ -4333,7 +4333,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-GOVERNOR",
     "type": "APPOINTS",
-    "label": "Appoints State Governors across all States by warrant (Article 155)",
+    "label": "Appoints State Governors across all States by warrant",
     "verificationStatus": "verified"
   },
   {
@@ -4341,7 +4341,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-ECI",
     "type": "APPOINTS",
-    "label": "Appoints Chief Election Commissioner & ECs (Article 324)",
+    "label": "Appoints Chief Election Commissioner & ECs",
     "verificationStatus": "verified"
   },
   {
@@ -4349,7 +4349,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-CAG-INDIA",
     "type": "APPOINTS",
-    "label": "Appoints Comptroller and Auditor General of India (Article 148)",
+    "label": "Appoints Comptroller and Auditor General of India",
     "verificationStatus": "verified"
   },
   {
@@ -4357,7 +4357,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-UPSC",
     "type": "APPOINTS",
-    "label": "Appoints Chairman and Members of UPSC (Article 316)",
+    "label": "Appoints Chairman and Members of UPSC",
     "verificationStatus": "verified"
   },
   {
@@ -4365,7 +4365,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-CVC-CBI",
     "type": "APPOINTS",
-    "label": "Appoints Central Vigilance Commissioner under CVC Act 2003",
+    "label": "Appoints Central Vigilance Commissioner",
     "verificationStatus": "verified"
   },
   {
@@ -4373,7 +4373,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "sourceNodeId": "DEM-VICE-PRESIDENT",
     "targetNodeId": "DEM-RS-CHAIRMAN",
     "type": "HEADS",
-    "label": "Ex-Officio Chairman of Rajya Sabha (Article 89)",
+    "label": "Ex-Officio Chairman of Rajya Sabha",
     "verificationStatus": "verified"
   },
   {
@@ -4381,7 +4381,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "sourceNodeId": "DEM-RS-CHAIRMAN",
     "targetNodeId": "DEM-MP-RAJYA-SABHA",
     "type": "PRESIDES",
-    "label": "Presides over 245 Members of Rajya Sabha (Article 80)",
+    "label": "Presides over 245 Members of Rajya Sabha",
     "verificationStatus": "verified"
   },
   {
@@ -4389,7 +4389,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "sourceNodeId": "DEM-PM",
     "targetNodeId": "DEM-LS-SPEAKER",
     "type": "COORDINATES",
-    "label": "Majority party in Lok Sabha nominates Speaker (Article 93)",
+    "label": "Majority party in Lok Sabha nominates Speaker",
     "verificationStatus": "verified"
   },
   {
@@ -4845,7 +4845,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "sourceNodeId": "DEM-GOVERNOR",
     "targetNodeId": "DEM-CM",
     "type": "APPOINTS",
-    "label": "Appoints Chief Minister commanding legislative majority (Article 164)",
+    "label": "Appoints Chief Minister commanding legislative majority",
     "verificationStatus": "verified"
   },
   {
@@ -5045,7 +5045,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "sourceNodeId": "DEM-DM-COLLECTOR",
     "targetNodeId": "DEM-POL-SP",
     "type": "COORDINATES",
-    "label": "Coordinates district law & order enforcement (CrPC/BNSS)",
+    "label": "Coordinates district law & order enforcement",
     "verificationStatus": "verified"
   },
   {

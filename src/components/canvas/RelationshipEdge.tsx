@@ -3,9 +3,7 @@ import {
   BaseEdge,
   EdgeLabelRenderer,
   EdgeProps,
-  getBezierPath,
-  getStraightPath,
-  getSmoothStepPath
+  getStraightPath
 } from '@xyflow/react';
 import { RelationshipEdgeData } from '../../types';
 import { useWhiteboardStore } from '../../store/whiteboardStore';
@@ -36,15 +34,21 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
 
   const arrowStyle = useWhiteboardStore((s) => s.arrowStyle);
   const edgeLabelMode = useWhiteboardStore((s) => s.edgeLabelMode);
-  const customFkArrowHeight = useWhiteboardStore((s) => s.customFkArrowHeight);
   const edgeData = data as unknown as RelationshipEdgeData | undefined;
 
-  const isFk =
-    edgeData?.type === 'CONNECTS_TO_BOARD_2' ||
-    edgeData?.type === 'CONNECTS_TO_BOARD_3' ||
-    id.startsWith('REL-FK-');
-
   const [isHovered, setIsHovered] = useState(false);
+
+  // Multi-Lane Highway Data
+  const sourceOffset = ((edgeData as any)?.sourceOffset as number) || 0;
+  const targetOffset = ((edgeData as any)?.targetOffset as number) || 0;
+  const laneIndex = ((edgeData as any)?.laneIndex as number) || 0;
+  const totalLanes = ((edgeData as any)?.totalLanes as number) || 1;
+
+  const isVertical = sourcePosition === 'bottom' || sourcePosition === 'top' || targetPosition === 'top' || targetPosition === 'bottom';
+  const effectiveSourceX = isVertical ? sourceX + sourceOffset : sourceX;
+  const effectiveSourceY = !isVertical ? sourceY + sourceOffset : sourceY;
+  const effectiveTargetX = isVertical ? targetX + targetOffset : targetX;
+  const effectiveTargetY = !isVertical ? targetY + targetOffset : targetY;
 
   let edgePath = '';
   let labelX = 0;
@@ -52,59 +56,73 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
 
   if (arrowStyle === 'straight') {
     const [path, lx, ly] = getStraightPath({
-      sourceX,
-      sourceY,
-      targetX,
-      targetY
-    });
-    edgePath = path;
-    labelX = lx;
-    labelY = ly;
-  } else if (arrowStyle === 'orthogonal') {
-    const [path, lx, ly] = getSmoothStepPath({
-      sourceX,
-      sourceY,
-      sourcePosition,
-      targetX,
-      targetY,
-      targetPosition,
-      borderRadius: 0,
-      offset: isFk ? customFkArrowHeight : 20
-    });
-    edgePath = path;
-    labelX = lx;
-    labelY = ly;
-  } else if (arrowStyle === 'rounded-orthogonal') {
-    const [path, lx, ly] = getSmoothStepPath({
-      sourceX,
-      sourceY,
-      sourcePosition,
-      targetX,
-      targetY,
-      targetPosition,
-      borderRadius: 14,
-      offset: isFk ? customFkArrowHeight : 20
+      sourceX: effectiveSourceX,
+      sourceY: effectiveSourceY,
+      targetX: effectiveTargetX,
+      targetY: effectiveTargetY
     });
     edgePath = path;
     labelX = lx;
     labelY = ly;
   } else {
-    // Default curved Bezier
-    const [path, lx, ly] = getBezierPath({
-      sourceX,
-      sourceY,
-      sourcePosition,
-      targetX,
-      targetY,
-      targetPosition,
-      curvature: isFk ? Math.max(0.1, customFkArrowHeight / 100) : 0.25
-    });
-    edgePath = path;
-    labelX = lx;
-    labelY = ly;
+    // True multi-lane highway router for curved (r=22), rounded-orthogonal (r=12), and sharp orthogonal (r=0)
+    const r = arrowStyle === 'curved' ? 22 : arrowStyle === 'rounded-orthogonal' ? 12 : 0;
+    if (isVertical) {
+      const vGap = effectiveTargetY - effectiveSourceY;
+      let laneY: number;
+      if (vGap > 40) {
+        // Multi-lane distribution: span between 20% and 80% of the vertical gap
+        const laneFraction = totalLanes > 1 ? 0.20 + (0.60 * laneIndex) / (totalLanes - 1) : 0.5;
+        laneY = effectiveSourceY + vGap * laneFraction;
+      } else {
+        laneY = effectiveSourceY + 20 + laneIndex * 16;
+      }
+
+      if (Math.abs(effectiveSourceX - effectiveTargetX) < 4) {
+        edgePath = `M ${effectiveSourceX} ${effectiveSourceY} L ${effectiveTargetX} ${effectiveTargetY}`;
+      } else {
+        const dir = effectiveTargetX > effectiveSourceX ? 1 : -1;
+        const radius = Math.min(r, Math.abs(effectiveTargetX - effectiveSourceX) / 2, Math.abs(laneY - effectiveSourceY) / 2, Math.abs(effectiveTargetY - laneY) / 2);
+        edgePath =
+          `M ${effectiveSourceX} ${effectiveSourceY} ` +
+          `L ${effectiveSourceX} ${laneY - radius} ` +
+          `Q ${effectiveSourceX} ${laneY} ${effectiveSourceX + dir * radius} ${laneY} ` +
+          `L ${effectiveTargetX - dir * radius} ${laneY} ` +
+          `Q ${effectiveTargetX} ${laneY} ${effectiveTargetX} ${laneY + radius} ` +
+          `L ${effectiveTargetX} ${effectiveTargetY}`;
+      }
+      labelX = (effectiveSourceX + effectiveTargetX) / 2;
+      labelY = laneY;
+    } else {
+      // Horizontal multi-lane distribution
+      const hGap = effectiveTargetX - effectiveSourceX;
+      let laneX: number;
+      if (hGap > 40) {
+        const laneFraction = totalLanes > 1 ? 0.20 + (0.60 * laneIndex) / (totalLanes - 1) : 0.5;
+        laneX = effectiveSourceX + hGap * laneFraction;
+      } else {
+        laneX = effectiveSourceX + 20 + laneIndex * 16;
+      }
+
+      if (Math.abs(effectiveSourceY - effectiveTargetY) < 4) {
+        edgePath = `M ${effectiveSourceX} ${effectiveSourceY} L ${effectiveTargetX} ${effectiveTargetY}`;
+      } else {
+        const dir = effectiveTargetY > effectiveSourceY ? 1 : -1;
+        const radius = Math.min(r, Math.abs(effectiveTargetY - effectiveSourceY) / 2, Math.abs(laneX - effectiveSourceX) / 2, Math.abs(effectiveTargetX - laneX) / 2);
+        edgePath =
+          `M ${effectiveSourceX} ${effectiveSourceY} ` +
+          `L ${laneX - radius} ${effectiveSourceY} ` +
+          `Q ${laneX} ${effectiveSourceY} ${laneX} ${effectiveSourceY + dir * radius} ` +
+          `L ${laneX} ${effectiveTargetY - dir * radius} ` +
+          `Q ${laneX} ${effectiveTargetY} ${laneX + radius} ${effectiveTargetY} ` +
+          `L ${effectiveTargetX} ${effectiveTargetY}`;
+      }
+      labelX = laneX;
+      labelY = (effectiveSourceY + effectiveTargetY) / 2;
+    }
   }
 
-  // Generate a deterministic integer hash from edge ID to stagger labels along both t and lateral axes
+  // Generate a deterministic integer hash from edge ID to stagger labels along lateral axis
   let edgeHash = 0;
   for (let i = 0; i < id.length; i++) {
     edgeHash = (edgeHash * 31 + id.charCodeAt(i)) & 0xffffffff;
@@ -116,24 +134,12 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
   let finalLabelY = labelY;
 
   if (arrowStyle === 'straight') {
-    finalLabelX = sourceX + (targetX - sourceX) * t;
-    finalLabelY = sourceY + (targetY - sourceY) * t;
-  } else if (arrowStyle === 'orthogonal' || arrowStyle === 'rounded-orthogonal') {
-    finalLabelX = labelX + ((posSlot % 3) - 1) * 28;
-    finalLabelY = labelY + ((posSlot % 3) - 1) * 16;
+    finalLabelX = effectiveSourceX + (effectiveTargetX - effectiveSourceX) * t;
+    finalLabelY = effectiveSourceY + (effectiveTargetY - effectiveSourceY) * t;
   } else {
-    // Curved Bezier cubic interpolation along curve
-    const u = 1 - t;
-    const isHorizontal = Math.abs(targetX - sourceX) > Math.abs(targetY - sourceY) * 1.5;
-    if (isHorizontal) {
-      const cx = (sourceX + targetX) / 2;
-      finalLabelX = u * u * u * sourceX + 3 * u * u * t * cx + 3 * u * t * t * cx + t * t * t * targetX;
-      finalLabelY = u * u * u * sourceY + 3 * u * u * t * sourceY + 3 * u * t * t * targetY + t * t * t * targetY;
-    } else {
-      const cy = (sourceY + targetY) / 2;
-      finalLabelX = u * u * u * sourceX + 3 * u * u * t * sourceX + 3 * u * t * t * targetX + t * t * t * targetX;
-      finalLabelY = u * u * u * sourceY + 3 * u * u * t * cy + 3 * u * t * t * cy + t * t * t * targetY;
-    }
+    // Highway router places labels squarely along the dedicated lane
+    finalLabelX = labelX;
+    finalLabelY = labelY;
   }
 
   const lateralStagger = ((posSlot % 3) - 1) * 10;

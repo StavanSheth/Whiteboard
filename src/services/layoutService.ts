@@ -1,6 +1,7 @@
 import ELK, { ElkNode } from 'elkjs/lib/elk.bundled.js';
 import { Node, Edge, MarkerType } from '@xyflow/react';
 import { EducationNode, RelationshipEdgeData } from '../types';
+import { JURISDICTIONAL_TIERS } from '../data/whiteboard4-democracy';
 
 const elk = new ELK();
 
@@ -140,8 +141,14 @@ export function estimateNodeHeight(
     if (node.governanceDetails.geographicalJurisdiction) govH += 28 * typoFactor;
     if (node.governanceDetails.tenure) govH += 26 * typoFactor;
     if (node.governanceDetails.reportingTo) govH += 24 * typoFactor;
-    if (node.governanceDetails.superiorAuthority) govH += 40 * typoFactor;
-    if (node.governanceDetails.removalOrDeElectionMethod) govH += 40 * typoFactor;
+    if (node.governanceDetails.superiorAuthority) {
+      const supLines = Math.ceil(node.governanceDetails.superiorAuthority.length / charsPerLine);
+      govH += (26 + supLines * 16) * typoFactor;
+    }
+    if (node.governanceDetails.removalOrDeElectionMethod) {
+      const remLines = Math.ceil(node.governanceDetails.removalOrDeElectionMethod.length / charsPerLine);
+      govH += (26 + remLines * 16) * typoFactor;
+    }
     h += govH + paraSpacing;
   }
 
@@ -175,17 +182,19 @@ export function estimateNodeHeight(
   }
 
   if (node.powers && node.powers.length > 0) {
-    let powersChars = 0;
-    node.powers.forEach((p) => (powersChars += p.length));
-    const powersLines = Math.ceil(powersChars / charsPerLine);
-    h += (26 + powersLines * 14) * typoFactor + paraSpacing;
+    let powersLines = 0;
+    node.powers.slice(0, 4).forEach((p) => {
+      powersLines += Math.max(1, Math.ceil(p.length / charsPerLine));
+    });
+    h += (44 + powersLines * 16) * typoFactor + paraSpacing;
   }
 
   if (node.limitations && node.limitations.length > 0) {
-    let limChars = 0;
-    node.limitations.forEach((l) => (limChars += l.length));
-    const limLines = Math.ceil(limChars / charsPerLine);
-    h += (26 + limLines * 14) * typoFactor + paraSpacing;
+    let limLines = 0;
+    node.limitations.slice(0, 3).forEach((l) => {
+      limLines += Math.max(1, Math.ceil(l.length / charsPerLine));
+    });
+    h += (44 + limLines * 16) * typoFactor + paraSpacing;
   }
 
   if ((node.inputs && node.inputs.length > 0) || (node.outputs && node.outputs.length > 0)) {
@@ -201,8 +210,8 @@ export function estimateNodeHeight(
     h += dockedFkCount * Math.round(24 * fontScale) + 8;
   }
 
-  // Generous padding (+24px) to ensure no border clipping or overlap
-  return Math.max(70, Math.round((h + 24) * cardHeightScale));
+  // Generous padding (+40px) to ensure no border clipping or overlap
+  return Math.max(70, Math.round((h + 40) * cardHeightScale));
 }
 
 export type LayoutDirection = 'DOWN' | 'RIGHT';
@@ -242,15 +251,26 @@ export async function calculateElkLayout(
   const lineScale = (options.lineHeight ?? 1.35) / 1.35;
   const paraSpacing = options.paraSpacing ?? 6;
 
-  // Filter nodes if focusSectionId is specified
-  const filteredNodes = options.focusSectionId
-    ? nodes.filter(
+  // Filter nodes if focusSectionId is specified (can be a Section ID or a Jurisdictional Tier ID)
+  let filteredNodes = nodes;
+  if (options.focusSectionId) {
+    const matchedTier = JURISDICTIONAL_TIERS.find((t) => t.id === options.focusSectionId);
+    if (matchedTier) {
+      const tierSecSet = new Set(matchedTier.sectionIds);
+      filteredNodes = nodes.filter(
+        (n) =>
+          n.id === 'ROOT-IND-EDU-GOV' ||
+          (n.sectionId && tierSecSet.has(n.sectionId))
+      );
+    } else {
+      filteredNodes = nodes.filter(
         (n) =>
           n.id === 'ROOT-IND-EDU-GOV' ||
           n.id === options.focusSectionId ||
           n.sectionId === options.focusSectionId
-      )
-    : nodes;
+      );
+    }
+  }
 
   const nodeIds = new Set(filteredNodes.map((n) => n.id));
 
@@ -487,7 +507,7 @@ export async function calculateElkLayout(
             if (py + ph > maxBottom) maxBottom = py + ph;
           }
 
-          const requiredNextY = maxBottom + layerSpacing;
+          const requiredNextY = maxBottom + Math.max(layerSpacing, 140);
           let minNextY = Infinity;
           for (const n of nextLayer) {
             const py = positionMap.get(n.id)?.y ?? n.y ?? 0;
@@ -581,6 +601,25 @@ export async function calculateElkLayout(
       }
     }
 
+    // Normalize coordinates so the layout always starts at (40, 40)
+    let minX = Infinity;
+    let minY = Infinity;
+    filteredNodes.forEach((n) => {
+      const p = positionMap.get(n.id);
+      if (p) {
+        if (p.x < minX) minX = p.x;
+        if (p.y < minY) minY = p.y;
+      }
+    });
+    if (minX !== Infinity && minY !== Infinity) {
+      filteredNodes.forEach((n) => {
+        const p = positionMap.get(n.id);
+        if (p) {
+          positionMap.set(n.id, { x: p.x - minX + 40, y: p.y - minY + 40 });
+        }
+      });
+    }
+
     // Convert back to React Flow nodes with final position safety check
     const rfNodes: Node[] = filteredNodes.map((n) => {
       const pos =
@@ -662,6 +701,39 @@ export async function calculateElkLayout(
       if (resolved) break;
     }
 
+    // Pre-calculate outgoing edge grouping by source to assign multi-lane highway channels
+    const edgesBySource = new Map<string, RelationshipEdgeData[]>();
+    const edgesByTarget = new Map<string, RelationshipEdgeData[]>();
+
+    filteredEdges.forEach((e) => {
+      const sList = edgesBySource.get(e.sourceNodeId) || [];
+      sList.push(e);
+      edgesBySource.set(e.sourceNodeId, sList);
+
+      const tList = edgesByTarget.get(e.targetNodeId) || [];
+      tList.push(e);
+      edgesByTarget.set(e.targetNodeId, tList);
+    });
+
+    // Sort outgoing edges from each source by target node X (or Y if layout is RIGHT)
+    // to guarantee edges never cross each other
+    edgesBySource.forEach((list) => {
+      list.sort((a, b) => {
+        const posA = positionMap.get(a.targetNodeId) || { x: 0, y: 0 };
+        const posB = positionMap.get(b.targetNodeId) || { x: 0, y: 0 };
+        return isRight ? posA.y - posB.y : posA.x - posB.x;
+      });
+    });
+
+    // Sort incoming edges to each target by source node X (or Y if layout is RIGHT)
+    edgesByTarget.forEach((list) => {
+      list.sort((a, b) => {
+        const posA = positionMap.get(a.sourceNodeId) || { x: 0, y: 0 };
+        const posB = positionMap.get(b.sourceNodeId) || { x: 0, y: 0 };
+        return isRight ? posA.y - posB.y : posA.x - posB.x;
+      });
+    });
+
     // Convert back to React Flow edges with arrow pointers and rich styles
     const rfEdges: Edge[] = filteredEdges.map((e) => {
       const isCrossBoard =
@@ -669,12 +741,37 @@ export async function calculateElkLayout(
       const isAdvisory = e.isAdvisory || e.type === 'ADVISES' || e.type === 'COORDINATES';
       const strokeColor = isCrossBoard ? '#d97706' : isAdvisory ? '#64748b' : '#0d9488';
 
+      const sList = edgesBySource.get(e.sourceNodeId) || [e];
+      const tList = edgesByTarget.get(e.targetNodeId) || [e];
+
+      const totalLanes = sList.length;
+      const laneIndex = Math.max(0, sList.findIndex((item) => item.id === e.id));
+
+      const totalIncoming = tList.length;
+      const incomingIndex = Math.max(0, tList.findIndex((item) => item.id === e.id));
+
+      // Calculate source lateral exit offset across the bottom border of the source card
+      const sourceSpread = Math.min(240, (totalLanes - 1) * 36);
+      const sourceOffset = totalLanes > 1 ? (laneIndex - (totalLanes - 1) / 2) * (sourceSpread / (totalLanes - 1)) : 0;
+
+      // Calculate target lateral arrival offset across the top border of the target card
+      const targetSpread = Math.min(180, (totalIncoming - 1) * 28);
+      const targetOffset = totalIncoming > 1 ? (incomingIndex - (totalIncoming - 1) / 2) * (targetSpread / (totalIncoming - 1)) : 0;
+
       return {
         id: e.id,
         source: e.sourceNodeId,
         target: e.targetNodeId,
         type: 'relationshipEdge',
-        data: { ...e },
+        data: {
+          ...e,
+          laneIndex,
+          totalLanes,
+          incomingIndex,
+          totalIncoming,
+          sourceOffset,
+          targetOffset
+        },
         animated: isCrossBoard,
         markerEnd: {
           type: MarkerType.ArrowClosed,
