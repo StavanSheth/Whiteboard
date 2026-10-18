@@ -4147,110 +4147,22 @@ export const NODES_V4: EducationNode[] = [
 export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
   {
     "id": "REL-V4-001",
-    "sourceNodeId": "DEM-CITIZENS",
-    "targetNodeId": "DEM-MP-LOK-SABHA",
-    "type": "ELECTS",
-    "label": "Elects 543 MPs via Universal Adult Suffrage (Article 326)",
+    "sourceNodeId": "DEM-PRESIDENT",
+    "targetNodeId": "DEM-VICE-PRESIDENT",
+    "type": "COMMISSIONS",
+    "label": "Constitutional Executive Succession & Administration (Article 65)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-002",
-    "sourceNodeId": "DEM-CITIZENS",
-    "targetNodeId": "DEM-MLA",
-    "type": "ELECTS",
-    "label": "Elects Members of Legislative Assembly (MLAs) across States",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-003",
-    "sourceNodeId": "DEM-CITIZENS",
-    "targetNodeId": "DEM-WARD-CORPORATOR",
-    "type": "ELECTS",
-    "label": "Elects Municipal Ward Corporators (74th Amendment)",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-004",
-    "sourceNodeId": "DEM-CITIZENS",
-    "targetNodeId": "DEM-WARD-PANCH",
-    "type": "ELECTS",
-    "label": "Elects Village Ward Panchs & Sarpanch (73rd Amendment)",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-005",
-    "sourceNodeId": "DEM-CITIZENS",
-    "targetNodeId": "DEM-GRAM-SABHA",
-    "type": "FOUNDS",
-    "label": "Constitutes Sovereign Village Deliberative Assembly (Article 243A)",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-006",
-    "sourceNodeId": "DEM-MLA",
-    "targetNodeId": "DEM-MP-RAJYA-SABHA",
-    "type": "ELECTS",
-    "label": "State MLAs elect Rajya Sabha MPs via Proportional Representation (Article 80)",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-007",
-    "sourceNodeId": "DEM-MP-LOK-SABHA",
-    "targetNodeId": "DEM-LS-SPEAKER",
-    "type": "ELECTS",
-    "label": "Lok Sabha elects Speaker as Presiding Officer (Article 93)",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-008",
-    "sourceNodeId": "DEM-MP-LOK-SABHA",
-    "targetNodeId": "DEM-PARL-COMMITTEES",
-    "type": "FORMS",
-    "label": "MPs constitute Parliamentary Standing & Financial Committees (PAC, Estimates)",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-009",
-    "sourceNodeId": "DEM-MP-RAJYA-SABHA",
-    "targetNodeId": "DEM-RS-CHAIRMAN",
-    "type": "PRESIDES",
-    "label": "Presided over by Vice-President of India as ex-officio Chairman (Article 89)",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-010",
-    "sourceNodeId": "DEM-MP-LOK-SABHA",
-    "targetNodeId": "DEM-PRESIDENT",
-    "type": "ELECTS",
-    "label": "Parliamentary MPs vote in Presidential Electoral College (Article 54)",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-011",
-    "sourceNodeId": "DEM-MLA",
-    "targetNodeId": "DEM-PRESIDENT",
-    "type": "ELECTS",
-    "label": "State MLAs vote in Presidential Electoral College (Article 54)",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-012",
-    "sourceNodeId": "DEM-PRESIDENT",
-    "targetNodeId": "DEM-VICE-PRESIDENT",
-    "type": "COORDINATES",
-    "label": "Constitutional Executive Succession (Article 65)",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-013",
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-PM",
-    "type": "COMMISSIONS",
+    "type": "APPOINTS",
     "label": "Appoints Prime Minister commanding Lok Sabha majority (Article 75(1))",
     "verificationStatus": "verified"
   },
   {
-    "id": "REL-V4-014",
+    "id": "REL-V4-003",
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-JUDICIARY-SC",
     "type": "APPOINTS",
@@ -4258,23 +4170,23 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "verificationStatus": "verified"
   },
   {
-    "id": "REL-V4-015",
+    "id": "REL-V4-004",
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-GOVERNOR",
     "type": "APPOINTS",
-    "label": "Appoints State Governors by warrant under hand and seal (Article 155)",
+    "label": "Appoints State Governors across all States by warrant (Article 155)",
     "verificationStatus": "verified"
   },
   {
-    "id": "REL-V4-016",
+    "id": "REL-V4-005",
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-ECI",
     "type": "APPOINTS",
-    "label": "Appoints Chief Election Commissioner & Election Commissioners (Article 324)",
+    "label": "Appoints Chief Election Commissioner & ECs (Article 324)",
     "verificationStatus": "verified"
   },
   {
-    "id": "REL-V4-017",
+    "id": "REL-V4-006",
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-CAG-INDIA",
     "type": "APPOINTS",
@@ -4282,7 +4194,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "verificationStatus": "verified"
   },
   {
-    "id": "REL-V4-018",
+    "id": "REL-V4-007",
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-UPSC",
     "type": "APPOINTS",
@@ -4290,7 +4202,7 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "verificationStatus": "verified"
   },
   {
-    "id": "REL-V4-019",
+    "id": "REL-V4-008",
     "sourceNodeId": "DEM-PRESIDENT",
     "targetNodeId": "DEM-CVC-CBI",
     "type": "APPOINTS",
@@ -4298,591 +4210,703 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "verificationStatus": "verified"
   },
   {
-    "id": "REL-V4-020",
-    "sourceNodeId": "DEM-JUDICIARY-SC",
-    "targetNodeId": "DEM-JUDICIARY-HC",
+    "id": "REL-V4-009",
+    "sourceNodeId": "DEM-VICE-PRESIDENT",
+    "targetNodeId": "DEM-RS-CHAIRMAN",
+    "type": "HEADS",
+    "label": "Ex-Officio Chairman of Rajya Sabha (Article 89)",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-010",
+    "sourceNodeId": "DEM-RS-CHAIRMAN",
+    "targetNodeId": "DEM-MP-RAJYA-SABHA",
+    "type": "PRESIDES",
+    "label": "Presides over 245 Members of Rajya Sabha (Article 80)",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-011",
+    "sourceNodeId": "DEM-PM",
+    "targetNodeId": "DEM-LS-SPEAKER",
+    "type": "COORDINATES",
+    "label": "Majority party in Lok Sabha nominates Speaker (Article 93)",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-012",
+    "sourceNodeId": "DEM-LS-SPEAKER",
+    "targetNodeId": "DEM-MP-LOK-SABHA",
+    "type": "PRESIDES",
+    "label": "Presides over 543 directly elected Lok Sabha MPs",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-013",
+    "sourceNodeId": "DEM-MP-LOK-SABHA",
+    "targetNodeId": "DEM-PARL-COMMITTEES",
+    "type": "FORMS",
+    "label": "MPs constitute Parliamentary Standing & Financial Committees (PAC, Estimates)",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-014",
+    "sourceNodeId": "DEM-PM",
+    "targetNodeId": "DEM-CABINET-SEC",
+    "type": "DIRECTS",
+    "label": "Cabinet Secretary heads Civil Services & Cabinet Secretariat machinery",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-015",
+    "sourceNodeId": "DEM-CABINET-SEC",
+    "targetNodeId": "DEM-DOPT-SEC",
     "type": "SUPERVISES",
-    "label": "Appellate & Constitutional Supervisory Jurisdiction over 25 High Courts (Articles 136 & 141)",
+    "label": "Supervises Department of Personnel & Training (DoPT / IAS Cadre Management)",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-016",
+    "sourceNodeId": "DEM-CABINET-SEC",
+    "targetNodeId": "DEM-DEF-MINISTER",
+    "type": "COORDINATES",
+    "label": "Coordinates Union Cabinet Decisions (Defence)",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-017",
+    "sourceNodeId": "DEM-CABINET-SEC",
+    "targetNodeId": "DEM-HOME-MINISTER",
+    "type": "COORDINATES",
+    "label": "Coordinates Union Cabinet Decisions (Home Affairs)",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-018",
+    "sourceNodeId": "DEM-CABINET-SEC",
+    "targetNodeId": "DEM-MOF-MINISTER",
+    "type": "COORDINATES",
+    "label": "Coordinates Union Cabinet Decisions (Finance)",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-019",
+    "sourceNodeId": "DEM-CABINET-SEC",
+    "targetNodeId": "DEM-MEA-MINISTER",
+    "type": "COORDINATES",
+    "label": "Coordinates Union Cabinet Decisions (External Affairs)",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-020",
+    "sourceNodeId": "DEM-CABINET-SEC",
+    "targetNodeId": "DEM-RLY-MINISTER",
+    "type": "COORDINATES",
+    "label": "Coordinates Union Cabinet Decisions (Railways)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-021",
-    "sourceNodeId": "DEM-JUDICIARY-HC",
-    "targetNodeId": "DEM-JUDICIARY-DISTRICT",
-    "type": "SUPERVISES",
-    "label": "Superintendence over Subordinate District Courts (Articles 227 & 235)",
+    "sourceNodeId": "DEM-CABINET-SEC",
+    "targetNodeId": "DEM-EDU-MINISTER",
+    "type": "COORDINATES",
+    "label": "Coordinates Union Cabinet Decisions (Education)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-022",
-    "sourceNodeId": "DEM-PM",
-    "targetNodeId": "DEM-CABINET-SEC",
-    "type": "DIRECTS",
-    "label": "Heads Civil Services Board & directs Cabinet Secretariat (Rule of Business)",
+    "sourceNodeId": "DEM-CABINET-SEC",
+    "targetNodeId": "DEM-HLTH-MINISTER",
+    "type": "COORDINATES",
+    "label": "Coordinates Union Cabinet Decisions (Health)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-023",
     "sourceNodeId": "DEM-CABINET-SEC",
-    "targetNodeId": "DEM-DOPT-SEC",
-    "type": "SUPERVISES",
-    "label": "Administrative oversight over Department of Personnel & Training (DoPT)",
+    "targetNodeId": "DEM-AGRI-MINISTER",
+    "type": "COORDINATES",
+    "label": "Coordinates Union Cabinet Decisions (Agriculture)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-024",
-    "sourceNodeId": "DEM-PM",
-    "targetNodeId": "DEM-DEF-MINISTER",
-    "type": "DIRECTS",
-    "label": "Chairs Cabinet Committee on Security (CCS) directing Raksha Mantri",
+    "sourceNodeId": "DEM-CABINET-SEC",
+    "targetNodeId": "DEM-INFRA-MINISTER",
+    "type": "COORDINATES",
+    "label": "Coordinates Union Cabinet Decisions (Infrastructure)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-025",
-    "sourceNodeId": "DEM-PM",
-    "targetNodeId": "DEM-HOME-MINISTER",
-    "type": "DIRECTS",
-    "label": "Cabinet direction on internal security, counter-terror, and intelligence",
+    "sourceNodeId": "DEM-CABINET-SEC",
+    "targetNodeId": "DEM-TECH-MINISTER",
+    "type": "COORDINATES",
+    "label": "Coordinates Union Cabinet Decisions (Tech & Law)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-026",
-    "sourceNodeId": "DEM-PM",
-    "targetNodeId": "DEM-MEA-MINISTER",
-    "type": "DIRECTS",
-    "label": "Leads strategic foreign policy and diplomatic engagements with EAM",
+    "sourceNodeId": "DEM-DEF-MINISTER",
+    "targetNodeId": "DEM-DEF-MOS",
+    "type": "DELEGATES",
+    "label": "Delegates departmental portfolios to MoS Defence",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-027",
-    "sourceNodeId": "DEM-PM",
-    "targetNodeId": "DEM-MOF-MINISTER",
-    "type": "DIRECTS",
-    "label": "Guides Union Budget preparation and macroeconomic policy (CCEA)",
+    "sourceNodeId": "DEM-DEF-MOS",
+    "targetNodeId": "DEM-DEF-SECRETARY",
+    "type": "SUPERVISES",
+    "label": "Supervises administrative execution via Defence Secretary",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-028",
-    "sourceNodeId": "DEM-PM",
-    "targetNodeId": "DEM-RLY-MINISTER",
+    "sourceNodeId": "DEM-DEF-SECRETARY",
+    "targetNodeId": "DEM-ARMED-FORCES-CDS",
     "type": "COORDINATES",
-    "label": "Monitors national rail logistics corridors and bullet train missions",
+    "label": "Directs military command & integrated defence staff",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-029",
-    "sourceNodeId": "DEM-PM",
-    "targetNodeId": "DEM-EDU-MINISTER",
-    "type": "COORDINATES",
-    "label": "National Education Policy (NEP 2020) implementation and research councils",
+    "sourceNodeId": "DEM-ARMED-FORCES-CDS",
+    "targetNodeId": "DEM-ARMY-HEADS",
+    "type": "COMMANDS",
+    "label": "Operational command of Indian Army",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-030",
-    "sourceNodeId": "DEM-PM",
-    "targetNodeId": "DEM-HLTH-MINISTER",
-    "type": "COORDINATES",
-    "label": "Ayushman Bharat universal healthcare mission & pandemic response",
+    "sourceNodeId": "DEM-ARMED-FORCES-CDS",
+    "targetNodeId": "DEM-NAVY-AIRFORCE-HEADS",
+    "type": "COMMANDS",
+    "label": "Operational command of Indian Navy & Air Force",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-031",
-    "sourceNodeId": "DEM-PM",
-    "targetNodeId": "DEM-AGRI-MINISTER",
-    "type": "COORDINATES",
-    "label": "PM-KISAN direct transfers, crop insurance & national food security",
+    "sourceNodeId": "DEM-DEF-SECRETARY",
+    "targetNodeId": "DEM-DEF-DRDO-CHAIRMAN",
+    "type": "SUPERVISES",
+    "label": "Directs indigenous defence technology & weapons research",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-032",
-    "sourceNodeId": "DEM-PM",
-    "targetNodeId": "DEM-INFRA-MINISTER",
-    "type": "COORDINATES",
-    "label": "PM GatiShakti national expressway, green energy & power grid programs",
+    "sourceNodeId": "DEM-HOME-MINISTER",
+    "targetNodeId": "DEM-HOME-MOS",
+    "type": "DELEGATES",
+    "label": "Delegates internal security portfolios to MoS Home",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-033",
-    "sourceNodeId": "DEM-PM",
-    "targetNodeId": "DEM-TECH-MINISTER",
-    "type": "COORDINATES",
-    "label": "Digital India, Semiconductor Mission, and Cyber Security policies",
+    "sourceNodeId": "DEM-HOME-MOS",
+    "targetNodeId": "DEM-HOME-SECRETARY",
+    "type": "SUPERVISES",
+    "label": "Supervises internal security administration via Home Secretary",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-034",
-    "sourceNodeId": "DEM-DEF-MINISTER",
-    "targetNodeId": "DEM-DEF-MOS",
-    "type": "DELEGATES",
-    "label": "Delegates defence production & ex-servicemen welfare portfolios",
+    "sourceNodeId": "DEM-HOME-SECRETARY",
+    "targetNodeId": "DEM-CAPF-HEADS",
+    "type": "COMMANDS",
+    "label": "Commands Central Armed Police Forces (CRPF, BSF, CISF, ITBP)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-035",
-    "sourceNodeId": "DEM-DEF-MINISTER",
-    "targetNodeId": "DEM-DEF-SECRETARY",
+    "sourceNodeId": "DEM-HOME-SECRETARY",
+    "targetNodeId": "DEM-HOME-SPL-SEC-IS",
     "type": "DIRECTS",
-    "label": "Directs Department of Defence & acts as Principal Accounting Officer",
+    "label": "Directs Intelligence Bureau (IB) & counter-terror operations",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-036",
-    "sourceNodeId": "DEM-DEF-MINISTER",
-    "targetNodeId": "DEM-ARMED-FORCES-CDS",
-    "type": "COMMANDS",
-    "label": "Political command over Chief of Defence Staff & DMA",
+    "sourceNodeId": "DEM-MEA-MINISTER",
+    "targetNodeId": "DEM-MEA-MOS",
+    "type": "DELEGATES",
+    "label": "Delegates regional diplomacy to MoS External Affairs",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-037",
-    "sourceNodeId": "DEM-DEF-SECRETARY",
-    "targetNodeId": "DEM-DEF-DRDO-CHAIRMAN",
-    "type": "COORDINATES",
-    "label": "Coordinates defence research & military technology development",
+    "sourceNodeId": "DEM-MEA-MOS",
+    "targetNodeId": "DEM-MEA-FOREIGN-SEC",
+    "type": "SUPERVISES",
+    "label": "Supervises Indian Foreign Service via Foreign Secretary",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-038",
-    "sourceNodeId": "DEM-ARMED-FORCES-CDS",
-    "targetNodeId": "DEM-ARMY-HEADS",
-    "type": "COMMANDS",
-    "label": "Joint military planning & tri-service operational command",
+    "sourceNodeId": "DEM-MEA-FOREIGN-SEC",
+    "targetNodeId": "DEM-MEA-SECRETARIES",
+    "type": "SUPERVISES",
+    "label": "Oversees Secretaries West, East & Economic Relations",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-039",
-    "sourceNodeId": "DEM-ARMED-FORCES-CDS",
-    "targetNodeId": "DEM-NAVY-AIRFORCE-HEADS",
-    "type": "COMMANDS",
-    "label": "Tri-service operational coordination with Navy & Air Force",
+    "sourceNodeId": "DEM-MEA-FOREIGN-SEC",
+    "targetNodeId": "DEM-MEA-PASSPORT-CPV",
+    "type": "DIRECTS",
+    "label": "Directs Central Passport Organization & citizen passport services",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-040",
-    "sourceNodeId": "DEM-HOME-MINISTER",
-    "targetNodeId": "DEM-HOME-MOS",
+    "sourceNodeId": "DEM-MOF-MINISTER",
+    "targetNodeId": "DEM-MOF-MOS",
     "type": "DELEGATES",
-    "label": "Delegates disaster management and border area development",
+    "label": "Delegates revenue & economic portfolios to MoS Finance",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-041",
-    "sourceNodeId": "DEM-HOME-MINISTER",
-    "targetNodeId": "DEM-HOME-SECRETARY",
-    "type": "DIRECTS",
-    "label": "Administrative direction over MHA & Cadre Control of IPS",
+    "sourceNodeId": "DEM-MOF-MOS",
+    "targetNodeId": "DEM-MOF-FINANCE-SEC",
+    "type": "SUPERVISES",
+    "label": "Supervises national budget & fiscal policy via Finance Secretary",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-042",
-    "sourceNodeId": "DEM-HOME-SECRETARY",
-    "targetNodeId": "DEM-HOME-SPL-SEC-IS",
+    "sourceNodeId": "DEM-MOF-FINANCE-SEC",
+    "targetNodeId": "DEM-MOF-REVENUE-SEC",
     "type": "SUPERVISES",
-    "label": "Supervises Intelligence Bureau & internal security coordination",
+    "label": "Directs Department of Revenue tax collection",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-043",
-    "sourceNodeId": "DEM-HOME-SECRETARY",
-    "targetNodeId": "DEM-CAPF-HEADS",
+    "sourceNodeId": "DEM-MOF-REVENUE-SEC",
+    "targetNodeId": "DEM-CBDT-IRS-REVENUE",
     "type": "COMMANDS",
-    "label": "Administrative deployment of 10 lakh paramilitary forces",
+    "label": "Commands CBDT direct taxes & CBIC indirect GST authorities",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-044",
-    "sourceNodeId": "DEM-MEA-MINISTER",
-    "targetNodeId": "DEM-MEA-MOS",
-    "type": "DELEGATES",
-    "label": "Delegates regional foreign policy desks & diaspora affairs",
+    "sourceNodeId": "DEM-MOF-FINANCE-SEC",
+    "targetNodeId": "DEM-MOF-CEA",
+    "type": "COORDINATES",
+    "label": "Consults Chief Economic Adviser on Annual Economic Survey",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-045",
-    "sourceNodeId": "DEM-MEA-MINISTER",
-    "targetNodeId": "DEM-MEA-FOREIGN-SEC",
-    "type": "DIRECTS",
-    "label": "Directs Foreign Secretary & 190+ diplomatic missions worldwide",
+    "sourceNodeId": "DEM-MOF-FINANCE-SEC",
+    "targetNodeId": "DEM-COMMERCE-MINISTER",
+    "type": "COORDINATES",
+    "label": "Coordinates national trade & industrial policy (DPIIT)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-046",
-    "sourceNodeId": "DEM-MEA-FOREIGN-SEC",
-    "targetNodeId": "DEM-MEA-SECRETARIES",
-    "type": "SUPERVISES",
-    "label": "Supervises Secretaries of State (West, East & Economic Relations)",
+    "sourceNodeId": "DEM-RLY-MINISTER",
+    "targetNodeId": "DEM-RLY-MOS",
+    "type": "DELEGATES",
+    "label": "Delegates railway operations to MoS Railways",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-047",
-    "sourceNodeId": "DEM-MEA-SECRETARIES",
-    "targetNodeId": "DEM-MEA-PASSPORT-CPV",
+    "sourceNodeId": "DEM-RLY-MOS",
+    "targetNodeId": "DEM-RLY-CRB-CEO",
     "type": "SUPERVISES",
-    "label": "Directs nationwide Passport Seva delivery under Passports Act 1967",
+    "label": "Supervises railway operations via Chairman & CEO Railway Board",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-048",
-    "sourceNodeId": "DEM-MOF-MINISTER",
-    "targetNodeId": "DEM-MOF-MOS",
-    "type": "DELEGATES",
-    "label": "Delegates parliamentary financial business & banking inclusion",
+    "sourceNodeId": "DEM-RLY-CRB-CEO",
+    "targetNodeId": "DEM-RLY-BOARD-MEMBERS",
+    "type": "COMMANDS",
+    "label": "Commands Functional Board Members (Operations, Infra, Finance)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-049",
-    "sourceNodeId": "DEM-MOF-MINISTER",
-    "targetNodeId": "DEM-MOF-FINANCE-SEC",
-    "type": "DIRECTS",
-    "label": "Directs Annual Union Budget & public expenditure management",
+    "sourceNodeId": "DEM-EDU-MINISTER",
+    "targetNodeId": "DEM-EDU-MOS",
+    "type": "DELEGATES",
+    "label": "Delegates education initiatives to MoS Education",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-050",
-    "sourceNodeId": "DEM-MOF-FINANCE-SEC",
-    "targetNodeId": "DEM-MOF-REVENUE-SEC",
-    "type": "COORDINATES",
-    "label": "Coordinates central revenue mobilization & tax legislation",
+    "sourceNodeId": "DEM-EDU-MOS",
+    "targetNodeId": "DEM-EDU-SEC-HIGHER",
+    "type": "SUPERVISES",
+    "label": "Supervises university higher education via Secretary DHE",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-051",
-    "sourceNodeId": "DEM-MOF-FINANCE-SEC",
-    "targetNodeId": "DEM-MOF-CEA",
-    "type": "ADVISES",
-    "label": "Receives macroeconomic advice & Economic Survey from CEA",
+    "sourceNodeId": "DEM-EDU-MOS",
+    "targetNodeId": "DEM-EDU-SEC-SCHOOL",
+    "type": "SUPERVISES",
+    "label": "Supervises national school education via Secretary DoSEL",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-052",
-    "sourceNodeId": "DEM-MOF-REVENUE-SEC",
-    "targetNodeId": "DEM-CBDT-IRS-REVENUE",
-    "type": "DIRECTS",
-    "label": "Directs CBDT (Direct Taxes) and CBIC (Customs & GST)",
+    "sourceNodeId": "DEM-HLTH-MINISTER",
+    "targetNodeId": "DEM-HLTH-MOS",
+    "type": "DELEGATES",
+    "label": "Delegates public health initiatives to MoS Health",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-053",
-    "sourceNodeId": "DEM-MOF-MINISTER",
-    "targetNodeId": "DEM-COMMERCE-MINISTER",
-    "type": "COORDINATES",
-    "label": "Coordinates foreign trade policy, tariffs & industrial promotion",
+    "sourceNodeId": "DEM-HLTH-MOS",
+    "targetNodeId": "DEM-HLTH-SECRETARY",
+    "type": "SUPERVISES",
+    "label": "Supervises public healthcare system via Health Secretary",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-054",
-    "sourceNodeId": "DEM-RLY-MINISTER",
-    "targetNodeId": "DEM-RLY-MOS",
-    "type": "DELEGATES",
-    "label": "Delegates passenger amenities & station redevelopment",
+    "sourceNodeId": "DEM-HLTH-SECRETARY",
+    "targetNodeId": "DEM-HLTH-DGHS",
+    "type": "DIRECTS",
+    "label": "Directs national medical services & disease surveillance",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-055",
-    "sourceNodeId": "DEM-RLY-MINISTER",
-    "targetNodeId": "DEM-RLY-CRB-CEO",
-    "type": "DIRECTS",
-    "label": "Directs Chairman & CEO, Railway Board on rail operations & safety",
+    "sourceNodeId": "DEM-HLTH-SECRETARY",
+    "targetNodeId": "DEM-HLTH-NHA-NMC",
+    "type": "SUPERVISES",
+    "label": "Directs Ayushman Bharat (NHA) & medical education (NMC)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-056",
-    "sourceNodeId": "DEM-RLY-CRB-CEO",
-    "targetNodeId": "DEM-RLY-BOARD-MEMBERS",
-    "type": "SUPERVISES",
-    "label": "Supervises Board Members (Operations, Infra, Traction, Finance)",
+    "sourceNodeId": "DEM-AGRI-MINISTER",
+    "targetNodeId": "DEM-AGRI-MOS",
+    "type": "DELEGATES",
+    "label": "Delegates agricultural schemes to MoS Agriculture",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-057",
-    "sourceNodeId": "DEM-EDU-MINISTER",
-    "targetNodeId": "DEM-EDU-MOS",
-    "type": "DELEGATES",
-    "label": "Delegates foundational literacy missions (NIPUN Bharat)",
+    "sourceNodeId": "DEM-AGRI-MOS",
+    "targetNodeId": "DEM-AGRI-SEC-AGRI",
+    "type": "SUPERVISES",
+    "label": "Supervises farming policies via Secretary DA&FW",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-058",
-    "sourceNodeId": "DEM-EDU-MINISTER",
-    "targetNodeId": "DEM-EDU-SEC-HIGHER",
-    "type": "DIRECTS",
-    "label": "Directs Department of Higher Education & university grants",
+    "sourceNodeId": "DEM-AGRI-MOS",
+    "targetNodeId": "DEM-AGRI-SEC-RURAL",
+    "type": "SUPERVISES",
+    "label": "Supervises MGNREGA & rural roads via Secretary DoRD",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-059",
-    "sourceNodeId": "DEM-EDU-MINISTER",
-    "targetNodeId": "DEM-EDU-SEC-SCHOOL",
-    "type": "DIRECTS",
-    "label": "Directs Department of School Education & RTE Act implementation",
+    "sourceNodeId": "DEM-AGRI-MOS",
+    "targetNodeId": "DEM-AGRI-SEC-FOOD",
+    "type": "SUPERVISES",
+    "label": "Supervises food security & FCI via Secretary Food",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-060",
-    "sourceNodeId": "DEM-HLTH-MINISTER",
-    "targetNodeId": "DEM-HLTH-MOS",
+    "sourceNodeId": "DEM-INFRA-MINISTER",
+    "targetNodeId": "DEM-INFRA-MOS",
     "type": "DELEGATES",
-    "label": "Delegates national disease control & maternal health missions",
+    "label": "Delegates transport & energy schemes to MoS Infrastructure",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-061",
-    "sourceNodeId": "DEM-HLTH-MINISTER",
-    "targetNodeId": "DEM-HLTH-SECRETARY",
-    "type": "DIRECTS",
-    "label": "Directs national health delivery, NHM funds & drug control",
+    "sourceNodeId": "DEM-INFRA-MOS",
+    "targetNodeId": "DEM-INFRA-SEC-MORTH",
+    "type": "SUPERVISES",
+    "label": "Supervises National Highway network via NHAI & Secretary MoRTH",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-062",
-    "sourceNodeId": "DEM-HLTH-SECRETARY",
-    "targetNodeId": "DEM-HLTH-DGHS",
-    "type": "COORDINATES",
-    "label": "Coordinates technical medical expertise & epidemic surveillance",
+    "sourceNodeId": "DEM-INFRA-MOS",
+    "targetNodeId": "DEM-INFRA-SEC-POWER",
+    "type": "SUPERVISES",
+    "label": "Supervises national power grid via Secretary Power",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-063",
-    "sourceNodeId": "DEM-HLTH-SECRETARY",
-    "targetNodeId": "DEM-HLTH-NHA-NMC",
-    "type": "REGULATES",
-    "label": "Statutory oversight over PM-JAY health insurance & medical colleges",
+    "sourceNodeId": "DEM-INFRA-MOS",
+    "targetNodeId": "DEM-INFRA-SEC-MOEFCC",
+    "type": "SUPERVISES",
+    "label": "Supervises environmental clearances via Secretary MoEFCC",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-064",
-    "sourceNodeId": "DEM-AGRI-MINISTER",
-    "targetNodeId": "DEM-AGRI-MOS",
+    "sourceNodeId": "DEM-TECH-MINISTER",
+    "targetNodeId": "DEM-TECH-MOS",
     "type": "DELEGATES",
-    "label": "Delegates organic farming, Kisan Credit Cards & rural housing",
+    "label": "Delegates tech & digital portfolios to MoS Tech",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-065",
-    "sourceNodeId": "DEM-AGRI-MINISTER",
-    "targetNodeId": "DEM-AGRI-SEC-AGRI",
-    "type": "DIRECTS",
-    "label": "Directs PM-KISAN, crop insurance & Minimum Support Prices",
+    "sourceNodeId": "DEM-TECH-MOS",
+    "targetNodeId": "DEM-TECH-SEC-MEITY",
+    "type": "SUPERVISES",
+    "label": "Supervises Digital India & IT via Secretary MeitY",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-066",
-    "sourceNodeId": "DEM-AGRI-MINISTER",
-    "targetNodeId": "DEM-AGRI-SEC-RURAL",
-    "type": "DIRECTS",
-    "label": "Enforces MGNREGA guaranteed employment & PMGSY rural roads",
+    "sourceNodeId": "DEM-TECH-MOS",
+    "targetNodeId": "DEM-SPACE-ISRO-DAE",
+    "type": "SUPERVISES",
+    "label": "Supervises ISRO space exploration & atomic energy programs",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-067",
-    "sourceNodeId": "DEM-AGRI-MINISTER",
-    "targetNodeId": "DEM-AGRI-SEC-FOOD",
-    "type": "DIRECTS",
-    "label": "Directs Food Corporation of India (FCI) buffer stocks & PDS",
+    "sourceNodeId": "DEM-TECH-MOS",
+    "targetNodeId": "DEM-LAW-UNION-SEC",
+    "type": "SUPERVISES",
+    "label": "Supervises legislative drafting via Union Law Secretary",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-068",
-    "sourceNodeId": "DEM-INFRA-MINISTER",
-    "targetNodeId": "DEM-INFRA-MOS",
-    "type": "DELEGATES",
-    "label": "Delegates road safety & renewable energy project monitoring",
+    "sourceNodeId": "DEM-GOVERNOR",
+    "targetNodeId": "DEM-CM",
+    "type": "APPOINTS",
+    "label": "Appoints Chief Minister commanding legislative majority (Article 164)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-069",
-    "sourceNodeId": "DEM-INFRA-MINISTER",
-    "targetNodeId": "DEM-INFRA-SEC-MORTH",
+    "sourceNodeId": "DEM-CM",
+    "targetNodeId": "DEM-CS-STATE",
     "type": "DIRECTS",
-    "label": "Directs National Highways Authority of India (NHAI) expressways",
+    "label": "Directs State Administrative Executive & Chief Secretariat",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-070",
-    "sourceNodeId": "DEM-INFRA-MINISTER",
-    "targetNodeId": "DEM-INFRA-SEC-POWER",
-    "type": "DIRECTS",
-    "label": "Directs One Nation One Grid power transmission & CEA",
+    "sourceNodeId": "DEM-CS-STATE",
+    "targetNodeId": "DEM-STATE-HOME-DEPT",
+    "type": "SUPERVISES",
+    "label": "Supervises State Home Department & internal security",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-071",
-    "sourceNodeId": "DEM-INFRA-MINISTER",
-    "targetNodeId": "DEM-INFRA-SEC-MOEFCC",
-    "type": "DIRECTS",
-    "label": "Directs statutory forest conservation & environmental clearances",
+    "sourceNodeId": "DEM-MP-LOK-SABHA",
+    "targetNodeId": "DEM-MLA",
+    "type": "COORDINATES",
+    "label": "Parliamentary constituency encompasses 6-9 State Assembly MLA segments",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-072",
-    "sourceNodeId": "DEM-TECH-MINISTER",
-    "targetNodeId": "DEM-TECH-MOS",
-    "type": "DELEGATES",
-    "label": "Delegates tech startup incubation & legal literacy schemes",
+    "sourceNodeId": "DEM-MP-RAJYA-SABHA",
+    "targetNodeId": "DEM-MLC",
+    "type": "COORDINATES",
+    "label": "Federal Upper House representation links with State Legislative Councils",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-073",
-    "sourceNodeId": "DEM-TECH-MINISTER",
-    "targetNodeId": "DEM-TECH-SEC-MEITY",
-    "type": "DIRECTS",
-    "label": "Directs Digital India, Aadhaar (UIDAI), CERT-In & Semiconductor Mission",
+    "sourceNodeId": "DEM-JUDICIARY-SC",
+    "targetNodeId": "DEM-JUDICIARY-HC",
+    "type": "SUPERVISES",
+    "label": "Appellate & constitutional supervisory jurisdiction across 25 High Courts",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-074",
-    "sourceNodeId": "DEM-TECH-MINISTER",
-    "targetNodeId": "DEM-LAW-UNION-SEC",
-    "type": "DIRECTS",
-    "label": "Apex legislative drafting of parliamentary Bills & government litigation",
+    "sourceNodeId": "DEM-UPSC",
+    "targetNodeId": "DEM-SPSC",
+    "type": "COORDINATES",
+    "label": "Constitutional civil service recruitment standards & examination models",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-075",
-    "sourceNodeId": "DEM-TECH-MINISTER",
-    "targetNodeId": "DEM-SPACE-ISRO-DAE",
+    "sourceNodeId": "DEM-HOME-SECRETARY",
+    "targetNodeId": "DEM-STATE-HOME-DEPT",
     "type": "COORDINATES",
-    "label": "Directs civilian space missions (ISRO) & atomic power (DAE)",
+    "label": "National internal security directives & modernization funding",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-076",
-    "sourceNodeId": "DEM-GOVERNOR",
-    "targetNodeId": "DEM-CM",
-    "type": "APPOINTS",
-    "label": "Appoints Chief Minister enjoying legislative majority (Article 164)",
+    "sourceNodeId": "DEM-HOME-SECRETARY",
+    "targetNodeId": "DEM-POL-DGP",
+    "type": "DIRECTS",
+    "label": "IPS Cadre management & national police intelligence coordination",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-077",
-    "sourceNodeId": "DEM-CM",
+    "sourceNodeId": "DEM-MOF-FINANCE-SEC",
     "targetNodeId": "DEM-CS-STATE",
-    "type": "DIRECTS",
-    "label": "Directs State Chief Secretary as head of State Administrative Secretariat",
+    "type": "ADMINISTERS",
+    "label": "Central tax devolution & Finance Commission statutory grants",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-078",
-    "sourceNodeId": "DEM-MLA",
-    "targetNodeId": "DEM-STATE-SPEAKER",
-    "type": "ELECTS",
-    "label": "State Legislative Assembly elects Speaker (Article 178)",
+    "sourceNodeId": "DEM-EDU-SEC-SCHOOL",
+    "targetNodeId": "DEM-CS-STATE",
+    "type": "ADMINISTERS",
+    "label": "Samagra Shiksha & National Education Policy state implementation",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-079",
-    "sourceNodeId": "DEM-STATE-SPEAKER",
-    "targetNodeId": "DEM-MLC",
-    "type": "PRESIDES",
-    "label": "Legislative coordination between Vidhan Sabha and Vidhan Parishad",
+    "sourceNodeId": "DEM-HLTH-SECRETARY",
+    "targetNodeId": "DEM-CS-STATE",
+    "type": "ADMINISTERS",
+    "label": "National Health Mission & public healthcare funding to states",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-080",
-    "sourceNodeId": "DEM-CS-STATE",
-    "targetNodeId": "DEM-STATE-HOME-DEPT",
-    "type": "DIRECTS",
-    "label": "State Home Department exercises administrative command over police",
+    "sourceNodeId": "DEM-AGRI-SEC-AGRI",
+    "targetNodeId": "DEM-CS-STATE",
+    "type": "ADMINISTERS",
+    "label": "PM-KISAN & central agricultural schemes implementation",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-081",
-    "sourceNodeId": "DEM-STATE-HOME-DEPT",
-    "targetNodeId": "DEM-POL-DGP",
-    "type": "COMMANDS",
-    "label": "Director General of Police (DGP) heads State Police Force",
+    "sourceNodeId": "DEM-INFRA-SEC-MORTH",
+    "targetNodeId": "DEM-CS-STATE",
+    "type": "ADMINISTERS",
+    "label": "National highway coordination with State PWD departments",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-082",
-    "sourceNodeId": "DEM-POL-DGP",
-    "targetNodeId": "DEM-POL-ADG",
-    "type": "COMMANDS",
-    "label": "Additional Director General of Police (ADGP) heads specialized zones",
+    "sourceNodeId": "DEM-TECH-SEC-MEITY",
+    "targetNodeId": "DEM-CS-STATE",
+    "type": "ADMINISTERS",
+    "label": "Digital India infrastructure & State e-Governance delivery",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-083",
-    "sourceNodeId": "DEM-POL-ADG",
-    "targetNodeId": "DEM-POL-IG",
-    "type": "COMMANDS",
-    "label": "Inspector General of Police (IGP) commands multi-district Range",
+    "sourceNodeId": "DEM-CS-STATE",
+    "targetNodeId": "DEM-DIV-COMMISSIONER",
+    "type": "SUPERVISES",
+    "label": "Oversees Regional Revenue Divisions comprising 4-7 districts",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-084",
-    "sourceNodeId": "DEM-POL-IG",
-    "targetNodeId": "DEM-POL-DIG",
-    "type": "COMMANDS",
-    "label": "Deputy Inspector General (DIG) commands police range",
+    "sourceNodeId": "DEM-DIV-COMMISSIONER",
+    "targetNodeId": "DEM-DM-COLLECTOR",
+    "type": "ADMINISTERS",
+    "label": "Commands District Magistrate & Collector heading district administration",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-085",
-    "sourceNodeId": "DEM-POL-DIG",
-    "targetNodeId": "DEM-POL-SP",
-    "type": "COMMANDS",
-    "label": "Superintendent of Police (SP) is District Police Chief",
+    "sourceNodeId": "DEM-CS-STATE",
+    "targetNodeId": "DEM-MUNICIPAL-COMMISSIONER",
+    "type": "APPOINTS",
+    "label": "Appoints IAS Municipal Commissioner as CEO of Urban Municipal Corporation",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-086",
-    "sourceNodeId": "DEM-POL-SP",
-    "targetNodeId": "DEM-POL-ASP-DSP",
-    "type": "COMMANDS",
-    "label": "Sub-Divisional Police Officer (DSP / ASP)",
+    "sourceNodeId": "DEM-MUNICIPAL-COMMISSIONER",
+    "targetNodeId": "DEM-MAYOR-COUNCIL",
+    "type": "COORDINATES",
+    "label": "Coordinates executive policies with elected Mayor & Corporation Council",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-087",
-    "sourceNodeId": "DEM-POL-ASP-DSP",
-    "targetNodeId": "DEM-POL-SHO",
+    "sourceNodeId": "DEM-MUNICIPAL-COMMISSIONER",
+    "targetNodeId": "DEM-ADDL-MUNICIPAL-COMMISSIONER",
     "type": "COMMANDS",
-    "label": "Station House Officer (SHO / Police Inspector)",
+    "label": "Directs functional Additional Municipal Commissioners (Projects, Health)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-088",
-    "sourceNodeId": "DEM-POL-SHO",
-    "targetNodeId": "DEM-POL-SI",
-    "type": "COMMANDS",
-    "label": "Sub-Inspector (SI - Primary Investigating Officer)",
+    "sourceNodeId": "DEM-STATE-HOME-DEPT",
+    "targetNodeId": "DEM-POL-DGP",
+    "type": "DIRECTS",
+    "label": "State Home controls IPS cadre and state police administration",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-089",
-    "sourceNodeId": "DEM-POL-SI",
-    "targetNodeId": "DEM-POL-HC",
+    "sourceNodeId": "DEM-POL-DGP",
+    "targetNodeId": "DEM-POL-ADG",
     "type": "COMMANDS",
-    "label": "Head Constable (Station desk & beat supervisor)",
+    "label": "Commands Additional Director General of Police (ADGP)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-090",
-    "sourceNodeId": "DEM-POL-HC",
-    "targetNodeId": "DEM-POL-CONSTABLE",
+    "sourceNodeId": "DEM-POL-ADG",
+    "targetNodeId": "DEM-POL-IG",
     "type": "COMMANDS",
-    "label": "Police Constable (Grassroots beat patrolling & surveillance)",
+    "label": "Commands Inspector General of Police (IG Range)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-091",
-    "sourceNodeId": "DEM-CS-STATE",
-    "targetNodeId": "DEM-DIV-COMMISSIONER",
-    "type": "ADMINISTERS",
-    "label": "Directs Divisional Commissioner supervising multi-district revenue divisions",
+    "sourceNodeId": "DEM-POL-IG",
+    "targetNodeId": "DEM-POL-DIG",
+    "type": "COMMANDS",
+    "label": "Commands Deputy Inspector General of Police (DIG Range)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-092",
-    "sourceNodeId": "DEM-DIV-COMMISSIONER",
-    "targetNodeId": "DEM-DM-COLLECTOR",
-    "type": "ADMINISTERS",
-    "label": "Directs District Magistrate & Collector (DM/DC) heading district administration",
+    "sourceNodeId": "DEM-POL-DIG",
+    "targetNodeId": "DEM-POL-SP",
+    "type": "COMMANDS",
+    "label": "Commands District Superintendent of Police (SP / SSP)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-093",
+    "sourceNodeId": "DEM-DM-COLLECTOR",
+    "targetNodeId": "DEM-POL-SP",
+    "type": "COORDINATES",
+    "label": "Coordinates district law & order enforcement (CrPC/BNSS)",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-094",
+    "sourceNodeId": "DEM-JUDICIARY-HC",
+    "targetNodeId": "DEM-JUDICIARY-DISTRICT",
+    "type": "SUPERVISES",
+    "label": "Supervises Principal District & Sessions Court across all districts",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-095",
+    "sourceNodeId": "DEM-CS-STATE",
+    "targetNodeId": "DEM-ZP-CEO",
+    "type": "APPOINTS",
+    "label": "Appoints IAS Chief Executive Officer (CEO) of District Zilla Parishad",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-096",
     "sourceNodeId": "DEM-DM-COLLECTOR",
     "targetNodeId": "DEM-SDM-SUBDIV",
     "type": "ADMINISTERS",
@@ -4890,47 +4914,15 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "verificationStatus": "verified"
   },
   {
-    "id": "REL-V4-094",
+    "id": "REL-V4-097",
     "sourceNodeId": "DEM-SDM-SUBDIV",
     "targetNodeId": "DEM-TEHSILDAR-MAGISTRATE",
     "type": "ADMINISTERS",
-    "label": "Directs Tehsildar / Executive Magistrate heading Taluka revenue administration",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-095",
-    "sourceNodeId": "DEM-TEHSILDAR-MAGISTRATE",
-    "targetNodeId": "DEM-TALATHI-PATWARI",
-    "type": "ADMINISTERS",
-    "label": "Directs Village Talathi / Patwari maintaining land records and 7/12 extracts",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-096",
-    "sourceNodeId": "DEM-CS-STATE",
-    "targetNodeId": "DEM-MUNICIPAL-COMMISSIONER",
-    "type": "SUPERVISES",
-    "label": "Appoints IAS Municipal Commissioner as Principal Chief Executive",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-097",
-    "sourceNodeId": "DEM-MUNICIPAL-COMMISSIONER",
-    "targetNodeId": "DEM-MAYOR-COUNCIL",
-    "type": "COORDINATES",
-    "label": "Executive-legislative coordination with Mayor & Municipal Council",
+    "label": "Directs Tehsildar as Executive Magistrate & Taluka revenue head",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-098",
-    "sourceNodeId": "DEM-MUNICIPAL-COMMISSIONER",
-    "targetNodeId": "DEM-ADDL-MUNICIPAL-COMMISSIONER",
-    "type": "COMMANDS",
-    "label": "Commands Additional & Assistant Municipal Commissioners heading municipal zones",
-    "verificationStatus": "verified"
-  },
-  {
-    "id": "REL-V4-099",
     "sourceNodeId": "DEM-ADDL-MUNICIPAL-COMMISSIONER",
     "targetNodeId": "DEM-WARD-CORPORATOR",
     "type": "COORDINATES",
@@ -4938,39 +4930,55 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "verificationStatus": "verified"
   },
   {
+    "id": "REL-V4-099",
+    "sourceNodeId": "DEM-MLA",
+    "targetNodeId": "DEM-WARD-CORPORATOR",
+    "type": "COORDINATES",
+    "label": "Assembly constituency encompasses municipal wards and ward committees",
+    "verificationStatus": "verified"
+  },
+  {
     "id": "REL-V4-100",
-    "sourceNodeId": "DEM-CS-STATE",
-    "targetNodeId": "DEM-ZP-CEO",
-    "type": "ADMINISTERS",
-    "label": "Appoints IAS Chief Executive Officer (CEO) of District Zilla Parishad",
+    "sourceNodeId": "DEM-POL-SP",
+    "targetNodeId": "DEM-POL-ASP-DSP",
+    "type": "COMMANDS",
+    "label": "Commands Sub-Divisional Police Officer (ASP / DSP / SDPO)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-101",
-    "sourceNodeId": "DEM-ZP-CEO",
-    "targetNodeId": "DEM-BDO-BLOCK",
-    "type": "ADMINISTERS",
-    "label": "Directs Block Development Officer (BDO) heading intermediate Panchayat Samiti",
+    "sourceNodeId": "DEM-POL-ASP-DSP",
+    "targetNodeId": "DEM-POL-SHO",
+    "type": "COMMANDS",
+    "label": "Commands Station House Officer (SHO / Police Inspector)",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-102",
-    "sourceNodeId": "DEM-BDO-BLOCK",
-    "targetNodeId": "DEM-SARPANCH",
-    "type": "COORDINATES",
-    "label": "Coordinates village developmental funds with elected Village Sarpanch",
+    "sourceNodeId": "DEM-POL-SHO",
+    "targetNodeId": "DEM-POL-SI",
+    "type": "COMMANDS",
+    "label": "Directs Sub-Inspector (SI) as Primary Investigating Officer",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-103",
-    "sourceNodeId": "DEM-SARPANCH",
-    "targetNodeId": "DEM-GRAM-SEVAK",
-    "type": "COORDINATES",
-    "label": "Supervises Village Secretary / Gram Sevak executing gram panchayat decisions",
+    "sourceNodeId": "DEM-ZP-CEO",
+    "targetNodeId": "DEM-BDO-BLOCK",
+    "type": "ADMINISTERS",
+    "label": "Directs Block Development Officer (BDO) heading Panchayat Samiti",
     "verificationStatus": "verified"
   },
   {
     "id": "REL-V4-104",
+    "sourceNodeId": "DEM-BDO-BLOCK",
+    "targetNodeId": "DEM-SARPANCH",
+    "type": "COORDINATES",
+    "label": "Coordinates rural development schemes with elected Village Sarpanch",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-105",
     "sourceNodeId": "DEM-SARPANCH",
     "targetNodeId": "DEM-WARD-PANCH",
     "type": "PRESIDES",
@@ -4978,11 +4986,115 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
     "verificationStatus": "verified"
   },
   {
-    "id": "REL-V4-105",
+    "id": "REL-V4-106",
+    "sourceNodeId": "DEM-BDO-BLOCK",
+    "targetNodeId": "DEM-GRAM-SEVAK",
+    "type": "ADMINISTERS",
+    "label": "Assigns Village Secretary / Gram Sevak to execute panchayat records",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-107",
+    "sourceNodeId": "DEM-SARPANCH",
+    "targetNodeId": "DEM-GRAM-SEVAK",
+    "type": "SUPERVISES",
+    "label": "Supervises Village Gram Sevak for day-to-day administrative execution",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-108",
+    "sourceNodeId": "DEM-TEHSILDAR-MAGISTRATE",
+    "targetNodeId": "DEM-TALATHI-PATWARI",
+    "type": "ADMINISTERS",
+    "label": "Directs Village Talathi / Patwari maintaining land records and 7/12 extracts",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-109",
+    "sourceNodeId": "DEM-POL-SI",
+    "targetNodeId": "DEM-POL-HC",
+    "type": "COMMANDS",
+    "label": "Directs Head Constable (HC) station section commander",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-110",
+    "sourceNodeId": "DEM-POL-HC",
+    "targetNodeId": "DEM-POL-CONSTABLE",
+    "type": "COMMANDS",
+    "label": "Commands Police Constable (PC) for village beat patrol & frontline duty",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-111",
     "sourceNodeId": "DEM-SARPANCH",
     "targetNodeId": "DEM-GRAM-SABHA",
     "type": "REPORTS_TO",
-    "label": "Presents annual budget, beneficiary lists & social audit before Gram Sabha",
+    "label": "Accountable to Sovereign Gram Sabha for village budget and beneficiary lists",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-112",
+    "sourceNodeId": "DEM-GRAM-SABHA",
+    "targetNodeId": "DEM-CITIZENS",
+    "type": "FOUNDS",
+    "label": "All adult voting residents of the village constitute the Gram Sabha",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-113",
+    "sourceNodeId": "DEM-WARD-CORPORATOR",
+    "targetNodeId": "DEM-CITIZENS",
+    "type": "COORDINATES",
+    "label": "Represents and delivers essential civic services to urban ward residents",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-114",
+    "sourceNodeId": "DEM-TALATHI-PATWARI",
+    "targetNodeId": "DEM-CITIZENS",
+    "type": "ADMINISTERS",
+    "label": "Issues land ownership titles, caste/income certificates and crop compensation",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-115",
+    "sourceNodeId": "DEM-POL-CONSTABLE",
+    "targetNodeId": "DEM-CITIZENS",
+    "type": "COORDINATES",
+    "label": "Frontline beat policing, public grievance receipt and emergency assistance",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-116",
+    "sourceNodeId": "DEM-JUDICIARY-DISTRICT",
+    "targetNodeId": "DEM-CITIZENS",
+    "type": "COORDINATES",
+    "label": "Delivers accessible justice, fundamental rights protection and dispute resolution",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-117",
+    "sourceNodeId": "DEM-MEA-PASSPORT-CPV",
+    "targetNodeId": "DEM-CITIZENS",
+    "type": "ADMINISTERS",
+    "label": "Delivers official Indian passports and citizen consular documentation",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-118",
+    "sourceNodeId": "DEM-MP-LOK-SABHA",
+    "targetNodeId": "DEM-CITIZENS",
+    "type": "COORDINATES",
+    "label": "543 MPs represent the sovereign citizens of India in Parliament",
+    "verificationStatus": "verified"
+  },
+  {
+    "id": "REL-V4-119",
+    "sourceNodeId": "DEM-MLA",
+    "targetNodeId": "DEM-CITIZENS",
+    "type": "COORDINATES",
+    "label": "MLAs represent state constituency citizens in Vidhan Sabha",
     "verificationStatus": "verified"
   }
 ];
