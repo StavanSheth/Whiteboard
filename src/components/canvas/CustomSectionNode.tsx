@@ -3,6 +3,7 @@ import { Handle, Position } from '@xyflow/react';
 import { EducationNode } from '../../types';
 import { Landmark, Scale, BookOpen, GraduationCap, Award, FileCheck, ShieldCheck, Coins, AlertCircle, Workflow, Table, Database } from 'lucide-react';
 import { useWhiteboardStore } from '../../store/whiteboardStore';
+import { getTranslatedNodeTitle, getTranslatedNodeSummary } from '../../services/translationService';
 
 const iconMap: Record<string, React.ReactNode> = {
   '00': <BookOpen className="w-5 h-5 text-amber-600" />,
@@ -29,6 +30,8 @@ export const CustomSectionNode = memo(({ data, selected }: { data: EducationNode
   const icon = iconMap[data.sectionNumber] || <Landmark className="w-5 h-5 text-emerald-800" />;
 
   const layoutDirection = useWhiteboardStore((s: any) => s.layoutDirection);
+  const currentLanguage = useWhiteboardStore((s: any) => s.currentLanguage);
+  const translationScope = useWhiteboardStore((s: any) => s.translationScope);
   const isHorizontal = layoutDirection === 'RIGHT';
   const targetPos = isHorizontal ? Position.Left : Position.Top;
   const sourcePos = isHorizontal ? Position.Right : Position.Bottom;
@@ -59,11 +62,11 @@ export const CustomSectionNode = memo(({ data, selected }: { data: EducationNode
             </span>
           </div>
           <h3 className={`font-bold leading-tight ${isRoot ? 'text-lg text-white' : 'text-sm text-emerald-50'}`}>
-            {data.title}
+            {getTranslatedNodeTitle(data, currentLanguage, translationScope)}
           </h3>
           {isRoot && (
             <p className="text-[11px] text-emerald-200/80 mt-1 line-clamp-2 leading-relaxed">
-              {data.summary}
+              {getTranslatedNodeSummary(data, currentLanguage, translationScope)}
             </p>
           )}
         </div>

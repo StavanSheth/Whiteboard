@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useWhiteboardStore } from '../../store/whiteboardStore';
 import { NODE_MAP, SOURCE_MAP } from '../../data/content-index';
 import { EducationNode, VerificationStatus, GovernmentLevel } from '../../types';
+import { getTranslatedNodeTitle, getTranslatedNodeSummary, getTranslatedLevel } from '../../services/translationService';
 import {
   X,
   Maximize2,
@@ -45,7 +46,9 @@ export function DetailPanel() {
     deleteRelationship,
     updateRelationship,
     openModal,
-    setRelationshipDraft
+    setRelationshipDraft,
+    currentLanguage,
+    translationScope
   } = useWhiteboardStore();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -204,7 +207,7 @@ export function DetailPanel() {
                   {node.id}
                 </span>
                 <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
-                  Section {node.sectionNumber} • {node.level}
+                  Section {node.sectionNumber} • {getTranslatedLevel(node.level, currentLanguage)}
                 </span>
                 <span
                   className={`text-[9px] font-semibold px-2 py-0.5 rounded-full ${
@@ -217,7 +220,7 @@ export function DetailPanel() {
                 </span>
               </div>
               <h2 className="text-base font-bold text-slate-900 leading-snug">
-                {node.title}
+                {getTranslatedNodeTitle(node, currentLanguage, translationScope)}
               </h2>
               {node.abbreviation && (
                 <p className="text-xs font-semibold text-emerald-800 mt-0.5">
@@ -313,7 +316,7 @@ export function DetailPanel() {
           ) : (
             <>
               <p className="text-slate-700 leading-relaxed font-normal">
-                {node.summary}
+                {getTranslatedNodeSummary(node, currentLanguage, translationScope)}
               </p>
               {node.legalStatus && (
                 <div className="mt-2.5 pt-2 border-t border-emerald-200/60 flex items-center gap-1.5 text-[11px]">

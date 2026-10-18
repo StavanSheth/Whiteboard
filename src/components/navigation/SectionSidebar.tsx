@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useWhiteboardStore } from '../../store/whiteboardStore';
+import { t, getTranslatedSectionTitle, getTranslatedSectionSubtitle } from '../../services/translationService';
 import {
   ChevronLeft,
   ChevronRight,
@@ -25,7 +26,9 @@ export function SectionSidebar() {
     resetFilters,
     selectNode,
     nodes,
-    openModal
+    openModal,
+    currentLanguage,
+    translationScope
   } = useWhiteboardStore();
 
   const levels: { label: string; value: GovernmentLevel | 'all' }[] = [
@@ -81,7 +84,7 @@ export function SectionSidebar() {
                 }`}
               >
                 <Layers className="w-3.5 h-3.5" />
-                <span>{sections.length} Secs</span>
+                <span>{sections.length} {translationScope !== 'cards' ? t('sections', currentLanguage) : 'Secs'}</span>
               </button>
               <button
                 onClick={() => setActiveTab('filters')}
@@ -92,7 +95,7 @@ export function SectionSidebar() {
                 }`}
               >
                 <Filter className="w-3.5 h-3.5" />
-                <span>Filters</span>
+                <span>{translationScope !== 'cards' ? t('filters', currentLanguage) : 'Filters'}</span>
               </button>
             </div>
           )}
@@ -125,7 +128,7 @@ export function SectionSidebar() {
             title="Create a new authority / node in the diagram"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>Add Authority</span>
+            <span>{translationScope !== 'cards' ? t('addAuthority', currentLanguage) : 'Add Authority'}</span>
           </button>
           <button
             onClick={() => openModal('add-section')}
@@ -174,7 +177,11 @@ export function SectionSidebar() {
                   : 'text-slate-700 hover:bg-slate-100'
               }`}
             >
-              <span>Full Master Whiteboard (All Sections)</span>
+              <span>
+                {translationScope !== 'cards'
+                  ? (currentLanguage === 'hi' ? 'संपूर्ण व्हाइटबोर्ड (सभी अनुभाग)' : currentLanguage === 'gu' ? 'સંપૂર્ણ વ્હાઇટબોર્ડ (તમામ વિભાગો)' : 'Full Master Whiteboard (All Sections)')
+                  : 'Full Master Whiteboard (All Sections)'}
+              </span>
               <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${focusSectionId === null ? 'bg-white/20' : 'bg-slate-100'}`}>
                 {nodes.length}
               </span>
@@ -182,7 +189,9 @@ export function SectionSidebar() {
 
             <div className="pt-2 pb-1 px-3 flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                Diagram Sections ({sections.length})
+                {translationScope !== 'cards'
+                  ? (currentLanguage === 'hi' ? `आरेख अनुभाग (${sections.length})` : currentLanguage === 'gu' ? `વિભાગો (${sections.length})` : `Diagram Sections (${sections.length})`)
+                  : `Diagram Sections (${sections.length})`}
               </span>
               <button
                 onClick={() => openModal('add-section')}
@@ -195,6 +204,8 @@ export function SectionSidebar() {
             {sections.map((sec) => {
               const isSelected = focusSectionId === sec.id;
               const sectionNodeCount = nodes.filter((n) => n.sectionId === sec.id).length;
+              const secTitle = getTranslatedSectionTitle(sec.id, currentLanguage, translationScope);
+              const secSubtitle = getTranslatedSectionSubtitle(sec.id, currentLanguage, translationScope);
 
               return (
                 <div
@@ -218,11 +229,11 @@ export function SectionSidebar() {
                           {sec.number}
                         </span>
                         <h4 className="text-xs font-medium text-slate-800 truncate">
-                          {sec.title}
+                          {secTitle}
                         </h4>
                       </div>
                       <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">
-                        {sec.subtitle}
+                        {secSubtitle}
                       </p>
                     </div>
                     <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 flex-shrink-0">

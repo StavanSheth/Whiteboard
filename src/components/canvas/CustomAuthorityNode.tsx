@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { EducationNode } from '../../types';
 import { useWhiteboardStore } from '../../store/whiteboardStore';
+import { getTranslatedNodeTitle, getTranslatedNodeSummary, getTranslatedLevel } from '../../services/translationService';
 import {
   Scale,
   Landmark,
@@ -227,7 +228,9 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
     saveEditingNode,
     cancelEditingNode,
     selectNode,
-    toggleDetailPanel
+    toggleDetailPanel,
+    currentLanguage,
+    translationScope
   } = useWhiteboardStore();
 
   const isExpanded = expandedNodeIds[data.id] ?? (nodeViewMode === 'full');
@@ -564,7 +567,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                   <IconComponent className="w-3.5 h-3.5" />
                 </div>
                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">
-                  Sec {data.sectionNumber} • {data.level}
+                  Sec {data.sectionNumber} • {getTranslatedLevel(data.level, currentLanguage)}
                 </span>
               </div>
 
@@ -607,7 +610,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
               className="text-xs font-bold text-slate-900 leading-snug cursor-pointer hover:text-emerald-800 transition-colors"
               title="Click to edit title"
             >
-              {data.title}
+              {getTranslatedNodeTitle(data, currentLanguage, translationScope)}
             </h4>
 
             {/* Legal Status badge & Domain Badges if present */}
@@ -694,7 +697,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
               className="text-slate-600 leading-relaxed font-normal cursor-pointer hover:text-slate-900 transition-colors"
               title="Click to edit summary"
             >
-              {data.summary}
+              {getTranslatedNodeSummary(data, currentLanguage, translationScope)}
             </p>
 
             {isExpanded && (

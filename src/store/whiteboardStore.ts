@@ -5,8 +5,9 @@ import { SECTION_METAS_V2, NODES_V2, RELATIONSHIPS_V2, SOURCES_V2 } from '../dat
 import { SECTION_METAS_V3, NODES_V3, RELATIONSHIPS_V3, SOURCES_V3 } from '../data/whiteboard2-institutions';
 import { SECTION_METAS_V4, NODES_V4, RELATIONSHIPS_V4, SOURCES_V4 } from '../data/whiteboard4-democracy';
 import { SECTION_METAS_V5, NODES_V5, RELATIONSHIPS_V5, SOURCES_V5 } from '../data/whiteboard5-banking-judiciary';
-import { SearchFilters } from '../services/searchService';
 import { ExportData } from '../services/exportService';
+import { SearchFilters } from '../services/searchService';
+import { Language, TranslationScope, initGoogleTranslate } from '../services/translationService';
 import {
   updateNodeApi,
   createNodeApi,
@@ -87,6 +88,14 @@ export interface WhiteboardState {
   
   activeModal: 'matrix' | 'audit' | 'sources' | 'export' | 'pdf-print' | 'projects' | 'add-node' | 'add-relationship' | 'add-section' | null;
   relationshipDraft: { sourceNodeId?: string; targetNodeId?: string };
+
+  // Language & Translation State
+  currentLanguage: Language;
+  translationScope: TranslationScope;
+  useGoogleTranslateFallback: boolean;
+  setLanguage: (lang: Language) => void;
+  setTranslationScope: (scope: TranslationScope) => void;
+  setUseGoogleTranslateFallback: (enabled: boolean) => void;
 
   // Actions
   loadProjects: () => Promise<void>;
@@ -237,6 +246,11 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
 
   activeModal: null,
   relationshipDraft: {},
+
+  // Language & Translation Initial State
+  currentLanguage: (typeof localStorage !== 'undefined' ? (localStorage.getItem('edu_gov_lang') as Language) : null) || 'en',
+  translationScope: (typeof localStorage !== 'undefined' ? (localStorage.getItem('edu_gov_trans_scope') as TranslationScope) : null) || 'all',
+  useGoogleTranslateFallback: typeof localStorage !== 'undefined' ? localStorage.getItem('edu_gov_gt_fallback') === 'true' : false,
 
   // --- Project Management Actions ---
   loadProjects: async () => {
@@ -696,6 +710,25 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
   },
 
   setEdgeLabelMode: (mode) => set({ edgeLabelMode: mode }),
+
+  setLanguage: (lang: Language) => {
+    if (typeof localStorage !== 'undefined') localStorage.setItem('edu_gov_lang', lang);
+    set({ currentLanguage: lang });
+    const { useGoogleTranslateFallback } = get();
+    initGoogleTranslate(lang, useGoogleTranslateFallback);
+  },
+
+  setTranslationScope: (scope: TranslationScope) => {
+    if (typeof localStorage !== 'undefined') localStorage.setItem('edu_gov_trans_scope', scope);
+    set({ translationScope: scope });
+  },
+
+  setUseGoogleTranslateFallback: (enabled: boolean) => {
+    if (typeof localStorage !== 'undefined') localStorage.setItem('edu_gov_gt_fallback', String(enabled));
+    set({ useGoogleTranslateFallback: enabled });
+    const { currentLanguage } = get();
+    initGoogleTranslate(currentLanguage, enabled);
+  },
 
   setSectionPrintSettings: (sectionId, settings) => {
     const curProjId = get().currentProjectId;
