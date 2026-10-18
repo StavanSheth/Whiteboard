@@ -200,7 +200,7 @@ interface SectionToolbarDeckProps {
   isAutoFit?: boolean;
   setIsAutoFit?: (val: boolean) => void;
   manualScale?: number;
-  setManualScale?: React.Dispatch<React.SetStateAction<number>>;
+  setManualScale?: ((val: number | ((prev: number) => number)) => void) | React.Dispatch<React.SetStateAction<number>>;
 
   // Reset & moved nodes
   onReset?: () => void;
@@ -1037,6 +1037,11 @@ export function SectionPrintPdfModal() {
       else if (key === 'fkMode') setFkMode(val as any);
       else if (key === 'arrowStyle') setArrowStyle(val as any);
       else if (key === 'pageSplitMode') setPageSplitMode(val as any);
+      else if (key === 'printOrientation') setPrintOrientation(val as any);
+      else if (key === 'isDossier') setPrintDossierMode(val as boolean);
+      else if (key === 'showFkTable') setShowFkTable(val as boolean);
+      else if (key === 'isAutoFit') setIsAutoFit(val as boolean);
+      else if (key === 'manualScale') setManualScale(val as number);
     } else {
       setSectionPrintSettings(customizingSectionId, { [key]: val });
     }
@@ -1058,6 +1063,11 @@ export function SectionPrintPdfModal() {
   const curFontSizePx = activeSecOverrides.fontSizePx ?? fontSizePx;
   const curLineHeightMult = activeSecOverrides.lineHeightMult ?? lineHeightMult;
   const curParaSpacingPx = activeSecOverrides.paraSpacingPx ?? paraSpacingPx;
+  const curPrintOrientation = activeSecOverrides.printOrientation ?? printOrientation;
+  const curIsDossier = activeSecOverrides.isDossier ?? printDossierMode;
+  const curShowFkTable = activeSecOverrides.showFkTable ?? showFkTable;
+  const curIsAutoFit = activeSecOverrides.isAutoFit ?? isAutoFit;
+  const curManualScale = activeSecOverrides.manualScale ?? manualScale;
 
   // Pointer Drag Handlers for Repositioning Nodes on Printable Page
   const handleStartDrag = (
@@ -1159,7 +1169,7 @@ export function SectionPrintPdfModal() {
     const promises = sectionsToRender.map((sec) => {
       const secOverrides = sectionPrintSettings[sec.id] || {};
       return calculateSectionTreeLayout(sec.id, nodes, relationships, {
-        isDossier: printDossierMode,
+        isDossier: secOverrides.isDossier ?? printDossierMode,
         direction: secOverrides.treeDirection ?? treeDirection,
         nodeSpacing: secOverrides.customNodeSpacing ?? customNodeSpacing,
         vSpacing: secOverrides.customVSpacing ?? customVSpacing,
@@ -1401,9 +1411,6 @@ export function SectionPrintPdfModal() {
 
   if (!isOpen) return null;
 
-  // Approximate printable target width in pixels for page scaling
-  const targetPageWidth = printOrientation === 'landscape' ? 1040 : 740;
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-1 sm:p-2.5 print:p-0 print:bg-white print:static print:inset-auto print-modal-overlay">
       <div className="relative w-[98vw] max-w-[1750px] h-[98vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-200 print:h-auto print:max-w-none print:shadow-none print:border-none print:rounded-none print-modal-content">
@@ -1608,8 +1615,8 @@ export function SectionPrintPdfModal() {
         {/* Top Control Bar 2: Fine-Tuning Layout, Spacing, Sizing, Arrows, Splitting */}
         <div className="no-print bg-white border-b border-slate-200 px-4 py-2 text-xs text-slate-700">
           <SectionToolbarDeck
-            isDossier={printDossierMode}
-            setIsDossier={setPrintDossierMode}
+            isDossier={curIsDossier}
+            setIsDossier={(val) => updateActiveSetting('isDossier', val)}
             arrowStyle={curArrowStyle}
             setArrowStyle={(val) => updateActiveSetting('arrowStyle', val)}
             pageSplitMode={curPageSplitMode}
@@ -1622,10 +1629,10 @@ export function SectionPrintPdfModal() {
             setAlternateSpacingPx={(val) => updateActiveSetting('alternateSpacingPx', val)}
             direction={curDirection}
             setDirection={(val) => updateActiveSetting('treeDirection', val)}
-            printOrientation={printOrientation}
-            setPrintOrientation={setPrintOrientation}
-            showFkTable={showFkTable}
-            setShowFkTable={setShowFkTable}
+            printOrientation={curPrintOrientation}
+            setPrintOrientation={(val) => updateActiveSetting('printOrientation', val)}
+            showFkTable={curShowFkTable}
+            setShowFkTable={(val) => updateActiveSetting('showFkTable', val)}
             nodeBoxWidth={curNodeBoxWidth}
             setNodeBoxWidth={(val) => updateActiveSetting('nodeBoxWidth', val)}
             cardHeightPercent={curCardHeightPercent}
@@ -1644,10 +1651,14 @@ export function SectionPrintPdfModal() {
             setLineHeightMult={(val) => updateActiveSetting('lineHeightMult', val)}
             paraSpacingPx={curParaSpacingPx}
             setParaSpacingPx={(val) => updateActiveSetting('paraSpacingPx', val)}
-            isAutoFit={isAutoFit}
-            setIsAutoFit={setIsAutoFit}
-            manualScale={manualScale}
-            setManualScale={setManualScale}
+            isAutoFit={curIsAutoFit}
+            setIsAutoFit={(val) => updateActiveSetting('isAutoFit', val)}
+            manualScale={curManualScale}
+            setManualScale={(val) => {
+              const newScale = typeof val === 'function' ? val(curManualScale) : val;
+              updateActiveSetting('manualScale', newScale);
+              updateActiveSetting('isAutoFit', false);
+            }}
             onReset={() => {
               if (customizingSectionId === 'all') {
                 resetSpacingAndSizing();
@@ -1763,14 +1774,20 @@ export function SectionPrintPdfModal() {
 
               const secOverrides = sectionPrintSettings[sec.id] || {};
               const secSplitMode = secOverrides.pageSplitMode ?? pageSplitMode;
+              const secOrientation = secOverrides.printOrientation ?? printOrientation;
+              const secAutoFit = secOverrides.isAutoFit ?? isAutoFit;
+              const secManualScale = secOverrides.manualScale ?? manualScale;
+              const secTargetPageWidth = secOrientation === 'landscape' ? 1040 : 740;
+              const secDossier = secOverrides.isDossier ?? printDossierMode;
+              const secShowFkTable = secOverrides.showFkTable ?? showFkTable;
               const totalFks = layout.foreignKeys.length;
               const slices = getSlicesForLayout(
                 layout,
-                targetPageWidth,
+                secTargetPageWidth,
                 secSplitMode,
-                isAutoFit,
-                manualScale,
-                printOrientation
+                secAutoFit,
+                secManualScale,
+                secOrientation
               );
 
               return (
@@ -1780,7 +1797,7 @@ export function SectionPrintPdfModal() {
                       <div
                         key={`${sec.id}-${slice.sliceId}`}
                         className={`section-page ${
-                          printOrientation === 'portrait' ? 'page-portrait' : 'page-landscape'
+                          secOrientation === 'portrait' ? 'page-portrait' : 'page-landscape'
                         } bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm print:shadow-none print:border-none print:p-6 print:rounded-none print-page-break print-avoid-break mb-8 print:mb-0`}
                       >
                         {/* Section Title Banner */}
@@ -1882,6 +1899,8 @@ export function SectionPrintPdfModal() {
                               </button>
                             </div>
                             <SectionToolbarDeck
+                              isDossier={secDossier}
+                              setIsDossier={(val) => setSectionPrintSettings(sec.id, { isDossier: val })}
                               arrowStyle={secOverrides.arrowStyle ?? arrowStyle}
                               setArrowStyle={(val) => setSectionPrintSettings(sec.id, { arrowStyle: val })}
                               pageSplitMode={secOverrides.pageSplitMode ?? pageSplitMode}
@@ -1894,6 +1913,10 @@ export function SectionPrintPdfModal() {
                               setAlternateSpacingPx={(val) => setSectionPrintSettings(sec.id, { alternateSpacingPx: val })}
                               direction={secOverrides.treeDirection ?? treeDirection}
                               setDirection={(val) => setSectionPrintSettings(sec.id, { treeDirection: val })}
+                              printOrientation={secOrientation}
+                              setPrintOrientation={(val) => setSectionPrintSettings(sec.id, { printOrientation: val })}
+                              showFkTable={secShowFkTable}
+                              setShowFkTable={(val) => setSectionPrintSettings(sec.id, { showFkTable: val })}
                               nodeBoxWidth={secOverrides.nodeBoxWidth ?? nodeBoxWidth}
                               setNodeBoxWidth={(val) => setSectionPrintSettings(sec.id, { nodeBoxWidth: val })}
                               cardHeightPercent={secOverrides.cardHeightPercent ?? cardHeightPercent}
@@ -1912,6 +1935,13 @@ export function SectionPrintPdfModal() {
                               setLineHeightMult={(val) => setSectionPrintSettings(sec.id, { lineHeightMult: val })}
                               paraSpacingPx={secOverrides.paraSpacingPx ?? paraSpacingPx}
                               setParaSpacingPx={(val) => setSectionPrintSettings(sec.id, { paraSpacingPx: val })}
+                              isAutoFit={secAutoFit}
+                              setIsAutoFit={(val) => setSectionPrintSettings(sec.id, { isAutoFit: val })}
+                              manualScale={secManualScale}
+                              setManualScale={(val) => {
+                                const newScale = typeof val === 'function' ? val(secManualScale) : val;
+                                setSectionPrintSettings(sec.id, { manualScale: newScale, isAutoFit: false });
+                              }}
                               isPerPage={true}
                               hasCustomPositions={Boolean(secOverrides.nodePositions && Object.keys(secOverrides.nodePositions).length > 0)}
                               onClearNodePositions={() => {
@@ -2483,7 +2513,7 @@ export function SectionPrintPdfModal() {
                                           {/* Summary Synopsis */}
                                           {data.summary && (
                                             <p
-                                              className={`text-slate-600 ${printDossierMode ? '' : 'line-clamp-1 overflow-hidden text-ellipsis'}`}
+                                              className={`text-slate-600 ${secDossier ? '' : 'line-clamp-1 overflow-hidden text-ellipsis'}`}
                                               style={{
                                                 fontSize: typo.body,
                                                 lineHeight: typo.lineHeight,
@@ -2495,7 +2525,7 @@ export function SectionPrintPdfModal() {
                                           )}
 
                                           {/* FULL DOSSIER CONTENT (if toggle is active) */}
-                                          {printDossierMode && (
+                                          {secDossier && (
                                             <div
                                               className="pt-1 border-t border-slate-100 flex flex-col"
                                               style={{
@@ -2889,7 +2919,7 @@ export function SectionPrintPdfModal() {
                         </div>
 
                         {/* Section Foreign Key Bridge Ledger Table (Conditionally rendered based on showFkTable toggle) */}
-                        {slice.isLastSlice && showFkTable && (
+                        {slice.isLastSlice && secShowFkTable && (
                           <div className="border-t border-slate-200 pt-3 print-avoid-break">
                             <div className="flex items-center justify-between mb-2">
                               <div className="flex items-center gap-1.5">

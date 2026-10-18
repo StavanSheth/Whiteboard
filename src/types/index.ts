@@ -260,6 +260,11 @@ export interface SectionPrintSettings {
   arrowStyle?: 'curved' | 'straight' | 'orthogonal' | 'rounded-orthogonal';
   pageSplitMode?: 'auto' | 'single' | '2-page' | '4-page';
   nodePositions?: Record<string, { x: number; y: number }>;
+  printOrientation?: 'landscape' | 'portrait';
+  isDossier?: boolean;
+  showFkTable?: boolean;
+  isAutoFit?: boolean;
+  manualScale?: number;
 }
 
 export interface ProjectSettings {
