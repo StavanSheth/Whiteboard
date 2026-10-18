@@ -4,18 +4,47 @@ import { t, getTranslatedSectionTitle, getTranslatedSectionSubtitle } from '../.
 import {
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Filter,
   Layers,
   Plus,
-  Settings
+  Settings,
+  Landmark,
+  Shield,
+  MapPin,
+  Building,
+  Users
 } from 'lucide-react';
 import { GovernmentLevel, FunctionalCategory } from '../../types';
+import { JURISDICTIONAL_TIERS } from '../../data/whiteboard4-democracy';
+
+const tierIcons: Record<string, React.ReactNode> = {
+  'TIER-UNION': <Landmark className="w-3.5 h-3.5 text-emerald-400" />,
+  'TIER-STATE': <Shield className="w-3.5 h-3.5 text-indigo-400" />,
+  'TIER-DISTRICT': <MapPin className="w-3.5 h-3.5 text-amber-400" />,
+  'TIER-LOCAL': <Building className="w-3.5 h-3.5 text-cyan-400" />,
+  'TIER-SOVEREIGN': <Users className="w-3.5 h-3.5 text-rose-400" />
+};
+
+const tierStyles: Record<string, { bg: string; border: string; text: string; badgeBg: string }> = {
+  'TIER-UNION': { bg: 'bg-emerald-950', border: 'border-emerald-700/60', text: 'text-emerald-100', badgeBg: 'bg-emerald-500/20 text-emerald-300' },
+  'TIER-STATE': { bg: 'bg-indigo-950', border: 'border-indigo-700/60', text: 'text-indigo-100', badgeBg: 'bg-indigo-500/20 text-indigo-300' },
+  'TIER-DISTRICT': { bg: 'bg-amber-950', border: 'border-amber-700/60', text: 'text-amber-100', badgeBg: 'bg-amber-500/20 text-amber-300' },
+  'TIER-LOCAL': { bg: 'bg-teal-950', border: 'border-teal-700/60', text: 'text-teal-100', badgeBg: 'bg-teal-500/20 text-teal-300' },
+  'TIER-SOVEREIGN': { bg: 'bg-rose-950', border: 'border-rose-700/60', text: 'text-rose-100', badgeBg: 'bg-rose-500/20 text-rose-300' }
+};
 
 export function SectionSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [activeTab, setActiveTab] = useState<'sections' | 'filters'>('sections');
+  const [collapsedTiers, setCollapsedTiers] = useState<Record<string, boolean>>({});
+
+  const toggleTier = (tierId: string) => {
+    setCollapsedTiers((prev) => ({ ...prev, [tierId]: !prev[tierId] }));
+  };
 
   const {
+    currentProjectId,
     isSidebarOpen,
     toggleSidebar,
     sections,
@@ -201,48 +230,116 @@ export function SectionSidebar() {
               </button>
             </div>
 
-            {sections.map((sec) => {
-              const isSelected = focusSectionId === sec.id;
-              const sectionNodeCount = nodes.filter((n) => n.sectionId === sec.id).length;
-              const secTitle = getTranslatedSectionTitle(sec.id, currentLanguage, translationScope);
-              const secSubtitle = getTranslatedSectionSubtitle(sec.id, currentLanguage, translationScope);
+            {(() => {
+              const renderSectionItem = (sec: any) => {
+                const isSelected = focusSectionId === sec.id;
+                const sectionNodeCount = nodes.filter((n) => n.sectionId === sec.id).length;
+                const secTitle = getTranslatedSectionTitle(sec.id, currentLanguage, translationScope);
+                const secSubtitle = getTranslatedSectionSubtitle(sec.id, currentLanguage, translationScope);
 
-              return (
-                <div
-                  key={sec.id}
-                  className={`w-full text-left rounded-lg transition-all ${
-                    isSelected
-                      ? 'bg-emerald-50 border border-emerald-300 shadow-2xs'
-                      : 'hover:bg-slate-50 border border-transparent'
-                  }`}
-                >
-                  <button
-                    onClick={() => {
-                      setFocusSection(sec.id);
-                      selectNode(sec.id);
-                    }}
-                    className="w-full text-left px-3 py-2 flex items-start justify-between gap-2"
+                return (
+                  <div
+                    key={sec.id}
+                    className={`w-full text-left rounded-lg transition-all ${
+                      isSelected
+                        ? 'bg-emerald-50 border border-emerald-300 shadow-2xs'
+                        : 'hover:bg-slate-50 border border-transparent'
+                    }`}
                   >
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-bold font-mono text-emerald-800">
-                          {sec.number}
-                        </span>
-                        <h4 className="text-xs font-medium text-slate-800 truncate">
-                          {secTitle}
-                        </h4>
+                    <button
+                      onClick={() => {
+                        setFocusSection(sec.id);
+                        selectNode(sec.id);
+                      }}
+                      className="w-full text-left px-2.5 py-1.5 flex items-start justify-between gap-2 cursor-pointer"
+                    >
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] font-bold font-mono text-emerald-800">
+                            {sec.number}
+                          </span>
+                          <h4 className="text-xs font-medium text-slate-800 truncate">
+                            {secTitle}
+                          </h4>
+                        </div>
+                        <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">
+                          {secSubtitle}
+                        </p>
                       </div>
-                      <p className="text-[11px] text-slate-500 line-clamp-1 mt-0.5">
-                        {secSubtitle}
-                      </p>
-                    </div>
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 flex-shrink-0">
-                      {sectionNodeCount}
-                    </span>
-                  </button>
-                </div>
-              );
-            })}
+                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 flex-shrink-0">
+                        {sectionNodeCount}
+                      </span>
+                    </button>
+                  </div>
+                );
+              };
+
+              if (currentProjectId === 'proj-whiteboard-4') {
+                return (
+                  <div className="space-y-2 mt-1">
+                    {JURISDICTIONAL_TIERS.map((tier, tierIdx) => {
+                      const tierSections = sections.filter((s) => tier.sectionIds.includes(s.id));
+                      if (tierSections.length === 0) return null;
+                      const isCollapsed = collapsedTiers[tier.id];
+                      const style = tierStyles[tier.id] || tierStyles['TIER-UNION'];
+                      const icon = tierIcons[tier.id];
+
+                      const getTierName = () => {
+                        switch (tier.id) {
+                          case 'TIER-UNION': return t('tier.union', currentLanguage);
+                          case 'TIER-STATE': return t('tier.state', currentLanguage);
+                          case 'TIER-DISTRICT': return t('tier.district', currentLanguage);
+                          case 'TIER-LOCAL': return t('tier.local', currentLanguage);
+                          case 'TIER-SOVEREIGN': return t('tier.sovereign', currentLanguage);
+                          default: return tier.name;
+                        }
+                      };
+
+                      return (
+                        <div key={tier.id} className="rounded-lg overflow-hidden border border-slate-200/90 shadow-2xs">
+                          {/* Tier Category Header */}
+                          <button
+                            onClick={() => toggleTier(tier.id)}
+                            className={`w-full text-left px-2.5 py-2 flex items-center justify-between gap-1.5 transition-colors cursor-pointer ${style.bg} ${style.text}`}
+                          >
+                            <div className="flex items-center gap-2 min-w-0">
+                              {icon}
+                              <div className="min-w-0">
+                                <span className="text-[9px] font-bold tracking-wider uppercase text-amber-300 block">
+                                  Tier {tierIdx + 1} • {tier.badge}
+                                </span>
+                                <h4 className="text-[11px] font-bold truncate leading-tight">
+                                  {getTierName()}
+                                </h4>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-1.5 flex-shrink-0">
+                              <span className={`text-[9.5px] font-mono px-1.5 py-0.5 rounded-full ${style.badgeBg}`}>
+                                {tierSections.length} Secs
+                              </span>
+                              {isCollapsed ? (
+                                <ChevronRight className="w-3.5 h-3.5 opacity-70" />
+                              ) : (
+                                <ChevronDown className="w-3.5 h-3.5 opacity-70" />
+                              )}
+                            </div>
+                          </button>
+
+                          {/* Tier Child Sections */}
+                          {!isCollapsed && (
+                            <div className="p-1 space-y-0.5 bg-slate-50/50">
+                              {tierSections.map((sec) => renderSectionItem(sec))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              }
+
+              return sections.map((sec) => renderSectionItem(sec));
+            })()}
           </div>
         ) : (
           /* Filters Tab */

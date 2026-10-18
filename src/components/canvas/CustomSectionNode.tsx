@@ -4,6 +4,7 @@ import { EducationNode } from '../../types';
 import { Landmark, Scale, BookOpen, GraduationCap, Award, FileCheck, ShieldCheck, Coins, AlertCircle, Workflow, Table, Database } from 'lucide-react';
 import { useWhiteboardStore } from '../../store/whiteboardStore';
 import { getTranslatedNodeTitle, getTranslatedNodeSummary } from '../../services/translationService';
+import { JURISDICTIONAL_TIERS } from '../../data/whiteboard4-democracy';
 
 const iconMap: Record<string, React.ReactNode> = {
   '00': <BookOpen className="w-5 h-5 text-amber-600" />,
@@ -32,9 +33,15 @@ export const CustomSectionNode = memo(({ data, selected }: { data: EducationNode
   const layoutDirection = useWhiteboardStore((s: any) => s.layoutDirection);
   const currentLanguage = useWhiteboardStore((s: any) => s.currentLanguage);
   const translationScope = useWhiteboardStore((s: any) => s.translationScope);
+  const currentProjectId = useWhiteboardStore((s: any) => s.currentProjectId);
   const isHorizontal = layoutDirection === 'RIGHT';
   const targetPos = isHorizontal ? Position.Left : Position.Top;
   const sourcePos = isHorizontal ? Position.Right : Position.Bottom;
+
+  const secId = data.sectionId || (data.id.startsWith('SEC-') ? data.id : '');
+  const tier = currentProjectId === 'proj-whiteboard-4'
+    ? JURISDICTIONAL_TIERS.find((t) => t.sectionIds.some((sid) => sid === secId || sid.endsWith(data.sectionNumber || '')))
+    : null;
 
   return (
     <div
@@ -54,10 +61,10 @@ export const CustomSectionNode = memo(({ data, selected }: { data: EducationNode
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-1 mb-1">
-            <span className="text-[11px] font-semibold tracking-wider uppercase text-amber-400">
-              {isRoot ? 'National Master Root' : `Section ${data.sectionNumber}`}
+            <span className="text-[11px] font-semibold tracking-wider uppercase text-amber-400 truncate max-w-[210px]">
+              {isRoot ? 'National Master Root' : tier ? `${tier.badge} • Sec ${data.sectionNumber}` : `Section ${data.sectionNumber}`}
             </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/15 text-slate-200 font-mono">
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/15 text-slate-200 font-mono flex-shrink-0">
               {data.abbreviation || data.id}
             </span>
           </div>

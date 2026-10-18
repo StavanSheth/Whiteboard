@@ -1,12 +1,92 @@
 import { EducationNode, RelationshipEdgeData, SourceRecord, SectionMeta } from '../types';
 
+export interface JurisdictionalTier {
+  id: string;
+  name: string;
+  badge: string;
+  description: string;
+  color: string;
+  sectionIds: string[];
+}
+
+export const JURISDICTIONAL_TIERS: JurisdictionalTier[] = [
+  {
+    "id": "TIER-UNION",
+    "name": "Union / Central Government Jurisdiction",
+    "badge": "Central / Federal Apex",
+    "description": "President, Parliament, Prime Minister & Union Council of Ministers, Central Ministries, Defence, Intelligence & CAPF",
+    "color": "emerald",
+    "sectionIds": [
+      "SEC-DEM-01",
+      "SEC-DEM-02",
+      "SEC-DEM-03",
+      "SEC-DEM-04",
+      "SEC-DEM-05",
+      "SEC-DEM-06",
+      "SEC-DEM-07",
+      "SEC-DEM-08",
+      "SEC-DEM-09",
+      "SEC-DEM-10",
+      "SEC-DEM-11",
+      "SEC-DEM-12",
+      "SEC-DEM-13",
+      "SEC-DEM-14",
+      "SEC-DEM-15"
+    ]
+  },
+  {
+    "id": "TIER-STATE",
+    "name": "State Government Jurisdiction",
+    "badge": "State Executive & Legislature",
+    "description": "Governor, Chief Minister & State Council of Ministers, Vidhan Sabha, Vidhan Parishad, State Police 10-Rank Chain of Command",
+    "color": "indigo",
+    "sectionIds": [
+      "SEC-DEM-16",
+      "SEC-DEM-17",
+      "SEC-DEM-18",
+      "SEC-DEM-19"
+    ]
+  },
+  {
+    "id": "TIER-DISTRICT",
+    "name": "District Administration & Field Magistracy",
+    "badge": "Territorial Administration",
+    "description": "Divisional Commissioner, District Magistrate & Collector, Sub-Divisional Magistrate, Tehsildar, Village Talathi",
+    "color": "amber",
+    "sectionIds": [
+      "SEC-DEM-20"
+    ]
+  },
+  {
+    "id": "TIER-LOCAL",
+    "name": "Local Self-Government Jurisdiction",
+    "badge": "Urban & Rural Local Bodies",
+    "description": "Urban Municipal Corporations (BMC Model) and Rural 3-Tier Panchayati Raj (Zilla Parishad, Panchayat Samiti, Gram Panchayat)",
+    "color": "cyan",
+    "sectionIds": [
+      "SEC-DEM-21",
+      "SEC-DEM-22"
+    ]
+  },
+  {
+    "id": "TIER-SOVEREIGN",
+    "name": "Sovereign Democratic Base",
+    "badge": "Constitutional Foundation",
+    "description": "Universal Adult Franchise Electors (We, The People of India) & Sovereign Village Gram Sabha",
+    "color": "rose",
+    "sectionIds": [
+      "SEC-DEM-23"
+    ]
+  }
+];
+
 export const SECTION_METAS_V4: SectionMeta[] = [
   {
     "id": "SEC-DEM-01",
     "number": "01",
     "title": "Apex Constitutional Authority (President & Vice-President)",
     "subtitle": "Head of State, Supreme Commander of Armed Forces & Constitutional Grundnorm",
-    "summary": "The constitutional apex of the Republic of India under Articles 52 and 53. Executive power of the Union is formally vested in the President, exercised on the binding aid and advice of the Council of Ministers under Article 74.",
+    "summary": "The constitutional apex of the Republic of India. Executive power of the Union is formally vested in the President, exercised on the binding aid and advice of the Council of Ministers.",
     "iconName": "Crown",
     "expectedSubsections": [
       "President of India",
@@ -22,7 +102,7 @@ export const SECTION_METAS_V4: SectionMeta[] = [
     "id": "SEC-DEM-02",
     "number": "02",
     "title": "Rajya Sabha (Council of States — Upper House)",
-    "subtitle": "Federal Chamber Representing States & Union Territories (Articles 80-84)",
+    "subtitle": "Federal Chamber Representing States & Union Territories",
     "summary": "The permanent Upper House of Indian Parliament consisting of 245 members representing the States and Union Territories, presided over by the Vice-President of India as ex-officio Chairman.",
     "iconName": "Landmark",
     "expectedSubsections": [
@@ -39,7 +119,7 @@ export const SECTION_METAS_V4: SectionMeta[] = [
     "id": "SEC-DEM-03",
     "number": "03",
     "title": "Lok Sabha & Parliamentary Committees (House of the People)",
-    "subtitle": "Supreme Directly Elected Legislative Chamber of the Republic (Articles 81-122)",
+    "subtitle": "Supreme Directly Elected Legislative Chamber of the Republic",
     "summary": "The directly elected lower chamber of 543 MPs chosen through universal adult franchise, headed by the Speaker of Lok Sabha, holding the executive strictly accountable through parliamentary questions, debates, and standing financial committees (PAC, Estimates).",
     "iconName": "Vote",
     "expectedSubsections": [
@@ -260,7 +340,7 @@ export const SECTION_METAS_V4: SectionMeta[] = [
     "id": "SEC-DEM-15",
     "number": "15",
     "title": "Apex & Higher Judiciary",
-    "subtitle": "Supreme Court of India, High Courts & Subordinate District Judiciary (Articles 124-237)",
+    "subtitle": "Supreme Court of India, High Courts & Subordinate District Judiciary",
     "summary": "The unified independent judicial pillar: Supreme Court headed by Chief Justice of India, 25 High Courts with constitutional writ jurisdiction, and territorial District & Sessions Courts protecting fundamental rights.",
     "iconName": "Scale",
     "expectedSubsections": [
@@ -301,7 +381,7 @@ export const SECTION_METAS_V4: SectionMeta[] = [
     "id": "SEC-DEM-17",
     "number": "17",
     "title": "State Executive & Chief Secretariat",
-    "subtitle": "State Constitutional Executive (Articles 153-167) & Apex Administrative Secretariat",
+    "subtitle": "State Constitutional Executive & Apex Administrative Secretariat",
     "summary": "State executive governance: Governor (constitutional head appointed by President), Chief Minister & Cabinet (elected executive head), and the State Chief Secretary directing all provincial government departments.",
     "iconName": "Building2",
     "expectedSubsections": [
@@ -320,7 +400,7 @@ export const SECTION_METAS_V4: SectionMeta[] = [
     "id": "SEC-DEM-18",
     "number": "18",
     "title": "State Legislature (Vidhan Sabha & Vidhan Parishad)",
-    "subtitle": "Elected Legislative Assemblies & Legislative Councils (Articles 168-212)",
+    "subtitle": "Elected Legislative Assemblies & Legislative Councils",
     "summary": "State lawmaking bodies: Legislative Assembly (Vidhan Sabha — directly elected MLAs representing territorial constituencies) and Legislative Council (Vidhan Parishad — Upper House where applicable).",
     "iconName": "Layers",
     "expectedSubsections": [
@@ -337,7 +417,7 @@ export const SECTION_METAS_V4: SectionMeta[] = [
     "id": "SEC-DEM-19",
     "number": "19",
     "title": "State Police Hierarchy (10-Rank Linear Command)",
-    "subtitle": "Schedule 7, List II, Entry 2 & Police Act 1861: DGP to Constable",
+    "subtitle": "DGP to Constable",
     "summary": "Full 10-tier linear chain of command of state law enforcement: DGP at state apex down through ADGP, IGP, DIG, SP (District Chief), ASP/DSP, SHO (Inspector), Sub-Inspector (lead investigator), Head Constable, and Police Constable on the beat.",
     "iconName": "Siren",
     "expectedSubsections": [
@@ -388,7 +468,7 @@ export const SECTION_METAS_V4: SectionMeta[] = [
     "id": "SEC-DEM-21",
     "number": "21",
     "title": "Urban Municipal Corporations (BMC Model)",
-    "subtitle": "74th Constitutional Amendment: Municipal Commissioner, Mayor & Ward Corporators",
+    "subtitle": "Municipal Commissioner, Mayor & Ward Corporators",
     "summary": "Grassroots urban governance: Municipal Commissioner (IAS Principal Executive), Mayor & Municipal Corporation Council, Standing Committees, Assistant Municipal Commissioners, and Ward Corporators elected across municipal wards.",
     "iconName": "Building",
     "expectedSubsections": [
@@ -408,7 +488,7 @@ export const SECTION_METAS_V4: SectionMeta[] = [
     "id": "SEC-DEM-22",
     "number": "22",
     "title": "Rural Panchayati Raj (3-Tier Local Bodies)",
-    "subtitle": "73rd Constitutional Amendment: District Zilla Parishad, Block Samiti & Village Panchayat",
+    "subtitle": "District Zilla Parishad, Block Samiti & Village Panchayat",
     "summary": "Grassroots rural self-government: District Zilla Parishad (ZP CEO), Intermediate Block Panchayat Samiti (Block Development Officer), and Village Gram Panchayat (Sarpanch, Gram Sevak & Ward Panchs).",
     "iconName": "Trees",
     "expectedSubsections": [
@@ -430,7 +510,7 @@ export const SECTION_METAS_V4: SectionMeta[] = [
     "id": "SEC-DEM-23",
     "number": "23",
     "title": "Sovereign Democratic Base (Citizens & Gram Sabha)",
-    "subtitle": "We, The People of India — The Ultimate Sovereign Foundation (Articles 326 & 243A)",
+    "subtitle": "We, The People of India — The Ultimate Sovereign Foundation",
     "summary": "The ultimate source of democratic authority in the Republic of India: Citizens exercise universal adult franchise to elect parliamentary, state, and local representatives, and deliberate directly in the Sovereign Village Gram Sabha.",
     "iconName": "Users",
     "expectedSubsections": [
@@ -455,26 +535,21 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "01",
     "level": "constitutional",
     "category": "legislation",
-    "summary": "The de jure Supreme Executive Head of the Republic of India and Supreme Commander of the Armed Forces (Articles 52 & 53). All union executive actions are taken in the President's name (Art 77). Acts on the binding aid and advice of the Union Council of Ministers headed by the Prime Minister (Art 74).",
-    "mandate": [
-      "Article 52: There shall be a President of India.",
-      "Article 53: Executive power of the Union is vested in the President and exercised directly or through subordinate officers.",
-      "Article 74(1): Binding aid and advice of Council of Ministers headed by PM.",
-      "Article 77: All executive actions of Government of India expressed to be taken in President name."
-    ],
+    "summary": "The de jure Supreme Executive Head of the Republic of India and Supreme Commander of the Armed Forces. All union executive actions are taken in the President's name. Acts on the binding aid and advice of the Union Council of Ministers headed by the Prime Minister.",
+    "mandate": [],
     "powers": [
-      "Appoints Prime Minister of India (Article 75) and other Ministers on PM advice.",
+      "Appoints Prime Minister of India and other Ministers on PM advice.",
       "Appoints State Governors, Chief Justice of India, Judges, CEC, CAG, and UPSC Members.",
       "Summons and prorogues Parliament sessions; dissolves the Lok Sabha on PM advice.",
-      "Promulgates Presidential Ordinances during parliamentary recess (Article 123).",
-      "Exercises Clemency, Pardons, and Remissions of sentences (Article 72)."
+      "Promulgates Presidential Ordinances during parliamentary recess.",
+      "Exercises Clemency, Pardons, and Remissions of sentences."
     ],
     "limitations": [
-      "Bound by advice of the Union Council of Ministers after one reconsideration (44th Amendment).",
+      "Bound by advice of the Union Council of Ministers after one reconsideration.",
       "Can only act upon ministerial advice in normal circumstances, not as an autocrat."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 52-62, 72, 74, 77, 123",
+      "constitutionalArticle": "",
       "positionName": "President of India",
       "cadreOrService": "Elected Constitutional Head of State",
       "electoralOrSelectionMethod": "Electoral College of elected members of both Houses of Parliament and Legislative Assemblies of States",
@@ -496,23 +571,19 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "01",
     "level": "constitutional",
     "category": "legislation",
-    "summary": "Second highest constitutional office of the Republic of India (Article 63). Serves ex-officio as the Chairman of the Council of States (Rajya Sabha) under Article 64, and discharges the functions of the President during vacancies caused by death, resignation, or removal (Article 65).",
-    "mandate": [
-      "Article 63: There shall be a Vice-President of India.",
-      "Article 64: Vice-President shall be ex-officio Chairman of the Council of States (Rajya Sabha).",
-      "Article 65: Acts as President in casual vacancies or during absence until a new President takes office."
-    ],
+    "summary": "Second highest constitutional office of the Republic of India. Serves ex-officio as the Chairman of the Council of States (Rajya Sabha), and discharges the functions of the President during vacancies caused by death, resignation, or removal.",
+    "mandate": [],
     "powers": [
       "Presides over proceedings, debates, and conduct of business in the Rajya Sabha.",
       "Maintains order and decorum in the House; gives casting vote in case of equality of votes.",
-      "Adjudicates questions of disqualification of Rajya Sabha members under the Tenth Schedule (Anti-Defection Law)."
+      "Adjudicates questions of disqualification of Rajya Sabha members under the Tenth Schedule."
     ],
     "limitations": [
       "Cannot preside over Rajya Sabha when a resolution for removal from office is under consideration.",
       "Cannot draw salary as Vice-President; receives salary and allowances as Chairman of Rajya Sabha."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 63-71, 89",
+      "constitutionalArticle": "",
       "positionName": "Vice-President of India & Chairman of Rajya Sabha",
       "cadreOrService": "Elected Constitutional Dignitary",
       "electoralOrSelectionMethod": "Electoral College of members of both Houses of Parliament (system of proportional representation by single transferable vote)",
@@ -534,12 +605,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "02",
     "level": "union",
     "category": "legislation",
-    "summary": "Representatives of States and Union Territories in the Council of States (Article 80). 233 members elected by elected MLAs of States/UTs using proportional representation by single transferable vote, plus 12 members nominated by the President for literature, science, art, and social service. Permanent House not subject to dissolution; one-third members retire every second year.",
-    "mandate": [
-      "Article 80: Composition of the Council of States (238 elected + 12 nominated).",
-      "Article 83(1): Permanent House, one-third of members retiring every second year.",
-      "Safeguard state interests in central federal legislation and national policy."
-    ],
+    "summary": "Representatives of States and Union Territories in the Council of States. 233 members elected by elected MLAs of States/UTs using proportional representation by single transferable vote, plus 12 members nominated by the President for literature, science, art, and social service. Permanent House not subject to dissolution; one-third members retire every second year.",
+    "mandate": [],
     "powers": [
       "Scrutinizes, amends, and passes legislative bills (except Money Bills).",
       "Article 249: Can authorize Parliament to make laws on State List subjects in national interest by 2/3 majority.",
@@ -547,11 +614,11 @@ export const NODES_V4: EducationNode[] = [
       "Participates in presidential elections, vice-presidential elections, and constitutional amendments."
     ],
     "limitations": [
-      "Money Bills cannot be introduced in Rajya Sabha and cannot be rejected/amended (must return within 14 days under Article 109).",
-      "Cannot vote on Demands for Grants (Budget cuts/voting restricted to Lok Sabha under Article 113)."
+      "Money Bills cannot be introduced in Rajya Sabha and cannot be rejected/amended (must return within 14 days).",
+      "Cannot vote on Demands for Grants (Budget cuts/voting restricted to Lok Sabha)."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 80, 83(1), 84, 101-104, 249, 312",
+      "constitutionalArticle": "",
       "positionName": "Member of Parliament (Rajya Sabha)",
       "cadreOrService": "Elected/Nominated Parliamentary Representative of States",
       "electoralOrSelectionMethod": "Elected by elected MLAs of State Assemblies via proportional representation / Nominated by President (12 members)",
@@ -574,11 +641,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "02",
     "level": "union",
     "category": "legislation",
-    "summary": "The presiding officers of the Council of States (Article 89). The Vice-President is ex-officio Chairman, assisted by an elected Deputy Chairman from amongst the MPs of the Rajya Sabha, ensuring smooth legislative conduct and house discipline.",
-    "mandate": [
-      "Article 89: Council of States shall choose a member to be Deputy Chairman.",
-      "Maintain parliamentary dignity, interpret Rules of Procedure and Conduct of Business in Rajya Sabha."
-    ],
+    "summary": "The presiding officers of the Council of States. The Vice-President is ex-officio Chairman, assisted by an elected Deputy Chairman from amongst the MPs of the Rajya Sabha, ensuring smooth legislative conduct and house discipline.",
+    "mandate": [],
     "powers": [
       "Interprets rules and constitutional provisions within the House.",
       "Accepts or rejects privilege motions, calling attention notices, and adjournment discussions.",
@@ -588,7 +652,7 @@ export const NODES_V4: EducationNode[] = [
       "Cannot vote in the first instance; only possesses a casting vote in case of an equality of votes."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 64, 89-92",
+      "constitutionalArticle": "",
       "positionName": "Chairman & Deputy Chairman, Rajya Sabha",
       "cadreOrService": "Constitutional Parliamentary Presiding Officers",
       "electoralOrSelectionMethod": "Ex-officio (Chairman) / Elected by Rajya Sabha members (Deputy Chairman)",
@@ -610,13 +674,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "03",
     "level": "union",
     "category": "legislation",
-    "summary": "The principal presiding officer and constitutional guardian of the House of the People (Article 93). Holds sole constitutional authority under Article 110(3) to certify whether a bill is a Money Bill. Presides over joint sittings of Parliament (Article 118). Adjudicates defection petitions under Tenth Schedule.",
-    "mandate": [
-      "Article 93: Election of Speaker and Deputy Speaker by Lok Sabha.",
-      "Article 110(3): Final authority to certify a Bill as a Money Bill.",
-      "Article 118(4): Presides over Joint Sittings of both Houses of Parliament.",
-      "Tenth Schedule: Sole quasi-judicial authority to disqualify members on grounds of defection."
-    ],
+    "summary": "The principal presiding officer and constitutional guardian of the House of the People. Holds sole constitutional authority(3) to certify whether a bill is a Money Bill. Presides over joint sittings of Parliament. Adjudicates defection petitions under Tenth Schedule.",
+    "mandate": [],
     "powers": [
       "Certifies Money Bills (conclusive and cannot be questioned in any court or Rajya Sabha).",
       "Allocates time for discussions, admits motions, and decides questions of privilege.",
@@ -625,10 +684,10 @@ export const NODES_V4: EducationNode[] = [
     ],
     "limitations": [
       "Decisions under the Tenth Schedule are subject to judicial review (Kihoto Hollohan v. Zachillhu).",
-      "Cannot vote in the first instance; only exercises casting vote in case of equality of votes (Article 100)."
+      "Cannot vote in the first instance; only exercises casting vote in case of equality of votes."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 93-97, 100, 110(3), 118(4), Tenth Schedule",
+      "constitutionalArticle": "",
       "positionName": "Speaker of the Lok Sabha",
       "cadreOrService": "Presiding Officer of the House of the People",
       "electoralOrSelectionMethod": "Elected by Lok Sabha MPs from amongst its members by simple majority",
@@ -650,12 +709,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "03",
     "level": "union",
     "category": "legislation",
-    "summary": "The directly elected popular representatives of the sovereign people of India in the House of the People (Article 81). 543 MPs elected from single-member territorial constituencies across the nation under universal adult franchise (Article 326). Represents constituent grievances, passes national legislation, and enforces executive accountability through Motions of No-Confidence.",
-    "mandate": [
-      "Article 81: Composition of the House of the People (not more than 530 from States, 20 from UTs).",
-      "Article 75(3): The Council of Ministers is collectively responsible to the Lok Sabha.",
-      "Exercise parliamentary control over executive administration and public taxation."
-    ],
+    "summary": "The directly elected popular representatives of the sovereign people of India in the House of the People. 543 MPs elected from single-member territorial constituencies across the nation under universal adult franchise. Represents constituent grievances, passes national legislation, and enforces executive accountability through Motions of No-Confidence.",
+    "mandate": [],
     "powers": [
       "Introduces and passes ordinary legislation, constitutional amendments, and Money Bills.",
       "Votes on Demands for Grants and passes the Annual Finance Bill and Appropriation Bill.",
@@ -663,12 +718,12 @@ export const NODES_V4: EducationNode[] = [
       "Participates in Question Hour, Zero Hour, and Parliamentary Standing Committees."
     ],
     "limitations": [
-      "Disqualified if absent for 60 consecutive days without permission (Article 101(4)).",
+      "Disqualified if absent for 60 consecutive days without permission).",
       "Subject to disqualification under Tenth Schedule for defying party whip or defecting.",
-      "Subject to disqualification under Section 8 of RPA 1951 upon conviction of 2+ years imprisonment."
+      "Subject to disqualification."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 81, 84, 101-106, 326",
+      "constitutionalArticle": "",
       "positionName": "Member of Parliament (Lok Sabha)",
       "cadreOrService": "Directly Elected Parliamentary Representative",
       "electoralOrSelectionMethod": "Direct universal adult suffrage by First-Past-The-Post in territorial constituencies",
@@ -692,10 +747,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "legislation",
     "summary": "The institutional watchdog mechanisms of Parliament: Public Accounts Committee (PAC - examines CAG reports, traditionally chaired by senior opposition MP), Estimates Committee, Committee on Public Undertakings (COPU), and 24 Departmentally-Related Standing Committees.",
-    "mandate": [
-      "Examine accounts showing the appropriation of sums granted by Parliament.",
-      "Scrutinize annual budgets, demands for grants, and legislative bills of corresponding ministries."
-    ],
+    "mandate": [],
     "powers": [
       "Summons departmental secretaries and officials to testify on financial irregularities.",
       "Examines efficiency, economy, and administrative improvements in ministries.",
@@ -706,7 +758,7 @@ export const NODES_V4: EducationNode[] = [
       "Post-facto financial scrutiny rather than day-to-day administrative interference."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 105, 118",
+      "constitutionalArticle": "",
       "positionName": "Parliamentary Committee System",
       "cadreOrService": "Joint Parliamentary Legislative Committees",
       "electoralOrSelectionMethod": "Proportional representation by single transferable vote among MPs",
@@ -729,11 +781,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "The apex administrative civil service office in the Government of India. The Cabinet Secretary is the senior-most civil servant, ex-officio Chairman of the Civil Services Board, head of the Cabinet Secretariat, and administrative advisor to the Prime Minister. Manages inter-ministerial coordination and administration of Allocation of Business Rules 1961.",
-    "mandate": [
-      "Manage secretarial assistance to the Union Cabinet and Cabinet Committees.",
-      "Administer the Government of India (Transaction of Business) Rules 1961 and Allocation of Business Rules 1961.",
-      "Ex-officio head of the Indian Administrative Service and Civil Services Board."
-    ],
+    "mandate": [],
     "powers": [
       "Prepares agenda and records minutes for Union Cabinet meetings.",
       "Resolves inter-ministerial disputes and coordinates inter-departmental policy deadlocks.",
@@ -745,7 +793,7 @@ export const NODES_V4: EducationNode[] = [
       "Operates under the direct operational command and political direction of the Prime Minister."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77(3), Allocation of Business Rules 1961",
+      "constitutionalArticle": "",
       "positionName": "Cabinet Secretary of India",
       "cadreOrService": "Indian Administrative Service (IAS) — Apex Senior Civil Servant",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC) chaired by PM",
@@ -769,11 +817,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "The cadre controlling authority for the Indian Administrative Service (IAS) and Central Secretariat Service (CSS). Regulates recruitment, service conditions, training, discipline, and anti-corruption vigilance policies for central government employees. Administratively oversees UPSC, SSC, and Central Vigilance Commission.",
-    "mandate": [
-      "Administer the All India Services Act 1951 and AIS Cadre Rules.",
-      "Formulate recruitment policies, cadre allocation, promotion guidelines, and service conduct rules.",
-      "Act as the administrative department for Central Bureau of Investigation (CBI) and CVC."
-    ],
+    "mandate": [],
     "powers": [
       "Allocates cadres to UPSC-selected IAS officers across States and Joint Cadres.",
       "Issues Presidential sanction for prosecution of All-India Service officers in corruption cases.",
@@ -781,10 +825,10 @@ export const NODES_V4: EducationNode[] = [
     ],
     "limitations": [
       "Cannot unilaterally overrule UPSC statutory recommendations on disciplinary matters.",
-      "Subject to judicial review by the Central Administrative Tribunal (CAT) under Article 323A."
+      "Subject to judicial review by the Central Administrative Tribunal (CAT)."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 309, 311, 312, AIS Act 1951",
+      "constitutionalArticle": "",
       "positionName": "Secretary, Department of Personnel and Training (DoPT)",
       "cadreOrService": "Indian Administrative Service (IAS)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -806,12 +850,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "04",
     "level": "union",
     "category": "executive-administration",
-    "summary": "The de facto Executive Head of the Government of India and primus inter pares (first among equals) of the Union Cabinet (Article 75). Appointed by the President as the leader of the party/coalition with majority in the Lok Sabha. Chief advisor to the President, head of Council of Ministers, and Chairman of NITI Aayog.",
-    "mandate": [
-      "Article 74(1): Head of Union Council of Ministers whose aid and advice is binding on President.",
-      "Article 75(1): Appointed by President; other Ministers appointed by President on PM advice.",
-      "Article 78: Communicates all decisions of Council of Ministers to President; furnishes all information on administration."
-    ],
+    "summary": "The de facto Executive Head of the Government of India and primus inter pares (first among equals) of the Union Cabinet. Appointed by the President as the leader of the party/coalition with majority in the Lok Sabha. Chief advisor to the President, head of Council of Ministers, and Chairman of NITI Aayog.",
+    "mandate": [],
     "powers": [
       "Allocates and reshuffles portfolios among Union Ministers.",
       "Presides over Union Cabinet meetings and steers national policy and foreign affairs.",
@@ -820,10 +860,10 @@ export const NODES_V4: EducationNode[] = [
     ],
     "limitations": [
       "Must maintain the confidence of the Lok Sabha; must resign if a No-Confidence Motion is passed.",
-      "Must be or become a member of either House of Parliament within 6 months of appointment (Article 75(5))."
+      "Must be or become a member of either House of Parliament within 6 months of appointment)."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74, 75, 78",
+      "constitutionalArticle": "",
       "positionName": "Prime Minister of India",
       "cadreOrService": "Elected Head of Government (Member of Parliament)",
       "electoralOrSelectionMethod": "Appointed by President based on majority in Lok Sabha (Article 75(1))",
@@ -847,10 +887,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "Principal military advisor to the Defence Minister on tri-service matters and Permanent Chairman of Chiefs of Staff Committee. Heads the Department of Military Affairs (DMA) to drive jointness, integrated theatre commands, and tri-service synergy.",
-    "mandate": [
-      "Promote joint procurement, training, and operational doctrines among Army, Navy, and Air Force.",
-      "Establish Integrated Theatre Commands for joint warfighting capabilities."
-    ],
+    "mandate": [],
     "powers": [
       "Prioritizes military equipment procurement and capital acquisitions for all three wings.",
       "Coordinates tri-service agencies: Defence Cyber Agency, Defence Space Agency, and Special Forces."
@@ -873,10 +910,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "The land-based branch and the largest component of the Indian Armed Forces under the command of the Chief of Army Staff (COAS, 4-star General). Divided into 7 operational and training commands across India.",
-    "mandate": [
-      "Safeguard territorial integrity against external aggression and cross-border threats.",
-      "Provide Aid to Civil Authority during severe natural disasters and grave internal security crises."
-    ],
+    "mandate": [],
     "powers": [
       "Commands 1.2+ million active soldiers and field corps across northern, western, and eastern borders.",
       "Deploys counter-insurgency formations under statutory authorizations (e.g., AFSPA where invoked)."
@@ -899,10 +933,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "security-law-enforcement",
     "summary": "Chief scientific advisor to Raksha Mantri and head of the Defence Research and Development Organisation (DRDO). Directs 50+ national research laboratories developing missiles, radar, combat vehicles, and aerospace systems.",
-    "mandate": [
-      "Drive indigenous design and technological self-reliance in cutting-edge military hardware.",
-      "Direct strategic missile systems (Agni, Prithvi, BrahMos), combat aircraft (Tejas), and naval sonars."
-    ],
+    "mandate": [],
     "powers": [
       "Allocates R&D funds across 50 national laboratories and academic centres of excellence.",
       "Sanctions technology transfer (ToT) to public and private Indian defence manufacturers."
@@ -911,7 +942,7 @@ export const NODES_V4: EducationNode[] = [
       "Subject to strategic mission directives from Defence Minister and Cabinet Committee on Security."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77",
+      "constitutionalArticle": "",
       "positionName": "Secretary (Defence R&D) & Chairman, DRDO",
       "cadreOrService": "Distinguished Scientist / Apex Scientific Service (Pay Level 17)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -941,20 +972,17 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "security-law-enforcement",
     "summary": "Political and constitutional head of the Ministry of Defence. Member of the Cabinet Committee on Security (CCS), responsible to Parliament for national defence, armed forces policy, strategic procurement, and military budget.",
-    "mandate": [
-      "Exercise political control and constitutional responsibility over India's Armed Forces under Article 75.",
-      "Formulate defence policy, border security strategy, and approve major capital procurements through Defence Acquisition Council (DAC)."
-    ],
+    "mandate": [],
     "powers": [
       "Chairs the Defence Acquisition Council (DAC) approving procurement for Army, Navy, and Air Force.",
       "Recommends appointments of CDS, Service Chiefs, and Defence Secretary to the Appointments Committee of the Cabinet (ACC)."
     ],
     "limitations": [
-      "Supreme Command of Armed Forces vests in the President (Article 53(2)).",
+      "Supreme Command of Armed Forces vests in the President).",
       "Major war deployment and nuclear command decisions require Cabinet Committee on Security (CCS) approval."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74, 75, 77 & 78",
+      "constitutionalArticle": "",
       "positionName": "Union Cabinet Minister of Defence",
       "cadreOrService": "Political Executive (Cabinet Minister / Member of Parliament)",
       "electoralOrSelectionMethod": "Appointed by President on advice of Prime Minister under Article 75",
@@ -989,10 +1017,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "security-law-enforcement",
     "summary": "Junior political executive assisting the Raksha Mantri. Oversees delegated departments such as Defence Production, Ex-Servicemen Welfare (DESW), and answers parliamentary queries on behalf of the ministry.",
-    "mandate": [
-      "Assist Union Cabinet Minister in parliamentary business, veterans' welfare, and indigenous defence production.",
-      "Discharge specific delegated portfolios under the Government of India (Allocation of Business) Rules 1961."
-    ],
+    "mandate": [],
     "powers": [
       "Reviews welfare schemes for 32+ lakh ex-servicemen through Kendriya Sainik Board (KSB).",
       "Supervises Defence Public Sector Undertakings (DPSUs like HAL, BEL, MDL, BDL)."
@@ -1001,7 +1026,7 @@ export const NODES_V4: EducationNode[] = [
       "Subordinate to the Union Cabinet Minister; cannot attend Cabinet meetings unless specially invited."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74 & 75",
+      "constitutionalArticle": "",
       "positionName": "Minister of State for Defence",
       "cadreOrService": "Political Executive (Council of Ministers / MP)",
       "electoralOrSelectionMethod": "Appointed by President on advice of Prime Minister",
@@ -1032,10 +1057,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "security-law-enforcement",
     "summary": "Senior-most IAS officer in the Ministry of Defence. Coordinates defence policy, manages the defence budget, coordinates inter-service matters with CDS, and acts as Principal Accounting Officer for the Ministry.",
-    "mandate": [
-      "Administrative head of Department of Defence and coordinator of all 5 departments of MoD under Allocation of Business Rules.",
-      "Chief accounting authority for Defence budget (over Rs 6.2 lakh crore)."
-    ],
+    "mandate": [],
     "powers": [
       "Signs statutory defence contracts, international government-to-government procurement treaties.",
       "Supervises Defence Estates, National Cadet Corps (NCC), and Border Roads Organisation (BRO)."
@@ -1044,7 +1066,7 @@ export const NODES_V4: EducationNode[] = [
       "Military command decisions vest in the CDS and three Service Chiefs."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 & 312",
+      "constitutionalArticle": "",
       "positionName": "Defence Secretary to Government of India",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Selected by Appointments Committee of the Cabinet (ACC)",
@@ -1074,10 +1096,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "Indian Navy under Chief of Naval Staff (Admiral) protecting maritime borders, EEZ, and sea lanes in the Indian Ocean; and Indian Air Force under Chief of Air Staff (Air Chief Marshal) securing national airspace and providing tactical air power.",
-    "mandate": [
-      "Secure the maritime sovereignty and air defence borders of the Indian Republic.",
-      "Provide swift strategic airlift, disaster relief, and anti-piracy deterrence."
-    ],
+    "mandate": [],
     "powers": [
       "Deploys aircraft carriers, nuclear and conventional submarines, and guided missile destroyers.",
       "Controls frontline combat fighter squadrons, air defence missile nets, and military radar grids."
@@ -1100,9 +1119,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "Paramilitary and armed police forces under MHA command: CRPF (internal security/riots), BSF (Pakistan/Bangladesh borders), CISF (airports, metros, vital installations), ITBP (China border), SSB (Nepal/Bhutan borders), NSG (counter-terror commandos), and Assam Rifles.",
-    "mandate": [
-      "Border security, counter-insurgency, anti-Naxal operations, and vital infrastructure security."
-    ],
+    "mandate": [],
     "powers": [
       "Conducts combat patrols, arrests suspects in declared border belts and scheduled territories.",
       "Secures polling booths nationwide during General and Assembly elections under ECI deputation."
@@ -1125,12 +1142,9 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "security-law-enforcement",
     "summary": "Apex political executive governing national internal security, border management, Centre-State relations, administration of Union Territories, disaster response, and cadre control of the Indian Police Service (IPS).",
-    "mandate": [
-      "Safeguard territorial integrity and maintain internal peace across all States and UTs under Article 355.",
-      "Supervise counter-terrorism, border guarding, intelligence operations, and disaster management under DMA 2005."
-    ],
+    "mandate": [],
     "powers": [
-      "Recommends imposition of President's Rule in States under Article 356.",
+      "Recommends imposition of President's Rule in States.",
       "Directs Central Armed Police Forces (CRPF, BSF, CISF, ITBP, SSB, NSG) and Intelligence Bureau.",
       "Administers citizenship grant, National Investigation Agency (NIA), and Unlawful Activities (Prevention) Act (UAPA)."
     ],
@@ -1138,7 +1152,7 @@ export const NODES_V4: EducationNode[] = [
       "Public order and police are State subjects under Schedule 7, List II; central forces deployed only in aid of civil authority or border security."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74, 75, 355 & 356",
+      "constitutionalArticle": "",
       "positionName": "Union Cabinet Minister for Home Affairs",
       "cadreOrService": "Political Executive (Cabinet Minister / MP)",
       "electoralOrSelectionMethod": "Appointed by President on advice of Prime Minister",
@@ -1169,10 +1183,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "security-law-enforcement",
     "summary": "Junior political executive assisting the Home Minister. Handles delegated areas including disaster management (NDRF), border area development, official language promotion, and North East region affairs.",
-    "mandate": [
-      "Discharge statutory and administrative duties delegated by Union Home Minister under Business Rules.",
-      "Coordinate disaster response deployments and parliamentary legislative questions."
-    ],
+    "mandate": [],
     "powers": [
       "Oversees National Disaster Response Force (NDRF) deployments during floods and cyclones.",
       "Reviews Border Area Development Programme (BADP) implementation across border states."
@@ -1181,7 +1192,7 @@ export const NODES_V4: EducationNode[] = [
       "Subordinate to Union Home Minister; cannot independently sanction major counter-terror actions or presidential notifications."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74 & 75",
+      "constitutionalArticle": "",
       "positionName": "Minister of State for Home Affairs",
       "cadreOrService": "Political Executive (Council of Ministers / MP)",
       "electoralOrSelectionMethod": "Appointed by President on Prime Minister's advice",
@@ -1212,10 +1223,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "security-law-enforcement",
     "summary": "Senior-most IAS officer in MHA. Cadre Controlling Authority for the Indian Police Service (IPS). Coordinates national internal security, operational deployment of paramilitary forces, and chairs National Executive Committee (NEC) for Disaster Management.",
-    "mandate": [
-      "Direct national internal security apparatus, border security coordination, and Centre-State law and order dialogue.",
-      "Statutory sanctioning authority for electronic surveillance under Telegraph Act and IT Act Section 69."
-    ],
+    "mandate": [],
     "powers": [
       "Cadre management, empanelment, and central deputation of all Indian Police Service (IPS) officers nationwide.",
       "Chairs the National Executive Committee under the Disaster Management Act 2005.",
@@ -1225,7 +1233,7 @@ export const NODES_V4: EducationNode[] = [
       "Interception orders subject to mandatory review by Cabinet Secretary Review Committee under IT rules."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 & 312",
+      "constitutionalArticle": "",
       "positionName": "Union Home Secretary to Government of India",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Selected by Appointments Committee of the Cabinet (ACC)",
@@ -1255,10 +1263,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "security-law-enforcement",
     "summary": "Leads national domestic intelligence, counter-terrorism, counter-intelligence, and VIP security. Advises Union Home Minister and Prime Minister on covert security threats and internal disturbances.",
-    "mandate": [
-      "Gather domestic intelligence, monitor insurgent and terrorist networks, and neutralize espionage threats.",
-      "Coordinate Multi-Agency Centre (MAC) for real-time 24x7 terror intelligence sharing across state police forces."
-    ],
+    "mandate": [],
     "powers": [
       "Directs nationwide Intelligence Bureau stations and border intelligence posts.",
       "Conducts background security verifications for constitutional appointees, judges, and high-level civil servants."
@@ -1267,7 +1272,7 @@ export const NODES_V4: EducationNode[] = [
       "Operates without statutory police arrest powers; actionable intelligence executed via state police or NIA."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 & Schedule 7 List I Entry 8",
+      "constitutionalArticle": "",
       "positionName": "Director, Intelligence Bureau (DIB) / Special Secretary (IS)",
       "cadreOrService": "Indian Police Service (IPS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -1297,10 +1302,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "Senior-most diplomat and administrative head of the Ministry of External Affairs. Controls the Indian Foreign Service (IFS) cadre, directs 190+ diplomatic missions worldwide, and serves as primary diplomatic adviser to Prime Minister and EAM.",
-    "mandate": [
-      "Execute foreign policy strategy, international treaty negotiations, and strategic bilateral partnerships.",
-      "Supervise Indian embassies, high commissions, and permanent missions to the United Nations."
-    ],
+    "mandate": [],
     "powers": [
       "Directs IFS postings, foreign diplomatic accreditations, and bilateral summit agendas.",
       "Serves as chief spokesperson on strategic national security and foreign diplomatic affairs."
@@ -1309,7 +1311,7 @@ export const NODES_V4: EducationNode[] = [
       "Treaty ratifications and major foreign declarations require Union Cabinet approval."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 & 312",
+      "constitutionalArticle": "",
       "positionName": "Foreign Secretary of India",
       "cadreOrService": "Indian Foreign Service (IFS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Selected by Appointments Committee of the Cabinet (ACC)",
@@ -1339,10 +1341,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "Political and constitutional head of the Ministry of External Affairs. Member of the Cabinet Committee on Security (CCS), responsible to Parliament for foreign policy, diplomatic relations, international treaties, and overseas citizen protection.",
-    "mandate": [
-      "Conduct foreign policy and represent the Republic of India in bilateral, regional, and United Nations multilateral forums under Article 75.",
-      "Safeguard national strategic interests, negotiate international treaties, and protect the Indian diaspora abroad."
-    ],
+    "mandate": [],
     "powers": [
       "Directs Indian diplomatic missions (190+ embassies and high commissions worldwide).",
       "Signs international treaties, extradition pacts, and bilateral agreements on behalf of the President."
@@ -1351,7 +1350,7 @@ export const NODES_V4: EducationNode[] = [
       "Major strategic declarations and war-peace decisions require Cabinet Committee on Security (CCS) approval."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74, 75 & 77",
+      "constitutionalArticle": "",
       "positionName": "Union Cabinet Minister for External Affairs",
       "cadreOrService": "Political Executive (Cabinet Minister / Member of Parliament)",
       "electoralOrSelectionMethod": "Appointed by President on advice of Prime Minister under Article 75",
@@ -1382,10 +1381,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "Junior political executive assisting the External Affairs Minister. Leads bilateral engagements across specific geographical desks (e.g., Africa, Latin America, Gulf), oversees diaspora affairs, and monitors Haj / cultural diplomacy.",
-    "mandate": [
-      "Support External Affairs Minister in parliamentary debates and bilateral diplomatic exchanges.",
-      "Lead Indian delegations to regional forums and coordinate non-resident Indian (NRI) welfare initiatives."
-    ],
+    "mandate": [],
     "powers": [
       "Conducts bilateral joint commissions with partner nations.",
       "Coordinates emergency evacuation missions (e.g., Operation Ganga, Operation Kaveri) for Indian citizens abroad."
@@ -1394,7 +1390,7 @@ export const NODES_V4: EducationNode[] = [
       "Strategic summit outcomes and core treaties require approval of Cabinet Committee on Security and EAM."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74 & 75",
+      "constitutionalArticle": "",
       "positionName": "Minister of State for External Affairs",
       "cadreOrService": "Political Executive (Council of Ministers / MP)",
       "electoralOrSelectionMethod": "Appointed by President on Prime Minister's advice",
@@ -1425,19 +1421,16 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "citizen-participation",
     "summary": "Head of the Consular, Passport and Visa (CPV) Division under the Passports Act 1967. Operates the nationwide Passport Seva network (500+ Kendras) issuing ordinary, official, and diplomatic passports to Indian citizens and managing consular aid.",
-    "mandate": [
-      "Administer Passports Act 1967 and issue biometric and e-passports to Indian citizens.",
-      "Deliver consular assistance to distress overseas Indians through MADAD portal and Pravasi Bharatiya Sahayata Kendra."
-    ],
+    "mandate": [],
     "powers": [
       "Appoints Regional Passport Officers (RPOs) across all Indian states.",
       "Revokes or impounds passports under statutory provisions of Section 10 of Passports Act."
     ],
     "limitations": [
-      "Passport impoundments subject to statutory appeal before Appellate Authority and judicial review under Article 226."
+      "Passport impoundments subject to statutory appeal before Appellate Authority and judicial review."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Passports Act 1967 & Article 21 (Right to Travel)",
+      "constitutionalArticle": "",
       "positionName": "Chief Passport Officer of India",
       "cadreOrService": "Indian Foreign Service (Joint Secretary Rank, Pay Level 14)",
       "electoralOrSelectionMethod": "Central deputation posting approved by MEA",
@@ -1467,10 +1460,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "Apex IFS officers holding Secretary rank in MEA. Division heads governing broad geopolitical hemispheres: Secretary (West) covering Europe/Americas, Secretary (East) covering ASEAN/Indo-Pacific, and Secretary (Economic Relations) managing trade diplomacy and development partnership (DPA).",
-    "mandate": [
-      "Direct bilateral relations and regional multilateral groupings (Quad, ASEAN, EU, BRICS, G20).",
-      "Oversee Lines of Credit (LoC) and grant assistance to partner nations through Development Partnership Administration."
-    ],
+    "mandate": [],
     "powers": [
       "Leads senior diplomatic talks, free trade diplomatic negotiations, and multilateral summit working groups.",
       "Authorizes foreign aid project grants across neighboring South Asian and African nations."
@@ -1479,7 +1469,7 @@ export const NODES_V4: EducationNode[] = [
       "Subordinate to Foreign Secretary and External Affairs Minister."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 & 312",
+      "constitutionalArticle": "",
       "positionName": "Secretary (West / East / Economic Relations / CPV)",
       "cadreOrService": "Indian Foreign Service (IFS - Secretary Rank, Pay Level 17)",
       "electoralOrSelectionMethod": "Selected by ACC",
@@ -1509,9 +1499,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "funding-finance",
     "summary": "Statutory boards under the Central Board of Revenue Act 1963: CBDT (administers Income Tax Act through IRS-IT officers) and CBIC (administers Central Goods & Services Tax - CGST, Customs, and Excise through IRS-C&CE officers).",
-    "mandate": [
-      "Levy and collect personal income tax, corporate tax, customs duties, and central GST."
-    ],
+    "mandate": [],
     "powers": [
       "Conducts tax assessments, search and seizure operations, and audits of suspected tax evasion.",
       "Issues binding circulars and administrative guidance to field tax assessment officers."
@@ -1534,9 +1522,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "Formulates national trade policy, administers patents and trademarks (DPIIT), promotes Foreign Direct Investment (FDI), and negotiates Free Trade Agreements (FTAs) with global trading partners.",
-    "mandate": [
-      "Expand export merchandise and services, promote ease of doing business, and protect domestic IP."
-    ],
+    "mandate": [],
     "powers": [
       "Formulates Foreign Trade Policy (FTP) through Directorate General of Foreign Trade (DGFT).",
       "Grants industrial patents, design rights, and geographical indications (GI)."
@@ -1559,10 +1545,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "funding-finance",
     "summary": "Senior economic advisor to the Government of India, equivalent in rank to a Secretary. Authors the annual Economic Survey of India presented to Parliament, providing authoritative macroeconomic diagnosis, trade analysis, and policy reforms.",
-    "mandate": [
-      "Author and present the Economic Survey on the eve of the Union Budget.",
-      "Advise Prime Minister and Finance Minister on inflation trends, exchange rate stability, and growth policies."
-    ],
+    "mandate": [],
     "powers": [
       "Head of the Indian Economic Service (IES) cadre.",
       "Presents macroeconomic forecasts, debt sustainability analyses, and fiscal policy papers."
@@ -1571,7 +1554,7 @@ export const NODES_V4: EducationNode[] = [
       "Advisory mandate; final fiscal and budgetary allocations decided by Finance Minister and Union Cabinet."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 & Allocation of Business Rules",
+      "constitutionalArticle": "",
       "positionName": "Chief Economic Adviser (CEA)",
       "cadreOrService": "Eminent Economist / Cadre Head, Indian Economic Service (IES - Secretary Rank)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -1601,19 +1584,16 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "funding-finance",
     "summary": "Senior-most of the five Secretaries in the Ministry of Finance (typically Secretary, Expenditure or Economic Affairs). Principal coordinator for the Annual Union Budget, public expenditure management, and inter-departmental fiscal allocation.",
-    "mandate": [
-      "Lead preparation of the Union Budget under Article 112 with DEA and Revenue departments.",
-      "Control central government expenditure, monitor fiscal deficit targets under FRBM Act, and release centrally sponsored scheme funds."
-    ],
+    "mandate": [],
     "powers": [
       "Chairs the Public Investment Board (PIB) sanctioning mega capital projects above Rs 500 crore.",
-      "Sole civil servant signatory on all Indian One Rupee currency notes under Section 22 of RBI Act."
+      "Sole civil servant signatory on all Indian One Rupee currency notes."
     ],
     "limitations": [
       "Expenditure releases strictly limited to Appropriation Acts passed by Parliament."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 77, 112 & 312",
+      "constitutionalArticle": "",
       "positionName": "Finance Secretary to Government of India",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Designated by ACC based on seniority among MoF secretaries",
@@ -1642,22 +1622,19 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "08",
     "level": "union",
     "category": "funding-finance",
-    "summary": "Political and constitutional head of the Ministry of Finance. Member of the Cabinet Committee on Economic Affairs (CCEA) and CCS. Responsible for macroeconomic stability, Annual Union Budget (Article 112), tax policy, and banking oversight.",
-    "mandate": [
-      "Present the Annual Financial Statement (Union Budget) before Parliament under Article 112.",
-      "Mobilize central tax revenues, control fiscal deficit under FRBM Act, and regulate financial institutions."
-    ],
+    "summary": "Political and constitutional head of the Ministry of Finance. Member of the Cabinet Committee on Economic Affairs (CCEA) and CCS. Responsible for macroeconomic stability, Annual Union Budget, tax policy, and banking oversight.",
+    "mandate": [],
     "powers": [
       "Presents the annual Finance Bill containing direct and indirect tax rates.",
-      "Chairs the Goods and Services Tax (GST) Council under Article 279A.",
+      "Chairs the Goods and Services Tax (GST) Council.",
       "Releases central revenues and centrally sponsored scheme grants to States."
     ],
     "limitations": [
-      "No tax can be levied or collected without statutory authority of law (Article 265).",
-      "No expenditure permitted from Consolidated Fund without parliamentary Appropriation Act (Article 114)."
+      "No tax can be levied or collected without statutory authority of law.",
+      "No expenditure permitted from Consolidated Fund without parliamentary Appropriation Act."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74, 75, 112, 114, 265 & 279A",
+      "constitutionalArticle": "",
       "positionName": "Union Cabinet Minister of Finance",
       "cadreOrService": "Political Executive (Cabinet Minister / MP)",
       "electoralOrSelectionMethod": "Appointed by President on advice of Prime Minister",
@@ -1688,10 +1665,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "funding-finance",
     "summary": "Junior political executive assisting the Finance Minister. Answers questions in Parliament regarding revenue collections, public sector bank performance, financial inclusion (Jan Dhan), and coordinates small savings schemes.",
-    "mandate": [
-      "Support Finance Minister in budgetary presentations, parliamentary debates, and fiscal bill pilotage.",
-      "Supervise implementation of credit schemes, microfinance, and financial literacy initiatives."
-    ],
+    "mandate": [],
     "powers": [
       "Represents MoF in regional banking review meetings and GST Council working groups.",
       "Lays government replies on inflation, customs seizures, and tax compliance before Parliament."
@@ -1700,7 +1674,7 @@ export const NODES_V4: EducationNode[] = [
       "Major fiscal policy changes and Budget decisions rest exclusively with Union Finance Minister and Cabinet."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74 & 75",
+      "constitutionalArticle": "",
       "positionName": "Minister of State for Finance",
       "cadreOrService": "Political Executive (Council of Ministers / MP)",
       "electoralOrSelectionMethod": "Appointed by President on Prime Minister's advice",
@@ -1731,19 +1705,16 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "funding-finance",
     "summary": "Administrative head of the Department of Revenue. Exercises administrative control over direct and indirect taxation boards (CBDT & CBIC), law enforcement agencies including Enforcement Directorate (ED), and serves as ex-officio Secretary to GST Council.",
-    "mandate": [
-      "Oversee collection of direct taxes (Income Tax, Corporation Tax) and indirect taxes (GST, Customs, Central Excise).",
-      "Coordinate enforcement against tax evasion, trade money laundering, and economic offences."
-    ],
+    "mandate": [],
     "powers": [
       "Administrative authority over Directorate of Enforcement (ED) and Central Economic Intelligence Bureau (CEIB).",
       "Formulates legislative proposals for the annual Finance Bill in consultation with tax boards."
     ],
     "limitations": [
-      "No tax can be levied or collected except by statutory authority of law (Article 265)."
+      "No tax can be levied or collected except by statutory authority of law."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 77, 265 & 279A",
+      "constitutionalArticle": "",
       "positionName": "Secretary (Revenue), Ministry of Finance",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -1773,10 +1744,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Apex domain executives holding ex-officio Secretary rank to Government of India: Member (Operations & Business Development), Member (Infrastructure), Member (Traction & Rolling Stock), and Member (Finance). Direct engineering, electrical, and commercial functions nationwide.",
-    "mandate": [
-      "Formulate technical standards, rolling stock design, track maintenance protocols, and freight marketing.",
-      "Manage railway revenue budgeting, accounting, and capital investments."
-    ],
+    "mandate": [],
     "powers": [
       "Sanctions rolling stock procurement, track renewal schedules, and new train speed certifications.",
       "Issues technical instructions binding on all 17 Zonal Railways."
@@ -1785,7 +1753,7 @@ export const NODES_V4: EducationNode[] = [
       "Collective accountability to Chairman & CEO, Railway Board."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Railway Board Act 1905",
+      "constitutionalArticle": "",
       "positionName": "Member, Railway Board (ex-officio Secretary to GoI)",
       "cadreOrService": "Indian Railway Management Service (IRMS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Selected by ACC based on professional seniority",
@@ -1815,10 +1783,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Ex-officio Principal Secretary to Government of India and administrative head of Indian Railways. Leads the apex executive body governing operations, safety, infrastructure, rolling stock, and finance of the national transporter.",
-    "mandate": [
-      "Executive management of Indian Railways under Railway Board Act 1905 and Allocation of Business Rules.",
-      "Ensure passenger safety, train punctuality, freight throughput, and modern signalling deployment."
-    ],
+    "mandate": [],
     "powers": [
       "Directs 17 Zonal Railway General Managers and heads of all railway production units.",
       "Cadre Controlling Authority for the unified Indian Railway Management Service (IRMS)."
@@ -1827,7 +1792,7 @@ export const NODES_V4: EducationNode[] = [
       "Major tariff revisions and capital borrowings require sanction of Railway Minister and Finance Ministry."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Railway Board Act 1905 & Article 77",
+      "constitutionalArticle": "",
       "positionName": "Chairman & CEO, Railway Board (ex-officio Principal Secretary to GoI)",
       "cadreOrService": "Indian Railway Management Service (IRMS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -1857,10 +1822,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Political and constitutional head of the Ministry of Railways and Indian Railways network. Directs national rail transit policy, high-speed rail corridors (Bullet Train), freight corridors (DFC), railway safety, and passenger fares.",
-    "mandate": [
-      "Parliamentary accountability for Indian Railways under Article 75 and Railways Act 1989.",
-      "Direct capital expansion, network electrification, safety infrastructure (Kavach), and freight growth."
-    ],
+    "mandate": [],
     "powers": [
       "Approves railway development projects, passenger tariff structures, and new train routes.",
       "Recommends appointment of Railway Board CEO and Members to ACC."
@@ -1869,7 +1831,7 @@ export const NODES_V4: EducationNode[] = [
       "Fares and capital allocations subject to overall Union Budget appropriation by Parliament."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74 & 75 and Railways Act 1989",
+      "constitutionalArticle": "",
       "positionName": "Union Cabinet Minister of Railways",
       "cadreOrService": "Political Executive (Cabinet Minister / MP)",
       "electoralOrSelectionMethod": "Appointed by President on Prime Minister's advice",
@@ -1900,10 +1862,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Junior political executive assisting the Railway Minister. Monitors passenger amenities, station redevelopment (Amrit Bharat Stations), grievances, and railway safety implementation across regional zones.",
-    "mandate": [
-      "Support Cabinet Minister in parliamentary legislative work and regional railway inspections.",
-      "Oversee public grievances redressal and passenger amenities improvement programs."
-    ],
+    "mandate": [],
     "powers": [
       "Conducts on-site performance reviews of Zonal Railways and production units (CLW, DLW, ICF).",
       "Monitors RailMadad grievance portal resolution metrics."
@@ -1912,7 +1871,7 @@ export const NODES_V4: EducationNode[] = [
       "Policy decisions on tariffs and macro capital outlay rest with Union Cabinet Minister."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74 & 75",
+      "constitutionalArticle": "",
       "positionName": "Minister of State for Railways",
       "cadreOrService": "Political Executive (Council of Ministers / MP)",
       "electoralOrSelectionMethod": "Appointed by President on advice of Prime Minister",
@@ -1943,10 +1902,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "education",
     "summary": "Political and constitutional head of the Ministry of Education. Directs implementation of the National Education Policy (NEP 2020), governs central universities, IITs, IIMs, and oversees school curriculum standards under Right to Education (RTE) Act.",
-    "mandate": [
-      "Formulate national education policies, academic standards, and research funding frameworks under NEP 2020.",
-      "Parliamentary accountability for Central Universities, IITs, NITs, and national examination agencies."
-    ],
+    "mandate": [],
     "powers": [
       "Recommends appointment of Vice-Chancellors of Central Universities and Directors of IITs to the President (Visitor).",
       "Allocates Union education budgets under Samagra Shiksha and PM-USHA schemes."
@@ -1955,7 +1911,7 @@ export const NODES_V4: EducationNode[] = [
       "Education is a Concurrent subject (List III, Entry 25); States maintain independent school and state university systems."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74, 75, 21A & Schedule 7 List III Entry 25",
+      "constitutionalArticle": "",
       "positionName": "Union Cabinet Minister of Education",
       "cadreOrService": "Political Executive (Cabinet Minister / MP)",
       "electoralOrSelectionMethod": "Appointed by President on Prime Minister's advice",
@@ -1986,10 +1942,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "education",
     "summary": "Junior political executive assisting the Education Minister. Monitors primary literacy missions (NIPUN Bharat), vocational education integration, teacher training programs, and minority / tribal academic scholarships.",
-    "mandate": [
-      "Assist Union Cabinet Minister in parliamentary discussions, budget defense, and state education minister conferences.",
-      "Supervise foundational literacy, midday meal schemes (PM POSHAN), and vocational training rollout."
-    ],
+    "mandate": [],
     "powers": [
       "Reviews state performance on Performance Grading Index (PGI) in school education.",
       "Conducts regional inspections of Navodaya Vidyalayas and Kendriya Vidyalayas."
@@ -1998,7 +1951,7 @@ export const NODES_V4: EducationNode[] = [
       "Statutory policy determinations and Central University charters rest with Union Cabinet Minister."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74 & 75",
+      "constitutionalArticle": "",
       "positionName": "Minister of State for Education",
       "cadreOrService": "Political Executive (Council of Ministers / MP)",
       "electoralOrSelectionMethod": "Appointed by President on advice of Prime Minister",
@@ -2029,10 +1982,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "education",
     "summary": "Senior-most IAS officer directing university and technical education in India. Exercises administrative oversight over University Grants Commission (UGC), AICTE, Central Universities, IITs, IIMs, and National Testing Agency (NTA).",
-    "mandate": [
-      "Plan and expand higher education infrastructure, research funding, and international university campuses in India.",
-      "Administer PM-USHA, national ranking frameworks (NIRF), and National Research Foundation (ANRF)."
-    ],
+    "mandate": [],
     "powers": [
       "Chairs search-cum-selection committees for national higher education regulatory appointments.",
       "Releases central block grants and capital infrastructure loans (HEFA) to national universities."
@@ -2041,7 +1991,7 @@ export const NODES_V4: EducationNode[] = [
       "Universities possess statutory academic autonomy governed by their respective Acts of Parliament."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 & 312 and Central Universities Acts",
+      "constitutionalArticle": "",
       "positionName": "Secretary (Higher Education) to Government of India",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -2071,10 +2021,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "education",
     "summary": "Senior-most IAS officer in charge of primary, secondary, and senior secondary school education across India. Administers the Right of Children to Free and Compulsory Education (RTE) Act 2009, Samagra Shiksha, CBSE, NCERT, and Kendriya Vidyalayas.",
-    "mandate": [
-      "Implement universal elementary education under Article 21A and RTE Act 2009.",
-      "Direct National Curriculum Framework (NCF) rollout through NCERT and national board examinations through CBSE."
-    ],
+    "mandate": [],
     "powers": [
       "Approves state annual work plans and budgets for 15+ lakh government schools nationwide.",
       "Exercises administrative control over CBSE, KVS, NVS, and National Council for Teacher Education (NCTE)."
@@ -2083,7 +2030,7 @@ export const NODES_V4: EducationNode[] = [
       "State government schools directly administered by State School Education Departments."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 21A & 77 and RTE Act 2009",
+      "constitutionalArticle": "",
       "positionName": "Secretary (School Education & Literacy) to GoI",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -2113,10 +2060,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "healthcare",
     "summary": "Principal technical and medical advisor to the Government of India and head of the Central Health Service (CHS). Oversees central hospitals, national disease control institutes (NCDC), quarantine stations, and medical counseling (MCC).",
-    "mandate": [
-      "Provide expert medical advice on disease epidemics, clinical protocols, and medical education standards.",
-      "Conduct centralized NEET counseling for All India Quota undergraduate and postgraduate medical seats."
-    ],
+    "mandate": [],
     "powers": [
       "Directs National Centre for Disease Control (NCDC) and Emergency Medical Relief (EMR) cell.",
       "Oversees port health organisations, airport health posts, and central medical stores depot."
@@ -2125,7 +2069,7 @@ export const NODES_V4: EducationNode[] = [
       "Policy decisions and budgetary allocations subject to approval of Union Health Secretary and Minister."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 & Epidemic Diseases Act 1897",
+      "constitutionalArticle": "",
       "positionName": "Director General of Health Services (DGHS)",
       "cadreOrService": "Central Health Service (CHS - Apex Pay Level 17, Eminent Medical Professional)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -2155,10 +2099,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "healthcare",
     "summary": "Political and constitutional head of national public health, medical education, disease eradication, and food safety standards. Directs Ayushman Bharat, National Health Mission (NHM), AIIMS institutions, and medical licensure under NMC.",
-    "mandate": [
-      "Ensure national public health preparedness, pandemic response, and healthcare access under Article 47.",
-      "Parliamentary accountability for tertiary apex medical institutes (AIIMS) and regulatory bodies (NMC, DCI, FSSAI)."
-    ],
+    "mandate": [],
     "powers": [
       "Formulates National Health Policy and approves major disease control allocations.",
       "Appoints Directors of AIIMS and governing boards of National Medical Commission (NMC)."
@@ -2167,7 +2108,7 @@ export const NODES_V4: EducationNode[] = [
       "Public health and sanitation are primarily State subjects under Schedule 7, List II, Entry 6."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 47, 74 & 75 and NMC Act 2019",
+      "constitutionalArticle": "",
       "positionName": "Union Cabinet Minister of Health & Family Welfare",
       "cadreOrService": "Political Executive (Cabinet Minister / MP)",
       "electoralOrSelectionMethod": "Appointed by President on Prime Minister's advice",
@@ -2198,10 +2139,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "healthcare",
     "summary": "Junior political executive assisting the Health Minister. Monitors maternal and child health, immunization drives (Mission Indradhanush), Ayushman Arogya Mandirs (Health & Wellness Centres), and TB elimination programs.",
-    "mandate": [
-      "Support Cabinet Minister in parliamentary oversight and state health minister coordination.",
-      "Supervise universal immunization coverage and primary healthcare infrastructure upgrades."
-    ],
+    "mandate": [],
     "powers": [
       "Inspects central government hospitals (Safdarjung, RML, Lady Hardinge) and AIIMS regional campuses.",
       "Represents MoHFW in international health conferences and WHO consultative bodies."
@@ -2210,7 +2148,7 @@ export const NODES_V4: EducationNode[] = [
       "Statutory drug regulations and national medical policy require Cabinet Minister approval."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74 & 75",
+      "constitutionalArticle": "",
       "positionName": "Minister of State for Health & Family Welfare",
       "cadreOrService": "Political Executive (Council of Ministers / MP)",
       "electoralOrSelectionMethod": "Appointed by President on Prime Minister's advice",
@@ -2241,10 +2179,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "healthcare",
     "summary": "Statutory heads governing health insurance and medical licensure: CEO of NHA (manages world's largest public health insurance scheme Ayushman Bharat PM-JAY and Ayushman Bharat Digital Mission) and President of NMC (regulates medical colleges, MBBS seats, and medical ethics).",
-    "mandate": [
-      "Provide Rs 5 lakh annual hospital coverage to 12+ crore vulnerable families under PM-JAY.",
-      "Enforce medical education standards, inspect medical colleges, and maintain National Medical Register."
-    ],
+    "mandate": [],
     "powers": [
       "Empanels public and private hospitals nationwide and defines standard treatment benefit packages.",
       "Sanctions recognition or derecognition of medical colleges and MBBS/MD seat quotas."
@@ -2253,7 +2188,7 @@ export const NODES_V4: EducationNode[] = [
       "Decisions appealable before Central Government (MoHFW) and High Courts."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "National Medical Commission Act 2019 & NHA Cabinet Resolution",
+      "constitutionalArticle": "",
       "positionName": "CEO, National Health Authority / Chairperson, NMC",
       "cadreOrService": "Secretary rank to GoI / Distinguished Medical Professor",
       "electoralOrSelectionMethod": "Selected by search committee and appointed by ACC",
@@ -2283,10 +2218,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "healthcare",
     "summary": "Senior-most IAS officer in MoHFW. Chief executive administrator for national healthcare delivery, National Health Mission financing, medical equipment procurement, and Central Drugs Standard Control Organisation (CDSCO).",
-    "mandate": [
-      "Direct national public health programs, medical education expansion, and pharmaceutical regulatory oversight.",
-      "Principal accounting authority for Union health budget and international health loans (World Bank, ADB)."
-    ],
+    "mandate": [],
     "powers": [
       "Signs statutory drug notifications and national disease surveillance emergency orders.",
       "Exercises administrative control over CDSCO (Drugs Controller General of India - DCGI) and ICMR."
@@ -2295,7 +2227,7 @@ export const NODES_V4: EducationNode[] = [
       "Technical medical advice rendered independently by Director General of Health Services (DGHS)."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 & 312 and Drugs & Cosmetics Act 1940",
+      "constitutionalArticle": "",
       "positionName": "Union Health Secretary to Government of India",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -2325,10 +2257,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Political and constitutional executive governing agrarian policy, Minimum Support Price (MSP) recommendations, farm credit, rural employment under MGNREGA, rural connectivity (PMGSY), and national food grain reserves.",
-    "mandate": [
-      "Drive agricultural productivity, farm income security, and rural livelihood generation under Article 48.",
-      "Parliamentary accountability for PM-KISAN, crop insurance (PMFBY), MGNREGA, and Food Corporation of India (FCI)."
-    ],
+    "mandate": [],
     "powers": [
       "Announces Minimum Support Prices (MSP) for 22 mandated crops based on CACP recommendations.",
       "Allocates rural employment guarantee outlays under MGNREGA to State Employment Guarantee Funds."
@@ -2337,7 +2266,7 @@ export const NODES_V4: EducationNode[] = [
       "Agriculture and land rights are State subjects under Schedule 7, List II, Entries 14 & 18."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 48, 74 & 75 and National Food Security Act 2013",
+      "constitutionalArticle": "",
       "positionName": "Union Cabinet Minister of Agriculture, Farmers Welfare & Rural Development",
       "cadreOrService": "Political Executive (Cabinet Minister / MP)",
       "electoralOrSelectionMethod": "Appointed by President on Prime Minister's advice",
@@ -2368,10 +2297,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Junior political executive assisting the Agriculture and Rural Development Minister. Focuses on organic farming, Kisan Credit Cards (KCC), micro-irrigation, rural housing (PMAY-Gramin), and self-help group livelihoods (DAY-NRLM).",
-    "mandate": [
-      "Support Cabinet Minister in parliamentary questions, state agriculture minister reviews, and farmer outreach.",
-      "Monitor rural housing completion targets and women self-help group bank linkage."
-    ],
+    "mandate": [],
     "powers": [
       "Reviews implementation of Kisan Sampada Yojana and National Bamboo Mission.",
       "Conducts regional performance audits of rural road construction under PMGSY."
@@ -2380,7 +2306,7 @@ export const NODES_V4: EducationNode[] = [
       "National policy decisions on food procurement and MSP sanction require Cabinet Minister approval."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74 & 75",
+      "constitutionalArticle": "",
       "positionName": "Minister of State for Agriculture and Rural Development",
       "cadreOrService": "Political Executive (Council of Ministers / MP)",
       "electoralOrSelectionMethod": "Appointed by President on Prime Minister's advice",
@@ -2411,10 +2337,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Senior-most IAS officer in charge of agrarian policy, digital agriculture missions, fertilizer subsidies coordination, crop insurance, and agricultural credit. Directs PM-KISAN direct benefit transfers to 11+ crore farmers.",
-    "mandate": [
-      "Formulate crop production strategies, seed quality standards, and drought mitigation contingency plans.",
-      "Administer PM-KISAN Samman Nidhi disbursing Rs 6,000 annually per eligible farmer family."
-    ],
+    "mandate": [],
     "powers": [
       "Notifies pest control and quarantine regulations under Destructive Insects and Pests Act.",
       "Chairs National Crop Weather Watch Group monitoring monsoon rainfall impact on food grains."
@@ -2423,7 +2346,7 @@ export const NODES_V4: EducationNode[] = [
       "Field agricultural extension services implemented directly by State Agriculture Directorates."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 & 312",
+      "constitutionalArticle": "",
       "positionName": "Secretary (Agriculture & Farmers Welfare) to GoI",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -2453,10 +2376,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Senior civil service executive managing national food security under the National Food Security Act (NFSA 2013). Manages the procurement, central buffer storage, and movement of rice and wheat to supply 81+ crore beneficiaries through the Public Distribution System (PDS).",
-    "mandate": [
-      "Guarantee subsidized food grains to 67% of India's population under National Food Security Act 2013.",
-      "Procure food grains from farmers at MSP and maintain strategic national buffer food reserves in FCI silos."
-    ],
+    "mandate": [],
     "powers": [
       "Determines food grain allocation quotas for each State and Union Territory.",
       "Directs Food Corporation of India (FCI) and Central Warehousing Corporation (CWC) operations."
@@ -2465,7 +2385,7 @@ export const NODES_V4: EducationNode[] = [
       "Fair Price Shop (FPS) licensing and doorstep ration delivery managed directly by State Food Departments."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 and National Food Security Act 2013",
+      "constitutionalArticle": "",
       "positionName": "Secretary (Food and Public Distribution) & Chairman, FCI",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Appointed by ACC",
@@ -2495,19 +2415,16 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Senior-most IAS officer in the Department of Rural Development. Administers the Mahatma Gandhi National Rural Employment Guarantee Act (MGNREGA 2005) providing guaranteed wage employment to rural households nationwide.",
-    "mandate": [
-      "Ensure statutory enforcement of 100 days guaranteed wage employment per rural household under MGNREGA.",
-      "Direct Pradhan Mantri Gram Sadak Yojana (PMGSY) connecting habitations with all-weather roads."
-    ],
+    "mandate": [],
     "powers": [
-      "Notifies wage rates for MGNREGA workers across all States under Section 6 of the Act.",
+      "Notifies wage rates for MGNREGA workers across all States.",
       "Sanctions releases from Central Employment Guarantee Fund to State Governments."
     ],
     "limitations": [
       "Ground execution and muster roll verification vest in Gram Panchayats and District Programme Coordinators."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 and MGNREGA Act 2005",
+      "constitutionalArticle": "",
       "positionName": "Secretary (Rural Development) to Government of India",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -2537,10 +2454,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Political executives governing national highway network (Bharatmala), national electrical power grid, renewable energy transitions (solar/wind), petroleum pipelines, and statutory environmental clearances under EPA 1986.",
-    "mandate": [
-      "Deliver world-class highway infrastructure, uninterrupted 24x7 power supply, and ecological protection.",
-      "Parliamentary accountability for NHAI, Central Electricity Authority, and National Green Tribunal statutory norms."
-    ],
+    "mandate": [],
     "powers": [
       "Approves national expressway alignments, toll concession policies, and highway speed standards.",
       "Sanctions mega power transmission corridors and notifies emission norms for industries."
@@ -2549,7 +2463,7 @@ export const NODES_V4: EducationNode[] = [
       "Environmental clearances subject to judicial scrutiny by National Green Tribunal (NGT) and Supreme Court."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74, 75, 48A & National Highways Act 1956",
+      "constitutionalArticle": "",
       "positionName": "Union Cabinet Ministers for Infrastructure, Energy & Environment",
       "cadreOrService": "Political Executive (Cabinet Ministers / MPs)",
       "electoralOrSelectionMethod": "Appointed by President on Prime Minister's advice",
@@ -2580,10 +2494,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Junior political executive assisting the Infrastructure and Energy Ministers. Monitors road safety campaigns, green energy rooftop solar rollout (PM Surya Ghar), afforestation targets (CAMPA), and rural electricity reliability.",
-    "mandate": [
-      "Support Cabinet Ministers in parliamentary debates, highway toll questions, and interstate grid coordination.",
-      "Oversee vehicle emission norms enforcement and renewable energy developer grievance redressal."
-    ],
+    "mandate": [],
     "powers": [
       "Reviews state highway accident fatality reduction metrics and FASTag toll compliance.",
       "Inspects ultra-mega solar power parks and pumped hydro storage installations."
@@ -2592,7 +2503,7 @@ export const NODES_V4: EducationNode[] = [
       "Statutory policy amendments and highway concession agreements require Cabinet Minister sanction."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74 & 75",
+      "constitutionalArticle": "",
       "positionName": "Minister of State for Infrastructure and Energy",
       "cadreOrService": "Political Executive (Council of Ministers / MP)",
       "electoralOrSelectionMethod": "Appointed by President on Prime Minister's advice",
@@ -2623,10 +2534,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Senior-most civil servant in MoEFCC. Cadre Controlling Authority for the Indian Forest Service (IFS). Governs national environmental clearances (EIA), national parks, forest conservation laws, Central Pollution Control Board (CPCB), and international climate commitments (COP).",
-    "mandate": [
-      "Administer Environment (Protection) Act 1986, Forest (Conservation) Act 1980, and Wildlife (Protection) Act 1972.",
-      "Evaluate environmental impact assessments and grant statutory clearances for industrial and infrastructure projects."
-    ],
+    "mandate": [],
     "powers": [
       "Cadre management of the Indian Forest Service (IFS) across all State cadres.",
       "Chairs National Authority for Compensatory Afforestation Fund (CAMPA).",
@@ -2636,7 +2544,7 @@ export const NODES_V4: EducationNode[] = [
       "Decisions and clearances subject to statutory challenge before National Green Tribunal (NGT)."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 48A, 51A(g), 77 & 312",
+      "constitutionalArticle": "",
       "positionName": "Secretary (Environment, Forest & Climate Change) to GoI",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -2666,10 +2574,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Senior-most administrative executives governing India's National Highway network. Directs the planning, land acquisition, concession tendering, construction (EPC / HAM models), and electronic tolling across 1.45 lakh km of National Highways.",
-    "mandate": [
-      "Build access-controlled expressways, economic corridors, and border strategic roads under Bharatmala Pariyojana.",
-      "Administer Motor Vehicles Act 1988, Central Motor Vehicles Rules, and FASTag toll systems."
-    ],
+    "mandate": [],
     "powers": [
       "Awards multi-thousand crore highway construction contracts and public-private partnership concessions.",
       "Directs National Highways Authority of India (NHAI) and National Highways and Infrastructure Development Corporation (NHIDCL)."
@@ -2678,7 +2583,7 @@ export const NODES_V4: EducationNode[] = [
       "Highway construction strictly bound by environmental clearances from MoEFCC and forest diversion statutory laws."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 and National Highways Authority of India Act 1988",
+      "constitutionalArticle": "",
       "positionName": "Secretary (Road Transport & Highways) / Chairman, NHAI",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -2708,10 +2613,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "infrastructure",
     "summary": "Senior civil service executive and statutory authority directing national power generation, transmission, and interstate distribution. Governs the One Nation, One Grid synchronised power system, Central Electricity Authority (CEA), and Central Electricity Regulatory Commission (CERC).",
-    "mandate": [
-      "Formulate National Electricity Policy and National Tariff Policy under Electricity Act 2003.",
-      "Ensure national grid frequency stability, power trading exchanges, and DISCOM financial viability (Revamped Distribution Scheme)."
-    ],
+    "mandate": [],
     "powers": [
       "Directs National Load Despatch Centre (NLDC / POSOCO) for real-time grid balancing.",
       "Oversees Central Public Sector Enterprises including NTPC, PowerGrid Corporation, NHPC, and REC/PFC."
@@ -2720,7 +2622,7 @@ export const NODES_V4: EducationNode[] = [
       "Electricity distribution tariffs set independently by State Electricity Regulatory Commissions (SERCs)."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 and Electricity Act 2003",
+      "constitutionalArticle": "",
       "positionName": "Secretary (Power) to GoI / Chairperson, CEA",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17) / Eminent Power Engineer",
       "electoralOrSelectionMethod": "Appointed by ACC",
@@ -2749,11 +2651,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "14",
     "level": "union",
     "category": "judicial",
-    "summary": "Apex legal administrator and chief parliamentary draftsman of the Government of India. Heads the Indian Legal Service (ILS) and drafts all Government Bills, Ordinances under Article 123, Constitutional Amendments, and manages central litigation before Supreme Court.",
-    "mandate": [
-      "Draft all legislative Bills, Ordinances, and statutory rules presented before Parliament of India.",
-      "Manage central government litigation before Supreme Court of India through Attorney General and Solicitor General."
-    ],
+    "summary": "Apex legal administrator and chief parliamentary draftsman of the Government of India. Heads the Indian Legal Service (ILS) and drafts all Government Bills, Ordinances, Constitutional Amendments, and manages central litigation before Supreme Court.",
+    "mandate": [],
     "powers": [
       "Scrutinizes and legally certifies every draft Bill and Cabinet note before introduction in Parliament.",
       "Administers the Notaries Act 1952 and advocates central welfare policies."
@@ -2762,7 +2661,7 @@ export const NODES_V4: EducationNode[] = [
       "Statutory drafting must conform to constitutional mandates and fundamental rights under Part III."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 76, 77 & 123 and Allocation of Business Rules",
+      "constitutionalArticle": "",
       "positionName": "Union Law Secretary / Legislative Secretary to GoI",
       "cadreOrService": "Indian Legal Service (ILS - Apex Pay Level 17 / Senior District Judge on deputation)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -2792,10 +2691,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "Eminent scientists leading India's strategic frontiers directly reporting to the Prime Minister: Secretary (Department of Space) & Chairman, Indian Space Research Organisation (ISRO) and Secretary (Department of Atomic Energy) & Chairman, Atomic Energy Commission (AEC).",
-    "mandate": [
-      "Drive India's civilian and strategic space exploration (Chandrayaan, Gaganyaan, Aditya-L1, PSLV/LVM3).",
-      "Direct nuclear power generation, uranium fuel reserves, and atomic energy research (BARC, NPCIL)."
-    ],
+    "mandate": [],
     "powers": [
       "Directs nationwide space centers (VSSC, URSC, SDSC SHAR) and atomic research centers.",
       "Authorizes commercial space satellite launches through NewSpace India Limited (NSIL) and IN-SPACe."
@@ -2804,7 +2700,7 @@ export const NODES_V4: EducationNode[] = [
       "Strategic defense and non-proliferation policies governed directly by Prime Minister and CCS."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Allocation of Business Rules under Prime Minister's portfolio",
+      "constitutionalArticle": "",
       "positionName": "Secretary (Space) & Chairman, ISRO / Secretary (Atomic Energy) & Chairman, AEC",
       "cadreOrService": "Apex Scientific Service (Pay Level 17, Distinguished Scientist)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -2834,10 +2730,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "Political executive governing Digital Public Infrastructure (UPI, Aadhaar, DigiLocker), IT Act, semiconductor manufacturing, judicial appointments coordination, statutory legal drafting, and space/atomic energy under Prime Minister's oversight.",
-    "mandate": [
-      "Drive India's digital economy, data protection statutory compliance, and electronic manufacturing.",
-      "Oversee drafting of parliamentary legislation, constitutional amendments, and government litigation before Supreme Court."
-    ],
+    "mandate": [],
     "powers": [
       "Pilots key tech and legal bills (Digital Personal Data Protection Act, IT Rules) in Parliament.",
       "Advises President on appointment of Judges to Supreme Court and High Courts under Memorandum of Procedure."
@@ -2846,7 +2739,7 @@ export const NODES_V4: EducationNode[] = [
       "Legislative enactments subject to judicial review and basic structure doctrine by Supreme Court."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74, 75, 76 & 124-217 and IT Act 2000",
+      "constitutionalArticle": "",
       "positionName": "Union Cabinet Minister for Electronics & IT, Law & Justice",
       "cadreOrService": "Political Executive (Cabinet Minister / MP)",
       "electoralOrSelectionMethod": "Appointed by President on Prime Minister's advice",
@@ -2877,10 +2770,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "Junior political executive assisting the Electronics, IT and Law Minister. Focuses on tech startup ecosystems, cyber safety initiatives, e-Courts phase III expansion, and legal aid clinics through NALSA.",
-    "mandate": [
-      "Support Cabinet Minister in parliamentary oversight, cyber law regulations, and legal literacy campaigns.",
-      "Monitor India Semiconductor Mission and electronics hardware production-linked incentives (PLI)."
-    ],
+    "mandate": [],
     "powers": [
       "Conducts performance reviews of Software Technology Parks of India (STPI) and C-DAC.",
       "Reviews Nyaya Bandhu pro bono legal services and Gram Nyayalayas progress across states."
@@ -2889,7 +2779,7 @@ export const NODES_V4: EducationNode[] = [
       "Statutory rule notifications and judicial appointment memoranda require Cabinet Minister sign-off."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 74 & 75",
+      "constitutionalArticle": "",
       "positionName": "Minister of State for Electronics, IT and Law",
       "cadreOrService": "Political Executive (Council of Ministers / MP)",
       "electoralOrSelectionMethod": "Appointed by President on Prime Minister's advice",
@@ -2920,10 +2810,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "executive-administration",
     "summary": "Senior-most IAS officer in MeitY. Directs national digital public infrastructure, cyber security response (CERT-In), Aadhaar authority (UIDAI), National Informatics Centre (NIC), and Semiconductor Mission.",
-    "mandate": [
-      "Direct Digital India programs, government cloud architecture (MeghRaj), and IT Act 2000 administration.",
-      "Execute India Semiconductor Mission with Rs 76,000 crore capital incentive allocations."
-    ],
+    "mandate": [],
     "powers": [
       "Exercises statutory administrative oversight over Unique Identification Authority of India (UIDAI).",
       "Directs Indian Computer Emergency Response Team (CERT-In) on national cyber incident mitigation."
@@ -2932,7 +2819,7 @@ export const NODES_V4: EducationNode[] = [
       "Website blocking and data access orders subject to Section 69A IT Act procedural rules and High Court writ review."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 77 and Information Technology Act 2000",
+      "constitutionalArticle": "",
       "positionName": "Secretary (Electronics & IT) to Government of India",
       "cadreOrService": "Indian Administrative Service (IAS - Apex Pay Level 17)",
       "electoralOrSelectionMethod": "Appointed by Appointments Committee of the Cabinet (ACC)",
@@ -2961,10 +2848,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "15",
     "level": "district",
     "category": "oversight-remedies",
-    "summary": "Principal trial and appellate court at the district level (Articles 233-237). Headed by Principal District & Sessions Judge, civil judges (Senior & Junior Division), and Judicial Magistrates of First Class (JMFC) trying criminal offenses under IPC / BNS.",
-    "mandate": [
-      "Trial of civil suits, property partitions, contracts, and criminal trials for serious penal offences."
-    ],
+    "summary": "Principal trial and appellate court at the district level. Headed by Principal District & Sessions Judge, civil judges (Senior & Junior Division), and Judicial Magistrates of First Class (JMFC) trying criminal offenses under IPC / BNS.",
+    "mandate": [],
     "powers": [
       "Passes sentences authorized by law including life imprisonment and capital punishment (subject to High Court confirmation).",
       "Grants regular bail, anticipatory bail, and civil injunctions."
@@ -2986,11 +2871,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "15",
     "level": "state",
     "category": "oversight-remedies",
-    "summary": "The highest court of civil and criminal appeal and constitutional review in each State or group of States (Articles 214-231). Exercises wider writ jurisdiction under Article 226 than Supreme Court (for fundamental rights and any other legal purpose) and superintends all subordinate courts (Article 227).",
-    "mandate": [
-      "Article 226: Issue directions, orders or writs for enforcement of rights and any other legal purpose.",
-      "Article 227: Superintendence over all courts and tribunals throughout territories in relation to which it exercises jurisdiction."
-    ],
+    "summary": "The highest court of civil and criminal appeal and constitutional review in each State or group of States. Exercises wider writ jurisdiction than Supreme Court (for fundamental rights and any other legal purpose) and superintends all subordinate courts.",
+    "mandate": [],
     "powers": [
       "Hears original civil disputes, public interest litigations (PIL), and criminal murder references.",
       "Controls postings, promotions, and disciplinary oversight of District Judiciary officers."
@@ -3012,12 +2894,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "15",
     "level": "constitutional",
     "category": "oversight-remedies",
-    "summary": "Apex judicial authority and final court of appeal under Articles 124-147. Guardian of Fundamental Rights (Article 32) and ultimate interpreter of the Constitution. Law declared by Supreme Court is binding on all courts in India (Article 141).",
-    "mandate": [
-      "Article 32: Constitutional remedies for enforcement of Fundamental Rights.",
-      "Article 131: Original jurisdiction in Centre-State and Inter-State disputes.",
-      "Article 136: Special Leave Petitions against any judgment or order in India."
-    ],
+    "summary": "Apex judicial authority and final court of appeal. Guardian of Fundamental Rights and ultimate interpreter of the Constitution. Law declared by Supreme Court is binding on all courts in India.",
+    "mandate": [],
     "powers": [
       "Strikes down laws violating Fundamental Rights or the Basic Structure Doctrine.",
       "Article 142: Passes orders necessary for doing complete justice in any cause or matter.",
@@ -3027,7 +2905,7 @@ export const NODES_V4: EducationNode[] = [
       "Cannot formulate legislative policy; restricted to interpreting statutes and testing constitutional validity."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 124-147",
+      "constitutionalArticle": "",
       "positionName": "Chief Justice of India & Supreme Court Judges",
       "cadreOrService": "Apex Constitutional Judiciary",
       "electoralOrSelectionMethod": "Appointed by President based on Supreme Court Collegium recommendations",
@@ -3049,12 +2927,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "16",
     "level": "constitutional",
     "category": "funding-finance",
-    "summary": "The supreme audit institution of India under Articles 148-151. Audits all receipts and expenditure of the Government of India and the state governments, including autonomous bodies and public sector corporations. CAG audit reports are tabled before Parliament (PAC) and State Assemblies.",
-    "mandate": [
-      "Article 148: There shall be a Comptroller and Auditor General of India.",
-      "Article 149: Perform duties and exercise powers in relation to accounts of Union and States.",
-      "Article 151: Submit audit reports to President and Governors to be laid before Legislatures."
-    ],
+    "summary": "The supreme audit institution of India. Audits all receipts and expenditure of the Government of India and the state governments, including autonomous bodies and public sector corporations. CAG audit reports are tabled before Parliament (PAC) and State Assemblies.",
+    "mandate": [],
     "powers": [
       "Inspects any government office, accounts book, treasury, or store of the Union and States.",
       "Conducts Financial Audits, Compliance Audits, and Performance Audits on major welfare schemes and defence procurement."
@@ -3063,7 +2937,7 @@ export const NODES_V4: EducationNode[] = [
       "Post-audit examination authority with no power to halt active spending or disallow executive contracts directly."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 148-151",
+      "constitutionalArticle": "",
       "positionName": "Comptroller and Auditor General of India",
       "cadreOrService": "Constitutional Supreme Audit Authority",
       "electoralOrSelectionMethod": "Appointed by President of India by Warrant under hand and seal",
@@ -3086,9 +2960,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "union",
     "category": "oversight-remedies",
     "summary": "Central Vigilance Commission (CVC - statutory apex anti-corruption watchdog under CVC Act 2003) exercising superintendence over Central Bureau of Investigation (CBI) for offenses under Prevention of Corruption Act 1988.",
-    "mandate": [
-      "Investigate corruption allegations against central civil servants, bank executives, and ministers."
-    ],
+    "mandate": [],
     "powers": [
       "CBI registers FIRs, conducts raids, and prosecutes anti-corruption and major economic crimes nationwide.",
       "CVC superintends vigilance administration across all public sector banks and ministries."
@@ -3110,23 +2982,19 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "16",
     "level": "constitutional",
     "category": "oversight-remedies",
-    "summary": "Independent constitutional authority under Article 324 vested with superintendence, direction, and control of elections to Parliament, State Legislatures, and the offices of President and Vice-President. Enforces the Model Code of Conduct (MCC) and registers political parties.",
-    "mandate": [
-      "Article 324: Superintendence, direction and control of elections.",
-      "Article 326: Ensure free, fair, and periodic elections on universal adult suffrage.",
-      "Administer Representation of the People Acts 1950 & 1951."
-    ],
+    "summary": "Independent constitutional authority vested with superintendence, direction, and control of elections to Parliament, State Legislatures, and the offices of President and Vice-President. Enforces the Model Code of Conduct (MCC) and registers political parties.",
+    "mandate": [],
     "powers": [
       "Notifies election schedules, monitors election expenditure, and censures MCC violations.",
-      "Requisitions government staff and police forces for election duties (deemed on deputation to ECI under Section 28A RPA 1951).",
+      "Requisitions government staff and police forces for election duties (deemed on deputation to ECI RPA 1951).",
       "Allots election symbols and adjudicates intra-party symbol disputes under Symbols Order 1968."
     ],
     "limitations": [
-      "Cannot adjudicate election petitions after declaration of results (must be filed in High Court under Article 329(b)).",
+      "Cannot adjudicate election petitions after declaration of results (must be filed in High Court(b)).",
       "Does not conduct local municipal or panchayat elections (handled by State Election Commissions under Art 243K/243ZA)."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 324-329, RPA 1950 & 1951",
+      "constitutionalArticle": "",
       "positionName": "Chief Election Commissioner & Election Commissioners",
       "cadreOrService": "Independent Constitutional Commission",
       "electoralOrSelectionMethod": "Appointed by President based on statutory selection committee",
@@ -3149,17 +3017,14 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "16",
     "level": "state",
     "category": "examination",
-    "summary": "Constitutional recruiting body for each State under Article 315 (e.g. Maharashtra Public Service Commission - MPSC). Conducts competitive examinations for Deputy Collectors, DySPs, Tehsildars, and state civil servants.",
-    "mandate": [
-      "Conduct examinations for appointments to the services of the State.",
-      "Advise State Government on disciplinary matters and promotion guidelines for state officers."
-    ],
+    "summary": "Constitutional recruiting body for each State (e.g. Maharashtra Public Service Commission - MPSC). Conducts competitive examinations for Deputy Collectors, DySPs, Tehsildars, and state civil servants.",
+    "mandate": [],
     "powers": [
       "Conducts State Civil Services Examinations and interview boards.",
       "Recommends merit lists directly to the State Governor and Chief Secretariat."
     ],
     "limitations": [
-      "Members removable only by the President of India on grounds of misbehavior after Supreme Court inquiry (Article 317)."
+      "Members removable only by the President of India on grounds of misbehavior after Supreme Court inquiry."
     ],
     "sourceIds": [
       "SRC-V4-CONST"
@@ -3175,12 +3040,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "16",
     "level": "constitutional",
     "category": "examination",
-    "summary": "Independent constitutional recruiting agency under Article 315. Conducts examinations for appointment to the All-India Services (IAS, IPS, IFoS), Central Civil Services (IFS, IRS, IA&AS), and Defence Services (NDA, CDS). Consulted on disciplinary matters and promotion guidelines (Article 320).",
-    "mandate": [
-      "Article 315: Public Service Commission for the Union and for each State.",
-      "Article 320: Duty to conduct examinations for appointments to services of the Union.",
-      "Ensure absolute meritocracy, confidentiality, and integrity in civil service recruitment."
-    ],
+    "summary": "Independent constitutional recruiting agency. Conducts examinations for appointment to the All-India Services (IAS, IPS, IFoS), Central Civil Services (IFS, IRS, IA&AS), and Defence Services (NDA, CDS). Consulted on disciplinary matters and promotion guidelines.",
+    "mandate": [],
     "powers": [
       "Conducts Civil Services Examination (CSE), Engineering Services (ESE), and Combined Medical Services.",
       "Advises the President on suitability of officers for promotion, deputation, and disciplinary penalties."
@@ -3189,7 +3050,7 @@ export const NODES_V4: EducationNode[] = [
       "Advisory body; recommendations are generally accepted but government can table explanatory reasons for non-acceptance in Parliament."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 315-323",
+      "constitutionalArticle": "",
       "positionName": "Chairman & Members, Union Public Service Commission",
       "cadreOrService": "Constitutional Merit Recruiting Body",
       "electoralOrSelectionMethod": "Appointed by President of India",
@@ -3211,23 +3072,19 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "17",
     "level": "state",
     "category": "executive-administration",
-    "summary": "The de facto Executive Head of the State Government and leader of the ruling party/coalition in the Vidhan Sabha (Article 164). Head of the State Council of Ministers, principal advisor to the Governor, and chief architect of state developmental policies and legislative agendas.",
-    "mandate": [
-      "Article 163: Head of State Council of Ministers advising the Governor.",
-      "Article 164: Appointed by Governor; advises on appointment and portfolios of other Ministers.",
-      "Article 167: Duties of Chief Minister to communicate all state administrative decisions to Governor."
-    ],
+    "summary": "The de facto Executive Head of the State Government and leader of the ruling party/coalition in the Vidhan Sabha. Head of the State Council of Ministers, principal advisor to the Governor, and chief architect of state developmental policies and legislative agendas.",
+    "mandate": [],
     "powers": [
       "Allocates portfolios to State Cabinet Ministers and chairs State Cabinet meetings.",
       "Advises Governor on summoning, proroguing, or dissolving the Vidhan Sabha.",
       "Directs the State Chief Secretariat and heads state planning boards and disaster authorities."
     ],
     "limitations": [
-      "Council of Ministers is collectively responsible to the Vidhan Sabha (Article 164(2)).",
+      "Council of Ministers is collectively responsible to the Vidhan Sabha).",
       "Must maintain legislative majority; loses office upon passage of No-Confidence Motion."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 163, 164, 167",
+      "constitutionalArticle": "",
       "positionName": "Chief Minister of the State",
       "cadreOrService": "Elected Head of State Government (MLA/MLC)",
       "electoralOrSelectionMethod": "Appointed by Governor based on legislative majority in Vidhan Sabha",
@@ -3250,11 +3107,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "state",
     "category": "executive-administration",
     "summary": "The apex civil servant of the State Government. Ex-officio Secretary to the State Cabinet, head of the State Civil Services (IAS, IPS, State Services), and principal administrative advisor to the Chief Minister. Coordinates all state administrative departments, Divisional Commissioners, and District Collectors.",
-    "mandate": [
-      "Heads the State Civil Secretariat (Mantralaya) and coordinates inter-departmental policies.",
-      "Administer the State Government Rules of Business under Article 166.",
-      "Directs state disaster management operations as head of State Executive Committee."
-    ],
+    "mandate": [],
     "powers": [
       "Issues administrative orders in the name of the Governor across all state departments.",
       "Chairs Civil Services Board for IAS and IPS transfers and postings within the State.",
@@ -3264,7 +3117,7 @@ export const NODES_V4: EducationNode[] = [
       "Executive civil service head without political portfolio authority; executes policies approved by the State Cabinet."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 166, State Rules of Business",
+      "constitutionalArticle": "",
       "positionName": "Chief Secretary to the State Government",
       "cadreOrService": "Indian Administrative Service (IAS) — Apex State Rank",
       "electoralOrSelectionMethod": "Appointed by Chief Minister and State Cabinet",
@@ -3286,25 +3139,20 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "17",
     "level": "state",
     "category": "legislation",
-    "summary": "The constitutional executive head of the State (Article 153 & 154). Appointed by the President by warrant under hand and seal (Article 155). All state executive actions are expressed to be taken in the Governor's name (Article 166). Acts on the binding aid and advice of the State Council of Ministers headed by the Chief Minister (Article 163).",
-    "mandate": [
-      "Article 153: There shall be a Governor for each State.",
-      "Article 154: Executive power of the State is vested in the Governor.",
-      "Article 163: Council of Ministers with CM at head to aid and advise Governor.",
-      "Article 164: Appoints the Chief Minister and other Ministers on CM advice."
-    ],
+    "summary": "The constitutional executive head of the State. Appointed by the President by warrant under hand and seal. All state executive actions are expressed to be taken in the Governor's name. Acts on the binding aid and advice of the State Council of Ministers headed by the Chief Minister.",
+    "mandate": [],
     "powers": [
-      "Assents to, withholds assent, or reserves State Bills for Presidential consideration (Article 200).",
-      "Promulgates Governor's Ordinances during legislative recess (Article 213).",
-      "Recommends President's Rule under Article 356 in case of breakdown of constitutional machinery.",
+      "Assents to, withholds assent, or reserves State Bills for Presidential consideration.",
+      "Promulgates Governor's Ordinances during legislative recess.",
+      "Recommends President's Rule in case of breakdown of constitutional machinery.",
       "Appoints State Advocate General, SPSC Chairman/Members, and State Election Commissioner."
     ],
     "limitations": [
-      "Bound by ministerial aid and advice in all normal constitutional functions (Article 163).",
-      "Holds office during the pleasure of the President (Article 156(1))."
+      "Bound by ministerial aid and advice in all normal constitutional functions.",
+      "Holds office during the pleasure of the President)."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 153-167, 200, 213, 356",
+      "constitutionalArticle": "",
       "positionName": "Governor of the State",
       "cadreOrService": "Constitutional Executive Head of State",
       "electoralOrSelectionMethod": "Appointed by President of India under Presidential Warrant",
@@ -3326,12 +3174,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "18",
     "level": "state",
     "category": "legislation",
-    "summary": "Directly elected popular representatives in the State Legislative Assembly (Vidhan Sabha) under universal adult suffrage (Article 170 & 326). Enacts state legislation on List II (Police, Health, Local Bodies, Land) and List III subjects, votes on the State Budget, and holds the State Cabinet accountable.",
-    "mandate": [
-      "Article 170: Composition of the Legislative Assembly (60 to 500 directly elected members).",
-      "Article 164(2): State Council of Ministers collectively responsible to Legislative Assembly.",
-      "Represent territorial assembly constituencies and pass state statutes."
-    ],
+    "summary": "Directly elected popular representatives in the State Legislative Assembly (Vidhan Sabha) under universal adult suffrage. Enacts state legislation on List II (Police, Health, Local Bodies, Land) and List III subjects, votes on the State Budget, and holds the State Cabinet accountable.",
+    "mandate": [],
     "powers": [
       "Introduces, debates, and passes State Bills and constitutional amendment ratifications.",
       "Votes on Demands for Grants and passes State Appropriation and Finance Bills.",
@@ -3339,10 +3183,10 @@ export const NODES_V4: EducationNode[] = [
     ],
     "limitations": [
       "Subject to disqualification under Tenth Schedule for defection or defying party whip.",
-      "Cannot introduce Money Bills without the prior recommendation of the Governor (Article 199)."
+      "Cannot introduce Money Bills without the prior recommendation of the Governor."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 170, 173, 190-195, 326",
+      "constitutionalArticle": "",
       "positionName": "Member of Legislative Assembly (MLA)",
       "cadreOrService": "Directly Elected State Legislator",
       "electoralOrSelectionMethod": "Direct universal adult franchise by First-Past-The-Post in Assembly constituencies",
@@ -3365,22 +3209,18 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "18",
     "level": "state",
     "category": "legislation",
-    "summary": "Members of the State Legislative Council (Vidhan Parishad) in bicameral states (Article 171). Composed of representatives elected by MLAs, Local Authorities (Municipalities/Panchayats), Graduates, Teachers, and Governor nominees (literature, science, social service). Permanent chamber not subject to dissolution; one-third members retire every 2 years.",
-    "mandate": [
-      "Article 171: Composition of Legislative Councils in states having bicameral legislatures.",
-      "Article 172(2): Permanent House, one-third retiring every second year.",
-      "Provide seasoned review and revision of legislative measures passed by Vidhan Sabha."
-    ],
+    "summary": "Members of the State Legislative Council (Vidhan Parishad) in bicameral states. Composed of representatives elected by MLAs, Local Authorities (Municipalities/Panchayats), Graduates, Teachers, and Governor nominees (literature, science, social service). Permanent chamber not subject to dissolution; one-third members retire every 2 years.",
+    "mandate": [],
     "powers": [
       "Scrutinizes ordinary bills, suggests amendments, and can delay ordinary bills for up to 4 months.",
       "Raises public questions and debates during legislative sessions."
     ],
     "limitations": [
-      "Cannot reject or stall Money Bills (must return within 14 days under Article 198).",
-      "Vidhan Sabha can override MLC rejection of ordinary bills on second passage (Article 197)."
+      "Cannot reject or stall Money Bills (must return within 14 days).",
+      "Vidhan Sabha can override MLC rejection of ordinary bills on second passage."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 169, 171, 172(2), 198",
+      "constitutionalArticle": "",
       "positionName": "Member of Legislative Council (MLC)",
       "cadreOrService": "State Upper House Representative",
       "electoralOrSelectionMethod": "Elected by MLAs (1/3), Local Authorities (1/3), Graduates (1/12), Teachers (1/12) + Governor Nominees (1/6)",
@@ -3403,9 +3243,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "state",
     "category": "executive-administration",
     "summary": "Second highest uniformed police rank in the state. Senior IPS officer heading critical state-level specialized wings: Law & Order, Criminal Investigation Department (CID), State Intelligence Department (SID), Anti-Terrorism Squad (ATS), Traffic, Railways, or Prisons.",
-    "mandate": [
-      "Direct specialized statewide functional wings and assist DGP in strategic police administration."
-    ],
+    "mandate": [],
     "powers": [
       "ADG (Law & Order) coordinates daily statewide law-and-order and central force mobilization.",
       "ADG (CID) superintends inter-district crime investigations and specialized forensics."
@@ -3428,9 +3266,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "district",
     "category": "executive-administration",
     "summary": "Sub-Divisional Police Officer (SDPO) supervising a cluster of 4 to 8 police stations within a district sub-division. Junior IPS officer (ASP) or senior State Police Service officer (DSP) providing direct supervisory oversight over frontline station house officers.",
-    "mandate": [
-      "Supervise investigation of heinous crimes (murder, dacoity, atrocities) under statutory mandates."
-    ],
+    "mandate": [],
     "powers": [
       "Personally visits scenes of grave crimes and supervises investigation diaries.",
       "Mandatory investigating officer for offenses under SC/ST (Prevention of Atrocities) Act."
@@ -3453,11 +3289,9 @@ export const NODES_V4: EducationNode[] = [
     "level": "local",
     "category": "executive-administration",
     "summary": "The fundamental frontline face of Indian law enforcement, constituting over 70% of the entire police strength. Executes beat patrols, serves summons/warrants, guards lockups, manages traffic, collects local intelligence, and maintains street-level order.",
-    "mandate": [
-      "Perform beat patrols, maintain visible police presence, and protect citizens and public order."
-    ],
+    "mandate": [],
     "powers": [
-      "Can arrest persons committing cognizable offences in view under Section 43 CrPC.",
+      "Can arrest persons committing cognizable offences in view CrPC.",
       "Regulates public gatherings, road traffic, and assists investigating officers in cordoning crime scenes."
     ],
     "limitations": [
@@ -3477,11 +3311,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "19",
     "level": "state",
     "category": "executive-administration",
-    "summary": "The supreme uniformed head of the state police force (Head of Police Force — HoPF). Senior-most IPS officer in the State. Vested with the administration of the police throughout the state under Section 4 of the Police Act 1861. Exercises operational command over all police personnel, armed reserves, and specialized wings.",
-    "mandate": [
-      "Section 4, Police Act 1861: Administration of the police throughout the general police district.",
-      "Supreme operational command of entire state police force."
-    ],
+    "summary": "The supreme uniformed head of the state police force (Head of Police Force — HoPF). Senior-most IPS officer in the State. Vested with the administration of the police throughout the state. Exercises operational command over all police personnel, armed reserves, and specialized wings.",
+    "mandate": [],
     "powers": [
       "Directs statewide crime prevention, anti-terror operations, and intelligence deployment.",
       "Issues State Police Standing Orders and service disciplinary regulations.",
@@ -3507,9 +3338,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "state",
     "category": "executive-administration",
     "summary": "Senior IPS officer serving as Range DIG, Additional Commissioner of Police (Addl CP) in city commissionerates, or head of state specialized units (e.g. Crime Branch, Anti-Corruption Bureau).",
-    "mandate": [
-      "Maintain direct oversight over District Superintendents of Police within the Range."
-    ],
+    "mandate": [],
     "powers": [
       "Conducts annual formal inspections of district police offices and police stations.",
       "Assesses performance appraisals and transfers police sub-inspectors within the Range."
@@ -3532,9 +3361,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "local",
     "category": "executive-administration",
     "summary": "Senior non-commissioned officer in the police station. Serves as Station Writer (maintaining General Diary, Station Diary, and Malkhana custody of seized property), leads beat patrol teams, and acts as Station House Officer in SHO/SI temporary absence.",
-    "mandate": [
-      "Maintain station records, evidence lockers (malkhana), and lead constable sections on field duty."
-    ],
+    "mandate": [],
     "powers": [
       "Can investigate specified minor criminal offences under state police amendment rules.",
       "Commands armed sentry guards at police stations and sensitive vital installations."
@@ -3557,9 +3384,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "state",
     "category": "executive-administration",
     "summary": "Senior supervisory IPS officer heading a Police Range comprising 3 to 6 contiguous revenue districts, or serving as Joint Commissioner of Police in major metropolitan Commissionerates.",
-    "mandate": [
-      "Supervise district policing and crime control across multiple revenue districts in the Range."
-    ],
+    "mandate": [],
     "powers": [
       "Directs joint multi-district manhunts, anti-gang operations, and riot containment.",
       "Hears service appeals against disciplinary penalties imposed by district SPs."
@@ -3581,15 +3406,12 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "19",
     "level": "local",
     "category": "executive-administration",
-    "summary": "The officer in charge of a Police Station under Section 2(o) of the Code of Criminal Procedure (CrPC / BNSS). Holds statutory charge of the police station, the General Diary (GD), FIR registration, lock-up, and all investigating officers.",
-    "mandate": [
-      "Section 2(o) CrPC / BNSS: Officer in charge of a police station.",
-      "Section 154 CrPC: Mandatory registration of First Information Report (FIR) on cognizable offences."
-    ],
+    "summary": "The officer in charge of a Police Station(o) of the Code of Criminal Procedure (CrPC / BNSS). Holds statutory charge of the police station, the General Diary (GD), FIR registration, lock-up, and all investigating officers.",
+    "mandate": [],
     "powers": [
       "Exercises all statutory powers of investigation, arrest, search, and seizure within police station jurisdiction.",
       "Supervises Sub-Inspectors and assigns criminal case investigations.",
-      "Files police final reports / charge sheets before the competent Judicial Magistrate under Section 173 CrPC."
+      "Files police final reports / charge sheets before the competent Judicial Magistrate CrPC."
     ],
     "limitations": [
       "Subject to supervisory checks by SDPO and judicial oversight of the jurisdictional Magistrate."
@@ -3609,14 +3431,11 @@ export const NODES_V4: EducationNode[] = [
     "level": "local",
     "category": "executive-administration",
     "summary": "The frontline backbone of Indian criminal investigation. Sub-Inspector is the lowest-ranking officer legally empowered to conduct formal investigation under CrPC, draw up panchnamas, record witness statements, effect arrests, and submit charge sheets.",
-    "mandate": [
-      "Primary investigating officer for cognizable offenses assigned by the Station House Officer.",
-      "Lead field crime scene forensics, witness examination, and evidence collection."
-    ],
+    "mandate": [],
     "powers": [
-      "Arrests accused persons without warrant in cognizable offences (Section 41 CrPC).",
+      "Arrests accused persons without warrant in cognizable offences.",
       "Conducts searches of premises with or without warrant under exigent statutory grounds.",
-      "Records statements under Section 161 CrPC and presents witnesses for judicial recording."
+      "Records statements CrPC and presents witnesses for judicial recording."
     ],
     "limitations": [
       "Every arrest and search subject to strict procedural compliance (D.K. Basu guidelines and BNSS safeguards)."
@@ -3635,11 +3454,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "19",
     "level": "district",
     "category": "executive-administration",
-    "summary": "The operational commander and administrative head of police in a revenue district (Section 4, Police Act 1861). Senior IPS/SPS officer responsible for all crime prevention, law and order, station administration, and traffic across the entire district.",
-    "mandate": [
-      "Section 4, Police Act 1861: Police administration of a district vested in District SP under general control of District Magistrate.",
-      "Head all police personnel, district armed reserves, and special branch in the district."
-    ],
+    "summary": "The operational commander and administrative head of police in a revenue district. Senior IPS/SPS officer responsible for all crime prevention, law and order, station administration, and traffic across the entire district.",
+    "mandate": [],
     "powers": [
       "Operational command of all police stations (30-60 stations) in the district.",
       "Authorizes deployment of armed police reserves, imposes section 144 police bandobast, and registers special crime reports.",
@@ -3662,11 +3478,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "19",
     "level": "state",
     "category": "executive-administration",
-    "summary": "The administrative department of the State Government exercising statutory superintendence over the State Police under Section 4 of the Police Act 1861. Headed by the Additional Chief Secretary (Home) / Principal Secretary (Home), reporting to the State Home Minister. Manages police budgeting, IPS cadre management, transfers, and law-and-order policy.",
-    "mandate": [
-      "Section 4, Police Act 1861: Superintendence of police vested in State Government.",
-      "Exercise administrative oversight over police force, jails, home guards, and prosecution."
-    ],
+    "summary": "The administrative department of the State Government exercising statutory superintendence over the State Police. Headed by the Additional Chief Secretary (Home) / Principal Secretary (Home), reporting to the State Home Minister. Manages police budgeting, IPS cadre management, transfers, and law-and-order policy.",
+    "mandate": [],
     "powers": [
       "Approves state police budgets, modernization grants, and vehicle/equipment procurement.",
       "Issues orders for transfers and postings of SPs, DIGs, IGs, and ADGs on Police Establishment Board advice.",
@@ -3691,9 +3504,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "state",
     "category": "executive-administration",
     "summary": "Senior IAS officer (Principal Secretary rank) heading a Revenue Division encompassing 4 to 7 districts (e.g. Konkan, Pune, Nagpur divisions). Supervises District Collectors, serves as regional appellate revenue authority, and coordinates regional inter-district development.",
-    "mandate": [
-      "Supervise district revenue administration, land acquisition appeals, and regional disaster response."
-    ],
+    "mandate": [],
     "powers": [
       "Hears revenue appeals against orders of District Collectors under State Land Revenue Codes.",
       "Supervises major infrastructure land acquisition and regional municipal corporation audits."
@@ -3715,12 +3526,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "20",
     "level": "district",
     "category": "executive-administration",
-    "summary": "The undisputed administrative pivot of Indian district governance. An IAS officer exercising a trinity of distinct powers: 1. District Collector (chief revenue officer and land records head); 2. District Magistrate (head of executive magistracy under Section 20 CrPC); and 3. District Election Officer (DEO).",
-    "mandate": [
-      "Section 20 CrPC / BNSS: District Magistrate in charge of executive magistracy across the district.",
-      "State Land Revenue Code: Head of district land revenue assessment, collection, and land records.",
-      "Disaster Management Act 2005: Chairperson, District Disaster Management Authority (DDMA)."
-    ],
+    "summary": "The undisputed administrative pivot of Indian district governance. An IAS officer exercising a trinity of distinct powers: 1. District Collector (chief revenue officer and land records head); 2. District Magistrate (head of executive magistracy CrPC); and 3. District Election Officer (DEO).",
+    "mandate": [],
     "powers": [
       "Promulgates Section 144 CrPC curfew orders and issues arms and explosives licenses.",
       "Exercises preventive detention powers under National Security Act (NSA) and state preventive acts.",
@@ -3732,7 +3539,7 @@ export const NODES_V4: EducationNode[] = [
       "Judicial review by High Court under writ jurisdiction (Habeas Corpus against preventive detention)."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Article 239/312, Section 20 CrPC, State Land Revenue Codes",
+      "constitutionalArticle": "",
       "positionName": "District Magistrate & Collector",
       "cadreOrService": "Indian Administrative Service (IAS) — District Head",
       "electoralOrSelectionMethod": "Appointed by State Government from IAS cadre",
@@ -3756,13 +3563,10 @@ export const NODES_V4: EducationNode[] = [
     "level": "district",
     "category": "executive-administration",
     "summary": "Administrative and revenue head of a Sub-Division comprising 2 to 4 Talukas/Tehsils. IAS officer on field posting or senior State Civil Service officer. Exercises executive magistracy under Sections 107, 133, and 144 CrPC, and serves as Returning Officer for Assembly elections.",
-    "mandate": [
-      "Section 23 CrPC: Sub-Divisional Magistrate for revenue sub-division.",
-      "Supervise Tehsildars, hear revenue appeals, and handle local law-and-order emergencies."
-    ],
+    "mandate": [],
     "powers": [
-      "Conducts proceedings for removal of public nuisances under Section 133 CrPC.",
-      "Inquires into custodial deaths, dowry deaths, and police firing panchnamas (Section 176 CrPC).",
+      "Conducts proceedings for removal of public nuisances CrPC.",
+      "Inquires into custodial deaths, dowry deaths, and police firing panchnamas.",
       "Acts as Returning Officer (RO) for State Legislative Assembly elections."
     ],
     "limitations": [
@@ -3783,10 +3587,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "local",
     "category": "executive-administration",
     "summary": "The foundational revenue official at the grassroots village level (Saza), typically covering 2 to 5 villages. Maintains the definitive record of land rights (Record of Rights — 7/12 extract in Maharashtra, Khasra/Khatauni in North India), crop surveys, mutation entries, and tax collection.",
-    "mandate": [
-      "Maintain up-to-date Village Land Records, mutation registers, and crop inspection registers.",
-      "Prepare primary field panchnamas for agricultural disaster damage."
-    ],
+    "mandate": [],
     "powers": [
       "Enters mutation notes (Ferfar) upon land sale, inheritance, or bank mortgage.",
       "Issues verified copies of 7/12 land records and agricultural possession certificates to farmers."
@@ -3809,11 +3610,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "20",
     "level": "local",
     "category": "executive-administration",
-    "summary": "The administrative and executive head of a Taluka / Tehsil (covering 80-150 villages). Officer of State Civil Service. Exercises statutory powers as Executive Magistrate (Section 21 CrPC) and Assistant Returning Officer. Manages the Taluka Tehsil Office, crop failure panchnamas, and caste/income certificates.",
-    "mandate": [
-      "Head of Taluka revenue administration, land revenue collection, and executive magistracy.",
-      "Issues domicile, caste, and income certificates to citizens."
-    ],
+    "summary": "The administrative and executive head of a Taluka / Tehsil (covering 80-150 villages). Officer of State Civil Service. Exercises statutory powers as Executive Magistrate and Assistant Returning Officer. Manages the Taluka Tehsil Office, crop failure panchnamas, and caste/income certificates.",
+    "mandate": [],
     "powers": [
       "Conducts eviction of unauthorized encroachments on government land.",
       "Summons witnesses and records depositions in disputed land mutation cases.",
@@ -3836,10 +3634,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "21",
     "level": "local",
     "category": "executive-administration",
-    "summary": "Senior IAS officers (typically 4 in BMC) assisting the Municipal Commissioner under Section 56A MMC Act. Each AMC heads a functional portfolio: Projects (Coastal Road, Metro connectivity), Western Suburbs, Eastern Suburbs, and City & Public Health.",
-    "mandate": [
-      "Direct functional wings and major engineering projects of the Municipal Corporation."
-    ],
+    "summary": "Senior IAS officers (typically 4 in BMC) assisting the Municipal Commissioner MMC Act. Each AMC heads a functional portfolio: Projects (Coastal Road, Metro connectivity), Western Suburbs, Eastern Suburbs, and City & Public Health.",
+    "mandate": [],
     "powers": [
       "Approves tenders up to specified financial delegations (multi-crore project works).",
       "Supervises 24 Administrative Ward Assistant Commissioners (Ward Officers)."
@@ -3862,9 +3658,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "local",
     "category": "legislation",
     "summary": "The First Citizen of the city and political presiding officer of the Municipal Corporation General Body under the MMC Act. Elected by the 227 directly elected Ward Corporators. Presides over Corporation meetings, debates civic policies, and represents the city diplomatically.",
-    "mandate": [
-      "Preside over Corporation General Body meetings and ensure democratic accountability of civic spending."
-    ],
+    "mandate": [],
     "powers": [
       "Presides over debates on civic policy, property tax revisions, and developmental budgets.",
       "Chairs ceremonial functions and receives visiting heads of state and dignitaries."
@@ -3886,11 +3680,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "21",
     "level": "local",
     "category": "executive-administration",
-    "summary": "The principal executive officer of the Municipal Corporation under Section 54 of the Mumbai Municipal Corporation Act 1888 (MMC Act). Senior IAS officer (Principal Secretary / Addl Chief Secretary rank). The entire executive power of the corporation is vested directly in the Commissioner, independent of the Mayor.",
-    "mandate": [
-      "Section 54, MMC Act: Entire executive power for carrying out provisions of the Act vested in Commissioner.",
-      "Head municipal administration, city budget (50,000+ crores), public health, roads, and water supply."
-    ],
+    "summary": "The principal executive officer of the Municipal Corporation. Senior IAS officer (Principal Secretary / Addl Chief Secretary rank). The entire executive power of the corporation is vested directly in the Commissioner, independent of the Mayor.",
+    "mandate": [],
     "powers": [
       "Prepares and executes the municipal annual budget and awards civic infrastructure contracts.",
       "Demolishes unauthorized constructions and regulates building permissions (Development Control Regulations).",
@@ -3915,11 +3706,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "21",
     "level": "local",
     "category": "legislation",
-    "summary": "Directly elected municipal representative from an electoral ward in city elections under universal adult franchise (Article 243R & MMC Act). In Mumbai, 227 Corporators form the Corporation General Body and participate in 24 Ward Committees and the powerful Standing Committee.",
-    "mandate": [
-      "Article 243R: Constitution and composition of Municipalities.",
-      "Represent ward citizens, resolve drainage, drinking water, street lighting, and local road grievances."
-    ],
+    "summary": "Directly elected municipal representative from an electoral ward in city elections under universal adult franchise. In Mumbai, 227 Corporators form the Corporation General Body and participate in 24 Ward Committees and the powerful Standing Committee.",
+    "mandate": [],
     "powers": [
       "Votes on municipal budget and major expenditure in Corporation General Body and Standing Committee.",
       "Allocates Corporator Ward Development Funds for grassroots civic amenities."
@@ -3943,10 +3731,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "local",
     "category": "executive-administration",
     "summary": "The executive officer of the intermediate tier of Panchayati Raj (Panchayat Samiti / Block level, covering 40-70 villages). Officer of State Rural Development Service. Implements rural housing schemes, sanitation (Swachh Bharat), and superintends Village Gram Sevaks.",
-    "mandate": [
-      "Executive officer of Panchayat Samiti under Article 243C.",
-      "Approve village gram panchayat development plans and monitor welfare scheme progress."
-    ],
+    "mandate": [],
     "powers": [
       "Releases funds to Gram Panchayats upon physical completion of village infrastructure works.",
       "Conducts annual audit inspections of Gram Panchayat accounts."
@@ -3969,10 +3754,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "local",
     "category": "executive-administration",
     "summary": "The administrative employee and official secretary of the Gram Panchayat, appointed by the Zilla Parishad. Maintains birth, death, and marriage registers, prepares agendas and minutes for Gram Sabha meetings, and maintains cash books.",
-    "mandate": [
-      "Maintain all official records, financial cash books, and registers of the Gram Panchayat.",
-      "Serve as Secretary to the Village Gram Sabha and record resolutions verbatim."
-    ],
+    "mandate": [],
     "powers": [
       "Issues official Birth, Death, and Marriage certificates at the village level.",
       "Maintains muster rolls and job cards for MGNREGA workers."
@@ -3994,11 +3776,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "22",
     "level": "local",
     "category": "executive-administration",
-    "summary": "The elected political and executive head of the Village Gram Panchayat under Article 243C. Directly or indirectly elected by adult village voters. Presides over Gram Panchayat meetings, oversees village sanitation, drinking water, street lights, and presents reports to the Gram Sabha.",
-    "mandate": [
-      "Article 243C: Composition of Panchayats.",
-      "Constitutional head of the village tier of rural democratic self-government."
-    ],
+    "summary": "The elected political and executive head of the Village Gram Panchayat. Directly or indirectly elected by adult village voters. Presides over Gram Panchayat meetings, oversees village sanitation, drinking water, street lights, and presents reports to the Gram Sabha.",
+    "mandate": [],
     "powers": [
       "Joint signatory for Gram Panchayat bank accounts along with the Gram Sevak.",
       "Allots housing plots under PMAY-G and sanctions village drainage and lighting projects."
@@ -4022,9 +3801,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "local",
     "category": "legislation",
     "summary": "Directly elected representative of an individual village ward in the Gram Panchayat (typically 7 to 17 members per Panchayat). Participates in monthly Panchayat meetings, passes village development resolutions, and represents ward residents.",
-    "mandate": [
-      "Represent local ward households and debate village civic priorities."
-    ],
+    "mandate": [],
     "powers": [
       "Votes on village budgets, development plans, and contractor payments.",
       "Can move No-Confidence Motions against the Sarpanch if legal grounds exist."
@@ -4047,10 +3824,7 @@ export const NODES_V4: EducationNode[] = [
     "level": "district",
     "category": "executive-administration",
     "summary": "The administrative head of rural district governance under the 73rd Constitutional Amendment and State Zilla Parishad Acts. IAS officer heading the apex tier of Panchayati Raj. Directs primary rural schools, primary health centres (PHCs), rural water supply, and rural road schemes across the district.",
-    "mandate": [
-      "Article 243B & State ZP Acts: Executive head of district rural local government.",
-      "Supervise Block Development Officers and village panchayat rural development works."
-    ],
+    "mandate": [],
     "powers": [
       "Disburses rural development grants and executes MGNREGA works across the district.",
       "Appoints and disciplines primary teachers, village health staff, and Gram Sevaks."
@@ -4073,25 +3847,21 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "23",
     "level": "constitutional",
     "category": "legislation",
-    "summary": "The sovereign origin and foundation of all constitutional and executive authority in the Republic of India (Preamble: \"We, The People of India\"). Every citizen aged 18+ possesses the constitutional right of universal adult franchise (Article 326) to directly elect representatives to the Lok Sabha, State Legislative Assembly (Vidhan Sabha), Municipal Corporation, and Gram Panchayat.",
-    "mandate": [
-      "Preamble: Sovereign authority resides in the people of India.",
-      "Article 326: Universal adult suffrage for every citizen not disqualified on grounds of non-residence, unsoundness of mind, or crime.",
-      "Part III: Guaranteed Fundamental Rights (Equality, Speech, Life, Liberty, Religion, Constitutional Remedies)."
-    ],
+    "summary": "The sovereign origin and foundation of all constitutional and executive authority in the Republic of India (Preamble: \"We, The People of India\"). Every citizen aged 18+ possesses the constitutional right of universal adult franchise to directly elect representatives to the Lok Sabha, State Legislative Assembly (Vidhan Sabha), Municipal Corporation, and Gram Panchayat.",
+    "mandate": [],
     "powers": [
       "Elects 543 Members of Parliament to the Lok Sabha in national general elections.",
       "Elects Members of Legislative Assembly (MLAs) in state assembly elections.",
       "Elects Ward Corporators in municipal elections and Sarpanchs/Panchs in rural local elections.",
-      "Petitions Supreme Court (Article 32) and High Courts (Article 226) for enforcement of rights.",
+      "Petitions Supreme Court and High Courts for enforcement of rights.",
       "Demands information from public authorities under Right to Information Act 2005 (RTI)."
     ],
     "limitations": [
-      "Must observe Fundamental Duties under Article 51A (respect national flag, constitution, public property).",
-      "Subject to reasonable restrictions on freedoms under Article 19(2)-(6)."
+      "Must observe Fundamental Duties (respect national flag, constitution, public property).",
+      "Subject to reasonable restrictions on freedoms(2)-(6)."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Preamble, Articles 5-11, 14, 19, 21, 32, 51A, 326",
+      "constitutionalArticle": "",
       "positionName": "Citizen of the Republic of India",
       "cadreOrService": "Sovereign Electors & Rights-Holders",
       "electoralOrSelectionMethod": "Citizenship by birth, descent, registration, or naturalization (Citizenship Act 1955)",
@@ -4114,11 +3884,8 @@ export const NODES_V4: EducationNode[] = [
     "sectionNumber": "23",
     "level": "local",
     "category": "legislation",
-    "summary": "The sole direct democracy institution recognized in the Constitution of India (Article 243A). Consists of ALL adult registered voters of the village. The Gram Sabha holds supreme deliberative authority: it approves the annual village budget, selects welfare beneficiaries (PMAY-G, pensions), and conducts social audits of Panchayat works.",
-    "mandate": [
-      "Article 243A: A Gram Sabha may exercise such powers and perform such functions at the village level as the Legislature of a State may, by law, provide.",
-      "Direct deliberative democracy and mandatory social audit of village administration."
-    ],
+    "summary": "The sole direct democracy institution recognized in the Constitution of India. Consists of ALL adult registered voters of the village. The Gram Sabha holds supreme deliberative authority: it approves the annual village budget, selects welfare beneficiaries (PMAY-G, pensions), and conducts social audits of Panchayat works.",
+    "mandate": [],
     "powers": [
       "Approves the Annual Development Plan and Budget of the Gram Panchayat.",
       "Identifies and approves the final list of beneficiaries for government poverty schemes.",
@@ -4129,7 +3896,7 @@ export const NODES_V4: EducationNode[] = [
       "Resolutions must conform to state statutory acts and constitutional boundaries."
     ],
     "governanceDetails": {
-      "constitutionalArticle": "Articles 243(b), 243A, PESA Act 1996",
+      "constitutionalArticle": "",
       "positionName": "Sovereign Village Assembly (Gram Sabha)",
       "cadreOrService": "Direct Deliberative Assembly of Village Electors",
       "electoralOrSelectionMethod": "Universal inclusion of all registered village voters",
@@ -5101,71 +4868,110 @@ export const RELATIONSHIPS_V4: RelationshipEdgeData[] = [
 
 export const SOURCES_V4: SourceRecord[] = [
   {
-    id: 'SRC-V4-CONST',
-    name: 'Constitution of India',
-    officialUrl: 'https://legislative.gov.in/constitution-of-india',
-    documentTitle: 'Constitution of India (As Amended Up To Date)',
-    sectionCitation: 'Articles 52-243ZG & Schedules 7, 10, 11, 12',
-    lastVerifiedDate: '2026-10-18',
-    sourcePriority: 1,
-    verificationStatus: 'verified',
-    relatedNodeIds: ['DEM-PRESIDENT', 'DEM-PM', 'DEM-LS-SPEAKER', 'DEM-GOVERNOR', 'DEM-CM', 'DEM-ECI', 'DEM-CITIZENS', 'DEM-MLA', 'DEM-MLC']
+    "id": "SRC-V4-CONST",
+    "name": "Constitution of India",
+    "officialUrl": "https://legislative.gov.in/constitution-of-india",
+    "documentTitle": "Constitution of India (As Amended Up To Date)",
+    "sectionCitation": "Articles 52-243ZG & Schedules 7, 10, 11, 12",
+    "lastVerifiedDate": "2026-10-18",
+    "sourcePriority": 1,
+    "verificationStatus": "verified",
+    "relatedNodeIds": [
+      "DEM-PRESIDENT",
+      "DEM-PM",
+      "DEM-LS-SPEAKER",
+      "DEM-GOVERNOR",
+      "DEM-CM",
+      "DEM-ECI",
+      "DEM-CITIZENS",
+      "DEM-MLA",
+      "DEM-MLC"
+    ]
   },
   {
-    id: 'SRC-V4-POLICE-ACT',
-    name: 'The Police Act, 1861 & State Police Acts',
-    officialUrl: 'https://www.indiacode.nic.in/handle/123456789/2253',
-    documentTitle: 'The Police Act, 1861 (Act No. 5 of 1861) & Corresponding State Police Acts',
-    sectionCitation: 'Section 4, 7, 12, 23 & State Police Manuals',
-    lastVerifiedDate: '2026-10-18',
-    sourcePriority: 1,
-    verificationStatus: 'verified',
-    relatedNodeIds: ['DEM-POL-DGP', 'DEM-POL-ADG', 'DEM-POL-IG', 'DEM-POL-DIG', 'DEM-POL-SP', 'DEM-POL-SHO', 'DEM-POL-CONSTABLE']
+    "id": "SRC-V4-POLICE-ACT",
+    "name": "The Police Act, 1861 & State Police Acts",
+    "officialUrl": "https://www.indiacode.nic.in/handle/123456789/2253",
+    "documentTitle": "The Police Act, 1861 (Act No. 5 of 1861) & Corresponding State Police Acts",
+    "sectionCitation": "Section 4, 7, 12, 23 & State Police Manuals",
+    "lastVerifiedDate": "2026-10-18",
+    "sourcePriority": 1,
+    "verificationStatus": "verified",
+    "relatedNodeIds": [
+      "DEM-POL-DGP",
+      "DEM-POL-ADG",
+      "DEM-POL-IG",
+      "DEM-POL-DIG",
+      "DEM-POL-SP",
+      "DEM-POL-SHO",
+      "DEM-POL-CONSTABLE"
+    ]
   },
   {
-    id: 'SRC-V4-RPA',
-    name: 'Representation of the People Acts (1950 & 1951)',
-    officialUrl: 'https://eci.gov.in/electoral-laws/',
-    documentTitle: 'Representation of the People Act, 1950 & 1951',
-    sectionCitation: 'Act No. 43 of 1950 & Act No. 43 of 1951',
-    lastVerifiedDate: '2026-10-18',
-    sourcePriority: 1,
-    verificationStatus: 'verified',
-    relatedNodeIds: ['DEM-CITIZENS', 'DEM-ECI', 'DEM-MP-LOK-SABHA', 'DEM-MLA']
+    "id": "SRC-V4-RPA",
+    "name": "Representation of the People Acts (1950 & 1951)",
+    "officialUrl": "https://eci.gov.in/electoral-laws/",
+    "documentTitle": "Representation of the People Act, 1950 & 1951",
+    "sectionCitation": "Act No. 43 of 1950 & Act No. 43 of 1951",
+    "lastVerifiedDate": "2026-10-18",
+    "sourcePriority": 1,
+    "verificationStatus": "verified",
+    "relatedNodeIds": [
+      "DEM-CITIZENS",
+      "DEM-ECI",
+      "DEM-MP-LOK-SABHA",
+      "DEM-MLA"
+    ]
   },
   {
-    id: 'SRC-V4-AIS',
-    name: 'All India Services Act, 1951 & Cadre Rules',
-    officialUrl: 'https://dopt.gov.in/all-india-services-ais',
-    documentTitle: 'All India Services Act, 1951 (Act No. 61 of 1951)',
-    sectionCitation: 'Section 3 & AIS (Cadre) Rules',
-    lastVerifiedDate: '2026-10-18',
-    sourcePriority: 1,
-    verificationStatus: 'verified',
-    relatedNodeIds: ['DEM-DOPT-SEC', 'DEM-UPSC', 'DEM-CABINET-SEC', 'DEM-CS-STATE', 'DEM-DM-COLLECTOR', 'DEM-POL-DGP']
+    "id": "SRC-V4-AIS",
+    "name": "All India Services Act, 1951 & Cadre Rules",
+    "officialUrl": "https://dopt.gov.in/all-india-services-ais",
+    "documentTitle": "All India Services Act, 1951 (Act No. 61 of 1951)",
+    "sectionCitation": "Section 3 & AIS (Cadre) Rules",
+    "lastVerifiedDate": "2026-10-18",
+    "sourcePriority": 1,
+    "verificationStatus": "verified",
+    "relatedNodeIds": [
+      "DEM-DOPT-SEC",
+      "DEM-UPSC",
+      "DEM-CABINET-SEC",
+      "DEM-CS-STATE",
+      "DEM-DM-COLLECTOR",
+      "DEM-POL-DGP"
+    ]
   },
   {
-    id: 'SRC-V4-BUSINESS-RULES',
-    name: 'Government of India Allocation of Business Rules',
-    officialUrl: 'https://cabsec.gov.in/allocationofbusinessrules/',
-    documentTitle: 'Government of India (Allocation of Business) Rules, 1961',
-    sectionCitation: 'Rules made under Article 77(3) of Constitution of India',
-    lastVerifiedDate: '2026-10-18',
-    sourcePriority: 1,
-    verificationStatus: 'verified',
-    relatedNodeIds: ['DEM-PM', 'DEM-CABINET-SEC', 'DEM-MHA-MINISTER', 'DEM-MOF-MINISTER', 'DEM-MOLJ-MINISTER']
+    "id": "SRC-V4-BUSINESS-RULES",
+    "name": "Government of India Allocation of Business Rules",
+    "officialUrl": "https://cabsec.gov.in/allocationofbusinessrules/",
+    "documentTitle": "Government of India (Allocation of Business) Rules, 1961",
+    "sectionCitation": "Rules made under Article 77(3) of Constitution of India",
+    "lastVerifiedDate": "2026-10-18",
+    "sourcePriority": 1,
+    "verificationStatus": "verified",
+    "relatedNodeIds": [
+      "DEM-PM",
+      "DEM-CABINET-SEC",
+      "DEM-MHA-MINISTER",
+      "DEM-MOF-MINISTER",
+      "DEM-MOLJ-MINISTER"
+    ]
   },
   {
-    id: 'SRC-V4-MMC-ACT',
-    name: 'Mumbai Municipal Corporation Act, 1888 (MMC Act)',
-    officialUrl: 'https://www.indiacode.nic.in',
-    documentTitle: 'The Mumbai Municipal Corporation Act, 1888 (Bombay Act No. III of 1888)',
-    sectionCitation: 'Section 4, 54, 64 & 68 (Executive Powers of the Commissioner)',
-    lastVerifiedDate: '2026-10-18',
-    sourcePriority: 1,
-    verificationStatus: 'verified',
-    relatedNodeIds: ['DEM-MUNICIPAL-COMMISSIONER', 'DEM-MAYOR-COUNCIL', 'DEM-ADDL-MUNICIPAL-COMMISSIONER', 'DEM-WARD-CORPORATOR']
+    "id": "SRC-V4-MMC-ACT",
+    "name": "Mumbai Municipal Corporation Act, 1888 (MMC Act)",
+    "officialUrl": "https://www.indiacode.nic.in",
+    "documentTitle": "The Mumbai Municipal Corporation Act, 1888 (Bombay Act No. III of 1888)",
+    "sectionCitation": "Section 4, 54, 64 & 68 (Executive Powers of the Commissioner)",
+    "lastVerifiedDate": "2026-10-18",
+    "sourcePriority": 1,
+    "verificationStatus": "verified",
+    "relatedNodeIds": [
+      "DEM-MUNICIPAL-COMMISSIONER",
+      "DEM-MAYOR-COUNCIL",
+      "DEM-ADDL-MUNICIPAL-COMMISSIONER",
+      "DEM-WARD-CORPORATOR"
+    ]
   }
 ];
-
-
