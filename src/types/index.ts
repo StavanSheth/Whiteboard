@@ -96,6 +96,8 @@ export interface GovernanceDetails {
   checksAndBalances?: string[];
   appealForum?: string;
   historicalOrigin?: string;
+  superiorAuthority?: string;          // Who is superior to them and can direct or influence their decisions/power
+  removalOrDeElectionMethod?: string;  // Whose order, vote, or process can make them be de-elected, dismissed, or removed
 }
 
 export interface BankingJudicialDetails {

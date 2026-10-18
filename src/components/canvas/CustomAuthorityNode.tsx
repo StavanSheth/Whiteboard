@@ -24,7 +24,9 @@ import {
   Users,
   Clock,
   Briefcase,
-  Sparkles
+  Sparkles,
+  Crown,
+  AlertTriangle
 } from 'lucide-react';
 
 function getNodeTheme(data: EducationNode) {
@@ -908,6 +910,28 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                         {data.governanceDetails.reportingTo}
                       </div>
                     )}
+                    {data.governanceDetails.superiorAuthority && (
+                      <div className="text-[10px] bg-amber-50/90 p-2 rounded-md border border-amber-300/80 mt-1.5 shadow-2xs">
+                        <span className="font-bold text-amber-950 flex items-center gap-1 mb-0.5">
+                          <Crown className="w-3.5 h-3.5 text-amber-700 flex-shrink-0" />
+                          Superior Authority &amp; Influencing Power:
+                        </span>
+                        <span className="text-slate-800 font-medium leading-relaxed block">
+                          {data.governanceDetails.superiorAuthority}
+                        </span>
+                      </div>
+                    )}
+                    {data.governanceDetails.removalOrDeElectionMethod && (
+                      <div className="text-[10px] bg-rose-50/90 p-2 rounded-md border border-rose-300/80 mt-1.5 shadow-2xs">
+                        <span className="font-bold text-rose-950 flex items-center gap-1 mb-0.5">
+                          <AlertTriangle className="w-3.5 h-3.5 text-rose-700 flex-shrink-0" />
+                          Removal / De-election Authority:
+                        </span>
+                        <span className="text-rose-950 font-medium leading-relaxed block">
+                          {data.governanceDetails.removalOrDeElectionMethod}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -993,12 +1017,12 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
 
                 {/* Powers (Common Grounds) */}
                 {data.powers && data.powers.length > 0 && (
-                  <div className="bg-emerald-50/60 p-2 rounded-lg border border-emerald-100">
-                    <span className="font-bold text-emerald-900 text-[10px] uppercase tracking-wide block mb-1">
-                      Powers & Authority:
+                  <div className="bg-emerald-50/70 p-2.5 rounded-lg border border-emerald-200">
+                    <span className="font-bold text-emerald-950 text-[10.5px] uppercase tracking-wide block mb-1">
+                      Area of Power (What They Can Decide):
                     </span>
-                    <ul className="space-y-0.5 pl-3 list-disc text-slate-800 text-[10px]">
-                      {data.powers.slice(0, 3).map((p, idx) => (
+                    <ul className="space-y-1 pl-3 list-disc text-slate-800 text-[10px] leading-relaxed">
+                      {data.powers.slice(0, 4).map((p, idx) => (
                         <li key={idx}>{p}</li>
                       ))}
                     </ul>
@@ -1007,13 +1031,13 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
 
                 {/* Limitations (Common Grounds) */}
                 {data.limitations && data.limitations.length > 0 && (
-                  <div className="bg-rose-50/60 p-2 rounded-lg border border-rose-100">
-                    <span className="font-bold text-rose-900 text-[10px] uppercase tracking-wide block mb-1">
-                      Limitations & Boundaries:
+                  <div className="bg-rose-50/70 p-2.5 rounded-lg border border-rose-200">
+                    <span className="font-bold text-rose-950 text-[10.5px] uppercase tracking-wide block mb-1">
+                      Decision Limits &amp; Prohibited Associations (What They Cannot Decide):
                     </span>
-                    <ul className="space-y-0.5 pl-0.5">
-                      {data.limitations.slice(0, 2).map((l, idx) => (
-                        <li key={idx} className="text-[10px] text-rose-900 flex items-start gap-1">
+                    <ul className="space-y-1 pl-0.5">
+                      {data.limitations.slice(0, 3).map((l, idx) => (
+                        <li key={idx} className="text-[10px] text-rose-950 flex items-start gap-1 leading-relaxed">
                           <span className="text-rose-500 font-bold">✕</span>
                           <span>{l}</span>
                         </li>

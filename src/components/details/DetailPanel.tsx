@@ -23,6 +23,7 @@ import {
   Building2,
   Workflow,
   AlertTriangle,
+  Crown,
   Edit2,
   GraduationCap,
   Compass,
@@ -694,6 +695,24 @@ export function DetailPanel() {
                   <span>{node.governanceDetails.tenure}</span>
                 </div>
               )}
+              {node.governanceDetails.superiorAuthority && (
+                <div className="mt-2 bg-amber-50 border border-amber-200 rounded-lg p-2.5">
+                  <span className="font-bold text-amber-950 flex items-center gap-1 mb-1">
+                    <Crown className="w-3.5 h-3.5 text-amber-700 flex-shrink-0" />
+                    Superior Authority &amp; Influencing Power:
+                  </span>
+                  <span className="text-slate-800 font-medium leading-relaxed block">{node.governanceDetails.superiorAuthority}</span>
+                </div>
+              )}
+              {node.governanceDetails.removalOrDeElectionMethod && (
+                <div className="mt-2 bg-rose-50 border border-rose-200 rounded-lg p-2.5">
+                  <span className="font-bold text-rose-950 flex items-center gap-1 mb-1">
+                    <AlertTriangle className="w-3.5 h-3.5 text-rose-700 flex-shrink-0" />
+                    Removal / De-election Authority:
+                  </span>
+                  <span className="text-rose-950 font-medium leading-relaxed block">{node.governanceDetails.removalOrDeElectionMethod}</span>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -874,12 +893,12 @@ export function DetailPanel() {
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-700" />
-                What this authority CAN do (Powers)
+                Area of Power (What They Can Decide)
               </h3>
               {isEditing && (
                 <button
                   type="button"
-                  onClick={() => addArrayItem('powers', 'New statutory power')}
+                  onClick={() => addArrayItem('powers', 'New decision power')}
                   className="flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-bold text-[10px] transition-colors cursor-pointer"
                 >
                   <Plus className="w-3 h-3" />
@@ -932,16 +951,16 @@ export function DetailPanel() {
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                 <ShieldAlert className="w-4 h-4 text-rose-600" />
-                What this authority CANNOT do (Legal Limitations)
+                Decision Limits &amp; Prohibited Associations (What They Cannot Decide)
               </h3>
               {isEditing && (
                 <button
                   type="button"
-                  onClick={() => addArrayItem('limitations', 'New statutory limitation')}
+                  onClick={() => addArrayItem('limitations', 'New decision boundary')}
                   className="flex items-center gap-1 px-2 py-0.5 rounded bg-rose-100 hover:bg-rose-200 text-rose-900 font-bold text-[10px] transition-colors cursor-pointer"
                 >
                   <Plus className="w-3 h-3" />
-                  Add Limitation
+                  Add Boundary
                 </button>
               )}
             </div>

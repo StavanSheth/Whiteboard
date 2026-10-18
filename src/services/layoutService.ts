@@ -140,6 +140,8 @@ export function estimateNodeHeight(
     if (node.governanceDetails.geographicalJurisdiction) govH += 28 * typoFactor;
     if (node.governanceDetails.tenure) govH += 26 * typoFactor;
     if (node.governanceDetails.reportingTo) govH += 24 * typoFactor;
+    if (node.governanceDetails.superiorAuthority) govH += 40 * typoFactor;
+    if (node.governanceDetails.removalOrDeElectionMethod) govH += 40 * typoFactor;
     h += govH + paraSpacing;
   }
 
