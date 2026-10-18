@@ -339,7 +339,7 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
         set((state) => ({
           currentProjectId: 'proj-whiteboard-4',
           currentProjectName: 'Democratic Offices & Administrative Hierarchy (Whiteboard 4 of 5)',
-          currentProjectDescription: 'Properly spaced government body clusters: Parliament (Lok Sabha & Rajya Sabha), Central Ministries, State Legislature (Vidhan Sabha & Parishad), 10-Rank Police Command, District Magistracy, BMC (Mumbai Municipal Corporation), Rural Panchayati Raj, and Sovereign Citizens',
+          currentProjectDescription: 'Modular Government Bodies across 23 distinct sections (Apex, Rajya Sabha, Lok Sabha, PMO, Central Ministries, Police 10-Rank Command, Magistracy, Municipalities, Panchayats, down to Sovereign Citizens)',
           nodes: NODES_V4,
           relationships: RELATIONSHIPS_V4,
           sources: SOURCES_V4,

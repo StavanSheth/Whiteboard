@@ -1,9 +1,7 @@
-# Indian Education Governance, Authorities, Powers & Standards
-## Interactive Knowledge-Mapping Application (Whiteboard 1 of 3)
+# Indian Governance, Legal & Education Mapping Suite
+## Interactive Knowledge-Mapping Application (5 Specialized Whiteboards)
 
-An interactive, zoomable, searchable, hierarchical visual knowledge map of India's education governance system — from constitutional provisions and parliamentary statutes to individual authorities, their powers, legal limitations, decision rights, and primary official sources.
-
-Built from the complete specification in [`V1.md`](./V1.md).
+An interactive, zoomable, searchable, hierarchical visual knowledge map of India's governance, regulatory, legal, and educational structures — from constitutional provisions and parliamentary statutes to individual authorities, their powers, legal limitations, decision rights, and primary official sources.
 
 ---
 
@@ -12,6 +10,13 @@ Built from the complete specification in [`V1.md`](./V1.md).
 The application is deployed on Vercel:
 - **Production URL:** [https://whiteboard-nine-iota.vercel.app](https://whiteboard-nine-iota.vercel.app)
 - **Custom Alias:** [https://whiteboard-stavan.vercel.app](https://whiteboard-stavan.vercel.app)
+
+### 🗺️ Available Whiteboards (Switch via Top Navigation Bar)
+1. **Whiteboard 1:** Indian Education Governance, Authorities, Powers & Standards (16 Sections)
+2. **Whiteboard 2:** Regulatory Bodies & Standards (Accreditation, Compliance & Statutory Councils)
+3. **Whiteboard 3:** Examination Lifecycle & Testing Authorities (NTA, UPSC, SSC, Banking, State CETs)
+4. **Whiteboard 4:** Democratic Offices & Administrative Hierarchy — Modular Government Bodies across 23 distinct sections (Apex, Rajya Sabha, Lok Sabha, PMO, Central Ministries, Police 10-Rank Command, Magistracy, Municipalities, Panchayats, down to Sovereign Citizens)
+5. **Whiteboard 5:** Indian Banking and Judicial Systems Hierarchy (RBI, Commercial Banks, Supreme Court, High Courts, District Judiciary)
 
 ---
 

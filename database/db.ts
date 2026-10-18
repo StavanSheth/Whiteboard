@@ -217,7 +217,7 @@ class EducationGovernanceDatabase {
       reseeded = {
         id: 'proj-whiteboard-4',
         name: 'Indian Democracy and Government Hierarchy (v4)',
-        description: 'Properly spaced government body clusters: Parliament (Lok Sabha & Rajya Sabha), Central Ministries, State Legislature (Vidhan Sabha & Parishad), 10-Rank Police Command, District Magistracy, BMC (Mumbai Municipal Corporation), Rural Panchayati Raj, and Sovereign Citizens',
+        description: 'Modular Government Bodies across 23 distinct sections (Apex, Rajya Sabha, Lok Sabha, PMO, Central Ministries, Police 10-Rank Command, Magistracy, Municipalities, Panchayats, down to Sovereign Citizens)',
         createdAt: now,
         updatedAt: now,
         isDefault: false,
@@ -315,7 +315,7 @@ class EducationGovernanceDatabase {
     const whiteboard4Project: ProjectRecord = {
       id: 'proj-whiteboard-4',
       name: 'Indian Democracy and Government Hierarchy (v4)',
-      description: 'Properly spaced government body clusters: Parliament (Lok Sabha & Rajya Sabha), Central Ministries, State Legislature (Vidhan Sabha & Parishad), 10-Rank Police Command, District Magistracy, BMC (Mumbai Municipal Corporation), Rural Panchayati Raj, and Sovereign Citizens',
+      description: 'Modular Government Bodies across 23 distinct sections (Apex, Rajya Sabha, Lok Sabha, PMO, Central Ministries, Police 10-Rank Command, Magistracy, Municipalities, Panchayats, down to Sovereign Citizens)',
       createdAt: now,
       updatedAt: now,
       isDefault: false,
