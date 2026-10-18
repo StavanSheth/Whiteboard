@@ -952,6 +952,7 @@ export async function calculateSectionTreeLayout(
 
   const stubHeight = Math.round(58 * Math.max(1, fontScale * 0.5 + lineScale * 0.5) * cardHeightScale);
   const stubWidth = Math.min(260, customBoxWidth || 260);
+  const stubToLocalNodeMap = new Map<string, string>();
 
   // 1. Process relationships first to collect foreign keys and internal hierarchy edges
   allRelationships.forEach((rel) => {
@@ -997,6 +998,7 @@ export async function calculateSectionTreeLayout(
       } else {
         // Floating Stub Mode
         const stubId = `FK-OUT-${rel.id}`;
+        stubToLocalNodeMap.set(stubId, rel.sourceNodeId);
         elkNodes.push({
           id: stubId,
           width: stubWidth,
@@ -1054,6 +1056,7 @@ export async function calculateSectionTreeLayout(
       } else {
         // Floating Stub Mode
         const stubId = `FK-IN-${rel.id}`;
+        stubToLocalNodeMap.set(stubId, rel.targetNodeId);
         elkNodes.push({
           id: stubId,
           width: stubWidth,
@@ -1277,6 +1280,40 @@ export async function calculateSectionTreeLayout(
     }
 
     // Normalize coordinates so minX, minY start with clean padding
+    // Apply custom node positions if explicitly repositioned on this page
+    if (opts.nodePositions && Object.keys(opts.nodePositions).length > 0) {
+      // Record initial positions before manual overrides
+      const initialPosMap = new Map<string, { x: number; y: number }>();
+      computedNodes.forEach((n) => initialPosMap.set(n.id, { x: n.x, y: n.y }));
+
+      // 1. Apply explicit custom positions for dragged nodes
+      computedNodes.forEach((n) => {
+        const customPos = opts.nodePositions?.[n.id];
+        if (customPos) {
+          n.x = Math.round(customPos.x);
+          n.y = Math.round(customPos.y);
+        }
+      });
+
+      // 2. For unpositioned FK stubs, translate them in sync with their connected local authority node
+      computedNodes.forEach((n) => {
+        if (n.isFk && !opts.nodePositions?.[n.id]) {
+          const localParentId = stubToLocalNodeMap.get(n.id);
+          if (localParentId && opts.nodePositions?.[localParentId]) {
+            const orig = initialPosMap.get(localParentId);
+            const custom = opts.nodePositions[localParentId];
+            if (orig && custom) {
+              const dx = custom.x - orig.x;
+              const dy = custom.y - orig.y;
+              n.x = Math.round(n.x + dx);
+              n.y = Math.round(n.y + dy);
+            }
+          }
+        }
+      });
+    }
+
+    // Normalize coordinates so minX, minY start with clean padding regardless of manual repositioning
     const padding = 35;
     let minX = Infinity;
     let minY = Infinity;
@@ -1291,17 +1328,6 @@ export async function calculateSectionTreeLayout(
       computedNodes.forEach((n) => {
         n.x = Math.round(n.x - shiftX);
         n.y = Math.round(n.y - shiftY);
-      });
-    }
-
-    // Apply custom node positions if explicitly repositioned on this page
-    if (opts.nodePositions) {
-      computedNodes.forEach((n) => {
-        const customPos = opts.nodePositions?.[n.id];
-        if (customPos) {
-          n.x = Math.round(customPos.x);
-          n.y = Math.round(customPos.y);
-        }
       });
     }
 

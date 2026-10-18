@@ -725,9 +725,13 @@ function getSlicesForLayout(
     }
   }
 
+  const targetPageHeight = printOrientation === 'landscape' ? 620 : 880;
+
   if (split === 'single') {
+    const scaleByW = targetPageWidth / layout.width;
+    const scaleByH = targetPageHeight / layout.height;
     const effectiveScale = isAutoFit
-      ? Math.min(1, Math.round((targetPageWidth / layout.width) * 100) / 100)
+      ? Math.min(1.0, Math.round(Math.min(scaleByW, scaleByH) * 100) / 100)
       : manualScale;
     return [
       {
@@ -785,7 +789,6 @@ function getSlicesForLayout(
   // 4-page grid split (Top-Left, Top-Right, Bottom-Left, Bottom-Right)
   const quadWidth = Math.ceil(layout.width * 0.56);
   const quadHeight = Math.ceil(layout.height * 0.56);
-  const targetPageHeight = printOrientation === 'landscape' ? 620 : 880;
   const pageScale = isAutoFit
     ? Math.min(1.0, Math.round(Math.min(targetPageWidth / quadWidth, targetPageHeight / quadHeight) * 100) / 100)
     : manualScale;
@@ -1102,16 +1105,26 @@ export function SectionPrintPdfModal() {
         const finalY = Math.round(dragState.initNodeY + dragState.currentDy);
 
         // 1. Immediately update treeLayouts in local state so the node stays right where it was released
+        // and immediately recompute the bounding box width and height so the page resizes dynamically
         setTreeLayouts((prev) => {
           const secLayout = prev[dragState.sectionId];
           if (!secLayout) return prev;
           const updatedNodes = secLayout.nodes.map((n) =>
             n.id === dragState.nodeId ? { ...n, x: finalX, y: finalY } : n
           );
+          let maxX = 0;
+          let maxY = 0;
+          updatedNodes.forEach((n) => {
+            maxX = Math.max(maxX, n.x + n.width);
+            maxY = Math.max(maxY, n.y + n.height);
+          });
+          const padding = 35;
           return {
             ...prev,
             [dragState.sectionId]: {
               ...secLayout,
+              width: Math.max(800, maxX + padding),
+              height: Math.max(400, maxY + padding),
               nodes: updatedNodes
             }
           };
@@ -1301,6 +1314,63 @@ export function SectionPrintPdfModal() {
       setEditingNodeId(null);
       closeModal();
     }
+  };
+
+  // Auto-fit section bounds to snugly fit repositioned cards and remove dead space
+  const autoFitSectionBounds = (sectionId: string) => {
+    const layout = treeLayouts[sectionId];
+    if (!layout || layout.nodes.length === 0) return;
+
+    const padding = 35;
+    let minX = Infinity;
+    let minY = Infinity;
+    layout.nodes.forEach((n) => {
+      minX = Math.min(minX, n.x);
+      minY = Math.min(minY, n.y);
+    });
+
+    const shiftX = minX !== Infinity ? minX - padding : 0;
+    const shiftY = minY !== Infinity ? minY - padding : 0;
+
+    const currentSec = sectionPrintSettings[sectionId] || {};
+    const oldPositions = currentSec.nodePositions || {};
+    const updatedPositions: Record<string, { x: number; y: number }> = {};
+
+    const updatedNodes = layout.nodes.map((n) => {
+      const newX = Math.round(n.x - shiftX);
+      const newY = Math.round(n.y - shiftY);
+      if (oldPositions[n.id]) {
+        updatedPositions[n.id] = { x: newX, y: newY };
+      }
+      return { ...n, x: newX, y: newY };
+    });
+
+    let maxX = 0;
+    let maxY = 0;
+    updatedNodes.forEach((n) => {
+      maxX = Math.max(maxX, n.x + n.width);
+      maxY = Math.max(maxY, n.y + n.height);
+    });
+
+    const newWidth = Math.max(800, maxX + padding);
+    const newHeight = Math.max(400, maxY + padding);
+
+    // Update local treeLayouts immediately
+    setTreeLayouts((prev) => ({
+      ...prev,
+      [sectionId]: {
+        ...layout,
+        width: newWidth,
+        height: newHeight,
+        nodes: updatedNodes
+      }
+    }));
+
+    // Update store
+    setSectionPrintSettings(sectionId, {
+      ...currentSec,
+      nodePositions: updatedPositions
+    });
   };
 
   const handleOpenInDrawer = (nodeId: string) => {
@@ -1750,17 +1820,27 @@ export function SectionPrintPdfModal() {
                                 <span>{openPageToolbars[sec.id] ? 'Hide Page Settings Toolbar ▲' : 'Page Settings Toolbar ▼'}</span>
                               </button>
                               {Boolean(secOverrides.nodePositions && Object.keys(secOverrides.nodePositions).length > 0) && (
-                                <button
-                                  onClick={() => {
-                                    const { nodePositions: _rem, ...rest } = secOverrides;
-                                    setSectionPrintSettings(sec.id, { ...rest, nodePositions: {} });
-                                  }}
-                                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-700 border border-slate-200 hover:border-rose-300 transition-colors cursor-pointer"
-                                  title="Reset all dragged node positions on this page to automatic tree layout"
-                                >
-                                  <RotateCcw className="w-3 h-3" />
-                                  <span>Reset Positions ({Object.keys(secOverrides.nodePositions || {}).length})</span>
-                                </button>
+                                <>
+                                  <button
+                                    onClick={() => autoFitSectionBounds(sec.id)}
+                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300 transition-colors cursor-pointer shadow-2xs"
+                                    title="Auto-fit page boundaries tightly around the repositioned cards and remove whitespace"
+                                  >
+                                    <Maximize2 className="w-3 h-3 text-emerald-800" />
+                                    <span>Fit Page to Cards</span>
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      const { nodePositions: _rem, ...rest } = secOverrides;
+                                      setSectionPrintSettings(sec.id, { ...rest, nodePositions: {} });
+                                    }}
+                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-700 border border-slate-200 hover:border-rose-300 transition-colors cursor-pointer"
+                                    title="Reset all dragged node positions on this page to automatic tree layout"
+                                  >
+                                    <RotateCcw className="w-3 h-3" />
+                                    <span>Reset Positions ({Object.keys(secOverrides.nodePositions || {}).length})</span>
+                                  </button>
+                                </>
                               )}
                               <span className="text-[10.5px] font-mono text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
                                 Drag any card to reposition • Changes auto-save
