@@ -4,6 +4,7 @@ import { SECTION_METAS_V3, NODES_V3, RELATIONSHIPS_V3, SOURCES_V3 } from '../src
 import { SECTION_METAS_V4, NODES_V4, RELATIONSHIPS_V4, SOURCES_V4 } from '../src/data/whiteboard4-democracy';
 import { SECTION_METAS_V5, NODES_V5, RELATIONSHIPS_V5, SOURCES_V5 } from '../src/data/whiteboard5-banking-judiciary';
 import { SECTION_METAS_V6, NODES_V6, RELATIONSHIPS_V6, SOURCES_V6 } from '../src/data/whiteboard6-system-design';
+import { SECTION_METAS_V7, NODES_V7, RELATIONSHIPS_V7, SOURCES_V7 } from '../src/data/whiteboard7-how-to-judge-a-person';
 import { EducationNode, RelationshipEdgeData, SourceRecord, DatasetSchema, ProjectRecord, ProjectSummary, SectionMeta, ProjectSettings } from './schema';
 
 const STORAGE_PREFIX = 'wb_db_v1_';
@@ -58,7 +59,7 @@ class EducationGovernanceDatabase {
                 parsed.nodes = cleanNodes;
 
                 // For Whiteboard 4, use the clean new 12-tier hierarchy and non-crossing relationships
-                if (parsed.id === 'proj-whiteboard-4' || parsed.id === 'proj-system-design') {
+                if (parsed.id === 'proj-whiteboard-4' || parsed.id === 'proj-system-design' || parsed.id === 'proj-judge-person') {
                   parsed.nodes = seeded.nodes.map((n) => ({ ...n }));
                   parsed.relationships = seeded.relationships.map((r) => ({ ...r }));
                   parsed.sections = (seeded.sections || []).map((s) => ({ ...s }));
@@ -262,6 +263,22 @@ class EducationGovernanceDatabase {
         sources: SOURCES_V6.map((s) => ({ ...s })),
         sections: SECTION_METAS_V6.map((s) => ({ ...s }))
       };
+    } else if (projectId === 'proj-judge-person') {
+      reseeded = {
+        id: 'proj-judge-person',
+        name: 'How to Judge a Person (Whiteboard 7 of 7)',
+        description: 'Human Connection, Character Assessment & Social Intelligence: Foundations, Relationship Types (Ally, Pal, Companion), Conversation Design, Trust & Vulnerability, Character & Power Dynamics, Intuition & Judgment, and Practical Applications',
+        createdAt: now,
+        updatedAt: now,
+        isDefault: false,
+        nodeCount: NODES_V7.length,
+        relationshipCount: RELATIONSHIPS_V7.length,
+        sourceCount: SOURCES_V7.length,
+        nodes: NODES_V7.map((n) => ({ ...n })),
+        relationships: RELATIONSHIPS_V7.map((r) => ({ ...r })),
+        sources: SOURCES_V7.map((s) => ({ ...s })),
+        sections: SECTION_METAS_V7.map((s) => ({ ...s }))
+      };
     }
     if (reseeded) {
       this.projects.set(projectId, reseeded);
@@ -379,12 +396,30 @@ class EducationGovernanceDatabase {
       sections: SECTION_METAS_V6.map((s) => ({ ...s }))
     };
 
+    // Whiteboard 7: How to Judge a Person (Human Connection & Character Assessment)
+    const whiteboard7Project: ProjectRecord = {
+      id: 'proj-judge-person',
+      name: 'How to Judge a Person — Master Learning System (Whiteboard 7)',
+      description: 'Human Connection, Social Intelligence & Relationship Selection: Foundations, Ally/Pal/Companion Relationship Types, Conversation Design, Trust & Vulnerability, Character Assessment & Power Dynamics, Intuition & First Impressions, and Practical Applications.',
+      createdAt: now,
+      updatedAt: now,
+      isDefault: false,
+      nodeCount: NODES_V7.length,
+      relationshipCount: RELATIONSHIPS_V7.length,
+      sourceCount: SOURCES_V7.length,
+      nodes: NODES_V7.map((n) => ({ ...n })),
+      relationships: RELATIONSHIPS_V7.map((r) => ({ ...r })),
+      sources: SOURCES_V7.map((s) => ({ ...s })),
+      sections: SECTION_METAS_V7.map((s) => ({ ...s }))
+    };
+
     this.projects.set(whiteboard2Project.id, whiteboard2Project);
     this.projects.set(defaultProject.id, defaultProject);
     this.projects.set(whiteboard3Project.id, whiteboard3Project);
     this.projects.set(whiteboard4Project.id, whiteboard4Project);
     this.projects.set(whiteboard5Project.id, whiteboard5Project);
     this.projects.set(whiteboard6Project.id, whiteboard6Project);
+    this.projects.set(whiteboard7Project.id, whiteboard7Project);
     this.activeProjectId = whiteboard2Project.id;
   }
 

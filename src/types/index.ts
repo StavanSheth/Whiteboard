@@ -134,6 +134,25 @@ export interface SystemDesignDetails {
   transcriptTimestamp?: string;     // Exact timestamp (e.g., '[00:15:02]')
 }
 
+export interface CharacterAssessmentDetails {
+  conceptId: string;                // Stable concept code (e.g., 'HC-001', 'RT-001', 'CA-001')
+  branch:
+    | 'Foundations'
+    | 'Relationship Types'
+    | 'Conversation Design'
+    | 'Trust & Vulnerability'
+    | 'Character & Manipulation'
+    | 'Intuition & Judgment'
+    | 'Practical Applications';
+  relatedLesson: string;            // E.g. 'Lesson 1: The science and psychology of connection'
+  definition: string;               // Exact psychological definition
+  principle: string;                // Core cognitive / behavioral principle
+  techniqueOrQuestion: string;      // Diagnostic question or assessment technique
+  practicalScenario: string;        // Real-world contextual scenario
+  limitationsAndCaveats: string;    // Psychological caveats, biases, and boundaries
+  crossLinks?: string[];            // Connected concept references
+}
+
 export interface EducationNode {
   id: string;                      // Stable cross-board identifier (e.g., 'GOV-UGC', 'ART-21A', 'EXAM-JEE-MAIN')
   type: NodeType;
@@ -172,6 +191,7 @@ export interface EducationNode {
   governanceDetails?: GovernanceDetails;
   bankingJudicialDetails?: BankingJudicialDetails;
   systemDesignDetails?: SystemDesignDetails;
+  characterAssessmentDetails?: CharacterAssessmentDetails;
   metadata?: Record<string, any>;  // Extra extensible key-value points
   
   // Verification & Sources
@@ -241,7 +261,15 @@ export type RelationshipType =
   | 'MONITORS'                     // Telemetry -> Systems
   | 'FALLS_BACK_TO'                // Cache Miss -> DB / Fallback Handler
   | 'SHARDS_ACROSS'                // Partitioning -> Shards
-  | 'DEPENDS_ON';                  // Component -> Upstream Dependency
+  | 'DEPENDS_ON'                   // Component -> Upstream Dependency
+  // Human Connection & Character Assessment Relationships (Whiteboard 7)
+  | 'IS_A'
+  | 'HAS_ATTRIBUTE'
+  | 'LEADS_TO'
+  | 'SUPPORTS'
+  | 'CONTRASTS_WITH'
+  | 'REQUIRES_CAUTION'
+  | 'APPLIES_TO';
 
 export interface RelationshipEdgeData {
   id: string;                      // Stable ID (e.g., 'REL-001')

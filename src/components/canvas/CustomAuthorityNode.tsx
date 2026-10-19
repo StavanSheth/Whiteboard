@@ -33,7 +33,8 @@ import {
   Sparkles,
   Crown,
   AlertTriangle,
-  Cpu
+  Cpu,
+  UserCheck
 } from 'lucide-react';
 
 function getNodeTheme(data: EducationNode) {
@@ -101,6 +102,80 @@ function getNodeTheme(data: EducationNode) {
         badgeBg: 'bg-red-100 text-red-950 border-red-300 font-semibold',
         iconBox: 'bg-red-100 text-red-900 border-red-300',
         glowRing: 'ring-red-500/30 border-red-600'
+      };
+    }
+    return {
+      borderTop: 'border-t-4 border-t-slate-700',
+      headerBg: 'bg-gradient-to-r from-slate-100 via-gray-50 to-white',
+      badgeBg: 'bg-slate-200 text-slate-800 border-slate-300',
+      iconBox: 'bg-slate-200 text-slate-800 border-slate-300',
+      glowRing: 'ring-slate-500/30 border-slate-600'
+    };
+  }
+
+  // How to Judge a Person & Character Assessment (Whiteboard 7)
+  if (id.startsWith('JUDGE-')) {
+    if (id.startsWith('JUDGE-HC-')) {
+      return {
+        borderTop: 'border-t-4 border-t-cyan-500',
+        headerBg: 'bg-gradient-to-r from-cyan-50 via-sky-50 to-white',
+        badgeBg: 'bg-cyan-100 text-cyan-900 border-cyan-200',
+        iconBox: 'bg-cyan-100 text-cyan-800 border-cyan-200',
+        glowRing: 'ring-cyan-500/30 border-cyan-500'
+      };
+    }
+    if (id.startsWith('JUDGE-RT-')) {
+      return {
+        borderTop: 'border-t-4 border-t-amber-500',
+        headerBg: 'bg-gradient-to-r from-amber-50 via-yellow-50 to-white',
+        badgeBg: 'bg-amber-100 text-amber-900 border-amber-200',
+        iconBox: 'bg-amber-100 text-amber-800 border-amber-200',
+        glowRing: 'ring-amber-500/30 border-amber-500'
+      };
+    }
+    if (id.startsWith('JUDGE-CB-')) {
+      return {
+        borderTop: 'border-t-4 border-t-sky-600',
+        headerBg: 'bg-gradient-to-r from-sky-50 via-blue-50 to-white',
+        badgeBg: 'bg-sky-100 text-sky-900 border-sky-200',
+        iconBox: 'bg-sky-100 text-sky-800 border-sky-200',
+        glowRing: 'ring-sky-500/30 border-sky-600'
+      };
+    }
+    if (id.startsWith('JUDGE-TR-')) {
+      return {
+        borderTop: 'border-t-4 border-t-purple-600',
+        headerBg: 'bg-gradient-to-r from-purple-50 via-fuchsia-50 to-white',
+        badgeBg: 'bg-purple-100 text-purple-900 border-purple-200',
+        iconBox: 'bg-purple-100 text-purple-800 border-purple-200',
+        glowRing: 'ring-purple-500/30 border-purple-600'
+      };
+    }
+    if (id.startsWith('JUDGE-CA-')) {
+      return {
+        borderTop: 'border-t-4 border-t-rose-600',
+        headerBg: 'bg-gradient-to-r from-rose-50 via-red-50 to-white',
+        badgeBg: 'bg-rose-100 text-rose-900 border-rose-200',
+        iconBox: 'bg-rose-100 text-rose-800 border-rose-200',
+        glowRing: 'ring-rose-500/30 border-rose-600'
+      };
+    }
+    if (id.startsWith('JUDGE-IJ-')) {
+      return {
+        borderTop: 'border-t-4 border-t-indigo-600',
+        headerBg: 'bg-gradient-to-r from-indigo-50 via-violet-50 to-white',
+        badgeBg: 'bg-indigo-100 text-indigo-900 border-indigo-200',
+        iconBox: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+        glowRing: 'ring-indigo-500/30 border-indigo-600'
+      };
+    }
+    if (id.startsWith('JUDGE-AP-')) {
+      return {
+        borderTop: 'border-t-4 border-t-emerald-600',
+        headerBg: 'bg-gradient-to-r from-emerald-50 via-teal-50 to-white',
+        badgeBg: 'bg-emerald-100 text-emerald-900 border-emerald-200',
+        iconBox: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+        glowRing: 'ring-emerald-500/30 border-emerald-600'
       };
     }
     return {
@@ -769,6 +844,16 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                   {data.systemDesignDetails.category}
                 </span>
               )}
+              {data.characterAssessmentDetails?.conceptId && (
+                <span className="inline-block text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-900 text-amber-300 border border-slate-700 shadow-2xs">
+                  {data.characterAssessmentDetails.conceptId}
+                </span>
+              )}
+              {data.characterAssessmentDetails?.relatedLesson && (
+                <span className="inline-block text-[9px] font-semibold px-2 py-0.5 rounded-full bg-violet-100 text-violet-800 border border-violet-200">
+                  🎬 {data.characterAssessmentDetails.relatedLesson}
+                </span>
+              )}
             </div>
           </div>
 
@@ -1107,6 +1192,51 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                       <div className="text-[10px] text-rose-200 bg-rose-950/40 p-2 rounded border border-rose-800/60">
                         <span className="font-semibold text-rose-300 block mb-0.5">Trade-offs &amp; Bottlenecks:</span>
                         <span className="leading-relaxed">{data.systemDesignDetails.tradeOffs}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Domain Uncommon Grounds: Character Assessment & Human Connection (Whiteboard 7) */}
+                {data.characterAssessmentDetails && (
+                  <div className="bg-slate-900 text-slate-100 rounded-lg p-2.5 border border-purple-500/40 space-y-2 shadow-xs">
+                    <div className="flex items-center justify-between text-[10.5px] font-bold text-amber-300 border-b border-slate-800 pb-1">
+                      <span className="flex items-center gap-1.5">
+                        <UserCheck className="w-3.5 h-3.5 text-purple-400" />
+                        <span>Character Framework &amp; Dynamics</span>
+                      </span>
+                      {data.characterAssessmentDetails.conceptId && (
+                        <span className="text-[9px] font-mono text-cyan-300 bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800">
+                          {data.characterAssessmentDetails.conceptId}
+                        </span>
+                      )}
+                    </div>
+
+                    {data.characterAssessmentDetails.principle && (
+                      <div className="text-[10px] text-slate-300 bg-slate-950/80 p-2 rounded border border-slate-800">
+                        <span className="font-semibold text-amber-300 block mb-0.5">Core Principle:</span>
+                        <span className="leading-relaxed">{data.characterAssessmentDetails.principle}</span>
+                      </div>
+                    )}
+
+                    {data.characterAssessmentDetails.techniqueOrQuestion && (
+                      <div className="text-[10px] text-slate-300 bg-slate-950/80 p-2 rounded border border-slate-800">
+                        <span className="font-semibold text-emerald-400 block mb-0.5">Technique / Diagnostic Question:</span>
+                        <span className="leading-relaxed whitespace-pre-line">{data.characterAssessmentDetails.techniqueOrQuestion}</span>
+                      </div>
+                    )}
+
+                    {data.characterAssessmentDetails.practicalScenario && (
+                      <div className="text-[10px] text-sky-200 bg-sky-950/30 p-2 rounded border border-sky-800/60">
+                        <span className="font-semibold text-sky-300 block mb-0.5">Practical Real-World Scenario:</span>
+                        <span className="italic leading-relaxed">{data.characterAssessmentDetails.practicalScenario}</span>
+                      </div>
+                    )}
+
+                    {data.characterAssessmentDetails.limitationsAndCaveats && (
+                      <div className="text-[10px] text-rose-200 bg-rose-950/40 p-2 rounded border border-rose-800/60">
+                        <span className="font-semibold text-rose-300 block mb-0.5">Limitations &amp; Cognitive Caveats:</span>
+                        <span className="leading-relaxed">{data.characterAssessmentDetails.limitationsAndCaveats}</span>
                       </div>
                     )}
                   </div>

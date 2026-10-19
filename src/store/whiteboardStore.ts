@@ -6,6 +6,7 @@ import { SECTION_METAS_V3, NODES_V3, RELATIONSHIPS_V3, SOURCES_V3 } from '../dat
 import { SECTION_METAS_V4, NODES_V4, RELATIONSHIPS_V4, SOURCES_V4 } from '../data/whiteboard4-democracy';
 import { SECTION_METAS_V5, NODES_V5, RELATIONSHIPS_V5, SOURCES_V5 } from '../data/whiteboard5-banking-judiciary';
 import { SECTION_METAS_V6, NODES_V6, RELATIONSHIPS_V6, SOURCES_V6 } from '../data/whiteboard6-system-design';
+import { SECTION_METAS_V7, NODES_V7, RELATIONSHIPS_V7, SOURCES_V7 } from '../data/whiteboard7-how-to-judge-a-person';
 import { ExportData } from '../services/exportService';
 import { SearchFilters } from '../services/searchService';
 import { Language, TranslationScope, initGoogleTranslate } from '../services/translationService';
@@ -417,6 +418,29 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
           projects: state.projects.map((p) => ({
             ...p,
             isActive: p.id === 'proj-system-design'
+          }))
+        }));
+      } else if (projectId === 'proj-judge-person') {
+        set((state) => ({
+          currentProjectId: 'proj-judge-person',
+          currentProjectName: 'How to Judge a Person — Master Learning System (Whiteboard 7)',
+          currentProjectDescription: 'Human Connection, Social Intelligence & Relationship Selection: Foundations, Ally/Pal/Companion Relationship Types, Conversation Design, Trust & Vulnerability, Character Assessment & Power Dynamics, Intuition & First Impressions, and Practical Applications.',
+          nodes: NODES_V7,
+          relationships: RELATIONSHIPS_V7,
+          sources: SOURCES_V7,
+          sections: SECTION_METAS_V7,
+          selectedNodeId: null,
+          editingNodeId: null,
+          editDraft: {},
+          isDirty: false,
+          searchQuery: '',
+          filters: initialFilters,
+          focusSectionId: null,
+          activeModal: null,
+          isProjectsLoading: false,
+          projects: state.projects.map((p) => ({
+            ...p,
+            isActive: p.id === 'proj-judge-person'
           }))
         }));
       } else if (projectId === DEFAULT_PROJECT_ID) {

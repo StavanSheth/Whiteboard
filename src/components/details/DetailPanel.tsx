@@ -30,7 +30,8 @@ import {
   Briefcase,
   ArrowUpRight,
   Cpu,
-  Sparkles
+  Sparkles,
+  UserCheck
 } from 'lucide-react';
 import { COURSE_PATHWAYS_MAP, CoursePathwayItem } from '../../data/pathwayMatrix';
 
@@ -997,6 +998,118 @@ export function DetailPanel() {
                   <p className="text-rose-100/90 leading-relaxed text-[11px]">
                     {node.systemDesignDetails.tradeOffs}
                   </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Character Assessment & Human Connection Specification (Whiteboard 7) */}
+        {(node.characterAssessmentDetails || (isEditing && draft.characterAssessmentDetails)) && (
+          <div className="bg-slate-900 border border-purple-500/40 rounded-xl p-4 space-y-3.5 text-slate-100 shadow-lg">
+            <div className="flex items-center justify-between border-b border-slate-700/80 pb-2.5">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-amber-300 flex items-center gap-2">
+                <UserCheck className="w-4 h-4 text-purple-400" />
+                Character Assessment &amp; Connection Framework
+              </h3>
+              {node.characterAssessmentDetails?.conceptId && (
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-950/90 text-amber-300 border border-purple-700/60 shadow-2xs">
+                  {node.characterAssessmentDetails.conceptId}
+                </span>
+              )}
+            </div>
+
+            <div className="space-y-2.5 text-xs">
+              {node.characterAssessmentDetails?.relatedLesson && (
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Lesson:</span>
+                  <span className="px-2 py-0.5 rounded bg-purple-900/60 text-purple-200 border border-purple-700/50 font-medium text-[11px]">
+                    🎬 {node.characterAssessmentDetails.relatedLesson}
+                  </span>
+                </div>
+              )}
+
+              {node.characterAssessmentDetails?.branch && (
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Branch:</span>
+                  <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 text-[11px]">
+                    {node.characterAssessmentDetails.branch}
+                  </span>
+                </div>
+              )}
+
+              {node.characterAssessmentDetails?.definition && (
+                <div className="bg-slate-800/80 p-3 rounded-lg border border-slate-700 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-cyan-400 tracking-wider block">
+                    Core Definition:
+                  </span>
+                  <p className="text-slate-200 leading-relaxed font-normal">
+                    {node.characterAssessmentDetails.definition}
+                  </p>
+                </div>
+              )}
+
+              {node.characterAssessmentDetails?.principle && (
+                <div className="bg-slate-800/80 p-3 rounded-lg border border-slate-700 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-amber-300 tracking-wider block">
+                    Underlying Principle:
+                  </span>
+                  <p className="text-slate-200 leading-relaxed font-normal">
+                    {node.characterAssessmentDetails.principle}
+                  </p>
+                </div>
+              )}
+
+              {node.characterAssessmentDetails?.techniqueOrQuestion && (
+                <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1.5">
+                  <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider block">
+                    Diagnostic Technique / Probing Question:
+                  </span>
+                  <p className="text-slate-300 leading-relaxed whitespace-pre-line font-mono text-[11px]">
+                    {node.characterAssessmentDetails.techniqueOrQuestion}
+                  </p>
+                </div>
+              )}
+
+              {node.characterAssessmentDetails?.practicalScenario && (
+                <div className="bg-sky-950/30 p-3 rounded-lg border border-sky-800/50 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-sky-300 tracking-wider flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-sky-400" />
+                    Real-World Practical Scenario:
+                  </span>
+                  <p className="text-sky-100/90 leading-relaxed italic text-[11.5px]">
+                    "{node.characterAssessmentDetails.practicalScenario}"
+                  </p>
+                </div>
+              )}
+
+              {node.characterAssessmentDetails?.limitationsAndCaveats && (
+                <div className="bg-rose-950/40 p-3 rounded-lg border border-rose-800/60 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-rose-300 tracking-wider flex items-center gap-1.5">
+                    <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+                    Limitations &amp; Cognitive Caveats:
+                  </span>
+                  <p className="text-rose-100/90 leading-relaxed text-[11px]">
+                    {node.characterAssessmentDetails.limitationsAndCaveats}
+                  </p>
+                </div>
+              )}
+
+              {node.characterAssessmentDetails?.crossLinks && node.characterAssessmentDetails.crossLinks.length > 0 && (
+                <div className="bg-slate-800/80 p-3 rounded-lg border border-slate-700 space-y-1.5">
+                  <span className="text-[10px] uppercase font-bold text-purple-300 tracking-wider block">
+                    Conceptual Cross-Links:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5 pt-0.5">
+                    {node.characterAssessmentDetails.crossLinks.map((link, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2 py-0.5 rounded bg-slate-900 text-purple-200 border border-slate-700 text-[10.5px] font-mono"
+                      >
+                        {link}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
