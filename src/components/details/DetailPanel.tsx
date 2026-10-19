@@ -28,7 +28,9 @@ import {
   GraduationCap,
   Compass,
   Briefcase,
-  ArrowUpRight
+  ArrowUpRight,
+  Cpu,
+  Sparkles
 } from 'lucide-react';
 import { COURSE_PATHWAYS_MAP, CoursePathwayItem } from '../../data/pathwayMatrix';
 
@@ -881,6 +883,120 @@ export function DetailPanel() {
                 <div className="flex items-start gap-1">
                   <span className="font-semibold text-amber-950 w-28 flex-shrink-0">Appellate/Redress:</span>
                   <span>{getTranslatedGovernanceValue(node.bankingJudicialDetails.grievanceOrAppellateRoute, currentLanguage)}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* System Design Architectural Specification (Whiteboard 6) */}
+        {(node.systemDesignDetails || (isEditing && draft.systemDesignDetails)) && (
+          <div className="bg-slate-900 border border-cyan-500/40 rounded-xl p-4 space-y-3.5 text-slate-100 shadow-lg">
+            <div className="flex items-center justify-between border-b border-slate-700/80 pb-2.5">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-cyan-300 flex items-center gap-2">
+                <Cpu className="w-4 h-4 text-cyan-400" />
+                System Design Specification &amp; Analysis
+              </h3>
+              {node.systemDesignDetails?.transcriptTimestamp && (
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950/90 text-cyan-300 border border-cyan-700/60 shadow-2xs">
+                  ⏱ {node.systemDesignDetails.transcriptTimestamp}
+                </span>
+              )}
+            </div>
+
+            <div className="space-y-2.5 text-xs">
+              {node.systemDesignDetails?.category && (
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Category:</span>
+                  <span className="px-2 py-0.5 rounded bg-cyan-900/60 text-cyan-200 border border-cyan-700/50 font-medium text-[11px]">
+                    {node.systemDesignDetails.category}
+                  </span>
+                </div>
+              )}
+
+              {node.systemDesignDetails?.definition && (
+                <div className="bg-slate-800/80 p-3 rounded-lg border border-slate-700 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-cyan-400 tracking-wider block">
+                    Core Definition:
+                  </span>
+                  <p className="text-slate-200 leading-relaxed font-normal">
+                    {node.systemDesignDetails.definition}
+                  </p>
+                </div>
+              )}
+
+              {node.systemDesignDetails?.roleAndWork && (
+                <div className="bg-slate-800/80 p-3 rounded-lg border border-slate-700 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-sky-400 tracking-wider block">
+                    Role &amp; Responsibilities:
+                  </span>
+                  <p className="text-slate-200 leading-relaxed font-normal">
+                    {node.systemDesignDetails.roleAndWork}
+                  </p>
+                </div>
+              )}
+
+              {node.systemDesignDetails?.workingMechanism && (
+                <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1.5">
+                  <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider block">
+                    Step-by-Step Working Mechanism:
+                  </span>
+                  <p className="text-slate-300 leading-relaxed whitespace-pre-line font-mono text-[11px]">
+                    {node.systemDesignDetails.workingMechanism}
+                  </p>
+                </div>
+              )}
+
+              {node.systemDesignDetails?.exampleUseCase && (
+                <div className="bg-amber-950/30 p-3 rounded-lg border border-amber-800/50 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-amber-300 tracking-wider flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                    Transcript Real-World Example:
+                  </span>
+                  <p className="text-amber-100/90 leading-relaxed italic text-[11.5px]">
+                    "{node.systemDesignDetails.exampleUseCase}"
+                  </p>
+                </div>
+              )}
+
+              {node.systemDesignDetails?.explanation && (
+                <div className="bg-slate-800/60 p-3 rounded-lg border border-slate-700/70 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-indigo-300 tracking-wider block">
+                    In-Depth Architectural Explanation:
+                  </span>
+                  <p className="text-slate-300 leading-relaxed">
+                    {node.systemDesignDetails.explanation}
+                  </p>
+                </div>
+              )}
+
+              {node.systemDesignDetails?.dependencies && node.systemDesignDetails.dependencies.length > 0 && (
+                <div className="bg-slate-800/80 p-3 rounded-lg border border-slate-700 space-y-1.5">
+                  <span className="text-[10px] uppercase font-bold text-cyan-400 tracking-wider block">
+                    Architectural Dependencies:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5 pt-0.5">
+                    {node.systemDesignDetails.dependencies.map((dep, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2 py-0.5 rounded bg-slate-900 text-cyan-200 border border-slate-700 text-[10.5px] font-mono"
+                      >
+                        {dep}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {node.systemDesignDetails?.tradeOffs && (
+                <div className="bg-rose-950/40 p-3 rounded-lg border border-rose-800/60 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-rose-300 tracking-wider flex items-center gap-1.5">
+                    <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+                    Trade-offs, Limits &amp; Bottlenecks:
+                  </span>
+                  <p className="text-rose-100/90 leading-relaxed text-[11px]">
+                    {node.systemDesignDetails.tradeOffs}
+                  </p>
                 </div>
               )}
             </div>

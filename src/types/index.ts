@@ -109,6 +109,31 @@ export interface BankingJudicialDetails {
   grievanceOrAppellateRoute?: string; // E.g. 'RBI Integrated Ombudsman', 'Special Leave Petition (Art 136)'
 }
 
+export interface SystemDesignDetails {
+  category:
+    | 'foundations'
+    | 'networking-apis'
+    | 'servers-compute'
+    | 'storage-databases'
+    | 'caching'
+    | 'scaling'
+    | 'load-balancing'
+    | 'replication-consistency'
+    | 'sharding-partitioning'
+    | 'queues-messaging'
+    | 'resilience-fault-tolerance'
+    | 'observability'
+    | 'case-study';
+  definition: string;                // Formal definition from transcript
+  roleAndWork: string;              // Exact role & responsibility in system
+  workingMechanism: string;         // How it operates step-by-step
+  exampleUseCase: string;           // Real-world scenario/example from transcript
+  explanation: string;              // Clear architectural concept explanation
+  dependencies?: string[];          // Upstream prerequisites or connected components
+  tradeOffs?: string[];             // Architectural trade-offs, bottlenecks, pros/cons
+  transcriptTimestamp?: string;     // Exact timestamp (e.g., '[00:15:02]')
+}
+
 export interface EducationNode {
   id: string;                      // Stable cross-board identifier (e.g., 'GOV-UGC', 'ART-21A', 'EXAM-JEE-MAIN')
   type: NodeType;
@@ -146,6 +171,7 @@ export interface EducationNode {
   institutionDetails?: InstitutionDetails;
   governanceDetails?: GovernanceDetails;
   bankingJudicialDetails?: BankingJudicialDetails;
+  systemDesignDetails?: SystemDesignDetails;
   metadata?: Record<string, any>;  // Extra extensible key-value points
   
   // Verification & Sources
@@ -203,7 +229,19 @@ export type RelationshipType =
   | 'ADMINISTERS'                  // Commissioner -> DM -> SDM -> Tehsildar
   | 'REGULATES'                    // Ministry -> Statutory Regulators
   | 'CONTAINS'                     // Hub -> Member Authorities
-  | 'FOUNDS';                      // Base -> Foundational Pillars
+  | 'FOUNDS'                       // Base -> Foundational Pillars
+  // System Design Architecture Flowchart Relationships
+  | 'RESOLVES_TO'                  // Client -> DNS / CDN
+  | 'ROUTES_TRAFFIC_TO'            // Load Balancer -> Application Server
+  | 'READS_FROM'                   // Server -> Cache / Database
+  | 'WRITES_TO'                    // Server -> Database / Cache
+  | 'REPLICATES_TO'                // Leader DB -> Follower DB
+  | 'PUBLISHES_EVENT_TO'           // Service -> Message Queue
+  | 'CONSUMES_FROM'                // Worker -> Message Queue
+  | 'MONITORS'                     // Telemetry -> Systems
+  | 'FALLS_BACK_TO'                // Cache Miss -> DB / Fallback Handler
+  | 'SHARDS_ACROSS'                // Partitioning -> Shards
+  | 'DEPENDS_ON';                  // Component -> Upstream Dependency
 
 export interface RelationshipEdgeData {
   id: string;                      // Stable ID (e.g., 'REL-001')

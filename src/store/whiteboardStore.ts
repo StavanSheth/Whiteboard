@@ -5,6 +5,7 @@ import { SECTION_METAS_V2, NODES_V2, RELATIONSHIPS_V2, SOURCES_V2 } from '../dat
 import { SECTION_METAS_V3, NODES_V3, RELATIONSHIPS_V3, SOURCES_V3 } from '../data/whiteboard2-institutions';
 import { SECTION_METAS_V4, NODES_V4, RELATIONSHIPS_V4, SOURCES_V4 } from '../data/whiteboard4-democracy';
 import { SECTION_METAS_V5, NODES_V5, RELATIONSHIPS_V5, SOURCES_V5 } from '../data/whiteboard5-banking-judiciary';
+import { SECTION_METAS_V6, NODES_V6, RELATIONSHIPS_V6, SOURCES_V6 } from '../data/whiteboard6-system-design';
 import { ExportData } from '../services/exportService';
 import { SearchFilters } from '../services/searchService';
 import { Language, TranslationScope, initGoogleTranslate } from '../services/translationService';
@@ -393,6 +394,29 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
           projects: state.projects.map((p) => ({
             ...p,
             isActive: p.id === 'proj-whiteboard-5'
+          }))
+        }));
+      } else if (projectId === 'proj-system-design') {
+        set((state) => ({
+          currentProjectId: 'proj-system-design',
+          currentProjectName: 'System Design Visual Learning Framework (Whiteboard 6 of 6)',
+          currentProjectDescription: 'Interactive flowchart-style learning framework based on the 5-hour comprehensive transcript: Foundations, Networking & Protocols, APIs & Serialization, Databases, Caching, Scaling & Stateless Compute, Load Balancing, Replication & CAP, Sharding, Asynchronous Queues, Reliability & Observability, and End-to-End Streaming Architecture',
+          nodes: NODES_V6,
+          relationships: RELATIONSHIPS_V6,
+          sources: SOURCES_V6,
+          sections: SECTION_METAS_V6,
+          selectedNodeId: null,
+          editingNodeId: null,
+          editDraft: {},
+          isDirty: false,
+          searchQuery: '',
+          filters: initialFilters,
+          focusSectionId: null,
+          activeModal: null,
+          isProjectsLoading: false,
+          projects: state.projects.map((p) => ({
+            ...p,
+            isActive: p.id === 'proj-system-design'
           }))
         }));
       } else if (projectId === DEFAULT_PROJECT_ID) {

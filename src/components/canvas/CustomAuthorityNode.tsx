@@ -32,11 +32,86 @@ import {
   Briefcase,
   Sparkles,
   Crown,
-  AlertTriangle
+  AlertTriangle,
+  Cpu
 } from 'lucide-react';
 
 function getNodeTheme(data: EducationNode) {
   const id = data.id || '';
+  // System Design Visual Learning Framework (Whiteboard 6)
+  if (id.startsWith('SD-')) {
+    if (id.startsWith('SD-NET-') || id.startsWith('SD-API-')) {
+      return {
+        borderTop: 'border-t-4 border-t-cyan-500',
+        headerBg: 'bg-gradient-to-r from-cyan-50 via-sky-50 to-white',
+        badgeBg: 'bg-cyan-100 text-cyan-900 border-cyan-200',
+        iconBox: 'bg-cyan-100 text-cyan-800 border-cyan-200',
+        glowRing: 'ring-cyan-500/30 border-cyan-500'
+      };
+    }
+    if (id.startsWith('SD-DB-') || id.startsWith('SD-CACHE-') || id.startsWith('SD-SHARD-')) {
+      return {
+        borderTop: 'border-t-4 border-t-emerald-600',
+        headerBg: 'bg-gradient-to-r from-emerald-50 via-teal-50 to-white',
+        badgeBg: 'bg-emerald-100 text-emerald-900 border-emerald-200',
+        iconBox: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+        glowRing: 'ring-emerald-500/30 border-emerald-600'
+      };
+    }
+    if (id.startsWith('SD-SCALE-') || id.startsWith('SD-LB-')) {
+      return {
+        borderTop: 'border-t-4 border-t-indigo-600',
+        headerBg: 'bg-gradient-to-r from-indigo-50 via-blue-50 to-white',
+        badgeBg: 'bg-indigo-100 text-indigo-900 border-indigo-200',
+        iconBox: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+        glowRing: 'ring-indigo-500/30 border-indigo-600'
+      };
+    }
+    if (id.startsWith('SD-REP-')) {
+      return {
+        borderTop: 'border-t-4 border-t-purple-600',
+        headerBg: 'bg-gradient-to-r from-purple-50 via-fuchsia-50 to-white',
+        badgeBg: 'bg-purple-100 text-purple-900 border-purple-200',
+        iconBox: 'bg-purple-100 text-purple-800 border-purple-200',
+        glowRing: 'ring-purple-500/30 border-purple-600'
+      };
+    }
+    if (id.startsWith('SD-MQ-')) {
+      return {
+        borderTop: 'border-t-4 border-t-amber-500',
+        headerBg: 'bg-gradient-to-r from-amber-50 via-yellow-50 to-white',
+        badgeBg: 'bg-amber-100 text-amber-900 border-amber-200',
+        iconBox: 'bg-amber-100 text-amber-800 border-amber-200',
+        glowRing: 'ring-amber-500/30 border-amber-500'
+      };
+    }
+    if (id.startsWith('SD-MON-') || id.startsWith('SD-REL-')) {
+      return {
+        borderTop: 'border-t-4 border-t-rose-600',
+        headerBg: 'bg-gradient-to-r from-rose-50 via-red-50 to-white',
+        badgeBg: 'bg-rose-100 text-rose-900 border-rose-200',
+        iconBox: 'bg-rose-100 text-rose-800 border-rose-200',
+        glowRing: 'ring-rose-500/30 border-rose-600'
+      };
+    }
+    if (id.startsWith('SD-CASE-')) {
+      return {
+        borderTop: 'border-t-4 border-t-red-600',
+        headerBg: 'bg-gradient-to-r from-red-50 via-orange-50 to-white',
+        badgeBg: 'bg-red-100 text-red-950 border-red-300 font-semibold',
+        iconBox: 'bg-red-100 text-red-900 border-red-300',
+        glowRing: 'ring-red-500/30 border-red-600'
+      };
+    }
+    return {
+      borderTop: 'border-t-4 border-t-slate-700',
+      headerBg: 'bg-gradient-to-r from-slate-100 via-gray-50 to-white',
+      badgeBg: 'bg-slate-200 text-slate-800 border-slate-300',
+      iconBox: 'bg-slate-200 text-slate-800 border-slate-300',
+      glowRing: 'ring-slate-500/30 border-slate-600'
+    };
+  }
+
   if (id.startsWith('PRE-') || id.startsWith('BOARD-') || id === 'SCH-10TH-MILESTONE') {
     return {
       borderTop: 'border-t-4 border-t-amber-500',
@@ -684,6 +759,16 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                   Apex: {getTranslatedGovernanceValue(data.bankingJudicialDetails.regulatoryBodyOrApex, currentLanguage)}
                 </span>
               )}
+              {data.systemDesignDetails?.transcriptTimestamp && (
+                <span className="inline-block text-[9px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-cyan-300 border border-slate-700 shadow-2xs">
+                  ⏱ {data.systemDesignDetails.transcriptTimestamp}
+                </span>
+              )}
+              {data.systemDesignDetails?.category && (
+                <span className="inline-block text-[9.5px] font-semibold px-2 py-0.5 rounded-full bg-cyan-50 text-cyan-800 border border-cyan-200">
+                  {data.systemDesignDetails.category}
+                </span>
+              )}
             </div>
           </div>
 
@@ -970,6 +1055,58 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                       <div className="text-[10px] text-slate-700">
                         <span className="font-semibold text-amber-900">{t('card.appellateRoute', currentLanguage)} </span>
                         {getTranslatedGovernanceValue(data.bankingJudicialDetails.grievanceOrAppellateRoute, currentLanguage)}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Domain Uncommon Grounds: System Design Architecture & Mechanism (Whiteboard 6) */}
+                {data.systemDesignDetails && (
+                  <div className="bg-slate-900 text-slate-100 rounded-lg p-2.5 border border-cyan-500/40 space-y-2 shadow-xs">
+                    <div className="flex items-center justify-between text-[10.5px] font-bold text-cyan-300 border-b border-slate-800 pb-1">
+                      <span className="flex items-center gap-1.5">
+                        <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+                        <span>System Architecture &amp; Mechanism</span>
+                      </span>
+                      {data.systemDesignDetails.transcriptTimestamp && (
+                        <span className="text-[9px] font-mono text-cyan-400">
+                          ⏱ {data.systemDesignDetails.transcriptTimestamp}
+                        </span>
+                      )}
+                    </div>
+
+                    {data.systemDesignDetails.definition && (
+                      <div className="text-[10px] text-slate-300 leading-relaxed">
+                        <span className="font-semibold text-cyan-300">Definition: </span>
+                        {data.systemDesignDetails.definition}
+                      </div>
+                    )}
+
+                    {data.systemDesignDetails.roleAndWork && (
+                      <div className="text-[10px] text-slate-300">
+                        <span className="font-semibold text-sky-400">Role &amp; Work: </span>
+                        {data.systemDesignDetails.roleAndWork}
+                      </div>
+                    )}
+
+                    {data.systemDesignDetails.workingMechanism && (
+                      <div className="text-[10px] text-slate-300 bg-slate-950/80 p-2 rounded border border-slate-800">
+                        <span className="font-semibold text-emerald-400 block mb-0.5">Working Mechanism:</span>
+                        <span className="leading-relaxed whitespace-pre-line">{data.systemDesignDetails.workingMechanism}</span>
+                      </div>
+                    )}
+
+                    {data.systemDesignDetails.exampleUseCase && (
+                      <div className="text-[10px] text-amber-200 bg-amber-950/40 p-2 rounded border border-amber-800/60">
+                        <span className="font-semibold text-amber-300 block mb-0.5">Transcript Example:</span>
+                        <span className="italic leading-relaxed">{data.systemDesignDetails.exampleUseCase}</span>
+                      </div>
+                    )}
+
+                    {data.systemDesignDetails.tradeOffs && (
+                      <div className="text-[10px] text-rose-200 bg-rose-950/40 p-2 rounded border border-rose-800/60">
+                        <span className="font-semibold text-rose-300 block mb-0.5">Trade-offs &amp; Bottlenecks:</span>
+                        <span className="leading-relaxed">{data.systemDesignDetails.tradeOffs}</span>
                       </div>
                     )}
                   </div>

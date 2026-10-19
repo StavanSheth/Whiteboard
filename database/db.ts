@@ -3,6 +3,7 @@ import { SECTION_METAS_V2, NODES_V2, RELATIONSHIPS_V2, SOURCES_V2 } from '../src
 import { SECTION_METAS_V3, NODES_V3, RELATIONSHIPS_V3, SOURCES_V3 } from '../src/data/whiteboard2-institutions';
 import { SECTION_METAS_V4, NODES_V4, RELATIONSHIPS_V4, SOURCES_V4 } from '../src/data/whiteboard4-democracy';
 import { SECTION_METAS_V5, NODES_V5, RELATIONSHIPS_V5, SOURCES_V5 } from '../src/data/whiteboard5-banking-judiciary';
+import { SECTION_METAS_V6, NODES_V6, RELATIONSHIPS_V6, SOURCES_V6 } from '../src/data/whiteboard6-system-design';
 import { EducationNode, RelationshipEdgeData, SourceRecord, DatasetSchema, ProjectRecord, ProjectSummary, SectionMeta, ProjectSettings } from './schema';
 
 const STORAGE_PREFIX = 'wb_db_v1_';
@@ -57,7 +58,7 @@ class EducationGovernanceDatabase {
                 parsed.nodes = cleanNodes;
 
                 // For Whiteboard 4, use the clean new 12-tier hierarchy and non-crossing relationships
-                if (parsed.id === 'proj-whiteboard-4') {
+                if (parsed.id === 'proj-whiteboard-4' || parsed.id === 'proj-system-design') {
                   parsed.nodes = seeded.nodes.map((n) => ({ ...n }));
                   parsed.relationships = seeded.relationships.map((r) => ({ ...r }));
                   parsed.sections = (seeded.sections || []).map((s) => ({ ...s }));
@@ -245,6 +246,22 @@ class EducationGovernanceDatabase {
         sources: SOURCES_V5.map((s) => ({ ...s })),
         sections: SECTION_METAS_V5.map((s) => ({ ...s }))
       };
+    } else if (projectId === 'proj-system-design') {
+      reseeded = {
+        id: 'proj-system-design',
+        name: 'System Design Visual Learning Framework (Whiteboard 6 of 6)',
+        description: 'Interactive flowchart-style learning framework based on the 5-hour comprehensive transcript: Foundations, Networking & Protocols, APIs & Serialization, Databases, Caching, Scaling & Stateless Compute, Load Balancing, Replication & CAP, Sharding, Asynchronous Queues, Reliability & Observability, and End-to-End Streaming Architecture',
+        createdAt: now,
+        updatedAt: now,
+        isDefault: false,
+        nodeCount: NODES_V6.length,
+        relationshipCount: RELATIONSHIPS_V6.length,
+        sourceCount: SOURCES_V6.length,
+        nodes: NODES_V6.map((n) => ({ ...n })),
+        relationships: RELATIONSHIPS_V6.map((r) => ({ ...r })),
+        sources: SOURCES_V6.map((s) => ({ ...s })),
+        sections: SECTION_METAS_V6.map((s) => ({ ...s }))
+      };
     }
     if (reseeded) {
       this.projects.set(projectId, reseeded);
@@ -345,11 +362,29 @@ class EducationGovernanceDatabase {
       sections: SECTION_METAS_V5.map((s) => ({ ...s }))
     };
 
+    // Whiteboard 6: System Design Visual Learning Framework
+    const whiteboard6Project: ProjectRecord = {
+      id: 'proj-system-design',
+      name: 'System Design Visual Learning Framework (Whiteboard 6 of 6)',
+      description: 'Interactive flowchart-style learning framework based on the 5-hour comprehensive transcript: Foundations, Networking & Protocols, APIs & Serialization, Databases, Caching, Scaling & Stateless Compute, Load Balancing, Replication & CAP, Sharding, Asynchronous Queues, Reliability & Observability, and End-to-End Streaming Architecture',
+      createdAt: now,
+      updatedAt: now,
+      isDefault: false,
+      nodeCount: NODES_V6.length,
+      relationshipCount: RELATIONSHIPS_V6.length,
+      sourceCount: SOURCES_V6.length,
+      nodes: NODES_V6.map((n) => ({ ...n })),
+      relationships: RELATIONSHIPS_V6.map((r) => ({ ...r })),
+      sources: SOURCES_V6.map((s) => ({ ...s })),
+      sections: SECTION_METAS_V6.map((s) => ({ ...s }))
+    };
+
     this.projects.set(whiteboard2Project.id, whiteboard2Project);
     this.projects.set(defaultProject.id, defaultProject);
     this.projects.set(whiteboard3Project.id, whiteboard3Project);
     this.projects.set(whiteboard4Project.id, whiteboard4Project);
     this.projects.set(whiteboard5Project.id, whiteboard5Project);
+    this.projects.set(whiteboard6Project.id, whiteboard6Project);
     this.activeProjectId = whiteboard2Project.id;
   }
 
