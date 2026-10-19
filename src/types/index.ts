@@ -243,6 +243,16 @@ export interface SectionMeta {
   expectedAuthorities: string[];
 }
 
+export interface NodePrintOverride {
+  nodeBoxWidth?: number;
+  cardHeightPercent?: number;
+  fontSizePx?: number;
+  lineHeightMult?: number;
+  paraSpacingPx?: number;
+  isDossier?: boolean;
+  language?: Language;
+}
+
 export interface SectionPrintSettings {
   customNodeSpacing?: number;
   customVSpacing?: number;
@@ -260,12 +270,16 @@ export interface SectionPrintSettings {
   arrowStyle?: 'curved' | 'straight' | 'orthogonal' | 'rounded-orthogonal';
   pageSplitMode?: 'auto' | 'single' | '2-page' | '4-page';
   nodePositions?: Record<string, { x: number; y: number }>;
+  nodeOverrides?: Record<string, NodePrintOverride>;
   printOrientation?: 'landscape' | 'portrait';
   isDossier?: boolean;
   showFkTable?: boolean;
   isAutoFit?: boolean;
   manualScale?: number;
+  language?: Language;
 }
+
+export type Language = 'en' | 'hi' | 'gu';
 
 export interface ProjectSettings {
   customArrowHeight?: number;

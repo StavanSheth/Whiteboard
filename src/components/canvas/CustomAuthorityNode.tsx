@@ -2,7 +2,13 @@ import { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { EducationNode } from '../../types';
 import { useWhiteboardStore } from '../../store/whiteboardStore';
-import { getTranslatedNodeTitle, getTranslatedNodeSummary, getTranslatedLevel } from '../../services/translationService';
+import {
+  t,
+  getTranslatedNodeTitle,
+  getTranslatedNodeSummary,
+  getTranslatedLevel,
+  getTranslatedGovernanceValue
+} from '../../services/translationService';
 import {
   Scale,
   Landmark,
@@ -290,7 +296,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
           startEditingNode(data);
         }
       }}
-      className={`relative bg-white rounded-xl border ${theme.borderTop} transition-all duration-200 shadow-xs group ${
+      className={`relative bg-white rounded-xl border ${theme.borderTop} transition-all duration-200 shadow-xs group flex flex-col justify-between ${
         isEditing
           ? 'border-emerald-500 ring-2 ring-emerald-500/50 shadow-lg z-30'
           : selected
@@ -576,7 +582,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
               <div className="flex items-center gap-1">
                 {data.abbreviation && (
                   <span className={`text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border flex-shrink-0 ${theme.badgeBg}`}>
-                    {data.abbreviation}
+                    {getTranslatedGovernanceValue(data.abbreviation, currentLanguage)}
                   </span>
                 )}
                 {/* Click to Edit icon button */}
@@ -627,7 +633,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                   title="Click to edit duration / timeline"
                 >
                   <Clock className="w-2.5 h-2.5 text-slate-500" />
-                  {data.institutionDetails.examinationTimeline.replace(/^Timeline:\s*/i, '')}
+                  {getTranslatedGovernanceValue(data.institutionDetails.examinationTimeline.replace(/^Timeline:\s*/i, ''), currentLanguage)}
                 </span>
               )}
               {data.institutionDetails?.admissionRoute && (
@@ -640,22 +646,22 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                   title="Click to edit entrance / testing agency"
                 >
                   <Sparkles className="w-2.5 h-2.5 text-blue-600" />
-                  {data.institutionDetails.admissionRoute}
+                  {getTranslatedGovernanceValue(data.institutionDetails.admissionRoute, currentLanguage)}
                 </span>
               )}
               {data.legalStatus && (
                 <span className="inline-block text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
-                  {data.legalStatus}
+                  {getTranslatedGovernanceValue(data.legalStatus, currentLanguage)}
                 </span>
               )}
               {data.examDetails?.examAgency && (
                 <span className="inline-block text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-                  Agency: {data.examDetails.examAgency}
+                  {t('card.instType', currentLanguage)} {getTranslatedGovernanceValue(data.examDetails.examAgency, currentLanguage)}
                 </span>
               )}
               {!isExpanded && data.institutionDetails?.institutionType && (
                 <span className="inline-block text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
-                  {data.institutionDetails.institutionType}
+                  {getTranslatedGovernanceValue(data.institutionDetails.institutionType, currentLanguage)}
                 </span>
               )}
               {data.governanceDetails?.constitutionalArticle && (
@@ -665,17 +671,17 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
               )}
               {data.governanceDetails?.cadreOrService && (
                 <span className="inline-block text-[9.5px] font-semibold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
-                  {data.governanceDetails.cadreOrService}
+                  {getTranslatedGovernanceValue(data.governanceDetails.cadreOrService, currentLanguage)}
                 </span>
               )}
               {data.governanceDetails?.positionName && (
                 <span className="inline-block text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
-                  {data.governanceDetails.positionName}
+                  {getTranslatedGovernanceValue(data.governanceDetails.positionName, currentLanguage)}
                 </span>
               )}
               {data.bankingJudicialDetails?.regulatoryBodyOrApex && (
                 <span className="inline-block text-[9.5px] font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
-                  Apex: {data.bankingJudicialDetails.regulatoryBodyOrApex}
+                  Apex: {getTranslatedGovernanceValue(data.bankingJudicialDetails.regulatoryBodyOrApex, currentLanguage)}
                 </span>
               )}
             </div>
@@ -709,28 +715,28 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                   <div className="bg-sky-50/70 rounded-lg p-2.5 border border-sky-200/80 space-y-1.5">
                     <div className="flex items-center gap-1 text-[10.5px] font-bold text-sky-950">
                       <GraduationCap className="w-3.5 h-3.5 text-sky-700" />
-                      <span>Examination & Selection Lifecycle</span>
+                      <span>{t('card.lifecycle', currentLanguage)}</span>
                     </div>
                     {data.examDetails.eligibilityCriteria && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-sky-900">Eligibility: </span>
-                        {data.examDetails.eligibilityCriteria}
+                        <span className="font-semibold text-sky-900">{t('card.eligibility', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.examDetails.eligibilityCriteria, currentLanguage)}
                       </div>
                     )}
                     {data.examDetails.applicationWindow && (
                       <div className="text-[10px] text-slate-700 flex items-center gap-1">
                         <Clock className="w-3 h-3 text-sky-600 flex-shrink-0" />
-                        <span className="font-semibold text-sky-900">Timeline: </span>
-                        <span>{data.examDetails.applicationWindow}</span>
+                        <span className="font-semibold text-sky-900">{t('card.timeline', currentLanguage)} </span>
+                        <span>{getTranslatedGovernanceValue(data.examDetails.applicationWindow, currentLanguage)}</span>
                       </div>
                     )}
                     {data.examDetails.examStages && data.examDetails.examStages.length > 0 && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-sky-900">Stages: </span>
+                        <span className="font-semibold text-sky-900">{t('card.stages', currentLanguage)} </span>
                         <div className="flex flex-wrap gap-1 mt-0.5">
                           {data.examDetails.examStages.map((stage, idx) => (
                             <span key={idx} className="px-1.5 py-0.2 rounded bg-white text-sky-800 border border-sky-200 text-[9.5px]">
-                              {idx + 1}. {stage}
+                              {idx + 1}. {getTranslatedGovernanceValue(stage, currentLanguage)}
                             </span>
                           ))}
                         </div>
@@ -738,20 +744,20 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                     )}
                     {data.examDetails.outcome && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-sky-900">Outcome: </span>
-                        {data.examDetails.outcome}
+                        <span className="font-semibold text-sky-900">{t('card.outcome', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.examDetails.outcome, currentLanguage)}
                       </div>
                     )}
                     {data.examDetails.counsellingBody && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-sky-900">Counselling / Allocation: </span>
-                        {data.examDetails.counsellingBody}
+                        <span className="font-semibold text-sky-900">{t('card.counselling', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.examDetails.counsellingBody, currentLanguage)}
                       </div>
                     )}
                     {data.examDetails.nextCareerStage && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-sky-900">Next Stage: </span>
-                        {data.examDetails.nextCareerStage}
+                        <span className="font-semibold text-sky-900">{t('card.nextStage', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.examDetails.nextCareerStage, currentLanguage)}
                       </div>
                     )}
                   </div>
@@ -770,70 +776,70 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                     <div className="flex items-center justify-between gap-1 text-[10.5px] font-bold text-indigo-950">
                       <span className="flex items-center gap-1">
                         <Building2 className="w-3.5 h-3.5 text-indigo-700" />
-                        <span>Institutional Framework &amp; Degrees</span>
+                        <span>{t('card.institutions', currentLanguage)}</span>
                       </span>
                       <Edit3 className="w-3 h-3 text-indigo-400 group-hover/inst:text-indigo-700 transition-colors" />
                     </div>
                     {data.institutionDetails.institutionType && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-indigo-900">Type: </span>
-                        {data.institutionDetails.institutionType}
+                        <span className="font-semibold text-indigo-900">{t('card.instType', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.institutionDetails.institutionType, currentLanguage)}
                       </div>
                     )}
                     {data.institutionDetails.controlledBy && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-indigo-900">Controlled by: </span>
-                        {data.institutionDetails.controlledBy}
+                        <span className="font-semibold text-indigo-900">{t('card.controlledBy', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.institutionDetails.controlledBy, currentLanguage)}
                       </div>
                     )}
                     {data.institutionDetails.curriculumBody && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-indigo-900">Curriculum / Framework: </span>
-                        {data.institutionDetails.curriculumBody}
+                        <span className="font-semibold text-indigo-900">{t('card.curriculum', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.institutionDetails.curriculumBody, currentLanguage)}
                       </div>
                     )}
                     {data.institutionDetails.prerequisiteStream && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-indigo-900">Prerequisite Stream: </span>
-                        <span className="font-medium text-emerald-800">{data.institutionDetails.prerequisiteStream}</span>
+                        <span className="font-semibold text-indigo-900">{t('card.prerequisite', currentLanguage)} </span>
+                        <span className="font-medium text-emerald-800">{getTranslatedGovernanceValue(data.institutionDetails.prerequisiteStream, currentLanguage)}</span>
                       </div>
                     )}
                     {data.institutionDetails.examinationTimeline && (
                       <div className="text-[10px] text-slate-700 flex items-start gap-1">
                         <Clock className="w-3 h-3 text-indigo-600 flex-shrink-0 mt-0.5" />
                         <div>
-                          <span className="font-semibold text-indigo-900">Timeline: </span>
-                          <span>{data.institutionDetails.examinationTimeline.replace(/^Timeline:\s*/i, '')}</span>
+                          <span className="font-semibold text-indigo-900">{t('card.timeline', currentLanguage)} </span>
+                          <span>{getTranslatedGovernanceValue(data.institutionDetails.examinationTimeline.replace(/^Timeline:\s*/i, ''), currentLanguage)}</span>
                         </div>
                       </div>
                     )}
                     {data.institutionDetails.admissionRoute && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-indigo-900">Admission / Testing Body: </span>
-                        {data.institutionDetails.admissionRoute}
+                        <span className="font-semibold text-indigo-900">{t('card.admission', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.institutionDetails.admissionRoute, currentLanguage)}
                       </div>
                     )}
                     {data.institutionDetails.programmesOffered && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-indigo-900">Programmes / Courses: </span>
-                        {data.institutionDetails.programmesOffered.join(', ')}
+                        <span className="font-semibold text-indigo-900">{t('card.programmes', currentLanguage)} </span>
+                        {data.institutionDetails.programmesOffered.map((p) => getTranslatedGovernanceValue(p, currentLanguage)).join(', ')}
                       </div>
                     )}
                     {data.institutionDetails.awardingBody && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-indigo-900">Awarding Body: </span>
-                        {data.institutionDetails.awardingBody}
+                        <span className="font-semibold text-indigo-900">{t('card.awardingBody', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.institutionDetails.awardingBody, currentLanguage)}
                       </div>
                     )}
                     {data.institutionDetails.accreditation && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-indigo-900">Accreditation: </span>
-                        {data.institutionDetails.accreditation}
+                        <span className="font-semibold text-indigo-900">{t('card.accreditation', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.institutionDetails.accreditation, currentLanguage)}
                       </div>
                     )}
                     {data.institutionDetails.nheqfLevel && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-indigo-900">Qualification Level: </span>
+                        <span className="font-semibold text-indigo-900">{t('card.qualification', currentLanguage)} </span>
                         <span className="font-mono text-purple-900 font-medium">{data.institutionDetails.nheqfLevel}</span>
                       </div>
                     )}
@@ -849,12 +855,12 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                         <div className="font-semibold text-indigo-950 flex items-center justify-between gap-1 mb-1">
                           <span className="flex items-center gap-1">
                             <Briefcase className="w-3.5 h-3.5 text-indigo-600 flex-shrink-0" />
-                            <span>Career Hierarchy &amp; Opportunities:</span>
+                            <span>{t('card.careerOps', currentLanguage)}</span>
                           </span>
                           <Edit3 className="w-2.5 h-2.5 text-indigo-400 opacity-60 hover:opacity-100" />
                         </div>
                         <div className="text-slate-700 font-medium leading-relaxed whitespace-pre-line">
-                          {data.institutionDetails.careerValue}
+                          {getTranslatedGovernanceValue(data.institutionDetails.careerValue, currentLanguage)}
                         </div>
                       </div>
                     )}
@@ -866,58 +872,58 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                   <div className="bg-purple-50/70 rounded-lg p-2.5 border border-purple-200/80 space-y-1.5">
                     <div className="flex items-center gap-1 text-[10.5px] font-bold text-purple-950">
                       <Landmark className="w-3.5 h-3.5 text-purple-700" />
-                      <span>Constitutional & Democratic Hierarchy</span>
+                      <span>{t('card.hierarchy', currentLanguage)}</span>
                     </div>
                     {data.governanceDetails.positionName && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-purple-900">Post / Designation: </span>
-                        <span className="font-bold text-slate-900">{data.governanceDetails.positionName}</span>
+                        <span className="font-semibold text-purple-900">{t('card.post', currentLanguage)} </span>
+                        <span className="font-bold text-slate-900">{getTranslatedGovernanceValue(data.governanceDetails.positionName, currentLanguage)}</span>
                       </div>
                     )}
                     {data.governanceDetails.cadreOrService && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-purple-900">Cadre / Service: </span>
-                        <span className="font-bold text-rose-800 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">{data.governanceDetails.cadreOrService}</span>
+                        <span className="font-semibold text-purple-900">{t('card.cadre', currentLanguage)} </span>
+                        <span className="font-bold text-rose-800 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">{getTranslatedGovernanceValue(data.governanceDetails.cadreOrService, currentLanguage)}</span>
                       </div>
                     )}
                     {data.governanceDetails.constitutionalArticle && (
                       <div className="text-[10px] text-slate-700 font-mono">
-                        <span className="font-semibold text-purple-900">Article / Provision: </span>
+                        <span className="font-semibold text-purple-900">{t('card.article', currentLanguage)} </span>
                         {data.governanceDetails.constitutionalArticle}
                       </div>
                     )}
                     {data.governanceDetails.electoralOrSelectionMethod && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-purple-900">Election / Selection: </span>
-                        {data.governanceDetails.electoralOrSelectionMethod}
+                        <span className="font-semibold text-purple-900">{t('card.selection', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.governanceDetails.electoralOrSelectionMethod, currentLanguage)}
                       </div>
                     )}
                     {data.governanceDetails.tenure && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-purple-900">Tenure: </span>
-                        {data.governanceDetails.tenure}
+                        <span className="font-semibold text-purple-900">{t('card.tenure', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.governanceDetails.tenure, currentLanguage)}
                       </div>
                     )}
                     {data.governanceDetails.geographicalJurisdiction && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-purple-900">Jurisdiction: </span>
-                        {data.governanceDetails.geographicalJurisdiction}
+                        <span className="font-semibold text-purple-900">{t('card.jurisdiction', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.governanceDetails.geographicalJurisdiction, currentLanguage)}
                       </div>
                     )}
                     {data.governanceDetails.reportingTo && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-purple-900">Reports To: </span>
-                        {data.governanceDetails.reportingTo}
+                        <span className="font-semibold text-purple-900">{t('card.reportsTo', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.governanceDetails.reportingTo, currentLanguage)}
                       </div>
                     )}
                     {data.governanceDetails.superiorAuthority && (
                       <div className="text-[10px] bg-amber-50/90 p-2 rounded-md border border-amber-300/80 mt-1.5 shadow-2xs">
                         <span className="font-bold text-amber-950 flex items-center gap-1 mb-0.5">
                           <Crown className="w-3.5 h-3.5 text-amber-700 flex-shrink-0" />
-                          Superior Authority &amp; Influencing Power:
+                          {t('card.superior', currentLanguage)}
                         </span>
                         <span className="text-slate-800 font-medium leading-relaxed block">
-                          {data.governanceDetails.superiorAuthority}
+                          {getTranslatedGovernanceValue(data.governanceDetails.superiorAuthority, currentLanguage)}
                         </span>
                       </div>
                     )}
@@ -925,10 +931,10 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                       <div className="text-[10px] bg-rose-50/90 p-2 rounded-md border border-rose-300/80 mt-1.5 shadow-2xs">
                         <span className="font-bold text-rose-950 flex items-center gap-1 mb-0.5">
                           <AlertTriangle className="w-3.5 h-3.5 text-rose-700 flex-shrink-0" />
-                          Removal / De-election Authority:
+                          {t('card.removal', currentLanguage)}
                         </span>
                         <span className="text-rose-950 font-medium leading-relaxed block">
-                          {data.governanceDetails.removalOrDeElectionMethod}
+                          {getTranslatedGovernanceValue(data.governanceDetails.removalOrDeElectionMethod, currentLanguage)}
                         </span>
                       </div>
                     )}
@@ -940,30 +946,30 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                   <div className="bg-amber-50/70 rounded-lg p-2.5 border border-amber-200/80 space-y-1.5">
                     <div className="flex items-center gap-1 text-[10.5px] font-bold text-amber-950">
                       <Scale className="w-3.5 h-3.5 text-amber-700" />
-                      <span>{data.bankingJudicialDetails.domain === 'banking' ? 'Banking Regulatory Architecture' : 'Judicial & Appellate Tier'}</span>
+                      <span>{data.bankingJudicialDetails.domain === 'banking' ? t('card.banking', currentLanguage) : t('card.judicial', currentLanguage)}</span>
                     </div>
                     {data.bankingJudicialDetails.tier && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-amber-900">Tier / Level: </span>
-                        {data.bankingJudicialDetails.tier}
+                        <span className="font-semibold text-amber-900">{t('card.tier', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.bankingJudicialDetails.tier, currentLanguage)}
                       </div>
                     )}
                     {data.bankingJudicialDetails.jurisdictionOrScope && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-amber-900">Jurisdiction: </span>
-                        {data.bankingJudicialDetails.jurisdictionOrScope}
+                        <span className="font-semibold text-amber-900">{t('card.jurisdictionScope', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.bankingJudicialDetails.jurisdictionOrScope, currentLanguage)}
                       </div>
                     )}
                     {data.bankingJudicialDetails.appointmentProcess && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-amber-900">Appointment: </span>
-                        {data.bankingJudicialDetails.appointmentProcess}
+                        <span className="font-semibold text-amber-900">{t('card.selection', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.bankingJudicialDetails.appointmentProcess, currentLanguage)}
                       </div>
                     )}
                     {data.bankingJudicialDetails.grievanceOrAppellateRoute && (
                       <div className="text-[10px] text-slate-700">
-                        <span className="font-semibold text-amber-900">Appeal / Redressal: </span>
-                        {data.bankingJudicialDetails.grievanceOrAppellateRoute}
+                        <span className="font-semibold text-amber-900">{t('card.appellateRoute', currentLanguage)} </span>
+                        {getTranslatedGovernanceValue(data.bankingJudicialDetails.grievanceOrAppellateRoute, currentLanguage)}
                       </div>
                     )}
                   </div>
@@ -974,7 +980,7 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                   <div className="bg-slate-50 rounded-lg p-2 border border-slate-100">
                     <div className="flex items-center gap-1 text-[10px] font-bold text-slate-700 mb-1">
                       <FileText className="w-3 h-3 text-emerald-700" />
-                      <span>Statutory Enactment / Legal Basis</span>
+                      <span>{t('card.statutoryBase', currentLanguage)}</span>
                     </div>
                     <div className="space-y-0.5">
                       {data.establishingLaw.map((law, idx) => (
@@ -993,8 +999,8 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                       <div className="flex items-start gap-1">
                         <Building2 className="w-3 h-3 text-slate-400 flex-shrink-0 mt-0.5" />
                         <div>
-                          <span className="font-semibold text-slate-700">Administrative Line: </span>
-                          <span className="text-slate-600">{data.ministerialRelationship}</span>
+                          <span className="font-semibold text-slate-700">{t('card.controlledBy', currentLanguage)} </span>
+                          <span className="text-slate-600">{getTranslatedGovernanceValue(data.ministerialRelationship, currentLanguage)}</span>
                         </div>
                       </div>
                     )}
@@ -1005,11 +1011,11 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                 {data.mandate && data.mandate.length > 0 && (
                   <div>
                     <span className="font-bold text-slate-800 text-[10px] uppercase tracking-wide block mb-1">
-                      Mandate & Scope:
+                      {t('card.mandate', currentLanguage)}
                     </span>
                     <ul className="space-y-0.5 pl-3 list-disc text-slate-700 text-[10.5px]">
                       {data.mandate.slice(0, 3).map((m, idx) => (
-                        <li key={idx}>{m}</li>
+                        <li key={idx}>{getTranslatedGovernanceValue(m, currentLanguage)}</li>
                       ))}
                     </ul>
                   </div>
@@ -1019,11 +1025,11 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                 {data.powers && data.powers.length > 0 && (
                   <div className="bg-emerald-50/70 p-2.5 rounded-lg border border-emerald-200">
                     <span className="font-bold text-emerald-950 text-[10.5px] uppercase tracking-wide block mb-1">
-                      Area of Power (What They Can Decide):
+                      {t('card.powers', currentLanguage)}
                     </span>
                     <ul className="space-y-1 pl-3 list-disc text-slate-800 text-[10px] leading-relaxed">
                       {data.powers.slice(0, 4).map((p, idx) => (
-                        <li key={idx}>{p}</li>
+                        <li key={idx}>{getTranslatedGovernanceValue(p, currentLanguage)}</li>
                       ))}
                     </ul>
                   </div>
@@ -1033,13 +1039,13 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
                 {data.limitations && data.limitations.length > 0 && (
                   <div className="bg-rose-50/70 p-2.5 rounded-lg border border-rose-200">
                     <span className="font-bold text-rose-950 text-[10.5px] uppercase tracking-wide block mb-1">
-                      Decision Limits &amp; Prohibited Associations (What They Cannot Decide):
+                      {t('card.limitations', currentLanguage)}
                     </span>
                     <ul className="space-y-1 pl-0.5">
                       {data.limitations.slice(0, 3).map((l, idx) => (
                         <li key={idx} className="text-[10px] text-rose-950 flex items-start gap-1 leading-relaxed">
                           <span className="text-rose-500 font-bold">✕</span>
-                          <span>{l}</span>
+                          <span>{getTranslatedGovernanceValue(l, currentLanguage)}</span>
                         </li>
                       ))}
                     </ul>
@@ -1050,10 +1056,10 @@ export const CustomAuthorityNode = memo(({ data, selected }: { data: EducationNo
           </div>
 
           {/* Footer Status Bar */}
-          <div className="px-3 py-2 bg-slate-50/80 rounded-b-xl border-t border-slate-100 flex items-center justify-between text-[10px]">
+          <div className="px-3 py-2 bg-slate-50/80 rounded-b-xl border-t border-slate-100 flex items-center justify-between text-[10px] mt-auto">
             <div className="flex items-center gap-1.5">
               <span className={`w-2 h-2 rounded-full ${verif.dot}`} />
-              <span className="text-slate-600 font-medium">{verif.label}</span>
+              <span className="text-slate-600 font-medium">{getTranslatedGovernanceValue(verif.label, currentLanguage)}</span>
             </div>
             <span className="text-[9px] font-mono text-slate-400">
               ID: {data.id}

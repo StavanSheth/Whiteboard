@@ -234,8 +234,8 @@ export function SectionSidebar() {
               const renderSectionItem = (sec: any) => {
                 const isSelected = focusSectionId === sec.id;
                 const sectionNodeCount = nodes.filter((n) => n.sectionId === sec.id).length;
-                const secTitle = getTranslatedSectionTitle(sec.id, currentLanguage, translationScope);
-                const secSubtitle = getTranslatedSectionSubtitle(sec.id, currentLanguage, translationScope);
+                const secTitle = getTranslatedSectionTitle(sec, currentLanguage, translationScope);
+                const secSubtitle = getTranslatedSectionSubtitle(sec, currentLanguage, translationScope);
 
                 return (
                   <div

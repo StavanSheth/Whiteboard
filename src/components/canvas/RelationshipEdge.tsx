@@ -7,6 +7,7 @@ import {
 } from '@xyflow/react';
 import { RelationshipEdgeData } from '../../types';
 import { useWhiteboardStore } from '../../store/whiteboardStore';
+import { getTranslatedGovernanceValue } from '../../services/translationService';
 
 const edgeColorByType: Record<string, string> = {
   FEEDS: '#0d9488', // Teal
@@ -34,7 +35,10 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
 
   const arrowStyle = useWhiteboardStore((s) => s.arrowStyle);
   const edgeLabelMode = useWhiteboardStore((s) => s.edgeLabelMode);
+  const currentLanguage = useWhiteboardStore((s) => s.currentLanguage);
   const edgeData = data as unknown as RelationshipEdgeData | undefined;
+  const rawLabel = edgeData?.label || '';
+  const displayLabel = rawLabel ? getTranslatedGovernanceValue(rawLabel, currentLanguage) : '';
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -70,12 +74,15 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
     if (isVertical) {
       const vGap = effectiveTargetY - effectiveSourceY;
       let laneY: number;
-      if (vGap > 40) {
-        // Multi-lane distribution: span between 20% and 80% of the vertical gap
-        const laneFraction = totalLanes > 1 ? 0.20 + (0.60 * laneIndex) / (totalLanes - 1) : 0.5;
-        laneY = effectiveSourceY + vGap * laneFraction;
+      const minDrop = Math.max(48, 36 + laneIndex * 16);
+      if (vGap > minDrop + 30) {
+        // Multi-lane distribution: ensure at least minDrop clearance below source node
+        const laneFraction = totalLanes > 1 ? 0.25 + (0.50 * laneIndex) / (totalLanes - 1) : 0.5;
+        laneY = Math.max(effectiveSourceY + minDrop, effectiveSourceY + vGap * laneFraction);
+      } else if (vGap > 0) {
+        laneY = effectiveSourceY + Math.min(Math.max(vGap * 0.5, 30), minDrop);
       } else {
-        laneY = effectiveSourceY + 20 + laneIndex * 16;
+        laneY = effectiveSourceY + minDrop;
       }
 
       if (Math.abs(effectiveSourceX - effectiveTargetX) < 4) {
@@ -180,7 +187,7 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
                       ? 'scale-125 bg-indigo-600 text-white border-indigo-700 shadow-sm'
                       : 'bg-white/95 text-slate-600 border-slate-300 hover:bg-slate-50'
                   }`}
-                  title={edgeData.label}
+                  title={displayLabel}
                 >
                   ⚡
                 </div>
@@ -189,7 +196,7 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
                     <div className="font-semibold text-amber-300 text-[9px] uppercase tracking-wider mb-0.5">
                       {edgeData.type}
                     </div>
-                    {edgeData.label}
+                    {displayLabel}
                   </div>
                 )}
               </div>
@@ -203,9 +210,9 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
                     ? 'bg-slate-50 text-slate-600 border-slate-200'
                     : 'bg-white/95 text-indigo-950 border-indigo-200'
                 }`}
-                title={`${edgeData.type}: ${edgeData.label}`}
+                title={`${edgeData.type}: ${displayLabel}`}
               >
-                {edgeData.label}
+                {displayLabel}
               </div>
             ) : (
               // Standard wrapped, multi-line pill mode (Non-overlapping)
@@ -219,10 +226,10 @@ export const RelationshipEdge = memo((props: EdgeProps) => {
                     ? 'bg-slate-50/95 text-slate-600 border-slate-200 italic'
                     : 'bg-white/95 text-slate-800 border-slate-200/90 font-medium'
                 }`}
-                title={`${edgeData.type}: ${edgeData.label}`}
+                title={`${edgeData.type}: ${displayLabel}`}
               >
                 <span className="line-clamp-2 hover:line-clamp-none transition-all">
-                  {edgeData.label}
+                  {displayLabel}
                 </span>
               </div>
             )}

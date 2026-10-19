@@ -1,4 +1,9 @@
 import { EducationNode, SectionMeta } from '../types';
+import { WB1_SECTION_TRANSLATIONS, WB1_NODE_TRANSLATIONS } from './translations/whiteboard1Governance';
+import { WB2_SECTION_TRANSLATIONS, WB2_NODE_TRANSLATIONS } from './translations/whiteboard2Institutions';
+import { WB3_SECTION_TRANSLATIONS, WB3_NODE_TRANSLATIONS } from './translations/whiteboard3Exams';
+import { WB5_SECTION_TRANSLATIONS, WB5_NODE_TRANSLATIONS } from './translations/whiteboard5BankingJudiciary';
+import { COMMON_EDUCATIONAL_TRANSLATIONS } from './translations/commonEducational';
 
 export type Language = 'en' | 'hi' | 'gu';
 export type TranslationLanguage = Language;
@@ -101,14 +106,66 @@ export const UI_TRANSLATIONS: Record<string, { en?: string; hi: string; gu: stri
  'lang.scopeUi': { hi: 'केवल UI एवं नियंत्रण', gu: 'માત્ર UI અને નિયંત્રણો' },
  'lang.scopeCards': { hi: 'केवल व्हाइटबोर्ड कार्ड्स', gu: 'માત્ર વ્હાઇટબોર્ડ કાર્ડ્સ' },
  'lang.gtFallback': { hi: 'Google Translate फ़ॉलबैक', gu: 'Google Translate ફોલબેક' },
- 'lang.gtHelp': { hi: 'कस्टम/अनसुलझे टेक्स्ट के लिए लाइव मशीन अनुवाद', gu: 'કસ્ટમ/અનુવાદ વગરના લખાણ માટે મશીન અનુવાદ' }
+  'lang.gtHelp': { hi: 'कस्टम/अनसुलझे टेक्स्ट के लिए लाइव मशीन अनुवाद', gu: 'કસ્ટમ/અનુવાદ વગરના લખાણ માટે મશીન અનુવાદ' },
+
+  // Node Card Labels & Hierarchy Headers
+  'card.hierarchy': { en: 'Constitutional & Democratic Hierarchy', hi: 'संवैधानिक एवं लोकतांत्रिक शासन संरचना', gu: 'બંધારણીય અને લોકશાહી શાસન માળખું' },
+  'card.post': { en: 'Post / Designation:', hi: 'पद / पदनाम:', gu: 'હોદ્દો / પદનામ:' },
+  'card.cadre': { en: 'Cadre / Service:', hi: 'संवर्ग / सेवा:', gu: 'સંવર્ગ / સેવા:' },
+  'card.article': { en: 'Article / Provision:', hi: 'अनुच्छेद / प्रावधान:', gu: 'અનુચ્છેદ / જોગવાઈ:' },
+  'card.selection': { en: 'Election / Selection:', hi: 'निर्वाचन / चयन प्रक्रिया:', gu: 'ચૂંટણી / પસંદગી પદ્ધતિ:' },
+  'card.tenure': { en: 'Tenure:', hi: 'कार्यकाल / पदावधि:', gu: 'કાર્યકાળ:' },
+  'card.jurisdiction': { en: 'Jurisdiction:', hi: 'क्षेत्राधिकार:', gu: 'અધિકારક્ષેત્ર:' },
+  'card.reportsTo': { en: 'Reports To:', hi: 'जवाबदेही / रिपोर्टिंग:', gu: 'જવાબદારી / રિપોર્ટિંગ:' },
+  'card.superior': { en: 'Superior Authority & Influencing Power:', hi: 'उच्चतर प्राधिकारी एवं नियंत्रण शक्ति:', gu: 'ઉચ્ચ સત્તામંડળ અને નિયંત્રણ:' },
+  'card.removal': { en: 'Removal / De-election Authority:', hi: 'पदमुक्ति / हटाने का प्राधिकार:', gu: 'પદ પરથી હટાવવાની સત્તા:' },
+  'card.powers': { en: 'AREA OF POWER (WHAT THEY CAN DECIDE)', hi: 'अधिकार क्षेत्र एवं शक्तियाँ (निर्णय लेने का अधिकार)', gu: 'સત્તાક્ષેત્ર અને અધિકારો (નિર્ણય લેવાની સત્તા)' },
+  'card.decisionMatrix': { en: 'DECISION RIGHTS MATRIX', hi: 'निर्णय अधिकार मैट्रिक्स', gu: 'નિર્ણય અધિકાર મેટ્રિક્સ' },
+  'card.financialLimits': { en: 'FINANCIAL & SPENDING LIMITS', hi: 'वित्तीय एवं व्यय सीमाएँ', gu: 'નાણાકીય અને ખર્ચ મર્યાદાઓ' },
+  'card.appointingPowers': { en: 'APPOINTING & REMOVAL POWERS', hi: 'नियुक्ति एवं पदमुक्ति शक्तियाँ', gu: 'નિમણૂક અને દૂર કરવાની સત્તા' },
+  'card.disciplinary': { en: 'DISCIPLINARY JURISDICTION', hi: 'अनुशासनात्मक क्षेत्राधिकार', gu: 'શિસ્તભંગ અધિકારક્ષેત્ર' },
+  'card.appeals': { en: 'APPEALS & TRIBUNAL ROUTE', hi: 'अपील एवं न्यायाधिकरण मार्ग', gu: 'અપીલ અને ટ્રિબ્યુનલ માર્ગ' },
+  'card.statutoryBase': { en: 'LEGAL BASIS & ACTS', hi: 'वैधानिक आधार एवं अधिनियम', gu: 'કાનૂની આધાર અને અધિનિયમો' },
+  'card.statuteActs': { en: 'Act:', hi: 'अधिनियम:', gu: 'કાયદો:' },
+  'card.mandate': { en: 'Mandate:', hi: 'वैधानिक अधिदेश:', gu: 'કાનૂની આદેશ:' },
+  'card.keyPowers': { en: 'Key Powers:', hi: 'प्रमुख शक्तियाँ:', gu: 'મુખ્ય સત્તાઓ:' },
+  'card.limitations': { en: 'Limitations:', hi: 'सीमाएँ एवं प्रतिबंध:', gu: 'મર્યાદાઓ:' },
+  'card.lifecycle': { en: 'Examination & Selection Lifecycle', hi: 'परीक्षा एवं चयन प्रक्रिया चक्र', gu: 'પરીક્ષા અને પસંદગી પ્રક્રિયા' },
+  'card.eligibility': { en: 'Eligibility:', hi: 'पात्रता मापदंड:', gu: 'પાત્રતા માપદંડ:' },
+  'card.timeline': { en: 'Timeline:', hi: 'समय-सीमा:', gu: 'સમયમર્યાદા:' },
+  'card.stages': { en: 'Stages:', hi: 'परीक्षा चरण:', gu: 'પરીક્ષાના તબક્કા:' },
+  'card.outcome': { en: 'Outcome:', hi: 'परिणाम / चयनित पद:', gu: 'પરિણામ / પદ:' },
+  'card.counselling': { en: 'Counselling / Allocation:', hi: 'काउंसलिंग / सीट आवंटन:', gu: 'કાઉન્સેલિંગ / સીટ ફાળવણી:' },
+  'card.nextStage': { en: 'Next Stage:', hi: 'आगामी करियर चरण:', gu: 'આગામી તબક્કો:' },
+  'card.institutions': { en: 'Institutional Framework & Degrees', hi: 'संस्थागत ढांचा एवं उपाधियाँ', gu: 'સંસ્થાકીય માળખું અને પદવીઓ' },
+  'card.instType': { en: 'Type:', hi: 'संस्था प्रकार:', gu: 'સંસ્થાનો પ્રકાર:' },
+  'card.controlledBy': { en: 'Controlled by:', hi: 'नियंत्रणकर्ता निकाय:', gu: 'નિયંત્રક સંસ્થા:' },
+  'card.curriculum': { en: 'Curriculum / Framework:', hi: 'पाठ्यक्रम / रूपरेखा:', gu: 'અભ્યાસક્રમ / માળખું:' },
+  'card.prerequisite': { en: 'Prerequisite Stream:', hi: 'आवश्यक विषय / स्ट्रीम:', gu: 'જરૂરી પ્રવાહ:' },
+  'card.admission': { en: 'Admission / Testing Body:', hi: 'प्रवेश / परीक्षा निकाय:', gu: 'પ્રવેશ / પરીક્ષા સંસ્થા:' },
+  'card.programmes': { en: 'Programmes / Courses:', hi: 'पाठ्यक्रम / डिग्रियाँ:', gu: 'અભ્યાસક્રમો / ડિગ્રીઓ:' },
+  'card.awardingBody': { en: 'Awarding Body:', hi: 'उपाधि प्रदानकर्ता:', gu: 'પદવી આપનાર સંસ્થા:' },
+  'card.accreditation': { en: 'Accreditation:', hi: 'प्रत्यायन / रैंकिंग:', gu: 'માન્યતા / રેન્કિંગ:' },
+  'card.qualification': { en: 'Qualification Level:', hi: 'योग्यता स्तर:', gu: 'લાયકાત સ્તર:' },
+  'card.careerOps': { en: 'Career Hierarchy & Opportunities:', hi: 'करियर सोपान एवं अवसर:', gu: 'કારકિર્દી તકો અને સ્તર:' },
+  'card.banking': { en: 'Banking Regulatory Architecture', hi: 'बैंकिंग विनियामक संरचना', gu: 'બેન્કિંગ નિયમનકારી માળખું' },
+  'card.judicial': { en: 'Judicial & Appellate Tier', hi: 'न्यायिक एवं अपीलीय सोपान', gu: 'ન્યાયિક અને અપીલ સ્તર' },
+  'card.tier': { en: 'Tier / Level:', hi: 'सोपान / स्तर:', gu: 'સ્તર:' },
+  'card.jurisdictionScope': { en: 'Jurisdiction / Scope:', hi: 'अधिकार क्षेत्र / कार्यक्षेत्र:', gu: 'અધિકારક્ષેત્ર / વ્યાપ:' },
+  'card.appellateRoute': { en: 'Appellate Route:', hi: 'अपीलीय मार्ग:', gu: 'અપીલનો માર્ગ:' },
+  'card.fks': { en: 'Foreign Key Links', hi: 'फॉरेन की लिंक्स', gu: 'ફોરેન કી લિંક્સ' }
 };
 
 // -------------------------------------------------------------
-// Whiteboard 4: Governance Nodes Translation Dictionary
+// Combined Whiteboard Node Translation Dictionaries (WB 1, 2, 3, 4, 5)
 // -------------------------------------------------------------
 export const NODE_TRANSLATIONS: Record<string, { hiTitle: string; guTitle: string; hiSummary?: string; guSummary?: string }> = {
- // Apex Constitutional
+  ...WB1_NODE_TRANSLATIONS,
+  ...WB2_NODE_TRANSLATIONS,
+  ...WB3_NODE_TRANSLATIONS,
+  ...WB5_NODE_TRANSLATIONS,
+
+  // Apex Constitutional
  'DEM-PRESIDENT': {
  hiTitle: 'भारत के राष्ट्रपति (संवैधानिक राष्ट्राध्यक्ष एवं सशस्त्र बलों के सर्वोच्च सेनापति)',
  guTitle: 'ભારતના રાષ્ટ્રપતિ (બંધારણીય રાષ્ટ્રાધ્યક્ષ અને સશસ્ત્ર દળોના સર્વોચ્ચ સેનાપતિ)',
@@ -369,6 +426,12 @@ export const NODE_TRANSLATIONS: Record<string, { hiTitle: string; guTitle: strin
  hiSummary: 'आईएएस, आईपीएस, आईएफएस एवं केंद्रीय ग्रुप-ए सेवाओं की निष्पक्ष मेरिट आधारित भर्ती परीक्षा एजेंसी।',
  guSummary: 'IAS, IPS, IFS અને કેન્દ્રીય ગ્રુપ-A સેવાઓની મેરિટ આધારિત પરીક્ષા અને ભરતી કરતી બંધારણીય સંસ્થા.'
  },
+  'DEM-CVC-CBI': {
+    hiTitle: 'केंद्रीय सतर्कता आयोग एवं सीबीआई (भ्रष्टाचार निवारण व शीर्ष जांच एजेंसी)',
+    guTitle: 'કેન્દ્રીય સતર્કતા આયોગ અને સીબીઆઈ (ભ્રષ્ટાચાર નિવારણ અને તપાસ સંસ્થા)',
+    hiSummary: 'शीर्ष भ्रष्टाचार विरोधी निगरानी संस्था (सीवीसी) और प्रमुख आपराधिक जांच एजेंसी (सीबीआई)।',
+    guSummary: 'સર્વોચ્ચ ભ્રષ્ટાચાર વિરોધી દેખરેખ સંસ્થા (CVC) અને અગ્રણી ગુના તપાસ સંસ્થા (CBI).'
+  },
 
  // State Level
  'DEM-GOVERNOR': {
@@ -544,14 +607,20 @@ export const NODE_TRANSLATIONS: Record<string, { hiTitle: string; guTitle: strin
  guTitle: 'અમે, ભારતના સાર્વભૌમ નાગરિકો (સાર્વત્રિક પુખ્ત મતાધિકાર — બંધારણની સર્વોચ્ચ શક્તિ)',
  hiSummary: 'संविधान की प्रस्तावना "हम भारत के लोग" के आधार पर संप्रभुता के वास्तविक स्वामी जो मतदान द्वारा सरकार चुनते हैं और मौलिक अधिकारों के धारक हैं।',
  guSummary: 'બંધારણના આમુખ "અમે ભારતના લોકો" અનુસાર સાર્વભૌમત્વના વાસ્તવિક માલિકો જે મતદાન દ્વારા સરકાર રચે છે અને મૂળભૂત અધિકારો ધરાવે છે.'
- }
+ },
+
 };
 
 // -------------------------------------------------------------
-// Section Titles & Subtitles Translations
+// Combined Whiteboard Section Translations (WB 1, 2, 3, 4, 5)
 // -------------------------------------------------------------
 export const SECTION_TRANSLATIONS: Record<string, { hiTitle: string; guTitle: string; hiSubtitle?: string; guSubtitle?: string }> = {
- // Whiteboard 4 Democracy Sections
+  ...WB1_SECTION_TRANSLATIONS,
+  ...WB2_SECTION_TRANSLATIONS,
+  ...WB3_SECTION_TRANSLATIONS,
+  ...WB5_SECTION_TRANSLATIONS,
+
+  // Whiteboard 4 Democracy Sections
  'SEC-DEM-01': {
  hiTitle: '01. शीर्ष संवैधानिक प्राधिकारी (राष्ट्रपति एवं उपराष्ट्रपति)',
  guTitle: '01. સર્વોચ્ચ બંધારણીય સત્તાધિકારી (રાષ્ટ્રપતિ અને ઉપરાષ્ટ્રપતિ)',
@@ -687,89 +756,473 @@ export function t(key: string, lang: Language = 'en', fallback?: string): string
  * Get translated node title based on current language and scope.
  */
 export function getTranslatedNodeTitle(
- node: EducationNode,
- lang: Language = 'en',
- scope: TranslationScope = 'all'
+  node: EducationNode,
+  lang: Language = 'en',
+  scope: TranslationScope = 'all'
 ): string {
- if (lang === 'en' || scope === 'ui') return node.title;
- const entry = NODE_TRANSLATIONS[node.id];
- if (entry) {
- if (lang === 'hi' && entry.hiTitle) return entry.hiTitle;
- if (lang === 'gu' && entry.guTitle) return entry.guTitle;
- }
- return node.title;
+  if (lang === 'en' || scope === 'ui') return node.title;
+
+  // 1. Direct NODE_TRANSLATIONS by ID
+  const entry = NODE_TRANSLATIONS[node.id];
+  if (entry) {
+    if (lang === 'hi' && entry.hiTitle) return entry.hiTitle;
+    if (lang === 'gu' && entry.guTitle) return entry.guTitle;
+  }
+
+  // 2. Normalized ID check (e.g. EC-01 <-> SEC-01, WB1-SEC-01)
+  const normId = node.id.startsWith('EC-')
+    ? node.id.replace('EC-', 'SEC-')
+    : node.id.startsWith('SEC-')
+    ? node.id.replace('SEC-', 'EC-')
+    : node.id;
+  if (normId !== node.id && NODE_TRANSLATIONS[normId]) {
+    const normEntry = NODE_TRANSLATIONS[normId];
+    if (lang === 'hi' && normEntry.hiTitle) return normEntry.hiTitle;
+    if (lang === 'gu' && normEntry.guTitle) return normEntry.guTitle;
+  }
+
+  // 3. Section translations check (if node is a section hub or container)
+  const secEntry = SECTION_TRANSLATIONS[node.id] || SECTION_TRANSLATIONS[normId];
+  if (secEntry) {
+    if (lang === 'hi' && secEntry.hiTitle) return secEntry.hiTitle;
+    if (lang === 'gu' && secEntry.guTitle) return secEntry.guTitle;
+  }
+
+  // 4. Common translations by title
+  const commonTrans = getTranslatedGovernanceValue(node.title, lang);
+  if (commonTrans && commonTrans !== node.title) {
+    return commonTrans;
+  }
+
+  return node.title;
 }
 
 /**
  * Get translated node summary based on current language and scope.
  */
 export function getTranslatedNodeSummary(
- node: EducationNode,
- lang: Language = 'en',
- scope: TranslationScope = 'all'
+  node: EducationNode,
+  lang: Language = 'en',
+  scope: TranslationScope = 'all'
 ): string {
- if (lang === 'en' || scope === 'ui') return node.summary;
- const entry = NODE_TRANSLATIONS[node.id];
- if (entry) {
- if (lang === 'hi' && entry.hiSummary) return entry.hiSummary;
- if (lang === 'gu' && entry.guSummary) return entry.guSummary;
- }
- return node.summary;
+  if (lang === 'en' || scope === 'ui') return node.summary;
+
+  // 1. Direct NODE_TRANSLATIONS by ID
+  const entry = NODE_TRANSLATIONS[node.id];
+  if (entry) {
+    if (lang === 'hi' && entry.hiSummary) return entry.hiSummary;
+    if (lang === 'gu' && entry.guSummary) return entry.guSummary;
+  }
+
+  // 2. Normalized ID check
+  const normId = node.id.startsWith('EC-')
+    ? node.id.replace('EC-', 'SEC-')
+    : node.id.startsWith('SEC-')
+    ? node.id.replace('SEC-', 'EC-')
+    : node.id;
+  if (normId !== node.id && NODE_TRANSLATIONS[normId]) {
+    const normEntry = NODE_TRANSLATIONS[normId];
+    if (lang === 'hi' && normEntry.hiSummary) return normEntry.hiSummary;
+    if (lang === 'gu' && normEntry.guSummary) return normEntry.guSummary;
+  }
+
+  // 3. Section subtitle check
+  const secEntry = SECTION_TRANSLATIONS[node.id] || SECTION_TRANSLATIONS[normId];
+  if (secEntry) {
+    if (lang === 'hi' && secEntry.hiSubtitle) return secEntry.hiSubtitle;
+    if (lang === 'gu' && secEntry.guSubtitle) return secEntry.guSubtitle;
+  }
+
+  // 4. Common translations by summary
+  const commonTrans = getTranslatedGovernanceValue(node.summary, lang);
+  if (commonTrans && commonTrans !== node.summary) {
+    return commonTrans;
+  }
+
+  return node.summary;
 }
 
 /**
  * Get translated section title.
  */
 export function getTranslatedSectionTitle(
- section: SectionMeta | string,
- lang: Language = 'en',
- scope: TranslationScope = 'all'
+  section: SectionMeta | string,
+  lang: Language = 'en',
+  scope: TranslationScope = 'all'
 ): string {
- const secId = typeof section === 'string' ? section : section.id;
- const fallbackTitle = typeof section === 'string' ? section : section.title;
- if (lang === 'en' || scope === 'ui') return fallbackTitle;
- const entry = SECTION_TRANSLATIONS[secId];
- if (entry) {
- if (lang === 'hi' && entry.hiTitle) return entry.hiTitle;
- if (lang === 'gu' && entry.guTitle) return entry.guTitle;
- }
- return fallbackTitle;
+  const secId = typeof section === 'string' ? section : section.id;
+  const fallbackTitle = typeof section === 'string' ? section : section.title;
+  if (lang === 'en' || scope === 'ui') return fallbackTitle;
+
+  // 1. Direct check by secId
+  let entry = SECTION_TRANSLATIONS[secId];
+
+  // 2. Normalized check (EC-01 <-> SEC-01, WB1-SEC-01, SEC-1 <-> SEC-01)
+  if (!entry) {
+    const candidateIds = [
+      secId.replace(/^EC-/, 'SEC-'),
+      secId.replace(/^SEC-/, 'EC-'),
+      secId.replace(/^WB\d+-/, ''),
+      `SEC-${secId.replace(/\D/g, '').padStart(2, '0')}`,
+      `EC-${secId.replace(/\D/g, '').padStart(2, '0')}`
+    ];
+    for (const cand of candidateIds) {
+      if (SECTION_TRANSLATIONS[cand]) {
+        entry = SECTION_TRANSLATIONS[cand];
+        break;
+      }
+    }
+  }
+
+  // 3. Check by section.title if section is an object
+  if (!entry && typeof section !== 'string' && section.title) {
+    entry = SECTION_TRANSLATIONS[section.title];
+  }
+
+  if (entry) {
+    if (lang === 'hi' && entry.hiTitle) return entry.hiTitle;
+    if (lang === 'gu' && entry.guTitle) return entry.guTitle;
+  }
+
+  // 4. Check common translations for fallbackTitle
+  const commonTrans = getTranslatedGovernanceValue(fallbackTitle, lang);
+  if (commonTrans && commonTrans !== fallbackTitle) {
+    return commonTrans;
+  }
+
+  return fallbackTitle;
 }
 
 /**
  * Get translated section subtitle.
  */
 export function getTranslatedSectionSubtitle(
- section: SectionMeta | string,
- lang: Language = 'en',
- scope: TranslationScope = 'all'
+  section: SectionMeta | string,
+  lang: Language = 'en',
+  scope: TranslationScope = 'all'
 ): string {
- const secId = typeof section === 'string' ? section : section.id;
- const fallbackSub = typeof section === 'string' ? '' : section.subtitle;
- if (lang === 'en' || scope === 'ui') return fallbackSub;
- const entry = SECTION_TRANSLATIONS[secId];
- if (entry) {
- if (lang === 'hi' && entry.hiSubtitle) return entry.hiSubtitle;
- if (lang === 'gu' && entry.guSubtitle) return entry.guSubtitle;
- }
- return fallbackSub;
+  const secId = typeof section === 'string' ? section : section.id;
+  const fallbackSub = typeof section === 'string' ? '' : section.subtitle;
+  if (lang === 'en' || scope === 'ui') return fallbackSub;
+
+  let entry = SECTION_TRANSLATIONS[secId];
+  if (!entry) {
+    const candidateIds = [
+      secId.replace(/^EC-/, 'SEC-'),
+      secId.replace(/^SEC-/, 'EC-'),
+      secId.replace(/^WB\d+-/, ''),
+      `SEC-${secId.replace(/\D/g, '').padStart(2, '0')}`,
+      `EC-${secId.replace(/\D/g, '').padStart(2, '0')}`
+    ];
+    for (const cand of candidateIds) {
+      if (SECTION_TRANSLATIONS[cand]) {
+        entry = SECTION_TRANSLATIONS[cand];
+        break;
+      }
+    }
+  }
+
+  if (entry) {
+    if (lang === 'hi' && entry.hiSubtitle) return entry.hiSubtitle;
+    if (lang === 'gu' && entry.guSubtitle) return entry.guSubtitle;
+  }
+
+  if (fallbackSub) {
+    const commonTrans = getTranslatedGovernanceValue(fallbackSub, lang);
+    if (commonTrans && commonTrans !== fallbackSub) {
+      return commonTrans;
+    }
+  }
+
+  return fallbackSub;
 }
 
 /**
  * Get translated government level tag.
  */
 export function getTranslatedLevel(level: string, lang: Language = 'en'): string {
- if (lang === 'en') return level;
- const mapping: Record<string, { hi: string; gu: string }> = {
- constitutional: { hi: 'संवैधानिक', gu: 'બંધારણીય' },
- union: { hi: 'केंद्रीय / संघ', gu: 'કેન્દ્રીય / સંઘ' },
- state: { hi: 'राज्य स्तर', gu: 'રાજ્ય સ્તર' },
- district: { hi: 'जिला स्तर', gu: 'જિલ્લા સ્તર' },
- local: { hi: 'स्थानीय / फील्ड', gu: 'સ્થાનિક / ફિલ્ડ' },
- institutional: { hi: 'संस्थागत', gu: 'સંસ્થાકીય' }
- };
- return mapping[level]?.[lang] || level;
+  if (lang === 'en') return level;
+  const mapping: Record<string, { hi: string; gu: string }> = {
+    constitutional: { hi: 'संवैधानिक', gu: 'બંધારણીય' },
+    union: { hi: 'केंद्रीय / संघ', gu: 'કેન્દ્રીય / સંઘ' },
+    state: { hi: 'राज्य स्तर', gu: 'રાજ્ય સ્તર' },
+    district: { hi: 'जिला स्तर', gu: 'જિલ્લા સ્તર' },
+    local: { hi: 'स्थानीय / फील्ड', gu: 'સ્થાનિક / ફિલ્ડ' },
+    institutional: { hi: 'संस्थागत', gu: 'સંસ્થાકીય' }
+  };
+  return mapping[level]?.[lang] || level;
 }
+
+/**
+ * Common Governance and Administrative Terms Dictionary
+ */
+export const COMMON_GOVERNANCE_TRANSLATIONS: Record<string, { hi: string; gu: string }> = {
+  ...COMMON_EDUCATIONAL_TRANSLATIONS,
+
+  // Cadres & Bodies
+  'Constitutional Merit Recruiting Body': { hi: 'संवैधानिक मेरिट भर्ती निकाय', gu: 'બંધારણીય મેરિટ ભરતી સંસ્થા' },
+  'Constitutional Apex Head of State': { hi: 'संवैधानिक सर्वोच्च राष्ट्राध्यक्ष', gu: 'બંધારણીય સર્વોચ્ચ રાષ્ટ્રાધ્યક્ષ' },
+  'Constitutional Dignitary': { hi: 'संवैधानिक गरिमामयी पद', gu: 'બંધારણીય મહાનુભાવ' },
+  'Parliamentary Presiding Officer': { hi: 'संसदीय पीठासीन अधिकारी', gu: 'સંસદીય પ્રમુખ અધિકારી' },
+  'Directly Elected Representative': { hi: 'प्रत्यक्ष निर्वाचित जनप्रतिनिधि', gu: 'સીધા ચૂંટાયેલા જનપ્રતિનિધિ' },
+  'Indirectly Elected Representative': { hi: 'अप्रत्यक्ष निर्वाचित जनप्रतिनिधि', gu: 'પરોક્ષ ચૂંટાયેલા જનપ્રતિનિધિ' },
+  'All India Services (IAS/IPS/IFS)': { hi: 'अखिल भारतीय सेवाएँ (IAS/IPS/IFS)', gu: 'અખિલ ભારતીય સેવાઓ (IAS/IPS/IFS)' },
+  'Central Civil Services Group A': { hi: 'केंद्रीय सिविल सेवा ग्रुप-ए', gu: 'કેન્દ્રીય સિવિલ સેવાઓ ગ્રુપ-એ' },
+  'Constitutional Election Authority': { hi: 'संवैधानिक निर्वाचन प्राधिकरण', gu: 'બંધારણીય ચૂંટણી સત્તામંડળ' },
+  'Constitutional Audit Authority': { hi: 'संवैधानिक लेखापरीक्षा प्राधिकरण', gu: 'બંધારણીય ઓડિટ સત્તામંડળ' },
+  'Constitutional Law Officer': { hi: 'संवैधानिक विधि अधिकारी', gu: 'બંધારણીય કાયદા અધિકારી' },
+  'Supreme Constitutional Court': { hi: 'सर्वोच्च संवैधानिक न्यायालय', gu: 'સર્વોચ્ચ બંધારણીય અદાલત' },
+  'Apex Constitutional Court': { hi: 'सर्वोच्च संवैधानिक न्यायालय', gu: 'સર્વોચ્ચ બંધારણીય અદાલત' },
+  'State High Court': { hi: 'राज्य उच्च न्यायालय', gu: 'રાજ્ય વડી અદાલત' },
+  'Subordinate Judiciary': { hi: 'अधीनस्थ न्यायपालिका', gu: 'તાબાની ન્યાયતંત્ર' },
+
+  // Positions & Designations
+  'President of India': { hi: 'भारत के राष्ट्रपति', gu: 'ભારતના રાષ્ટ્રપતિ' },
+  'Vice-President of India & Ex-Officio Chairman of Rajya Sabha': { hi: 'भारत के उपराष्ट्रपति एवं राज्यसभा के पदेन सभापति', gu: 'ભારતના ઉપરાષ્ટ્રપતિ અને રાજ્યસભાના હોદ્દાની રૂએ અધ્યક્ષ' },
+  'Prime Minister of India': { hi: 'भारत के प्रधानमंत्री', gu: 'ભારતના વડાપ્રધાન' },
+  'Chief Justice of India & Judges of Supreme Court': { hi: 'भारत के मुख्य न्यायाधीश एवं सर्वोच्च न्यायालय के न्यायाधीश', gu: 'ભારતના મુખ્ય ન્યાયાધીશ અને સર્વોચ્ચ અદાલતના ન્યાયાધીશો' },
+  'Chairman & Members, Union Public Service Commission': { hi: 'अध्यक्ष एवं सदस्य, संघ लोक सेवा आयोग', gu: 'અધ્યક્ષ અને સભ્યો, સંઘ જાહેર સેવા આયોગ' },
+  'Chief Election Commissioner & Election Commissioners': { hi: 'मुख्य चुनाव आयुक्त एवं चुनाव आयुक्त', gu: 'મુખ્ય ચૂંટણી કમિશનર અને ચૂંટણી કમિશનરો' },
+  'Comptroller and Auditor General of India': { hi: 'भारत के नियंत्रक एवं महालेखापरीक्षक (CAG)', gu: 'ભારતના નિયંત્રક અને મહાલેખાપરીક્ષક (CAG)' },
+  'Attorney General for India': { hi: 'भारत के महान्यायवादी', gu: 'ભારતના એટર્ની જનરલ' },
+  'Cabinet Secretary of India': { hi: 'भारत के कैबिनेट सचिव', gu: 'ભારતના કેબિનેટ સચિવ' },
+
+  // Electoral & Selection Methods
+  'Appointed by President of India': { hi: 'भारत के राष्ट्रपति द्वारा नियुक्त', gu: 'ભારતના રાષ્ટ્રપતિ દ્વારા નિયુક્ત' },
+  'Appointed by the President of India on recommendation of a selection committee': { hi: 'चयन समिति की सिफारिश पर भारत के राष्ट्रपति द्वारा नियुक्त', gu: 'પસંદગી સમિતિની ભલામણ પર ભારતના રાષ્ટ્રપતિ દ્વારા નિયુક્ત' },
+  'Electoral College of members of both Houses of Parliament and Legislative Assemblies of States': { hi: 'संसद के दोनों सदनों और राज्यों की विधानसभाओं के निर्वाचित सदस्यों का निर्वाचक मंडल', gu: 'સંસદના બંને ગૃહો અને રાજ્યોની વિધાનસભાઓના ચૂંટાયેલા સભ્યોનું ચૂંટણી મંડળ' },
+  'Electoral College of members of both Houses of Parliament (system of proportional representation by single transferable vote)': { hi: 'संसद के दोनों सदनों के सदस्यों का निर्वाचक मंडल (एकल संक्रमणीय मत द्वारा आनुपातिक प्रतिनिधित्व)', gu: 'સંસદના બંને ગૃહોના સભ્યોનું ચૂંટણી મંડળ (એકલ સંક્રમણીય મત દ્વારા)' },
+  'Direct election by citizens under Universal Adult Suffrage': { hi: 'सार्वभौमिक वयस्क मताधिकार द्वारा नागरिकों द्वारा प्रत्यक्ष चुनाव', gu: 'સાર્વત્રિક પુખ્ત મતાધિકાર હેઠળ નાગરિકો દ્વારા સીધી ચૂંટણી' },
+  'Appointed by President on recommendation of Collegium': { hi: 'कॉलेजियम की सिफारिश पर राष्ट्रपति द्वारा नियुक्त', gu: 'કોલેજિયમની ભલામણ પર રાષ્ટ્રપતિ દ્વારા નિયુક્ત' },
+  'Civil Services Examination conducted by UPSC': { hi: 'यूपीएससी द्वारा आयोजित सिविल सेवा परीक्षा', gu: 'UPSC દ્વારા લેવાતી સિવિલ સર્વિસીસ પરીક્ષા' },
+
+  // Tenures
+  '6 years or up to age 65': { hi: '6 वर्ष या 65 वर्ष की आयु तक', gu: '6 વર્ષ અથવા 65 વર્ષની વય સુધી' },
+  '6 years or up to age 65 (whichever is earlier)': { hi: '6 वर्ष या 65 वर्ष की आयु तक (जो भी पहले हो)', gu: '6 વર્ષ અથવા 65 વર્ષની વય સુધી (જે વહેલું હોય)' },
+  'Up to age 65': { hi: '65 वर्ष की आयु तक', gu: '65 વર્ષની વય સુધી' },
+  'Up to age 62': { hi: '62 वर्ष की आयु तक', gu: '62 વર્ષની વય સુધી' },
+  '5 years (eligible for re-election)': { hi: '5 वर्ष (पुनर्निर्वाचन के पात्र)', gu: '5 વર્ષ (ફરીથી ચૂંટાવા પાત્ર)' },
+  '5 years': { hi: '5 वर्ष', gu: '5 વર્ષ' },
+  '6 years': { hi: '6 वर्ष', gu: '6 વર્ષ' },
+  'At the pleasure of the President': { hi: 'राष्ट्रपति के प्रसादपर्यंत', gu: 'રાષ્ટ્રપતિની મરજી સુધી' },
+  'During the pleasure of the President': { hi: 'राष्ट्रपति के प्रसादपर्यंत', gu: 'રાષ્ટ્રપતિની મરજી સુધી' },
+
+  // Jurisdictions
+  'Pan-India All India & Central Services': { hi: 'अखिल भारतीय एवं केंद्रीय सेवाएँ (संपूर्ण भारत)', gu: 'અખિલ ભારતીય અને કેન્દ્રીય સેવાઓ (સમગ્ર ભારત)' },
+  'Pan-India / Parliament of India': { hi: 'संपूर्ण भारत / भारतीय संसद', gu: 'સમગ્ર ભારત / ભારતીય સંસદ' },
+  'Territory of India (Sovereign Republic)': { hi: 'भारत का राज्यक्षेत्र (संप्रभु गणराज्य)', gu: 'ભારતનો પ્રદેશ (સાર્વભૌમ પ્રજાસત્તાક)' },
+  'Entire territory of India': { hi: 'भारत का संपूर्ण राज्यक्षेत्र', gu: 'ભારતનો સમગ્ર પ્રદેશ' },
+  'Pan-India (Supreme Court has original, appellate and advisory jurisdiction)': { hi: 'संपूर्ण भारत (मूल, अपीलीय एवं परामर्शदात्री अधिकारिता)', gu: 'સમગ્ર ભારત (મૂળ, અપીલીય અને સલાહકારી અધિકારક્ષેત્ર)' },
+  'All Union Ministries and Departments': { hi: 'सभी केंद्रीय मंत्रालय एवं विभाग', gu: 'તમામ કેન્દ્રીય મંત્રાલયો અને વિભાગો' },
+
+  // Reporting Hierarchy
+  'President of India & Parliament': { hi: 'भारत के राष्ट्रपति एवं संसद', gu: 'ભારતના રાષ્ટ્રપતિ અને સંસદ' },
+  'Parliament of India': { hi: 'भारतीय संसद', gu: 'ભારતીય સંસદ' },
+  'Cabinet Secretary': { hi: 'कैबिनेट सचिव', gu: 'કેબિનેટ સચિવ' },
+  'Chief Justice of India': { hi: 'भारत के मुख्य न्यायाधीश', gu: 'ભારતના મુખ્ય ન્યાયાધીશ' },
+  'Supreme Court of India': { hi: 'भारत का सर्वोच्च न्यायालय', gu: 'ભારતની સર્વોચ્ચ અદાલત' },
+  'We, the People of India (Constitution)': { hi: 'हम, भारत के लोग (संविधान)', gu: 'અમે, ભારતના લોકો (બંધારણ)' },
+
+  // Superior Authorities
+  'The Constitution of India and the President of India.': { hi: 'भारत का संविधान एवं भारत के राष्ट्रपति।', gu: 'ભારતનું બંધારણ અને ભારતના રાષ્ટ્રપતિ.' },
+  'The Constitution of India and the Supreme Court of India.': { hi: 'भारत का संविधान एवं भारत का सर्वोच्च न्यायालय।', gu: 'ભારતનું બંધારણ અને ભારતની સર્વોચ્ચ અદાલત.' },
+  'The Constitution of India and the Parliament of India.': { hi: 'भारत का संविधान एवं भारतीय संसद।', gu: 'ભારતનું બંધારણ અને ભારતીય સંસદ.' },
+  'Constitution of India': { hi: 'भारत का संविधान', gu: 'ભારતનું બંધારણ' },
+
+  // Removal Authorities
+  'A member can be removed by the President only on grounds of misbehaviour after an inquiry and report by the Supreme Court of India.': {
+    hi: 'सर्वोच्च न्यायालय द्वारा जांच और रिपोर्ट के बाद कदाचार के आधार पर केवल राष्ट्रपति द्वारा हटाया जा सकता है।',
+    gu: 'સર્વોચ્ચ અદાલતની તપાસ અને અહેવાલ પછી માત્ર ગેરવર્તણૂકના આધારે રાષ્ટ્રપતિ દ્વારા જ દૂર કરી શકાય છે.'
+  },
+  'Election Commissioner can be removed only like a Supreme Court Judge (impeachment by two-thirds majority in Parliament).': {
+    hi: 'निर्वाचन आयुक्त को केवल सर्वोच्च न्यायालय के न्यायाधीश की तरह (संसद में दो-तिहाई बहुमत द्वारा महाभियोग) ही हटाया जा सकता है।',
+    gu: 'ચૂંટણી કમિશનરને માત્ર સર્વોચ્ચ અદાલતના ન્યાયાધીશની જેમ જ (સંસદમાં બે તૃતીયાંશ બહુમતી દ્વારા મહાભિયોગ) દૂર કરી શકાય છે.'
+  },
+  'Impeachment by special majority of Parliament under Article 61 of the Constitution.': {
+    hi: 'संविधान के अनुच्छेद 61 के तहत संसद के विशेष बहुमत द्वारा महाभियोग।',
+    gu: 'બંધારણની કલમ 61 હેઠળ સંસદની વિશેષ બહુમતી દ્વારા મહાભિયોગ.'
+  },
+  'Resolution of Rajya Sabha passed by effective majority and agreed to by Lok Sabha.': {
+    hi: 'राज्यसभा द्वारा प्रभावी बहुमत से पारित एवं लोकसभा द्वारा स्वीकृत संकल्प।',
+    gu: 'રાજ્યસભા દ્વારા અસરકારક બહુમતીથી પસાર કરાયેલ અને લોકસભા દ્વારા માન્ય ઠરાવ.'
+  },
+  'Removed by President on an address by each House of Parliament supported by a majority of total membership and two-thirds majority of members present and voting (Article 124(4)).': {
+    hi: 'संसद के दोनों सदनों के विशेष बहुमत से पारित संबोधन पर राष्ट्रपति द्वारा पदमुक्ति (अनुच्छेद 124(4))।',
+    gu: 'સંસદના બંને ગૃહોની વિશેષ બહુમતીથી પસાર સંબોધન પર રાષ્ટ્રપતિ દ્વારા હોદ્દા પરથી દૂર કરી શકાય છે (કલમ 124(4)).'
+  },
+
+  // Apex Constitutional: President & Vice-President Governance Details
+  'Elected Constitutional Head of State': {
+    hi: 'निर्वाचित संवैधानिक राष्ट्राध्यक्ष',
+    gu: 'ચૂંટાયેલા બંધારણીય રાષ્ટ્રાધ્યક્ષ'
+  },
+  'Elected Constitutional Dignitary': {
+    hi: 'निर्वाचित संवैधानिक गरिमामयी पद',
+    gu: 'ચૂંટાયેલા બંધારણીય મહાનુભાવ'
+  },
+  'Vice-President of India & Chairman of Rajya Sabha': {
+    hi: 'भारत के उपराष्ट्रपति एवं राज्यसभा के सभापति',
+    gu: 'ભારતના ઉપરાષ્ટ્રપતિ અને રાજ્યસભાના અધ્યક્ષ'
+  },
+  'The Constitution of India': {
+    hi: 'भारत का संविधान',
+    gu: 'ભારતનું બંધારણ'
+  },
+  'Electoral College of elected members of both Houses of Parliament and Legislative Assemblies of States': {
+    hi: 'संसद के दोनों सदनों तथा राज्यों की विधानसभाओं के निर्वाचित सदस्यों का निर्वाचक मंडल',
+    gu: 'સંસદના બંને ગૃહો અને રાજ્યોની વિધાનસભાઓના ચૂંટાયેલા સભ્યોનું નિર્વાચક મંડળ'
+  },
+  'The Constitution of India; bound by the collective advice of the Union Cabinet and subject to Supreme Court constitutional review.': {
+    hi: 'भारत का संविधान; केंद्रीय मंत्रिमंडल की सामूहिक सलाह से बाध्य एवं सर्वोच्च न्यायालय की संवैधानिक समीक्षा के अधीन।',
+    gu: 'ભારતનું બંધારણ; કેન્દ્રીય કેબિનેટની સામૂહિક સલાહથી બંધાયેલા અને સર્વોચ્ચ અદાલતની બંધારણીય સમીક્ષાને આધીન.'
+  },
+  'The Constitution of India; works in coordination with Parliament.': {
+    hi: 'भारत का संविधान; संसद के समन्वय से कार्य करते हैं।',
+    gu: 'ભારતનું બંધારણ; સંસદ સાથે સંકલનમાં કાર્ય કરે છે.'
+  },
+  'Can be removed only through Impeachment by Parliament with a two-thirds majority in both the Lok Sabha and Rajya Sabha for violation of the Constitution.': {
+    hi: 'संविधान के उल्लंघन पर संसद के दोनों सदनों (लोकसभा एवं राज्यसभा) में दो-तिहाई बहुमत द्वारा केवल महाभियोग से ही हटाया जा सकता है।',
+    gu: 'બંધારણના ઉલ્લંઘન માટે સંસદના બંને ગૃહો (લોકસભા અને રાજ્યસભા)માં બે તૃતીયાંશ બહુમતી દ્વારા માત્ર મહાભિયોગથી જ દૂર કરી શકાય છે.'
+  },
+  'Can be removed by a resolution passed by a majority of all the then members of the Rajya Sabha and agreed to by the Lok Sabha.': {
+    hi: 'राज्यसभा के तत्कालीन सदस्यों के बहुमत द्वारा पारित तथा लोकसभा द्वारा सहमत संकल्प द्वारा पदमुक्त किया जा सकता है।',
+    gu: 'રાજ્યસભાના તત્કાલીન તમામ સભ્યોની બહુમતીથી પસાર અને લોકસભા દ્વારા માન્ય ઠરાવ દ્વારા દૂર કરી શકાય છે.'
+  },
+
+  // President Powers & Limitations
+  'Formally appoints the Prime Minister and union ministers upon the Prime Minister’s recommendation.': {
+    hi: 'प्रधानमंत्री की अनुशंसा पर प्रधानमंत्री एवं केंद्रीय मंत्रियों की औपचारिक नियुक्ति करना।',
+    gu: 'વડાપ્રધાનની ભલામણ પર વડાપ્રધાન અને કેન્દ્રીય મંત્રીઓની ઔપચારિક નિમણૂક કરવી.'
+  },
+  'Appoints the Chief Justice of India, Supreme Court judges, State Governors, and the Chief Election Commissioner.': {
+    hi: 'भारत के मुख्य न्यायाधीश, सर्वोच्च न्यायालय के न्यायाधीशों, राज्यों के राज्यपालों एवं मुख्य चुनाव आयुक्त की नियुक्ति करना।',
+    gu: 'ભારતના મુખ્ય ન્યાયાધીશ, સર્વોચ્ચ અદાલતના ન્યાયાધીશો, રાજ્યપાલ અને મુખ્ય ચૂંટણી કમિશનરની નિમણૂક કરવી.'
+  },
+  'Gives final assent to bills passed by Parliament for them to become law.': {
+    hi: 'संसद द्वारा पारित विधेयकों को कानून बनने हेतु अंतिम सहमति प्रदान करना।',
+    gu: 'સંસદ દ્વારા પસાર કરાયેલા ખરડાઓને કાયદો બનવા માટે અંતિમ મંજૂરી આપવી.'
+  },
+  'Has the power to grant pardons, reprieves, or reduce sentences for convicted persons.': {
+    hi: 'दोषसिद्ध व्यक्तियों को क्षमादान, दंडविराम या सजा कम करने का अधिकार।',
+    gu: 'દોષિત વ્યક્તિઓને માફી આપવાની અથવા સજા ઘટાડવાની સત્તા.'
+  },
+  'Cannot make independent political or policy decisions; must act strictly on the binding advice of the Council of Ministers.': {
+    hi: 'स्वतंत्र राजनीतिक या नीतिगत निर्णय नहीं ले सकते; मंत्रिपरिषद की बाध्यकारी सलाह पर ही कार्य करना अनिवार्य है।',
+    gu: 'સ્વતંત્ર રાજકીય કે નીતિવિષયક નિર્ણયો લઈ શકતા નથી; મંત્રીમંડળની બંધનકર્તા સલાહ મુજબ જ કાર્ય કરવું ફરજિયાત છે.'
+  },
+  'Cannot veto money bills or reject a bill sent back a second time by Parliament.': {
+    hi: 'धन विधेयकों पर वीटो नहीं कर सकते और न ही संसद द्वारा पुनर्विचार उपरांत भेजे गए विधेयक को अस्वीकार कर सकते हैं।',
+    gu: 'નાણાકીય ખરડા પર વીટો વાપરી શકતા નથી અથવા સંસદ દ્વારા પુનર્વિચાર બાદ મોકલાયેલ ખરડાને નકારી શકતા નથી.'
+  },
+  'Cannot govern as an autocrat or hold any personal commercial office of profit.': {
+    hi: 'स्वेच्छाचारी शासन नहीं कर सकते और न ही कोई व्यक्तिगत लाभ का पद धारण कर सकते हैं।',
+    gu: 'સરમુખત્યારશાહી શાસન કરી શકતા નથી અથવા કોઈ વ્યક્તિગત લાભનું પદ ધરાવી શકતા નથી.'
+  },
+
+  // Vice-President Powers & Limitations
+  'Presides over debates and parliamentary proceedings in the Rajya Sabha.': {
+    hi: 'राज्यसभा में बहसों एवं संसदीय कार्यवाही की अध्यक्षता करना।',
+    gu: 'રાજ્યસભામાં ચર્ચાઓ અને સંસદીય કાર્યવાહીનું અધ્યક્ષપદ સંભાળવું.'
+  },
+  'Decides who speaks in the Rajya Sabha and maintains discipline and order in the chamber.': {
+    hi: 'राज्यसभा में सदस्यों के बोलने का क्रम निर्धारित करना तथा सदन में अनुशासन एवं मर्यादा बनाए रखना।',
+    gu: 'રાજ્યસભામાં સભ્યોના વક્તવ્યનો ક્રમ નક્કી કરવો અને ગૃહમાં શિસ્ત અને મર્યાદા જાળવવી.'
+  },
+  'Casts the deciding tie-breaker vote in case of an exact tie in Rajya Sabha voting.': {
+    hi: 'राज्यसभा में मतदान के दौरान मत बराबर होने (टाई) की स्थिति में निर्णायक मत डालना।',
+    gu: 'રાજ્યસભામાં મતદાનમાં સરખા મત થવાની સ્થિતિમાં નિર્ણાયક મત આપવો.'
+  },
+  'Discharges all presidential functions and signs official orders during presidential vacancy.': {
+    hi: 'राष्ट्रपति पद रिक्त होने पर राष्ट्रपति के सभी कार्यों का निर्वहन करना एवं आधिकारिक आदेशों पर हस्ताक्षर करना।',
+    gu: 'રાષ્ટ્રપતિ પદ ખાલી હોય ત્યારે તમામ રાષ્ટ્રપતિ કાર્યોનું વહન કરવું અને સત્તાવાર આદેશો પર હસ્તાક્ષર કરવા.'
+  },
+  'Cannot vote in Rajya Sabha except to break an exact 50-50 tie.': {
+    hi: '50-50 बराबरी की स्थिति को तोड़ने के अतिरिक्त राज्यसभा में मतदान नहीं कर सकते।',
+    gu: '50-50 સરખા મતની સ્થિતિ સિવાય રાજ્યસભામાં મતદાન કરી શકતા નથી.'
+  },
+  'Cannot formulate government policy or manage ministry budgets; strictly a presiding dignitary.': {
+    hi: 'सरकारी नीति निर्धारित नहीं कर सकते और न ही मंत्रालयों के बजट का प्रबंधन; पूर्णतः पीठासीन गरिमामयी पद।',
+    gu: 'સરકારી નીતિ નક્કી કરી શકતા નથી કે મંત્રાલયોના બજેટનું સંચાલન કરી શકતા નથી; સંપૂર્ણપણે પીઠાસીન મહાનુભાવ.'
+  },
+  'Cannot participate in active party politics while serving in the presiding chair.': {
+    hi: 'पीठासीन सभापति के रूप में सेवा करते हुए सक्रिय दलीय राजनीति में भाग नहीं ले सकते।',
+    gu: 'અધ્યક્ષ તરીકે સેવા આપતી વખતે સક્રિય પક્ષીય રાજકારણમાં ભાગ લઈ શકતા નથી.'
+  },
+  'Appoints Chief Election Commissioner & ECs': {
+    hi: 'मुख्य चुनाव आयुक्त एवं चुनाव आयुक्तों की नियुक्ति',
+    gu: 'મુખ્ય ચૂંટણી કમિશનર અને ચૂંટણી કમિશનરોની નિમણૂક'
+  },
+  'Appoints Comptroller and Auditor General of India': {
+    hi: 'भारत के नियंत्रक एवं महालेखापरीक्षक (CAG) की नियुक्ति',
+    gu: 'ભારતના નિયંત્રક અને મહાલેખાનિયમક (CAG)ની નિમણૂક'
+  },
+  'Appoints Chairman and Members of UPSC': {
+    hi: 'संघ लोक सेवा आयोग (UPSC) के अध्यक्ष एवं सदस्यों की नियुक्ति',
+    gu: 'યુનિયન પબ્લિક સર્વિસ કમિશન (UPSC)ના અધ્યક્ષ અને સભ્યોની નિમણૂક'
+  },
+  'Appoints Central Vigilance Commissioner': {
+    hi: 'केंद्रीय सतर्कता आयुक्त (CVC) की नियुक्ति',
+    gu: 'કેન્દ્રીય સતર્કતા કમિશનર (CVC)ની નિમણૂક'
+  },
+  'Appoints Chief Justice of India & Supreme Court Judges': {
+    hi: 'भारत के मुख्य न्यायाधीश एवं सर्वोच्च न्यायालय के न्यायाधीशों की नियुक्ति',
+    gu: 'ભારતના મુખ્ય ન્યાયાધીશ અને સર્વોચ્ચ અદાલતના ન્યાયાધીશોની નિમણૂક'
+  },
+  'Appoints Chief Justice of India & Supreme Court Judges)': {
+    hi: 'भारत के मुख्य न्यायाधीश एवं सर्वोच्च न्यायालय के न्यायाधीशों की नियुक्ति',
+    gu: 'ભારતના મુખ્ય ન્યાયાધીશ અને સર્વોચ્ચ અદાલતના ન્યાયાધીશોની નિમણૂક'
+  },
+  'Appoints Prime Minister commanding Lok Sabha majority)': {
+    hi: 'लोकसभा में बहुमत प्राप्त प्रधानमंत्री की नियुक्ति',
+    gu: 'લોકસભામાં બહુમતી ધરાવતા વડાપ્રધાનની નિમણૂક'
+  },
+  'Appoints State Governors across all States by warrant': {
+    hi: 'सभी राज्यों के राज्यपालों की अधिपत्र द्वारा नियुक्ति',
+    gu: 'તમામ રાજ્યોના રાજ્યપાલોની નિમણૂક'
+  },
+  'Ex-Officio Chairman of Rajya Sabha': {
+    hi: 'राज्यसभा के पदेन सभापति',
+    gu: 'રાજ્યસભાના હોદ્દાની રૂએ અધ્યક્ષ'
+  },
+  'Constitutional Executive Succession & Administration': {
+    hi: 'संवैधानिक कार्यपालिका उत्तराधिकार एवं प्रशासन',
+    gu: 'બંધારણીય કારોબારી ઉત્તરાધિકાર અને વહીવટ'
+  }
+};
+
+/**
+ * Translate governance values, phrases, and field contents.
+ */
+export function getTranslatedGovernanceValue(
+  value: string | undefined | null,
+  lang: Language = 'en'
+): string {
+  if (!value || lang === 'en') return value || '';
+  const trimmed = value.trim();
+
+  // 1. Direct dictionary match
+  if (COMMON_GOVERNANCE_TRANSLATIONS[trimmed]) {
+    return COMMON_GOVERNANCE_TRANSLATIONS[trimmed][lang] || trimmed;
+  }
+
+  // 2. Stripped prefix match (e.g. "Timeline: ...")
+  const strippedPrefix = trimmed.replace(/^Timeline:\s*/i, '');
+  if (COMMON_GOVERNANCE_TRANSLATIONS[strippedPrefix]) {
+    return COMMON_GOVERNANCE_TRANSLATIONS[strippedPrefix][lang] || trimmed;
+  }
+
+  // 3. Case-insensitive and dash/whitespace-normalized dictionary match
+  const normKey = trimmed.replace(/[\u2013\u2014]/g, '-').replace(/\s+/g, ' ').toLowerCase();
+  for (const [enKey, trans] of Object.entries(COMMON_GOVERNANCE_TRANSLATIONS)) {
+    const normEnKey = enKey.replace(/[\u2013\u2014]/g, '-').replace(/\s+/g, ' ').toLowerCase();
+    if (normKey === normEnKey) {
+      return trans[lang] || trimmed;
+    }
+  }
+
+  return trimmed;
+}
+
 
 /**
  * Dynamic Google Translate Element Loader & Activator

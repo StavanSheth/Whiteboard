@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useWhiteboardStore } from '../../store/whiteboardStore';
 import { NODE_MAP, SOURCE_MAP } from '../../data/content-index';
 import { EducationNode, VerificationStatus, GovernmentLevel } from '../../types';
-import { getTranslatedNodeTitle, getTranslatedNodeSummary, getTranslatedLevel } from '../../services/translationService';
+import { getTranslatedNodeTitle, getTranslatedNodeSummary, getTranslatedLevel, getTranslatedGovernanceValue } from '../../services/translationService';
 import {
   X,
   Maximize2,
@@ -404,19 +404,19 @@ export function DetailPanel() {
                 {node.examDetails?.examAgency && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-sky-950 w-28 flex-shrink-0">Agency:</span>
-                    <span>{node.examDetails.examAgency}</span>
+                    <span>{getTranslatedGovernanceValue(node.examDetails.examAgency, currentLanguage)}</span>
                   </div>
                 )}
                 {node.examDetails?.eligibilityCriteria && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-sky-950 w-28 flex-shrink-0">Eligibility:</span>
-                    <span className="text-slate-600">{node.examDetails.eligibilityCriteria}</span>
+                    <span className="text-slate-600">{getTranslatedGovernanceValue(node.examDetails.eligibilityCriteria, currentLanguage)}</span>
                   </div>
                 )}
                 {node.examDetails?.applicationWindow && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-sky-950 w-28 flex-shrink-0">Timeline:</span>
-                    <span className="text-slate-600">{node.examDetails.applicationWindow}</span>
+                    <span className="text-slate-600">{getTranslatedGovernanceValue(node.examDetails.applicationWindow, currentLanguage)}</span>
                   </div>
                 )}
                 {node.examDetails?.examStages && node.examDetails.examStages.length > 0 && (
@@ -425,7 +425,7 @@ export function DetailPanel() {
                     <div className="flex flex-wrap gap-1">
                       {node.examDetails.examStages.map((stage, idx) => (
                         <span key={idx} className="px-2 py-0.5 rounded bg-white text-sky-800 border border-sky-200 text-[10px]">
-                          {idx + 1}. {stage}
+                          {idx + 1}. {getTranslatedGovernanceValue(stage, currentLanguage)}
                         </span>
                       ))}
                     </div>
@@ -434,19 +434,19 @@ export function DetailPanel() {
                 {node.examDetails?.outcome && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-sky-950 w-28 flex-shrink-0">Outcome:</span>
-                    <span className="text-slate-600">{node.examDetails.outcome}</span>
+                    <span className="text-slate-600">{getTranslatedGovernanceValue(node.examDetails.outcome, currentLanguage)}</span>
                   </div>
                 )}
                 {node.examDetails?.counsellingBody && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-sky-950 w-28 flex-shrink-0">Counselling:</span>
-                    <span className="text-slate-600">{node.examDetails.counsellingBody}</span>
+                    <span className="text-slate-600">{getTranslatedGovernanceValue(node.examDetails.counsellingBody, currentLanguage)}</span>
                   </div>
                 )}
                 {node.examDetails?.nextCareerStage && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-sky-950 w-28 flex-shrink-0">Next Stage:</span>
-                    <span className="text-slate-600">{node.examDetails.nextCareerStage}</span>
+                    <span className="text-slate-600">{getTranslatedGovernanceValue(node.examDetails.nextCareerStage, currentLanguage)}</span>
                   </div>
                 )}
               </div>
@@ -583,55 +583,55 @@ export function DetailPanel() {
                 {node.institutionDetails?.institutionType && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-indigo-950 w-28 flex-shrink-0">Type:</span>
-                    <span>{node.institutionDetails.institutionType}</span>
+                    <span>{getTranslatedGovernanceValue(node.institutionDetails.institutionType, currentLanguage)}</span>
                   </div>
                 )}
                 {node.institutionDetails?.controlledBy && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-indigo-950 w-28 flex-shrink-0">Controlled by:</span>
-                    <span>{node.institutionDetails.controlledBy}</span>
+                    <span>{getTranslatedGovernanceValue(node.institutionDetails.controlledBy, currentLanguage)}</span>
                   </div>
                 )}
                 {node.institutionDetails?.curriculumBody && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-indigo-950 w-28 flex-shrink-0">Curriculum Body:</span>
-                    <span className="text-slate-800 font-medium">{node.institutionDetails.curriculumBody}</span>
+                    <span className="text-slate-800 font-medium">{getTranslatedGovernanceValue(node.institutionDetails.curriculumBody, currentLanguage)}</span>
                   </div>
                 )}
                 {node.institutionDetails?.prerequisiteStream && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-indigo-950 w-28 flex-shrink-0">Prerequisite Stream:</span>
-                    <span className="text-emerald-800 font-medium">{node.institutionDetails.prerequisiteStream}</span>
+                    <span className="text-emerald-800 font-medium">{getTranslatedGovernanceValue(node.institutionDetails.prerequisiteStream, currentLanguage)}</span>
                   </div>
                 )}
                 {node.institutionDetails?.examinationTimeline && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-indigo-950 w-28 flex-shrink-0">Exam Timeline:</span>
-                    <span className="text-indigo-900 font-medium">{node.institutionDetails.examinationTimeline}</span>
+                    <span className="text-indigo-900 font-medium">{getTranslatedGovernanceValue(node.institutionDetails.examinationTimeline, currentLanguage)}</span>
                   </div>
                 )}
                 {node.institutionDetails?.admissionRoute && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-indigo-950 w-28 flex-shrink-0">Admission Route:</span>
-                    <span>{node.institutionDetails.admissionRoute}</span>
+                    <span>{getTranslatedGovernanceValue(node.institutionDetails.admissionRoute, currentLanguage)}</span>
                   </div>
                 )}
                 {node.institutionDetails?.programmesOffered && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-indigo-950 w-28 flex-shrink-0">Programmes:</span>
-                    <span>{node.institutionDetails.programmesOffered.join(', ')}</span>
+                    <span>{node.institutionDetails.programmesOffered.map((p) => getTranslatedGovernanceValue(p, currentLanguage)).join(', ')}</span>
                   </div>
                 )}
                 {node.institutionDetails?.awardingBody && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-indigo-950 w-28 flex-shrink-0">Awarding Body:</span>
-                    <span>{node.institutionDetails.awardingBody}</span>
+                    <span>{getTranslatedGovernanceValue(node.institutionDetails.awardingBody, currentLanguage)}</span>
                   </div>
                 )}
                 {node.institutionDetails?.accreditation && (
                   <div className="flex items-start gap-1">
                     <span className="font-semibold text-indigo-950 w-28 flex-shrink-0">Accreditation:</span>
-                    <span>{node.institutionDetails.accreditation}</span>
+                    <span>{getTranslatedGovernanceValue(node.institutionDetails.accreditation, currentLanguage)}</span>
                   </div>
                 )}
                 {node.institutionDetails?.nheqfLevel && (
@@ -656,13 +656,13 @@ export function DetailPanel() {
               {node.governanceDetails.positionName && (
                 <div className="flex items-start gap-1">
                   <span className="font-semibold text-purple-950 w-32 flex-shrink-0">Official Post:</span>
-                  <span className="font-bold text-slate-900">{node.governanceDetails.positionName}</span>
+                  <span className="font-bold text-slate-900">{getTranslatedGovernanceValue(node.governanceDetails.positionName, currentLanguage)}</span>
                 </div>
               )}
               {node.governanceDetails.cadreOrService && (
                 <div className="flex items-start gap-1">
                   <span className="font-semibold text-purple-950 w-32 flex-shrink-0">Cadre / Service:</span>
-                  <span className="font-bold text-rose-800 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">{node.governanceDetails.cadreOrService}</span>
+                  <span className="font-bold text-rose-800 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">{getTranslatedGovernanceValue(node.governanceDetails.cadreOrService, currentLanguage)}</span>
                 </div>
               )}
               {node.governanceDetails.constitutionalArticle && (
@@ -674,25 +674,25 @@ export function DetailPanel() {
               {node.governanceDetails.electoralOrSelectionMethod && (
                 <div className="flex items-start gap-1">
                   <span className="font-semibold text-purple-950 w-32 flex-shrink-0">Selection / Election:</span>
-                  <span>{node.governanceDetails.electoralOrSelectionMethod}</span>
+                  <span>{getTranslatedGovernanceValue(node.governanceDetails.electoralOrSelectionMethod, currentLanguage)}</span>
                 </div>
               )}
               {node.governanceDetails.reportingTo && (
                 <div className="flex items-start gap-1">
                   <span className="font-semibold text-purple-950 w-32 flex-shrink-0">Reports To:</span>
-                  <span className="font-medium text-slate-900">{node.governanceDetails.reportingTo}</span>
+                  <span className="font-medium text-slate-900">{getTranslatedGovernanceValue(node.governanceDetails.reportingTo, currentLanguage)}</span>
                 </div>
               )}
               {node.governanceDetails.geographicalJurisdiction && (
                 <div className="flex items-start gap-1">
                   <span className="font-semibold text-purple-950 w-32 flex-shrink-0">Jurisdiction:</span>
-                  <span>{node.governanceDetails.geographicalJurisdiction}</span>
+                  <span>{getTranslatedGovernanceValue(node.governanceDetails.geographicalJurisdiction, currentLanguage)}</span>
                 </div>
               )}
               {node.governanceDetails.tenure && (
                 <div className="flex items-start gap-1">
                   <span className="font-semibold text-purple-950 w-32 flex-shrink-0">Tenure:</span>
-                  <span>{node.governanceDetails.tenure}</span>
+                  <span>{getTranslatedGovernanceValue(node.governanceDetails.tenure, currentLanguage)}</span>
                 </div>
               )}
               {node.governanceDetails.superiorAuthority && (
@@ -701,7 +701,7 @@ export function DetailPanel() {
                     <Crown className="w-3.5 h-3.5 text-amber-700 flex-shrink-0" />
                     Superior Authority &amp; Influencing Power:
                   </span>
-                  <span className="text-slate-800 font-medium leading-relaxed block">{node.governanceDetails.superiorAuthority}</span>
+                  <span className="text-slate-800 font-medium leading-relaxed block">{getTranslatedGovernanceValue(node.governanceDetails.superiorAuthority, currentLanguage)}</span>
                 </div>
               )}
               {node.governanceDetails.removalOrDeElectionMethod && (
@@ -710,7 +710,7 @@ export function DetailPanel() {
                     <AlertTriangle className="w-3.5 h-3.5 text-rose-700 flex-shrink-0" />
                     Removal / De-election Authority:
                   </span>
-                  <span className="text-rose-950 font-medium leading-relaxed block">{node.governanceDetails.removalOrDeElectionMethod}</span>
+                  <span className="text-rose-950 font-medium leading-relaxed block">{getTranslatedGovernanceValue(node.governanceDetails.removalOrDeElectionMethod, currentLanguage)}</span>
                 </div>
               )}
             </div>
@@ -754,7 +754,7 @@ export function DetailPanel() {
               </div>
             ) : (
               <div className="bg-white/90 border border-amber-200/60 rounded-lg p-3 text-xs text-slate-800 leading-relaxed font-sans space-y-1.5 whitespace-pre-line shadow-2xs">
-                {node.institutionDetails?.careerValue}
+                {getTranslatedGovernanceValue(node.institutionDetails?.careerValue, currentLanguage)}
               </div>
             )}
           </div>
@@ -862,25 +862,25 @@ export function DetailPanel() {
               {node.bankingJudicialDetails?.tier && (
                 <div className="flex items-start gap-1">
                   <span className="font-semibold text-amber-950 w-28 flex-shrink-0">Tier:</span>
-                  <span>{node.bankingJudicialDetails.tier}</span>
+                  <span>{getTranslatedGovernanceValue(node.bankingJudicialDetails.tier, currentLanguage)}</span>
                 </div>
               )}
               {node.bankingJudicialDetails?.jurisdictionOrScope && (
                 <div className="flex items-start gap-1">
                   <span className="font-semibold text-amber-950 w-28 flex-shrink-0">Jurisdiction:</span>
-                  <span>{node.bankingJudicialDetails.jurisdictionOrScope}</span>
+                  <span>{getTranslatedGovernanceValue(node.bankingJudicialDetails.jurisdictionOrScope, currentLanguage)}</span>
                 </div>
               )}
               {node.bankingJudicialDetails?.appointmentProcess && (
                 <div className="flex items-start gap-1">
                   <span className="font-semibold text-amber-950 w-28 flex-shrink-0">Appointment:</span>
-                  <span>{node.bankingJudicialDetails.appointmentProcess}</span>
+                  <span>{getTranslatedGovernanceValue(node.bankingJudicialDetails.appointmentProcess, currentLanguage)}</span>
                 </div>
               )}
               {node.bankingJudicialDetails?.grievanceOrAppellateRoute && (
                 <div className="flex items-start gap-1">
                   <span className="font-semibold text-amber-950 w-28 flex-shrink-0">Appellate/Redress:</span>
-                  <span>{node.bankingJudicialDetails.grievanceOrAppellateRoute}</span>
+                  <span>{getTranslatedGovernanceValue(node.bankingJudicialDetails.grievanceOrAppellateRoute, currentLanguage)}</span>
                 </div>
               )}
             </div>

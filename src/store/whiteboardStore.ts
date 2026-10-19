@@ -774,7 +774,7 @@ export const useWhiteboardStore = create<WhiteboardState>((set, get) => ({
     const curProjId = get().currentProjectId;
     const src = get().sectionPrintSettings[sourceSectionId];
     if (!src) return;
-    const { nodePositions: _discard, ...commonSettings } = src;
+    const { nodePositions: _discardPositions, nodeOverrides: _discardOverrides, ...commonSettings } = src;
     const allSections = get().sections || [];
     const updated: Record<string, SectionPrintSettings> = {};
     for (const s of allSections) {

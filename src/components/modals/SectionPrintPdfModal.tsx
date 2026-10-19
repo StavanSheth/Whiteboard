@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { useWhiteboardStore } from '../../store/whiteboardStore';
 import { SECTION_METAS } from '../../data/sections';
-import { EducationNode, SectionPrintSettings } from '../../types';
+import { EducationNode, SectionPrintSettings, NodePrintOverride } from '../../types';
 import {
   calculateSectionTreeLayout,
   SectionTreeLayoutResult,
@@ -35,8 +35,22 @@ import {
   Sliders,
   CopyCheck,
   Search,
-  ChevronDown
+  ChevronDown,
+  Languages,
+  Crown,
+  AlertTriangle
 } from 'lucide-react';
+import {
+  t,
+  getTranslatedNodeTitle,
+  getTranslatedNodeSummary,
+  getTranslatedSectionTitle,
+  getTranslatedSectionSubtitle,
+  getTranslatedLevel,
+  getTranslatedGovernanceValue,
+  Language,
+  initGoogleTranslate
+} from '../../services/translationService';
 
 interface NumberStepperInputProps {
   label: string;
@@ -156,6 +170,21 @@ function NumberStepperInput({
   );
 }
 
+export const getTypography = (fs: number, lh: number, ps: number) => ({
+  fontSizePx: fs,
+  lineHeight: lh,
+  paraSpacingPx: ps,
+  hubTitle: `${Math.round(fs * 1.35 * 10) / 10}px`,
+  title: `${Math.round(fs * 1.18 * 10) / 10}px`,
+  body: `${fs}px`,
+  sub: `${Math.round(fs * 0.9 * 10) / 10}px`,
+  badge: `${Math.round(fs * 0.82 * 10) / 10}px`,
+  micro: `${Math.round(fs * 0.74 * 10) / 10}px`,
+  spacing: `${ps}px`,
+  spacingHalf: `${Math.max(2, Math.round(ps / 2))}px`,
+  spacingQuarter: `${Math.max(1, Math.round(ps / 3))}px`
+});
+
 interface SectionToolbarDeckProps {
   arrowStyle: 'curved' | 'straight' | 'orthogonal' | 'rounded-orthogonal';
   setArrowStyle: (val: 'curved' | 'straight' | 'orthogonal' | 'rounded-orthogonal') => void;
@@ -201,6 +230,8 @@ interface SectionToolbarDeckProps {
   setIsAutoFit?: (val: boolean) => void;
   manualScale?: number;
   setManualScale?: ((val: number | ((prev: number) => number)) => void) | React.Dispatch<React.SetStateAction<number>>;
+  language?: Language;
+  setLanguage?: (val: Language) => void;
 
   // Reset & moved nodes
   onReset?: () => void;
@@ -209,6 +240,11 @@ interface SectionToolbarDeckProps {
   hasCustomPositions?: boolean;
   onClearNodePositions?: () => void;
   onApplyToAll?: () => void;
+
+  // Single card / node targeting
+  targetType?: 'global' | 'section' | 'node';
+  targetLabel?: string;
+  onDeselectTarget?: () => void;
 }
 
 function SectionToolbarDeck({
@@ -252,17 +288,72 @@ function SectionToolbarDeck({
   setIsAutoFit,
   manualScale,
   setManualScale,
+  language,
+  setLanguage,
   onReset,
   resetTitle,
   isPerPage = false,
   hasCustomPositions = false,
   onClearNodePositions,
-  onApplyToAll
+  onApplyToAll,
+  targetType = 'global',
+  targetLabel,
+  onDeselectTarget
 }: SectionToolbarDeckProps) {
   return (
     <div className="space-y-2 text-xs text-slate-700">
       {/* Row 1: Presentation & Layout Mode Selectors */}
       <div className="flex flex-wrap items-center gap-2">
+        {/* Active Node Target Badge in Row 1 */}
+        {targetType === 'node' && (
+          <div className="flex items-center gap-1.5 bg-amber-100 text-amber-950 px-2 py-1 rounded-lg border border-amber-300 font-bold text-[10.5px] shadow-2xs">
+            <span className="flex items-center gap-1">
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+              <span>Card Target:</span>
+              <strong className="text-emerald-950 font-black truncate max-w-[160px] sm:max-w-[220px]" title={targetLabel}>
+                {targetLabel}
+              </strong>
+            </span>
+            {onDeselectTarget && (
+              <button
+                type="button"
+                onClick={onDeselectTarget}
+                className="ml-1 text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-200 hover:bg-amber-300 text-amber-950 cursor-pointer transition-colors"
+                title="Deselect card and return to page settings"
+              >
+                ✕ Deselect
+              </button>
+            )}
+          </div>
+        )}
+        {/* Language Switcher (Prominent at front of Row 1) */}
+        {setLanguage && language && (
+          <div className="flex items-center gap-0.5 bg-indigo-50 p-0.5 rounded-lg border border-indigo-200 shadow-2xs" title="Change Language (English, हिन्दी, ગુજરાતી)">
+            <span className="text-[10px] font-bold text-indigo-900 pl-1 flex items-center gap-1">
+              <Languages className="w-3.5 h-3.5 text-indigo-700" />
+              Lang:
+            </span>
+            {([
+              { code: 'en' as const, label: 'EN' },
+              { code: 'hi' as const, label: 'HI' },
+              { code: 'gu' as const, label: 'GU' }
+            ]).map((l) => (
+              <button
+                key={l.code}
+                type="button"
+                onClick={() => setLanguage(l.code)}
+                className={`px-1.5 py-0.5 text-[10px] font-bold rounded transition-all cursor-pointer ${
+                  language === l.code
+                    ? 'bg-indigo-700 text-white shadow-2xs'
+                    : 'text-indigo-900 hover:bg-indigo-100/70'
+                }`}
+              >
+                {l.label}
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Dossier vs Compact Mode (if available) */}
         {setIsDossier && isDossier !== undefined && (
           <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
@@ -868,8 +959,29 @@ export function SectionPrintPdfModal() {
     setSectionPrintSettings,
     setSectionNodePosition,
     resetSectionPrintSettings,
-    applySectionSettingsToAll
+    applySectionSettingsToAll,
+    currentLanguage,
+    setLanguage,
+    translationScope,
+    setTranslationScope,
+    useGoogleTranslateFallback
   } = useWhiteboardStore();
+
+  const [isLangMenuOpen, setIsLangMenuOpen] = useState<boolean>(false);
+  const langMenuRef = useRef<HTMLDivElement | null>(null);
+
+  // Close language dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (langMenuRef.current && !langMenuRef.current.contains(e.target as Node)) {
+        setIsLangMenuOpen(false);
+      }
+    };
+    if (isLangMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isLangMenuOpen]);
 
   const activeSections = useMemo(() => {
     return sections && sections.length > 0 ? sections : SECTION_METAS;
@@ -878,6 +990,10 @@ export function SectionPrintPdfModal() {
   const validSections = useMemo(() => {
     return activeSections.filter((s) => s.id !== 'SEC-00');
   }, [activeSections]);
+
+  const nodeMap = useMemo(() => {
+    return new Map((nodes || []).map((n) => [n.id, n]));
+  }, [nodes]);
 
   const [selectedSectionIds, setSelectedSectionIds] = useState<string[]>(() => {
     return SECTION_METAS.filter((s) => s.id !== 'SEC-00').map((s) => s.id);
@@ -962,6 +1078,7 @@ export function SectionPrintPdfModal() {
 
   // Per-Page / Section Customization & Drag State
   const [customizingSectionId, setCustomizingSectionId] = useState<string>('all');
+  const [customizingNodeId, setCustomizingNodeId] = useState<string | null>(null);
   const [dragState, setDragState] = useState<{
     sectionId: string;
     nodeId: string;
@@ -1017,8 +1134,25 @@ export function SectionPrintPdfModal() {
     }
   }, [printDossierMode]);
 
-  // Settings getters & updater for active target (Global 'all' vs Specific Section)
+  // Settings getters & updater for active target (Global 'all' vs Specific Section vs Single Card)
   const updateActiveSetting = <K extends keyof SectionPrintSettings>(key: K, val: SectionPrintSettings[K]) => {
+    if (customizingSectionId !== 'all' && customizingNodeId) {
+      const secSettings = sectionPrintSettings[customizingSectionId] || {};
+      const currentOverrides = secSettings.nodeOverrides || {};
+      const thisOverride = currentOverrides[customizingNodeId] || {};
+      const updatedOverride: NodePrintOverride = {
+        ...thisOverride,
+        [key]: val
+      };
+      setSectionPrintSettings(customizingSectionId, {
+        nodeOverrides: {
+          ...currentOverrides,
+          [customizingNodeId]: updatedOverride
+        }
+      });
+      return;
+    }
+
     if (customizingSectionId === 'all') {
       if (key === 'customNodeSpacing') setCustomNodeSpacing(val as number);
       else if (key === 'customVSpacing') setCustomVSpacing(val as number);
@@ -1042,32 +1176,54 @@ export function SectionPrintPdfModal() {
       else if (key === 'showFkTable') setShowFkTable(val as boolean);
       else if (key === 'isAutoFit') setIsAutoFit(val as boolean);
       else if (key === 'manualScale') setManualScale(val as number);
+      else if (key === 'language') {
+        setLanguage(val as Language);
+        if (useGoogleTranslateFallback && (val as Language) !== 'en') {
+          initGoogleTranslate(val as Language, true);
+        }
+      }
     } else {
       setSectionPrintSettings(customizingSectionId, { [key]: val });
     }
   };
 
   const activeSecOverrides = customizingSectionId !== 'all' ? (sectionPrintSettings[customizingSectionId] || {}) : {};
+  const activeNodeOverride = (customizingSectionId !== 'all' && customizingNodeId)
+    ? (activeSecOverrides.nodeOverrides?.[customizingNodeId] || {})
+    : {};
+
+  const curLanguage: Language = activeNodeOverride.language ?? activeSecOverrides.language ?? currentLanguage;
   const curDirection = activeSecOverrides.treeDirection ?? treeDirection;
   const curArrowStyle = activeSecOverrides.arrowStyle ?? arrowStyle;
   const curPageSplitMode = activeSecOverrides.pageSplitMode ?? pageSplitMode;
   const curFkMode = activeSecOverrides.fkMode ?? fkMode;
   const curAlternateDepth = activeSecOverrides.alternateDepth ?? alternateDepth;
   const curAlternateSpacingPx = activeSecOverrides.alternateSpacingPx ?? alternateSpacingPx;
-  const curNodeBoxWidth = activeSecOverrides.nodeBoxWidth ?? nodeBoxWidth;
-  const curCardHeightPercent = activeSecOverrides.cardHeightPercent ?? cardHeightPercent;
+  const curNodeBoxWidth = activeNodeOverride.nodeBoxWidth ?? activeSecOverrides.nodeBoxWidth ?? nodeBoxWidth;
+  const curCardHeightPercent = activeNodeOverride.cardHeightPercent ?? activeSecOverrides.cardHeightPercent ?? cardHeightPercent;
   const curCustomNodeSpacing = activeSecOverrides.customNodeSpacing ?? customNodeSpacing;
   const curCustomVSpacing = activeSecOverrides.customVSpacing ?? customVSpacing;
   const curCustomArrowHeight = activeSecOverrides.customArrowHeight ?? customArrowHeight;
   const curCustomFkArrowHeight = activeSecOverrides.customFkArrowHeight ?? customFkArrowHeight;
-  const curFontSizePx = activeSecOverrides.fontSizePx ?? fontSizePx;
-  const curLineHeightMult = activeSecOverrides.lineHeightMult ?? lineHeightMult;
-  const curParaSpacingPx = activeSecOverrides.paraSpacingPx ?? paraSpacingPx;
+  const curFontSizePx = activeNodeOverride.fontSizePx ?? activeSecOverrides.fontSizePx ?? fontSizePx;
+  const curLineHeightMult = activeNodeOverride.lineHeightMult ?? activeSecOverrides.lineHeightMult ?? lineHeightMult;
+  const curParaSpacingPx = activeNodeOverride.paraSpacingPx ?? activeSecOverrides.paraSpacingPx ?? paraSpacingPx;
   const curPrintOrientation = activeSecOverrides.printOrientation ?? printOrientation;
-  const curIsDossier = activeSecOverrides.isDossier ?? printDossierMode;
+  const curIsDossier = activeNodeOverride.isDossier ?? activeSecOverrides.isDossier ?? printDossierMode;
   const curShowFkTable = activeSecOverrides.showFkTable ?? showFkTable;
   const curIsAutoFit = activeSecOverrides.isAutoFit ?? isAutoFit;
   const curManualScale = activeSecOverrides.manualScale ?? manualScale;
+
+  const targetNode = useMemo(() => {
+    if (!customizingNodeId || customizingSectionId === 'all') return null;
+    const secLayout = treeLayouts[customizingSectionId];
+    return secLayout?.nodes.find((n) => n.id === customizingNodeId) || null;
+  }, [customizingNodeId, customizingSectionId, treeLayouts]);
+
+  const targetNodeTitle = useMemo(() => {
+    if (!targetNode?.data) return customizingNodeId || '';
+    return getTranslatedNodeTitle(targetNode.data, curLanguage, translationScope);
+  }, [targetNode, curLanguage, translationScope, customizingNodeId]);
 
   // Pointer Drag Handlers for Repositioning Nodes on Printable Page
   const handleStartDrag = (
@@ -1111,8 +1267,8 @@ export function SectionPrintPdfModal() {
 
     const onPointerUp = () => {
       if (dragState && hasMoved) {
-        const finalX = Math.round(dragState.initNodeX + dragState.currentDx);
-        const finalY = Math.round(dragState.initNodeY + dragState.currentDy);
+        const finalX = Math.max(10, Math.round(dragState.initNodeX + dragState.currentDx));
+        const finalY = Math.max(10, Math.round(dragState.initNodeY + dragState.currentDy));
 
         // 1. Immediately update treeLayouts in local state so the node stays right where it was released
         // and immediately recompute the bounding box width and height so the page resizes dynamically
@@ -1388,27 +1544,6 @@ export function SectionPrintPdfModal() {
     toggleDetailPanel(true);
   };
 
-  // Uniform typography and spacing scale across all titles, badges, and text blocks in each node
-  const typo = useMemo(() => {
-    const fs = fontSizePx;
-    const lh = lineHeightMult;
-    const ps = paraSpacingPx;
-    return {
-      fontSizePx: fs,
-      lineHeight: lh,
-      paraSpacingPx: ps,
-      hubTitle: `${Math.round(fs * 1.35 * 10) / 10}px`,
-      title: `${Math.round(fs * 1.18 * 10) / 10}px`,
-      body: `${fs}px`,
-      sub: `${Math.round(fs * 0.9 * 10) / 10}px`,
-      badge: `${Math.round(fs * 0.82 * 10) / 10}px`,
-      micro: `${Math.round(fs * 0.74 * 10) / 10}px`,
-      spacing: `${ps}px`,
-      spacingHalf: `${Math.max(2, Math.round(ps / 2))}px`,
-      spacingQuarter: `${Math.max(1, Math.round(ps / 3))}px`
-    };
-  }, [fontSizePx, lineHeightMult, paraSpacingPx]);
-
   if (!isOpen) return null;
 
   return (
@@ -1542,7 +1677,7 @@ export function SectionPrintPdfModal() {
                               {sec.id}
                             </span>
                             <span className="text-[11px] font-medium text-slate-800 truncate flex-1">
-                              Sec {sec.number}: {sec.title}
+                              Sec {sec.number}: {getTranslatedSectionTitle(sec, currentLanguage, translationScope)}
                             </span>
                           </label>
                         );
@@ -1552,41 +1687,234 @@ export function SectionPrintPdfModal() {
               )}
             </div>
 
-            {/* Target Settings Scope: All Pages (Global) vs Specific Page */}
+            {/* Target Settings Scope: All Pages (Global) vs Specific Page vs Single Card */}
             <div className="flex items-center gap-1.5 bg-amber-50/90 border border-amber-300 rounded-lg px-2 py-1 shadow-2xs">
               <Sliders className="w-3.5 h-3.5 text-amber-700 flex-shrink-0" />
               <span className="text-[10.5px] font-bold text-amber-950 whitespace-nowrap">Settings Target:</span>
               <select
-                value={customizingSectionId}
-                onChange={(e) => setCustomizingSectionId(e.target.value)}
-                className="text-[11px] font-bold rounded border border-amber-300 bg-white px-1.5 py-0.5 text-slate-900 shadow-2xs focus:ring-1 focus:ring-amber-500 focus:outline-hidden max-w-[130px] sm:max-w-[170px] truncate"
+                value={customizingNodeId ? `node:${customizingSectionId}:${customizingNodeId}` : customizingSectionId}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (val.startsWith('node:')) {
+                    const [, secId, nodeId] = val.split(':');
+                    setCustomizingSectionId(secId);
+                    setCustomizingNodeId(nodeId);
+                  } else {
+                    setCustomizingSectionId(val);
+                    setCustomizingNodeId(null);
+                  }
+                }}
+                className="text-[11px] font-bold rounded border border-amber-300 bg-white px-1.5 py-0.5 text-slate-900 shadow-2xs focus:ring-1 focus:ring-amber-500 focus:outline-hidden max-w-[140px] sm:max-w-[200px] truncate"
               >
                 <option value="all">All Pages (Global Default)</option>
-                {validSections.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    Page: Sec {s.number} ({s.id})
-                  </option>
-                ))}
+                {validSections.map((s) => {
+                  const secNodes = (treeLayouts[s.id]?.nodes || []).filter((n) => !n.isFk && n.data?.type !== 'sectionHub');
+                  return (
+                    <optgroup key={s.id} label={`Sec ${s.number}: ${getTranslatedSectionTitle(s, currentLanguage, translationScope)}`}>
+                      <option value={s.id}>
+                        📄 Entire Page (Sec {s.number})
+                      </option>
+                      {secNodes.map((n) => {
+                        const title = n.data ? getTranslatedNodeTitle(n.data, currentLanguage, translationScope) : n.id;
+                        const hasOverride = Boolean(sectionPrintSettings[s.id]?.nodeOverrides?.[n.id]);
+                        return (
+                          <option key={n.id} value={`node:${s.id}:${n.id}`}>
+                            &nbsp;&nbsp;🎯 Card: {title} {hasOverride ? '★' : ''}
+                          </option>
+                        );
+                      })}
+                    </optgroup>
+                  );
+                })}
               </select>
 
-              {customizingSectionId !== 'all' && (
+              {(customizingSectionId !== 'all' || customizingNodeId) && (
                 <div className="flex items-center gap-1 pl-1 border-l border-amber-300">
-                  <button
-                    onClick={() => applySectionSettingsToAll(customizingSectionId)}
-                    className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-800 hover:bg-emerald-700 text-amber-300 font-bold text-[9.5px] shadow-2xs cursor-pointer transition-colors whitespace-nowrap"
-                    title="Apply this section's layout settings to all other pages"
-                  >
-                    <CopyCheck className="w-2.5 h-2.5" />
-                    <span>Apply All</span>
-                  </button>
-                  <button
-                    onClick={() => resetSectionPrintSettings(customizingSectionId)}
-                    className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 font-bold text-[9.5px] cursor-pointer transition-colors whitespace-nowrap"
-                    title="Reset this page's custom settings and moved nodes back to auto"
-                  >
-                    <RotateCcw className="w-2.5 h-2.5" />
-                    <span>Reset</span>
-                  </button>
+                  {customizingNodeId ? (
+                    <>
+                      <button
+                        onClick={() => {
+                          const secSettings = sectionPrintSettings[customizingSectionId] || {};
+                          const currentOverrides = { ...(secSettings.nodeOverrides || {}) };
+                          delete currentOverrides[customizingNodeId];
+                          setSectionPrintSettings(customizingSectionId, {
+                            nodeOverrides: currentOverrides
+                          });
+                        }}
+                        className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 font-bold text-[9.5px] cursor-pointer transition-colors whitespace-nowrap"
+                        title="Reset this card's custom overrides back to section defaults"
+                      >
+                        <RotateCcw className="w-2.5 h-2.5" />
+                        <span>Reset Card</span>
+                      </button>
+                      <button
+                        onClick={() => setCustomizingNodeId(null)}
+                        className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 font-bold text-[9.5px] cursor-pointer transition-colors whitespace-nowrap"
+                        title="Deselect card and return to page settings"
+                      >
+                        <span>✕ Deselect</span>
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => applySectionSettingsToAll(customizingSectionId)}
+                        className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-800 hover:bg-emerald-700 text-amber-300 font-bold text-[9.5px] shadow-2xs cursor-pointer transition-colors whitespace-nowrap"
+                        title="Apply this section's layout settings to all other pages"
+                      >
+                        <CopyCheck className="w-2.5 h-2.5" />
+                        <span>Apply All</span>
+                      </button>
+                      <button
+                        onClick={() => resetSectionPrintSettings(customizingSectionId)}
+                        className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 font-bold text-[9.5px] cursor-pointer transition-colors whitespace-nowrap"
+                        title="Reset this page's custom settings and moved nodes back to auto"
+                      >
+                        <RotateCcw className="w-2.5 h-2.5" />
+                        <span>Reset</span>
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Language Selector Dropdown (Like in Toolbar) */}
+            <div className="relative" ref={langMenuRef}>
+              <button
+                type="button"
+                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-bold transition-all cursor-pointer shadow-2xs ${
+                  curLanguage !== 'en'
+                    ? 'border-indigo-500 bg-indigo-50 text-indigo-950 ring-1 ring-indigo-400'
+                    : 'border-slate-300 bg-white hover:bg-slate-50 text-slate-700'
+                }`}
+                title={`Change Language & Translation Scope (${customizingNodeId ? `Card: ${targetNodeTitle}` : customizingSectionId === 'all' ? 'All Pages' : `Page Sec ${validSections.find(s => s.id === customizingSectionId)?.number || customizingSectionId}`})`}
+              >
+                <Languages className={`w-3.5 h-3.5 ${curLanguage !== 'en' ? 'text-indigo-700' : 'text-slate-600'}`} />
+                <span className="hidden sm:inline">
+                  {curLanguage === 'hi' ? 'हिन्दी' : curLanguage === 'gu' ? 'ગુજરાતી' : t('language', curLanguage)}
+                </span>
+                <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold ${
+                  curLanguage !== 'en' ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-slate-700'
+                }`}>
+                  {curLanguage.toUpperCase()}
+                </span>
+                <ChevronDown className={`w-3 h-3 text-slate-500 transition-transform ${isLangMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isLangMenuOpen && (
+                <div className="absolute right-0 top-full mt-1.5 w-72 bg-white rounded-xl shadow-2xl border border-slate-200 p-3 z-50 text-slate-800 space-y-3 animate-in fade-in zoom-in-95 duration-100">
+                  {/* Header */}
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                    <div className="flex items-center gap-1.5">
+                      <Languages className="w-4 h-4 text-indigo-600" />
+                      <span className="text-xs font-bold text-slate-900">Language &amp; Translation</span>
+                    </div>
+                    <span className="text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200 truncate max-w-[120px]">
+                      {customizingNodeId
+                        ? `Card: ${targetNodeTitle}`
+                        : customizingSectionId === 'all'
+                        ? 'All Pages'
+                        : `Sec ${validSections.find(s => s.id === customizingSectionId)?.number || customizingSectionId}`}
+                    </span>
+                  </div>
+
+                  {/* 1. Language Options */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        Choose Language
+                      </label>
+                      {customizingNodeId ? (
+                        activeNodeOverride.language && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              updateActiveSetting('language', undefined as any);
+                            }}
+                            className="text-[9.5px] text-amber-700 hover:text-amber-900 font-bold underline cursor-pointer"
+                          >
+                            Reset to Page ({((activeSecOverrides.language || currentLanguage) as string).toUpperCase()})
+                          </button>
+                        )
+                      ) : customizingSectionId !== 'all' && activeSecOverrides.language && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const { language: _rem, ...rest } = activeSecOverrides;
+                            setSectionPrintSettings(customizingSectionId, { ...rest, language: undefined });
+                          }}
+                          className="text-[9.5px] text-amber-700 hover:text-amber-900 font-bold underline cursor-pointer"
+                        >
+                          Reset to Global ({currentLanguage.toUpperCase()})
+                        </button>
+                      )}
+                    </div>
+                    <div className="space-y-1">
+                      {[
+                        { code: 'en' as const, name: 'English', subtext: 'Default constitutional terminology' },
+                        { code: 'hi' as const, name: 'हिन्दी (Hindi)', subtext: 'संवैधानिक, मंत्रालय और राज्य निकाय' },
+                        { code: 'gu' as const, name: 'ગુજરાતી (Gujarati)', subtext: 'બંધારણીય, મંત્રાલયો અને પંચાયત' }
+                      ].map((lang) => (
+                        <button
+                          key={lang.code}
+                          type="button"
+                          onClick={() => {
+                            if (customizingSectionId !== 'all' && customizingNodeId) {
+                              updateActiveSetting('language', lang.code);
+                            } else if (customizingSectionId === 'all') {
+                              setLanguage(lang.code);
+                              if (useGoogleTranslateFallback && lang.code !== 'en') {
+                                initGoogleTranslate(lang.code, true);
+                              }
+                            } else {
+                              setSectionPrintSettings(customizingSectionId, { language: lang.code });
+                            }
+                          }}
+                          className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-left transition-colors cursor-pointer ${
+                            curLanguage === lang.code
+                              ? 'bg-indigo-50 text-indigo-950 font-bold border border-indigo-200'
+                              : 'hover:bg-slate-50 text-slate-700 border border-transparent'
+                          }`}
+                        >
+                          <div>
+                            <div className="text-xs">{lang.name}</div>
+                            <div className="text-[10px] text-slate-400 font-normal">{lang.subtext}</div>
+                          </div>
+                          {curLanguage === lang.code && <Check className="w-4 h-4 text-indigo-600 flex-shrink-0" />}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 2. Scope Options */}
+                  <div className="pt-2 border-t border-slate-100">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
+                      Translation Scope
+                    </label>
+                    <div className="grid grid-cols-3 gap-1 bg-slate-100 p-1 rounded-lg">
+                      {[
+                        { id: 'all' as const, label: 'All', title: 'Translate UI buttons, section outline, and node cards' },
+                        { id: 'ui' as const, label: 'UI Only', title: 'Translate top toolbar, tabs, and outline sidebar only' },
+                        { id: 'cards' as const, label: 'Cards Only', title: 'Translate node cards, roles, and section titles only' }
+                      ].map((scope) => (
+                        <button
+                          key={scope.id}
+                          type="button"
+                          onClick={() => setTranslationScope(scope.id)}
+                          title={scope.title}
+                          className={`px-2 py-1 rounded text-[11px] font-bold text-center transition-all cursor-pointer ${
+                            translationScope === scope.id
+                              ? 'bg-white text-indigo-900 shadow-xs ring-1 ring-slate-300'
+                              : 'text-slate-600 hover:text-slate-900'
+                          }`}
+                        >
+                          {scope.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -1659,15 +1987,29 @@ export function SectionPrintPdfModal() {
               updateActiveSetting('manualScale', newScale);
               updateActiveSetting('isAutoFit', false);
             }}
+            language={curLanguage}
+            setLanguage={(val) => updateActiveSetting('language', val)}
+            targetType={customizingNodeId ? 'node' : customizingSectionId !== 'all' ? 'section' : 'global'}
+            targetLabel={targetNodeTitle}
+            onDeselectTarget={customizingNodeId ? () => setCustomizingNodeId(null) : undefined}
             onReset={() => {
-              if (customizingSectionId === 'all') {
+              if (customizingSectionId !== 'all' && customizingNodeId) {
+                const secSettings = sectionPrintSettings[customizingSectionId] || {};
+                const currentOverrides = { ...(secSettings.nodeOverrides || {}) };
+                delete currentOverrides[customizingNodeId];
+                setSectionPrintSettings(customizingSectionId, {
+                  nodeOverrides: currentOverrides
+                });
+              } else if (customizingSectionId === 'all') {
                 resetSpacingAndSizing();
               } else {
                 resetSectionPrintSettings(customizingSectionId);
               }
             }}
             resetTitle={
-              customizingSectionId === 'all'
+              customizingNodeId
+                ? `Reset this card (${targetNodeTitle}) to page defaults`
+                : customizingSectionId === 'all'
                 ? 'Reset global spacing, sizing, and styling to optimal defaults'
                 : 'Reset this section page to global defaults'
             }
@@ -1773,6 +2115,12 @@ export function SectionPrintPdfModal() {
               if (!layout) return null;
 
               const secOverrides = sectionPrintSettings[sec.id] || {};
+              const secLanguage: Language = secOverrides.language ?? currentLanguage;
+              const secTypo = getTypography(
+                secOverrides.fontSizePx ?? fontSizePx,
+                secOverrides.lineHeightMult ?? lineHeightMult,
+                secOverrides.paraSpacingPx ?? paraSpacingPx
+              );
               const secSplitMode = secOverrides.pageSplitMode ?? pageSplitMode;
               const secOrientation = secOverrides.printOrientation ?? printOrientation;
               const secAutoFit = secOverrides.isAutoFit ?? isAutoFit;
@@ -1811,7 +2159,7 @@ export function SectionPrintPdfModal() {
                               <span>ECOSYSTEM TREE DIAGRAM</span>
                             </div>
                             <h2 className="text-xl font-bold text-slate-900 tracking-tight mt-0.5 flex items-center gap-2">
-                              <span>{sec.title}</span>
+                              <span>{getTranslatedSectionTitle(sec, secLanguage, translationScope)}</span>
                               {slice.partTotal > 1 && (
                                 <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
                                   {slice.partLabel}
@@ -1819,7 +2167,7 @@ export function SectionPrintPdfModal() {
                               )}
                             </h2>
                             <p className="text-xs text-slate-600 mt-0.5 font-medium leading-relaxed">
-                              {sec.subtitle}
+                              {getTranslatedSectionSubtitle(sec, secLanguage, translationScope)}
                             </p>
 
                             {/* Per-Page Customization Controls */}
@@ -1942,6 +2290,8 @@ export function SectionPrintPdfModal() {
                                 const newScale = typeof val === 'function' ? val(secManualScale) : val;
                                 setSectionPrintSettings(sec.id, { manualScale: newScale, isAutoFit: false });
                               }}
+                              language={secLanguage}
+                              setLanguage={(val) => setSectionPrintSettings(sec.id, { language: val })}
                               isPerPage={true}
                               hasCustomPositions={Boolean(secOverrides.nodePositions && Object.keys(secOverrides.nodePositions).length > 0)}
                               onClearNodePositions={() => {
@@ -1981,24 +2331,33 @@ export function SectionPrintPdfModal() {
                                 const dx = isDraggingInThisSection ? dragState.currentDx : 0;
                                 const dy = isDraggingInThisSection ? dragState.currentDy : 0;
 
-                                // Fast node lookup map (built once per render)
+                                // Fast node lookup map (built once per render, including node overrides)
                                 const nodeMap = new Map<string, { x: number; y: number; width: number; height: number }>();
                                 for (const n of layout.nodes) {
+                                  const nOverride = secOverrides.nodeOverrides?.[n.id];
+                                  const nw = nOverride?.nodeBoxWidth ?? n.width;
+                                  const nh = nOverride?.cardHeightPercent
+                                    ? Math.round(n.height * (nOverride.cardHeightPercent / 100))
+                                    : n.height;
                                   nodeMap.set(n.id, {
                                     x: n.id === dragNodeId ? n.x + dx : n.x,
                                     y: n.id === dragNodeId ? n.y + dy : n.y,
-                                    width: n.width,
-                                    height: n.height
+                                    width: nw,
+                                    height: nh
                                   });
                                 }
 
-                                // Recompute pathD for an edge when its source or target is being dragged
+                                // Recompute pathD for an edge when its source or target is being dragged or has custom dimensions
                                 const secOverridesDir = secOverrides.treeDirection ?? treeDirection;
                                 const isRight = secOverridesDir === 'RIGHT';
 
                                 const getLivePathD = (edge: typeof layout.edges[0]): string => {
-                                  // If nothing is being dragged, or this edge isn't connected to the dragged node, use precomputed
-                                  if (!dragNodeId || (edge.source !== dragNodeId && edge.target !== dragNodeId)) {
+                                  const hasNodeOverride = (id: string) => Boolean(secOverrides.nodeOverrides?.[id]?.nodeBoxWidth || secOverrides.nodeOverrides?.[id]?.cardHeightPercent);
+                                  const isDynamic = dragNodeId
+                                    ? (edge.source === dragNodeId || edge.target === dragNodeId)
+                                    : (hasNodeOverride(edge.source) || hasNodeOverride(edge.target));
+
+                                  if (!isDynamic) {
                                     return edge.pathD || '';
                                   }
 
@@ -2127,7 +2486,7 @@ export function SectionPrintPdfModal() {
                                     <div
                                       key={node.id}
                                       onPointerDown={(e) => handleStartDrag(e, sec.id, node.id, node.x, node.y, slice.scale)}
-                                      className={`absolute rounded-xl border p-2 flex flex-col justify-start shadow-2xs select-none ${
+                                      className={`absolute rounded-xl border px-3 py-1.5 flex items-center justify-between gap-2 shadow-2xs select-none ${
                                         isOut
                                           ? 'bg-amber-50/95 border-amber-300 text-amber-900'
                                           : 'bg-sky-50/95 border-sky-300 text-sky-900'
@@ -2136,48 +2495,43 @@ export function SectionPrintPdfModal() {
                                         left: `${renderX}px`,
                                         top: `${renderY}px`,
                                         width: `${node.width}px`,
-                                        height: `${node.height}px`,
-                                        lineHeight: typo.lineHeight,
+                                        height: `${Math.min(node.height, 46)}px`,
+                                        lineHeight: secTypo.lineHeight,
                                         cursor: isThisDragging ? 'grabbing' : 'grab',
                                         touchAction: 'none'
                                       }}
+                                      title={(() => {
+                                        const extNode = node.extNodeId ? nodeMap.get(node.extNodeId) : undefined;
+                                        const targetTitle = extNode ? getTranslatedNodeTitle(extNode, secLanguage, translationScope) : (node.extNodeTitle ? getTranslatedGovernanceValue(node.extNodeTitle, secLanguage) : '');
+                                        const verb = getTranslatedGovernanceValue(node.relLabel, secLanguage);
+                                        const dir = isOut ? (secLanguage === 'hi' ? 'बहिर्गमन संबंध' : secLanguage === 'gu' ? 'બહારનો સંબંધ' : 'Outgoing') : (secLanguage === 'hi' ? 'आगमन संबंध' : secLanguage === 'gu' ? 'આવક संबंध' : 'Incoming');
+                                        return targetTitle ? `${dir}: ${verb} ➔ ${targetTitle} (${node.extNodeId})` : verb;
+                                      })()}
                                     >
-                                      <div className="flex items-center justify-between gap-1" style={{ marginBottom: typo.spacingQuarter }}>
-                                        <div className="flex items-center gap-1.5 min-w-0">
-                                          <Anchor className={`w-3.5 h-3.5 flex-shrink-0 ${isOut ? 'text-amber-700' : 'text-sky-700'}`} />
-                                          <span
-                                            className="font-bold uppercase tracking-wider truncate"
-                                            style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
-                                          >
-                                            {isOut ? 'FK Outgoing ➔' : 'FK Incoming ⬅'}
-                                          </span>
-                                        </div>
+                                      {/* Left Side: Relationship / Role Content with Anchor */}
+                                      <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                                        <Anchor className={`w-3.5 h-3.5 flex-shrink-0 ${isOut ? 'text-amber-700' : 'text-sky-700'}`} />
                                         <span
-                                          className={`font-mono font-bold px-1.5 py-0.2 rounded border truncate max-w-[120px] ${
-                                            isOut ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-sky-100 text-sky-800 border-sky-200'
-                                          }`}
-                                          style={{ fontSize: typo.micro, lineHeight: typo.lineHeight }}
+                                          className="font-bold truncate text-slate-800"
+                                          style={{ fontSize: secTypo.badge, lineHeight: secTypo.lineHeight }}
                                         >
-                                          {node.relLabel}
+                                          {(() => {
+                                            const extNode = node.extNodeId ? nodeMap.get(node.extNodeId) : undefined;
+                                            const targetTitle = extNode ? getTranslatedNodeTitle(extNode, secLanguage, translationScope) : (node.extNodeTitle ? getTranslatedGovernanceValue(node.extNodeTitle, secLanguage) : '');
+                                            const verb = getTranslatedGovernanceValue(node.relLabel, secLanguage);
+                                            return targetTitle || verb || (isOut ? (secLanguage === 'hi' ? 'बहिर्गमन लिंक' : secLanguage === 'gu' ? 'બહારની કડી' : 'Outgoing Link') : (secLanguage === 'hi' ? 'आगमन लिंक' : secLanguage === 'gu' ? 'આવક કડી' : 'Incoming Link'));
+                                          })()}
                                         </span>
                                       </div>
-                                      <div
-                                        className="font-bold truncate"
-                                        style={{
-                                          fontSize: typo.title,
-                                          lineHeight: typo.lineHeight,
-                                          marginTop: typo.spacingQuarter,
-                                          marginBottom: typo.spacingQuarter
-                                        }}
+                                      {/* Right Side: Direction Badge with Pill Highlight Background */}
+                                      <span
+                                        className={`font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded border truncate flex-shrink-0 ${
+                                          isOut ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-sky-100 text-sky-800 border-sky-200'
+                                        }`}
+                                        style={{ fontSize: secTypo.micro, lineHeight: secTypo.lineHeight }}
                                       >
-                                        {node.extSectionNumber ? `Sec ${node.extSectionNumber}: ` : ''}{node.extNodeTitle}
-                                      </div>
-                                      <div
-                                        className="font-mono text-slate-500 truncate mt-auto"
-                                        style={{ fontSize: typo.micro, lineHeight: typo.lineHeight }}
-                                      >
-                                        ID: {node.extNodeId}
-                                      </div>
+                                        {isOut ? (secLanguage === 'hi' ? 'बहिर्गमन ➔' : secLanguage === 'gu' ? 'બહાર ➔' : 'Outgoing ➔') : (secLanguage === 'hi' ? '⬅ आगमन' : secLanguage === 'gu' ? '⬅ આવક' : '⬅ Incoming')}
+                                      </span>
                                     </div>
                                   );
                                 }
@@ -2200,7 +2554,7 @@ export function SectionPrintPdfModal() {
                                         top: `${renderY}px`,
                                         width: `${node.width}px`,
                                         height: `${node.height}px`,
-                                        lineHeight: typo.lineHeight,
+                                        lineHeight: secTypo.lineHeight,
                                         cursor: isThisDragging ? 'grabbing' : 'grab',
                                         touchAction: 'none'
                                       }}
@@ -2208,7 +2562,7 @@ export function SectionPrintPdfModal() {
                                       <div>
                                         <div
                                           className="flex items-center justify-between gap-1 text-amber-400 font-mono font-bold uppercase tracking-wider"
-                                          style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                          style={{ fontSize: secTypo.badge, lineHeight: secTypo.lineHeight }}
                                         >
                                           <span>SECTION {data.sectionNumber}</span>
                                           <span>{data.abbreviation}</span>
@@ -2216,48 +2570,74 @@ export function SectionPrintPdfModal() {
                                         <h3
                                           className="font-bold"
                                           style={{
-                                            fontSize: typo.hubTitle,
-                                            lineHeight: typo.lineHeight,
-                                            marginTop: typo.spacingQuarter,
-                                            marginBottom: typo.spacingQuarter
+                                            fontSize: secTypo.hubTitle,
+                                            lineHeight: secTypo.lineHeight,
+                                            marginTop: secTypo.spacingQuarter,
+                                            marginBottom: secTypo.spacingQuarter
                                           }}
                                         >
-                                          {data.title}
+                                          {getTranslatedNodeTitle(data, secLanguage, translationScope)}
                                         </h3>
                                       </div>
                                     </div>
                                   );
                                 }
 
-                                // 3. Standard Authority Node (With Direct Inline Editing, Drag Repositioning & Hover Indicators)
+                                // 3. Standard Authority Node (With Direct Inline Editing, Drag Repositioning, Toolbar Targeting & Hover Indicators)
                                 const isEditing = editingNodeId === node.id;
+                                const isTargeted = customizingNodeId === node.id && customizingSectionId === sec.id;
+                                const nodeOverride = secOverrides.nodeOverrides?.[node.id];
+                                const nodeRenderWidth = nodeOverride?.nodeBoxWidth ?? node.width;
+                                const nodeRenderHeight = nodeOverride?.cardHeightPercent
+                                  ? Math.round(node.height * (nodeOverride.cardHeightPercent / 100))
+                                  : node.height;
+                                const nodeFs = nodeOverride?.fontSizePx ?? secOverrides.fontSizePx ?? fontSizePx;
+                                const nodeLh = nodeOverride?.lineHeightMult ?? secOverrides.lineHeightMult ?? lineHeightMult;
+                                const nodePs = nodeOverride?.paraSpacingPx ?? secOverrides.paraSpacingPx ?? paraSpacingPx;
+                                const cardTypo = (nodeOverride?.fontSizePx || nodeOverride?.lineHeightMult || nodeOverride?.paraSpacingPx)
+                                  ? getTypography(nodeFs, nodeLh, nodePs)
+                                  : secTypo;
+                                const cardDossierMode = nodeOverride?.isDossier ?? secDossier;
+                                const cardLanguage = nodeOverride?.language ?? secLanguage;
 
-                                return (
-                                  <div
+                                return (() => {
+                                  const typo = cardTypo;
+                                  const printDossierMode = cardDossierMode;
+                                  const secLanguage = cardLanguage;
+
+                                  return (
+                                    <div
                                     key={node.id}
                                     onPointerDown={(e) => handleStartDrag(e, sec.id, node.id, node.x, node.y, slice.scale)}
                                     onClick={() => {
                                       if (!hasMoved) {
-                                        handleNodeClick(node);
+                                        if (isTargeted) {
+                                          handleNodeClick(node);
+                                        } else {
+                                          setCustomizingSectionId(sec.id);
+                                          setCustomizingNodeId(node.id);
+                                        }
                                       }
                                     }}
-                                    className={`absolute rounded-xl border p-2.5 shadow-2xs flex flex-col justify-start overflow-hidden print-avoid-break transition-shadow group ${
+                                    className={`absolute rounded-xl border p-2.5 shadow-2xs flex flex-col justify-start overflow-hidden print-avoid-break transition-all group ${
                                       isEditing
                                         ? 'bg-emerald-50/50 border-emerald-500 ring-2 ring-emerald-500/50 z-20 shadow-lg'
                                         : isThisDragging
                                         ? 'bg-white border-amber-500 ring-2 ring-amber-400 z-30 shadow-2xl'
+                                        : isTargeted
+                                        ? 'bg-amber-50/40 border-amber-500 ring-2 ring-amber-500 z-20 shadow-lg'
                                         : 'bg-white border-slate-200 hover:border-emerald-500 hover:shadow-md'
                                     }`}
                                     style={{
                                       left: `${renderX}px`,
                                       top: `${renderY}px`,
-                                      width: `${node.width}px`,
-                                      height: `${node.height}px`,
+                                      width: `${nodeRenderWidth}px`,
+                                      height: `${nodeRenderHeight}px`,
                                       lineHeight: typo.lineHeight,
-                                      cursor: isEditing ? 'default' : (isThisDragging ? 'grabbing' : 'grab'),
+                                      cursor: isEditing ? 'default' : (isThisDragging ? 'grabbing' : 'pointer'),
                                       touchAction: 'none'
                                     }}
-                                    title={isEditing ? undefined : "Drag to reposition on this page, or click to edit"}
+                                    title={isEditing ? undefined : isTargeted ? "Card targeted in toolbar (click to edit text, drag to move)" : "Click to target in toolbar, or drag to move"}
                                   >
                                     {isEditing ? (
                                       /* Active Inline Editor Form inside Card */
@@ -2412,22 +2792,42 @@ export function SectionPrintPdfModal() {
                                               lineHeight: typo.lineHeight
                                             }}
                                           >
-                                            <span className="font-bold text-slate-500 uppercase tracking-wider">
-                                              Sec {data.sectionNumber} • {data.level}
-                                            </span>
-                                            <div className="flex items-center gap-1">
+                                            <div className="flex items-center gap-1 min-w-0">
+                                              <span className="font-bold text-slate-500 uppercase tracking-wider truncate">
+                                                Sec {data.sectionNumber} • {getTranslatedLevel(data.level, secLanguage)}
+                                              </span>
+                                              {isTargeted && (
+                                                <span className="no-print font-mono text-[8px] font-black px-1 py-0.2 rounded bg-amber-400 text-amber-950 uppercase border border-amber-500 shrink-0">
+                                                  TARGET
+                                                </span>
+                                              )}
+                                              {!isTargeted && nodeOverride && (
+                                                <span className="no-print font-mono text-[8px] font-bold px-1 rounded bg-amber-100 text-amber-800 border border-amber-300 shrink-0" title="Customized card">
+                                                  ★
+                                                </span>
+                                              )}
+                                            </div>
+                                            <div className="flex items-center gap-1 shrink-0">
                                               {data.abbreviation && (
                                                 <span
                                                   className="font-mono font-bold px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200"
                                                   style={{ fontSize: typo.badge }}
                                                 >
-                                                  {data.abbreviation}
+                                                  {getTranslatedGovernanceValue(data.abbreviation, secLanguage)}
                                                 </span>
                                               )}
-                                              {/* Hover Edit Icon */}
-                                              <span className="no-print opacity-0 group-hover:opacity-100 transition-opacity p-0.5 text-emerald-800 hover:bg-emerald-100 rounded">
+                                              {/* Direct text edit trigger button */}
+                                              <button
+                                                type="button"
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  handleNodeClick(node);
+                                                }}
+                                                className="no-print p-0.5 text-emerald-800 hover:bg-emerald-100 rounded cursor-pointer opacity-70 hover:opacity-100 transition-opacity"
+                                                title="Edit text content directly"
+                                              >
                                                 <Edit3 className="w-3 h-3" />
-                                              </span>
+                                              </button>
                                             </div>
                                           </div>
 
@@ -2440,19 +2840,37 @@ export function SectionPrintPdfModal() {
                                               marginBottom: typo.spacingHalf
                                             }}
                                           >
-                                            {data.title}
+                                            {getTranslatedNodeTitle(data, secLanguage, translationScope)}
                                           </h4>
 
                                           {/* Badges Container */}
                                           <div className="flex flex-wrap items-center gap-1" style={{ marginBottom: typo.spacingQuarter }}>
                                             {printDossierMode ? (
                                               <>
+                                                {data.institutionDetails?.examinationTimeline && (
+                                                  <span
+                                                    className="font-medium px-1.5 py-0.2 rounded bg-slate-100/90 text-slate-700 border border-slate-200 inline-flex items-center gap-1"
+                                                    style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                                  >
+                                                    <Clock className="w-2.5 h-2.5 text-slate-500" />
+                                                    {getTranslatedGovernanceValue(data.institutionDetails.examinationTimeline.replace(/^Timeline:\s*/i, ''), secLanguage)}
+                                                  </span>
+                                                )}
+                                                {data.institutionDetails?.admissionRoute && (
+                                                  <span
+                                                    className="font-medium px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 border border-blue-200 inline-flex items-center gap-1"
+                                                    style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                                  >
+                                                    <Sparkles className="w-2.5 h-2.5 text-blue-600" />
+                                                    {getTranslatedGovernanceValue(data.institutionDetails.admissionRoute, secLanguage)}
+                                                  </span>
+                                                )}
                                                 {data.legalStatus && (
                                                   <span
                                                     className="font-medium px-1.5 py-0.2 rounded bg-slate-100 text-slate-700 border border-slate-200 inline-block"
                                                     style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
                                                   >
-                                                    {data.legalStatus}
+                                                    {getTranslatedGovernanceValue(data.legalStatus, secLanguage)}
                                                   </span>
                                                 )}
                                                 {data.institutionDetails?.institutionType && (
@@ -2460,7 +2878,7 @@ export function SectionPrintPdfModal() {
                                                     className="font-semibold px-1.5 py-0.2 rounded bg-purple-50 text-purple-900 border border-purple-200 inline-block"
                                                     style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
                                                   >
-                                                    {data.institutionDetails.institutionType}
+                                                    {getTranslatedGovernanceValue(data.institutionDetails.institutionType, secLanguage)}
                                                   </span>
                                                 )}
                                                 {data.examDetails?.examAgency && (
@@ -2468,15 +2886,31 @@ export function SectionPrintPdfModal() {
                                                     className="font-semibold px-1.5 py-0.2 rounded bg-blue-50 text-blue-900 border border-blue-200 inline-block"
                                                     style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
                                                   >
-                                                    {data.examDetails.examAgency}
+                                                    {getTranslatedGovernanceValue(data.examDetails.examAgency, secLanguage)}
                                                   </span>
                                                 )}
                                                 {data.governanceDetails?.constitutionalArticle && (
                                                   <span
-                                                    className="font-semibold px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-900 border border-emerald-200 inline-block"
+                                                    className="font-semibold px-1.5 py-0.2 rounded bg-purple-50 text-purple-900 border border-purple-200 inline-block font-mono"
                                                     style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
                                                   >
                                                     {data.governanceDetails.constitutionalArticle}
+                                                  </span>
+                                                )}
+                                                {data.governanceDetails?.cadreOrService && (
+                                                  <span
+                                                    className="font-semibold px-1.5 py-0.2 rounded bg-rose-50 text-rose-700 border border-rose-200 inline-block"
+                                                    style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                                  >
+                                                    {getTranslatedGovernanceValue(data.governanceDetails.cadreOrService, secLanguage)}
+                                                  </span>
+                                                )}
+                                                {data.governanceDetails?.positionName && (
+                                                  <span
+                                                    className="font-medium px-1.5 py-0.2 rounded bg-indigo-50 text-indigo-700 border border-indigo-200 inline-block"
+                                                    style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
+                                                  >
+                                                    {getTranslatedGovernanceValue(data.governanceDetails.positionName, secLanguage)}
                                                   </span>
                                                 )}
                                                 {data.bankingJudicialDetails?.regulatoryBodyOrApex && (
@@ -2484,7 +2918,7 @@ export function SectionPrintPdfModal() {
                                                     className="font-semibold px-1.5 py-0.2 rounded bg-amber-50 text-amber-900 border border-amber-200 inline-block"
                                                     style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
                                                   >
-                                                    {data.bankingJudicialDetails.regulatoryBodyOrApex}
+                                                    {getTranslatedGovernanceValue(data.bankingJudicialDetails.regulatoryBodyOrApex, secLanguage)}
                                                   </span>
                                                 )}
                                               </>
@@ -2492,6 +2926,7 @@ export function SectionPrintPdfModal() {
                                               /* Compact mode: Show only ONE clean primary badge */
                                               (() => {
                                                 const primaryBadge =
+                                                  data.governanceDetails?.cadreOrService ||
                                                   data.institutionDetails?.institutionType ||
                                                   data.examDetails?.examAgency ||
                                                   data.governanceDetails?.constitutionalArticle ||
@@ -2503,7 +2938,7 @@ export function SectionPrintPdfModal() {
                                                     className="font-semibold px-1.5 py-0.2 rounded bg-purple-50 text-purple-900 border border-purple-200 inline-block truncate max-w-[95%]"
                                                     style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}
                                                   >
-                                                    {primaryBadge}
+                                                    {getTranslatedGovernanceValue(primaryBadge, secLanguage)}
                                                   </span>
                                                 );
                                               })()
@@ -2520,7 +2955,7 @@ export function SectionPrintPdfModal() {
                                                 marginBottom: typo.spacingQuarter
                                               }}
                                             >
-                                              {data.summary}
+                                              {getTranslatedNodeSummary(data, secLanguage, translationScope)}
                                             </p>
                                           )}
 
@@ -2541,13 +2976,13 @@ export function SectionPrintPdfModal() {
                                                 >
                                                   <div className="flex items-center gap-1 font-bold text-indigo-950 uppercase tracking-wide" style={{ fontSize: typo.badge }}>
                                                     <Landmark className="w-3 h-3 text-indigo-700" />
-                                                    <span>Institutional Framework &amp; Degrees</span>
+                                                    <span>{t('card.institutions', secLanguage)}</span>
                                                   </div>
 
                                                   {data.institutionDetails.institutionType && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-indigo-900">Type: </span>
-                                                      {data.institutionDetails.institutionType}
+                                                      <span className="font-semibold text-indigo-900">{t('card.instType', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.institutionDetails.institutionType, secLanguage)}
                                                     </div>
                                                   )}
 
@@ -2555,58 +2990,58 @@ export function SectionPrintPdfModal() {
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800 flex items-start gap-1">
                                                       <Clock className="w-2.5 h-2.5 text-indigo-700 flex-shrink-0 mt-0.5" />
                                                       <div>
-                                                        <span className="font-semibold text-indigo-900">Timeline: </span>
-                                                        <span>{data.institutionDetails.examinationTimeline.replace(/^Timeline:\s*/i, '')}</span>
+                                                        <span className="font-semibold text-indigo-900">{t('card.timeline', secLanguage)} </span>
+                                                        <span>{getTranslatedGovernanceValue(data.institutionDetails.examinationTimeline.replace(/^Timeline:\s*/i, ''), secLanguage)}</span>
                                                       </div>
                                                     </div>
                                                   )}
 
                                                   {data.institutionDetails.programmesOffered && data.institutionDetails.programmesOffered.length > 0 && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-indigo-900">Programmes / Courses: </span>
-                                                      <span>{data.institutionDetails.programmesOffered.join(', ')}</span>
+                                                      <span className="font-semibold text-indigo-900">{t('card.programmes', secLanguage)} </span>
+                                                      <span>{data.institutionDetails.programmesOffered.map(p => getTranslatedGovernanceValue(p, secLanguage)).join(', ')}</span>
                                                     </div>
                                                   )}
 
                                                   {data.institutionDetails.admissionRoute && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-indigo-900">Admission Route: </span>
-                                                      {data.institutionDetails.admissionRoute}
+                                                      <span className="font-semibold text-indigo-900">{t('card.admission', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.institutionDetails.admissionRoute, secLanguage)}
                                                     </div>
                                                   )}
 
                                                   {data.institutionDetails.prerequisiteStream && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-indigo-900">Prerequisite Stream: </span>
-                                                      <span className="font-medium text-emerald-800">{data.institutionDetails.prerequisiteStream}</span>
+                                                      <span className="font-semibold text-indigo-900">{t('card.prerequisite', secLanguage)} </span>
+                                                      <span className="font-medium text-emerald-800">{getTranslatedGovernanceValue(data.institutionDetails.prerequisiteStream, secLanguage)}</span>
                                                     </div>
                                                   )}
 
                                                   {data.institutionDetails.awardingBody && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-indigo-900">Awarding Body: </span>
-                                                      {data.institutionDetails.awardingBody}
+                                                      <span className="font-semibold text-indigo-900">{t('card.awardingBody', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.institutionDetails.awardingBody, secLanguage)}
                                                     </div>
                                                   )}
 
                                                   {data.institutionDetails.controlledBy && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-indigo-900">Controlled by: </span>
-                                                      {data.institutionDetails.controlledBy}
+                                                      <span className="font-semibold text-indigo-900">{t('card.controlledBy', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.institutionDetails.controlledBy, secLanguage)}
                                                     </div>
                                                   )}
 
                                                   {data.institutionDetails.curriculumBody && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-indigo-900">Curriculum Body: </span>
-                                                      {data.institutionDetails.curriculumBody}
+                                                      <span className="font-semibold text-indigo-900">{t('card.curriculum', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.institutionDetails.curriculumBody, secLanguage)}
                                                     </div>
                                                   )}
 
                                                   {data.institutionDetails.careerValue && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-indigo-900">Career Value: </span>
-                                                      {data.institutionDetails.careerValue}
+                                                      <span className="font-semibold text-indigo-900">{t('card.careerOps', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.institutionDetails.careerValue, secLanguage)}
                                                     </div>
                                                   )}
                                                 </div>
@@ -2620,42 +3055,42 @@ export function SectionPrintPdfModal() {
                                                 >
                                                   <div className="flex items-center gap-1 font-bold text-blue-950 uppercase tracking-wide" style={{ fontSize: typo.badge }}>
                                                     <GraduationCap className="w-3 h-3 text-blue-700" />
-                                                    <span>Examination Lifecycle Details</span>
+                                                    <span>{t('card.lifecycle', secLanguage)}</span>
                                                   </div>
                                                   {data.examDetails.examAgency && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-blue-900">Agency: </span>
-                                                      {data.examDetails.examAgency}
+                                                      <span className="font-semibold text-blue-900">{t('card.instType', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.examDetails.examAgency, secLanguage)}
                                                     </div>
                                                   )}
                                                   {data.examDetails.eligibilityCriteria && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-blue-900">Eligibility: </span>
-                                                      {data.examDetails.eligibilityCriteria}
+                                                      <span className="font-semibold text-blue-900">{t('card.eligibility', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.examDetails.eligibilityCriteria, secLanguage)}
                                                     </div>
                                                   )}
                                                   {data.examDetails.applicationWindow && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-blue-900">Window: </span>
-                                                      {data.examDetails.applicationWindow}
+                                                      <span className="font-semibold text-blue-900">{t('card.timeline', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.examDetails.applicationWindow, secLanguage)}
                                                     </div>
                                                   )}
                                                   {data.examDetails.examStages && data.examDetails.examStages.length > 0 && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-blue-900">Stages: </span>
-                                                      {data.examDetails.examStages.join(' ➔ ')}
+                                                      <span className="font-semibold text-blue-900">{t('card.stages', secLanguage)} </span>
+                                                      {data.examDetails.examStages.map(s => getTranslatedGovernanceValue(s, secLanguage)).join(' ➔ ')}
                                                     </div>
                                                   )}
                                                   {data.examDetails.counsellingBody && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-blue-900">Counselling: </span>
-                                                      {data.examDetails.counsellingBody}
+                                                      <span className="font-semibold text-blue-900">{t('card.counselling', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.examDetails.counsellingBody, secLanguage)}
                                                     </div>
                                                   )}
                                                   {data.examDetails.outcome && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-blue-900">Outcome: </span>
-                                                      {data.examDetails.outcome}
+                                                      <span className="font-semibold text-blue-900">{t('card.outcome', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.examDetails.outcome, secLanguage)}
                                                     </div>
                                                   )}
                                                 </div>
@@ -2664,41 +3099,77 @@ export function SectionPrintPdfModal() {
                                               {/* Whiteboard 4: Democratic Governance Details */}
                                               {data.governanceDetails && (
                                                 <div
-                                                  className="p-2 rounded-lg bg-emerald-50/70 border border-emerald-200 flex flex-col"
+                                                  className="p-2 rounded-lg bg-purple-50/70 border border-purple-200/80 flex flex-col"
                                                   style={{ gap: typo.spacingQuarter }}
                                                 >
-                                                  <div className="flex items-center gap-1 font-bold text-emerald-950 uppercase tracking-wide" style={{ fontSize: typo.badge }}>
-                                                    <Landmark className="w-3 h-3 text-emerald-700" />
-                                                    <span>Democratic Governance Hierarchy</span>
+                                                  <div className="flex items-center gap-1 font-bold text-purple-950 uppercase tracking-wide" style={{ fontSize: typo.badge }}>
+                                                    <Landmark className="w-3 h-3 text-purple-700" />
+                                                    <span>{t('card.hierarchy', secLanguage)}</span>
                                                   </div>
                                                   {data.governanceDetails.positionName && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-emerald-900">Position: </span>
-                                                      {data.governanceDetails.positionName}
+                                                      <span className="font-semibold text-purple-900">{t('card.post', secLanguage)} </span>
+                                                      <span className="font-bold text-slate-900">{getTranslatedGovernanceValue(data.governanceDetails.positionName, secLanguage)}</span>
+                                                    </div>
+                                                  )}
+                                                  {data.governanceDetails.cadreOrService && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-purple-900">{t('card.cadre', secLanguage)} </span>
+                                                      <span className="font-bold text-rose-800 bg-rose-50 px-1.5 py-0.2 rounded border border-rose-200 inline-block" style={{ fontSize: typo.badge }}>
+                                                        {getTranslatedGovernanceValue(data.governanceDetails.cadreOrService, secLanguage)}
+                                                      </span>
                                                     </div>
                                                   )}
                                                   {data.governanceDetails.constitutionalArticle && (
-                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-emerald-900">Article: </span>
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800 font-mono">
+                                                      <span className="font-semibold text-purple-900">{t('card.article', secLanguage)} </span>
                                                       {data.governanceDetails.constitutionalArticle}
                                                     </div>
                                                   )}
                                                   {data.governanceDetails.electoralOrSelectionMethod && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-emerald-900">Selection: </span>
-                                                      {data.governanceDetails.electoralOrSelectionMethod}
+                                                      <span className="font-semibold text-purple-900">{t('card.selection', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.governanceDetails.electoralOrSelectionMethod, secLanguage)}
                                                     </div>
                                                   )}
                                                   {data.governanceDetails.tenure && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-emerald-900">Tenure: </span>
-                                                      {data.governanceDetails.tenure}
+                                                      <span className="font-semibold text-purple-900">{t('card.tenure', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.governanceDetails.tenure, secLanguage)}
                                                     </div>
                                                   )}
                                                   {data.governanceDetails.geographicalJurisdiction && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-emerald-900">Jurisdiction: </span>
-                                                      {data.governanceDetails.geographicalJurisdiction}
+                                                      <span className="font-semibold text-purple-900">{t('card.jurisdiction', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.governanceDetails.geographicalJurisdiction, secLanguage)}
+                                                    </div>
+                                                  )}
+                                                  {data.governanceDetails.reportingTo && (
+                                                    <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
+                                                      <span className="font-semibold text-purple-900">{t('card.reportsTo', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.governanceDetails.reportingTo, secLanguage)}
+                                                    </div>
+                                                  )}
+                                                  {data.governanceDetails.superiorAuthority && (
+                                                    <div className="bg-amber-50/90 p-1.5 rounded-md border border-amber-300/80 mt-1 shadow-2xs">
+                                                      <span className="font-bold text-amber-950 flex items-center gap-1 mb-0.5" style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}>
+                                                        <Crown className="w-3 h-3 text-amber-700 flex-shrink-0" />
+                                                        {t('card.superior', secLanguage)}
+                                                      </span>
+                                                      <span className="text-slate-800 font-medium leading-relaxed block" style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }}>
+                                                        {getTranslatedGovernanceValue(data.governanceDetails.superiorAuthority, secLanguage)}
+                                                      </span>
+                                                    </div>
+                                                  )}
+                                                  {data.governanceDetails.removalOrDeElectionMethod && (
+                                                    <div className="bg-rose-50/90 p-1.5 rounded-md border border-rose-300/80 mt-1 shadow-2xs">
+                                                      <span className="font-bold text-rose-950 flex items-center gap-1 mb-0.5" style={{ fontSize: typo.badge, lineHeight: typo.lineHeight }}>
+                                                        <AlertTriangle className="w-3 h-3 text-rose-700 flex-shrink-0" />
+                                                        {t('card.removal', secLanguage)}
+                                                      </span>
+                                                      <span className="text-rose-950 font-medium leading-relaxed block" style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }}>
+                                                        {getTranslatedGovernanceValue(data.governanceDetails.removalOrDeElectionMethod, secLanguage)}
+                                                      </span>
                                                     </div>
                                                   )}
                                                 </div>
@@ -2712,30 +3183,30 @@ export function SectionPrintPdfModal() {
                                                 >
                                                   <div className="flex items-center gap-1 font-bold text-amber-950 uppercase tracking-wide" style={{ fontSize: typo.badge }}>
                                                     <Landmark className="w-3 h-3 text-amber-700" />
-                                                    <span>Banking &amp; Judicial Apex Architecture</span>
+                                                    <span>{data.bankingJudicialDetails.domain === 'banking' ? t('card.banking', secLanguage) : t('card.judicial', secLanguage)}</span>
                                                   </div>
                                                   {data.bankingJudicialDetails.regulatoryBodyOrApex && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-amber-900">Apex / Regulator: </span>
-                                                      {data.bankingJudicialDetails.regulatoryBodyOrApex}
+                                                      <span className="font-semibold text-amber-900">{t('card.instType', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.bankingJudicialDetails.regulatoryBodyOrApex, secLanguage)}
                                                     </div>
                                                   )}
                                                   {data.bankingJudicialDetails.tier && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-amber-900">Tier: </span>
-                                                      {data.bankingJudicialDetails.tier}
+                                                      <span className="font-semibold text-amber-900">{t('card.tier', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.bankingJudicialDetails.tier, secLanguage)}
                                                     </div>
                                                   )}
                                                   {data.bankingJudicialDetails.jurisdictionOrScope && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-amber-900">Jurisdiction / Scope: </span>
-                                                      {data.bankingJudicialDetails.jurisdictionOrScope}
+                                                      <span className="font-semibold text-amber-900">{t('card.jurisdictionScope', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.bankingJudicialDetails.jurisdictionOrScope, secLanguage)}
                                                     </div>
                                                   )}
                                                   {data.bankingJudicialDetails.grievanceOrAppellateRoute && (
                                                     <div style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }} className="text-slate-800">
-                                                      <span className="font-semibold text-amber-900">Appellate Route: </span>
-                                                      {data.bankingJudicialDetails.grievanceOrAppellateRoute}
+                                                      <span className="font-semibold text-amber-900">{t('card.appellateRoute', secLanguage)} </span>
+                                                      {getTranslatedGovernanceValue(data.bankingJudicialDetails.grievanceOrAppellateRoute, secLanguage)}
                                                     </div>
                                                   )}
                                                 </div>
@@ -2747,7 +3218,7 @@ export function SectionPrintPdfModal() {
                                                   className="text-slate-600 font-mono bg-slate-50 p-1.5 rounded"
                                                   style={{ fontSize: typo.sub, lineHeight: typo.lineHeight }}
                                                 >
-                                                  <span className="font-bold text-slate-700">Act: </span>
+                                                  <span className="font-bold text-slate-700">{t('card.statuteActs', secLanguage)} </span>
                                                   {data.establishingLaw.join(', ')}
                                                 </div>
                                               )}
@@ -2763,7 +3234,7 @@ export function SectionPrintPdfModal() {
                                                       marginBottom: typo.spacingQuarter
                                                     }}
                                                   >
-                                                    Mandate:
+                                                    {t('card.mandate', secLanguage)}
                                                   </span>
                                                   <ul
                                                     className="list-disc pl-3 text-slate-700"
@@ -2779,7 +3250,7 @@ export function SectionPrintPdfModal() {
                                                           marginBottom: typo.spacingQuarter
                                                         }}
                                                       >
-                                                        {m}
+                                                        {getTranslatedGovernanceValue(m, secLanguage)}
                                                       </li>
                                                     ))}
                                                   </ul>
@@ -2788,16 +3259,16 @@ export function SectionPrintPdfModal() {
 
                                               {/* Powers */}
                                               {data.powers && data.powers.length > 0 && (
-                                                <div className="bg-emerald-50/60 p-1.5 rounded border border-emerald-100">
+                                                <div className="bg-emerald-50/70 p-1.5 rounded-lg border border-emerald-200">
                                                   <span
-                                                    className="font-bold text-emerald-900 uppercase tracking-wide block"
+                                                    className="font-bold text-emerald-950 uppercase tracking-wide block"
                                                     style={{
                                                       fontSize: typo.badge,
                                                       lineHeight: typo.lineHeight,
                                                       marginBottom: typo.spacingQuarter
                                                     }}
                                                   >
-                                                    Powers:
+                                                    {t('card.powers', secLanguage)}
                                                   </span>
                                                   <ul
                                                     className="list-disc pl-3 text-slate-800"
@@ -2806,14 +3277,14 @@ export function SectionPrintPdfModal() {
                                                       lineHeight: typo.lineHeight
                                                     }}
                                                   >
-                                                    {data.powers.slice(0, 3).map((p, idx) => (
+                                                    {data.powers.slice(0, 4).map((p, idx) => (
                                                       <li
                                                         key={idx}
                                                         style={{
                                                           marginBottom: typo.spacingQuarter
                                                         }}
                                                       >
-                                                        {p}
+                                                        {getTranslatedGovernanceValue(p, secLanguage)}
                                                       </li>
                                                     ))}
                                                   </ul>
@@ -2822,32 +3293,34 @@ export function SectionPrintPdfModal() {
 
                                               {/* Limitations */}
                                               {data.limitations && data.limitations.length > 0 && (
-                                                <div className="bg-rose-50/70 p-1.5 rounded border border-rose-200">
+                                                <div className="bg-rose-50/70 p-1.5 rounded-lg border border-rose-200">
                                                   <span
-                                                    className="font-bold text-rose-800 uppercase tracking-wide block"
+                                                    className="font-bold text-rose-950 uppercase tracking-wide block"
                                                     style={{
                                                       fontSize: typo.badge,
                                                       lineHeight: typo.lineHeight,
                                                       marginBottom: typo.spacingQuarter
                                                     }}
                                                   >
-                                                    Limitations:
+                                                    {t('card.limitations', secLanguage)}
                                                   </span>
                                                   <ul
-                                                    className="list-disc pl-3 text-rose-900"
+                                                    className="pl-0.5 text-rose-950"
                                                     style={{
                                                       fontSize: typo.sub,
                                                       lineHeight: typo.lineHeight
                                                     }}
                                                   >
-                                                    {data.limitations.slice(0, 2).map((l, idx) => (
+                                                    {data.limitations.slice(0, 3).map((l, idx) => (
                                                       <li
                                                         key={idx}
+                                                        className="flex items-start gap-1"
                                                         style={{
                                                           marginBottom: typo.spacingQuarter
                                                         }}
                                                       >
-                                                        {l}
+                                                        <span className="text-rose-500 font-bold flex-shrink-0">✕</span>
+                                                        <span>{getTranslatedGovernanceValue(l, secLanguage)}</span>
                                                       </li>
                                                     ))}
                                                   </ul>
@@ -2871,7 +3344,7 @@ export function SectionPrintPdfModal() {
                                               style={{ fontSize: typo.micro, lineHeight: typo.lineHeight }}
                                             >
                                               <Anchor className="w-2.5 h-2.5 text-amber-600" />
-                                              <span>Foreign Key Links ({node.dockedFks.length}):</span>
+                                              <span>{secLanguage === 'hi' ? 'बाह्य संबंध कड़ियाँ' : secLanguage === 'gu' ? 'બાહ્ય સંબંધ કડીઓ' : 'Foreign Key Links'} ({node.dockedFks.length}):</span>
                                             </div>
                                             <div className="flex flex-wrap gap-1">
                                               {node.dockedFks.map((fk) => (
@@ -2883,13 +3356,13 @@ export function SectionPrintPdfModal() {
                                                       : 'bg-sky-50 text-sky-900 border-sky-200'
                                                   }`}
                                                   style={{ fontSize: typo.micro, lineHeight: typo.lineHeight }}
-                                                  title={`${fk.direction === 'out' ? 'Outgoing' : 'Incoming'} connection to ${fk.extNodeTitle}`}
+                                                  title={`${fk.direction === 'out' ? (secLanguage === 'hi' ? 'बहिर्गमन संबंध' : secLanguage === 'gu' ? 'બહારનો સંબંધ' : 'Outgoing') : (secLanguage === 'hi' ? 'आगमन संबंध' : secLanguage === 'gu' ? 'આવક સંબંધ' : 'Incoming')} ➔ ${getTranslatedGovernanceValue(fk.extNodeTitle, secLanguage)}`}
                                                 >
-                                                  <span className="font-bold">{fk.direction === 'out' ? '➡ Out:' : '⬅ In:'}</span>
+                                                  <span className="font-bold">{fk.direction === 'out' ? (secLanguage === 'hi' ? '➡ बहिर्:' : secLanguage === 'gu' ? '➡ બહાર:' : '➡ Out:') : (secLanguage === 'hi' ? '⬅ आगम:' : secLanguage === 'gu' ? '⬅ આવક:' : '⬅ In:')}</span>
                                                   <span className="font-semibold truncate max-w-[130px]">
-                                                    {fk.extSectionNumber ? `Sec ${fk.extSectionNumber}: ` : ''}{fk.extNodeTitle}
+                                                    {getTranslatedGovernanceValue(fk.extNodeTitle, secLanguage)}
                                                   </span>
-                                                  <span className="opacity-75">[{fk.relLabel}]</span>
+                                                  <span className="opacity-75">[{getTranslatedGovernanceValue(fk.relLabel, secLanguage)}]</span>
                                                 </span>
                                               ))}
                                             </div>
@@ -2906,14 +3379,15 @@ export function SectionPrintPdfModal() {
                                             lineHeight: typo.lineHeight
                                           }}
                                         >
-                                          <span className="capitalize">{data.verificationStatus}</span>
+                                          <span className="capitalize">{getTranslatedGovernanceValue(data.verificationStatus, secLanguage)}</span>
                                           <span className="font-mono">ID: {data.id}</span>
                                         </div>
                                       </div>
                                     )}
                                   </div>
                                 );
-                              })}
+                              })();
+                            })}
                             </div>
                           </div>
                         </div>
@@ -2925,55 +3399,95 @@ export function SectionPrintPdfModal() {
                               <div className="flex items-center gap-1.5">
                                 <FileCheck2 className="w-3.5 h-3.5 text-amber-700" />
                                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800">
-                                  Foreign Key Linkage Stubs for Section {sec.number}
+                                  {secLanguage === 'hi'
+                                    ? `अनुभाग ${sec.number} के बाह्य संबंध लिंक (Foreign Key Stubs)`
+                                    : secLanguage === 'gu'
+                                    ? `વિભાગ ${sec.number} ની બાહ્ય સંબંધ કડીઓ (Foreign Key Stubs)`
+                                    : `Foreign Key Linkage Stubs for Section ${sec.number}`}
                                 </h4>
                               </div>
                               <span className="text-[10px] font-mono text-slate-500">
-                                {totalFks} Cross-Section Relational {totalFks === 1 ? 'Link' : 'Links'}
+                                {secLanguage === 'hi'
+                                  ? `${totalFks} अनुभाग-पार संबंध`
+                                  : secLanguage === 'gu'
+                                  ? `${totalFks} વિભાગ-પાર સંબંધો`
+                                  : `${totalFks} Cross-Section Relational ${totalFks === 1 ? 'Link' : 'Links'}`}
                               </span>
                             </div>
 
                             {totalFks === 0 ? (
                               <div className="text-[11px] text-slate-500 italic bg-slate-50 p-2 rounded border border-slate-200 text-center">
-                                No external cross-section edges; this section tree operates autonomously.
+                                {secLanguage === 'hi'
+                                  ? 'कोई बाह्य अनुभाग संबंध नहीं; यह अनुभाग वृक्ष स्वतंत्र रूप से कार्य करता है।'
+                                  : secLanguage === 'gu'
+                                  ? 'કોઈ બાહ્ય વિભાગ સંબંધ નથી; આ વિભાગ વૃક્ષ સ્વતંત્ર રીતે કાર્ય કરે છે.'
+                                  : 'No external cross-section edges; this section tree operates autonomously.'}
                               </div>
                             ) : (
                               <div className="overflow-x-auto border border-slate-200 rounded-lg bg-white shadow-2xs">
                                 <table className="w-full text-left text-[11px] border-collapse">
                                   <thead>
                                     <tr className="bg-slate-50 text-[9.5px] font-bold text-slate-600 uppercase tracking-wider border-b border-slate-200">
-                                      <th className="py-1.5 px-3">Port Direction</th>
-                                      <th className="py-1.5 px-3">Local Node</th>
-                                      <th className="py-1.5 px-3">Relationship Verb</th>
-                                      <th className="py-1.5 px-3">External Target / Source</th>
-                                      <th className="py-1.5 px-3">External Section / Board</th>
+                                      <th className="py-1.5 px-3">
+                                        {secLanguage === 'hi' ? 'दिशानिर्देश' : secLanguage === 'gu' ? 'દિશાનિર્દેશ' : 'Port Direction'}
+                                      </th>
+                                      <th className="py-1.5 px-3">
+                                        {secLanguage === 'hi' ? 'स्थानीय पद / निकाय' : secLanguage === 'gu' ? 'સ્થાનિક હોદ્દો / એકમ' : 'Local Node'}
+                                      </th>
+                                      <th className="py-1.5 px-3">
+                                        {secLanguage === 'hi' ? 'संबंध क्रियापद' : secLanguage === 'gu' ? 'સંબંધ ક્રિયાપદ' : 'Relationship Verb'}
+                                      </th>
+                                      <th className="py-1.5 px-3">
+                                        {secLanguage === 'hi' ? 'बाह्य लक्ष्य / स्रोत' : secLanguage === 'gu' ? 'બાહ્ય લક્ષ્ય / સ્ત્રોત' : 'External Target / Source'}
+                                      </th>
+                                      <th className="py-1.5 px-3">
+                                        {secLanguage === 'hi' ? 'बाह्य अनुभाग / बोर्ड' : secLanguage === 'gu' ? 'બાહ્ય વિભાગ / બોર્ડ' : 'External Section / Board'}
+                                      </th>
                                     </tr>
                                   </thead>
                                   <tbody className="divide-y divide-slate-100">
                                     {layout.foreignKeys.map((fk) => (
                                       <tr key={fk.id} className="hover:bg-slate-50/50">
                                         <td className="py-1.5 px-3 whitespace-nowrap">
-                                          <span className={`inline-flex items-center gap-1 px-1.5 py-0.2 rounded font-bold text-[9px] ${
+                                          <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded font-bold text-[9px] ${
                                             fk.direction === 'out'
                                               ? 'bg-amber-50 text-amber-800 border border-amber-200'
                                               : 'bg-sky-50 text-sky-800 border border-sky-200'
                                           }`}>
                                             {fk.direction === 'out' ? <ArrowUpRight className="w-3 h-3 text-amber-600" /> : <ArrowDownLeft className="w-3 h-3 text-sky-600" />}
-                                            <span>{fk.direction === 'out' ? 'Outgoing ➔' : 'Incoming ⬅'}</span>
+                                            <span>
+                                              {fk.direction === 'out'
+                                                ? (secLanguage === 'hi' ? 'बहिर्गमन ➔' : secLanguage === 'gu' ? 'બહાર ➔' : 'Outgoing ➔')
+                                                : (secLanguage === 'hi' ? '⬅ आगमन' : secLanguage === 'gu' ? '⬅ આવક' : '⬅ Incoming')}
+                                            </span>
                                           </span>
                                         </td>
                                         <td className="py-1.5 px-3 font-semibold text-slate-900">
-                                          {fk.localNodeTitle}
+                                          {(() => {
+                                            const locNode = nodeMap.get(fk.localNodeId);
+                                            return locNode ? getTranslatedNodeTitle(locNode, secLanguage, translationScope) : getTranslatedGovernanceValue(fk.localNodeTitle, secLanguage);
+                                          })()}
                                         </td>
                                         <td className="py-1.5 px-3 font-mono text-[9.5px] text-emerald-800">
-                                          {fk.label}
+                                          {getTranslatedGovernanceValue(fk.label, secLanguage)}
                                         </td>
                                         <td className="py-1.5 px-3 text-slate-800">
-                                          <div className="font-semibold">{fk.externalNodeTitle}</div>
+                                          <div className="font-semibold">
+                                            {(() => {
+                                              const extNode = nodeMap.get(fk.externalNodeId);
+                                              return extNode ? getTranslatedNodeTitle(extNode, secLanguage, translationScope) : getTranslatedGovernanceValue(fk.externalNodeTitle, secLanguage);
+                                            })()}
+                                          </div>
                                           <div className="font-mono text-[8.5px] text-slate-400">ID: {fk.externalNodeId}</div>
                                         </td>
                                         <td className="py-1.5 px-3 text-slate-600 font-mono text-[9.5px] whitespace-nowrap">
-                                          {fk.externalSectionId ? `Section ${fk.externalSectionId.replace('SEC-', '')}` : 'External Board'}
+                                          {fk.externalSectionId
+                                            ? (secLanguage === 'hi'
+                                                ? `अनुभाग ${fk.externalSectionId.replace('SEC-', '').replace('DEM-', '')}`
+                                                : secLanguage === 'gu'
+                                                ? `વિભાગ ${fk.externalSectionId.replace('SEC-', '').replace('DEM-', '')}`
+                                                : `Section ${fk.externalSectionId.replace('SEC-', '')}`)
+                                            : (secLanguage === 'hi' ? 'बाह्य बोर्ड' : secLanguage === 'gu' ? 'બાહ્ય બોર્ડ' : 'External Board')}
                                         </td>
                                       </tr>
                                     ))}

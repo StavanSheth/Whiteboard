@@ -950,8 +950,8 @@ export async function calculateSectionTreeLayout(
   const nodeMetaMap = new Map<string, Partial<SectionTreeNode>>();
   const edgeMetaMap = new Map<string, { label: string; isFk: boolean }>();
 
-  const stubHeight = Math.round(58 * Math.max(1, fontScale * 0.5 + lineScale * 0.5) * cardHeightScale);
-  const stubWidth = Math.min(260, customBoxWidth || 260);
+  const stubHeight = Math.round(38 * Math.max(1, fontScale * 0.5 + lineScale * 0.5) * cardHeightScale);
+  const stubWidth = customBoxWidth ? Math.max(260, customBoxWidth) : 260;
   const stubToLocalNodeMap = new Map<string, string>();
 
   // 1. Process relationships first to collect foreign keys and internal hierarchy edges
@@ -1160,11 +1160,30 @@ export async function calculateSectionTreeLayout(
     // 3. OPTION 1: Cascading Layer Propagation with True Bounding-Box Offset
     if (isRight) {
       // Horizontal Hierarchy Flow (LEFT-TO-RIGHT)
+      const outgoingFks = computedNodes.filter((n) => n.isFk && n.fkDirection === 'out');
+      if (outgoingFks.length > 0) {
+        const uniformOutX = Math.max(...outgoingFks.map((n) => n.x));
+        outgoingFks.forEach((n) => {
+          n.x = uniformOutX;
+          n.width = stubWidth;
+          n.height = stubHeight;
+        });
+      }
+      const incomingFks = computedNodes.filter((n) => n.isFk && n.fkDirection === 'in');
+      if (incomingFks.length > 0) {
+        const uniformInX = Math.min(...incomingFks.map((n) => n.x));
+        incomingFks.forEach((n) => {
+          n.x = uniformInX;
+          n.width = stubWidth;
+          n.height = stubHeight;
+        });
+      }
+
       const colBuckets: SectionTreeNode[][] = [];
       const sortedByX = [...computedNodes].sort((a, b) => a.x - b.x);
 
       sortedByX.forEach((node) => {
-        let bucket = colBuckets.find((b) => Math.abs(b[0].x - node.x) < 80);
+        let bucket = colBuckets.find((b) => b[0].isFk === node.isFk && Math.abs(b[0].x - node.x) < 80);
         if (bucket) {
           bucket.push(node);
         } else {
@@ -1173,6 +1192,20 @@ export async function calculateSectionTreeLayout(
       });
 
       colBuckets.sort((a, b) => Math.min(...a.map((n) => n.x)) - Math.min(...b.map((n) => n.x)));
+
+      // Equalize node widths within the same column only for regular cards
+      colBuckets.forEach((col) => {
+        const authNodes = col.filter((n) => !n.isFk);
+        if (authNodes.length > 1) {
+          const maxColWidth = Math.max(...authNodes.map((n) => n.width));
+          authNodes.forEach((n) => {
+            n.width = maxColWidth;
+          });
+        }
+        col.filter((n) => n.isFk).forEach((n) => {
+          n.width = stubWidth;
+        });
+      });
 
       // Step A: Prevent vertical overlap between nodes in the same column
       colBuckets.forEach((col) => {
@@ -1219,11 +1252,30 @@ export async function calculateSectionTreeLayout(
       }
     } else {
       // Vertical Hierarchy Flow (TOP-TO-BOTTOM)
+      const outgoingFks = computedNodes.filter((n) => n.isFk && n.fkDirection === 'out');
+      if (outgoingFks.length > 0) {
+        const uniformOutY = Math.max(...outgoingFks.map((n) => n.y));
+        outgoingFks.forEach((n) => {
+          n.y = uniformOutY;
+          n.height = stubHeight;
+          n.width = stubWidth;
+        });
+      }
+      const incomingFks = computedNodes.filter((n) => n.isFk && n.fkDirection === 'in');
+      if (incomingFks.length > 0) {
+        const uniformInY = Math.min(...incomingFks.map((n) => n.y));
+        incomingFks.forEach((n) => {
+          n.y = uniformInY;
+          n.height = stubHeight;
+          n.width = stubWidth;
+        });
+      }
+
       const layerBuckets: SectionTreeNode[][] = [];
       const sortedByY = [...computedNodes].sort((a, b) => a.y - b.y);
 
       sortedByY.forEach((node) => {
-        let bucket = layerBuckets.find((b) => Math.abs(b[0].y - node.y) < 80);
+        let bucket = layerBuckets.find((b) => b[0].isFk === node.isFk && Math.abs(b[0].y - node.y) < 80);
         if (bucket) {
           bucket.push(node);
         } else {
@@ -1232,6 +1284,26 @@ export async function calculateSectionTreeLayout(
       });
 
       layerBuckets.sort((a, b) => Math.min(...a.map((n) => n.y)) - Math.min(...b.map((n) => n.y)));
+
+      // Equalize node heights only for authority cards within the same layer
+      layerBuckets.forEach((layer) => {
+        const authNodes = layer.filter((n) => !n.isFk);
+        if (authNodes.length > 1) {
+          const maxLayerHeight = Math.max(...authNodes.map((n) => n.height));
+          authNodes.forEach((n) => {
+            n.height = maxLayerHeight;
+          });
+        }
+        // Foreign key stubs must ALWAYS maintain their compact stubHeight and share a clean baseline
+        const fkNodes = layer.filter((n) => n.isFk);
+        if (fkNodes.length > 0) {
+          const uniformFkY = Math.max(...fkNodes.map((n) => n.y));
+          fkNodes.forEach((n) => {
+            n.height = stubHeight;
+            n.y = uniformFkY;
+          });
+        }
+      });
 
       // Step A: Prevent horizontal overlap between sibling nodes in the same layer
       layerBuckets.forEach((layer) => {
@@ -1279,55 +1351,33 @@ export async function calculateSectionTreeLayout(
       }
     }
 
-    // Normalize coordinates so minX, minY start with clean padding
-    // Apply custom node positions if explicitly repositioned on this page
-    if (opts.nodePositions && Object.keys(opts.nodePositions).length > 0) {
-      // Record initial positions before manual overrides
-      const initialPosMap = new Map<string, { x: number; y: number }>();
-      computedNodes.forEach((n) => initialPosMap.set(n.id, { x: n.x, y: n.y }));
-
-      // 1. Apply explicit custom positions for dragged nodes
-      computedNodes.forEach((n) => {
-        const customPos = opts.nodePositions?.[n.id];
-        if (customPos) {
-          n.x = Math.round(customPos.x);
-          n.y = Math.round(customPos.y);
-        }
-      });
-
-      // 2. For unpositioned FK stubs, translate them in sync with their connected local authority node
-      computedNodes.forEach((n) => {
-        if (n.isFk && !opts.nodePositions?.[n.id]) {
-          const localParentId = stubToLocalNodeMap.get(n.id);
-          if (localParentId && opts.nodePositions?.[localParentId]) {
-            const orig = initialPosMap.get(localParentId);
-            const custom = opts.nodePositions[localParentId];
-            if (orig && custom) {
-              const dx = custom.x - orig.x;
-              const dy = custom.y - orig.y;
-              n.x = Math.round(n.x + dx);
-              n.y = Math.round(n.y + dy);
-            }
-          }
-        }
-      });
-    }
-
-    // Normalize coordinates so minX, minY start with clean padding regardless of manual repositioning
+    // 1. Normalize base ELK coordinates so initial auto-layout starts at clean padding
     const padding = 35;
-    let minX = Infinity;
-    let minY = Infinity;
+    let baseMinX = Infinity;
+    let baseMinY = Infinity;
     computedNodes.forEach((n) => {
-      minX = Math.min(minX, n.x);
-      minY = Math.min(minY, n.y);
+      baseMinX = Math.min(baseMinX, n.x);
+      baseMinY = Math.min(baseMinY, n.y);
     });
 
-    if (minX !== Infinity && minY !== Infinity) {
-      const shiftX = minX - padding;
-      const shiftY = minY - padding;
+    if (baseMinX !== Infinity && baseMinY !== Infinity) {
+      const shiftX = baseMinX - padding;
+      const shiftY = baseMinY - padding;
       computedNodes.forEach((n) => {
         n.x = Math.round(n.x - shiftX);
         n.y = Math.round(n.y - shiftY);
+      });
+    }
+
+    // 2. Apply explicit custom positions for dragged nodes and FK stubs
+    // Custom user positions are exact and preserved without forced lockstep shift or recalculation
+    if (opts.nodePositions && Object.keys(opts.nodePositions).length > 0) {
+      computedNodes.forEach((n) => {
+        const customPos = opts.nodePositions?.[n.id];
+        if (customPos) {
+          n.x = Math.max(10, Math.round(customPos.x));
+          n.y = Math.max(10, Math.round(customPos.y));
+        }
       });
     }
 
